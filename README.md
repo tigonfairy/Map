@@ -1,52 +1,160 @@
-<p align="center"><img src="https://laravel.com/assets/img/components/logo-laravel.svg"></p>
+## Laravel 5.3 COD Example Project.
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/d/total.svg" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/v/stable.svg" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/license.svg" alt="License"></a>
-</p>
+### Một số thay đổi của Laravel 5.3
 
-## About Laravel
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel attempts to take the pain out of development by easing common tasks used in the majority of web projects, such as:
+New in Laravel 5.3
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+1. routers.php move from app/Http/routes.php to 2 files : `app/routers/web.php` and `app/routes/api.php`
 
-Laravel is accessible, yet powerful, providing tools needed for large, robust applications. A superb combination of simplicity, elegance, and innovation give you tools you need to build any application with which you are tasked.
+2. Some directories in app folder like Event, Policy be removed, but when we run php artisan make:policy it will be back.
 
-## Learning Laravel
 
-Laravel has the most extensive and thorough documentation and video tutorial library of any modern web application framework. The [Laravel documentation](https://laravel.com/docs) is thorough, complete, and makes it a breeze to get started learning the framework.
+3. Query Builder using DB:: now return collection, same like Eloquent. For example in laravel 5.2
 
-If you're not in the mood to read, [Laracasts](https://laracasts.com) contains over 900 video tutorials on a range of topics including Laravel, modern PHP, unit testing, JavaScript, and more. Boost the skill level of yourself and your entire team by digging into our comprehensive video library.
+```
+DB::table('users')->get(); will return an array of object.
 
-## Laravel Sponsors
+But now in Laravel 5.3 it return a collection mean that we can using 
+DB::table('users')->get()->first();
+DB::table('users')->get()->count();
+```
+If we still want it return the array like Laravel 5.2 we can using like `DB::table('users')->get()->all()`.
 
-We would like to extend our thanks to the following sponsors for helping fund on-going Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](http://patreon.com/taylorotwell):
+4. Adding `cache()` function to helper.
 
-- **[Vehikl](http://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[British Software Development](https://www.britishsoftware.co)**
-- **[Styde](https://styde.net)**
-- **[Codecourse](https://www.codecourse.com)**
-- [Fragrantica](https://www.fragrantica.com)
-- [SOFTonSOFA](https://softonsofa.com/)
+In laravel 5.2 instead of using session in this way :
 
-## Contributing
+```
+use Sesssion;
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](http://laravel.com/docs/contributions).
+...
 
-## Security Vulnerabilities
+Session::get('foo');
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell at taylor@laravel.com. All security vulnerabilities will be promptly addressed.
+Sesssion::put('foo', 'bar');
+```
+We can using helper function to do that. 
+```
+session()->get('foo');
 
-## License
+session()->put('foo', 'bar');
+```
+No need using Facade Session:: because it make slowly and must `"use Sesssion;"` at start of php file.
 
-The Laravel framework is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT).
+Now in laravel 5.3 we can so the same for cache :
+```
+cache()->get('foo');
+cache()->put('for', 'bar', 10);
+```
+5. Pagination View File Added.
+
+Now when using `{{$users->links()}}` in our views to display pagination, we can modify html for pagination by running command `php artisan vendor:publish`
+
+and go to `resources/views/vendor/pagination` to edit `boostrap-3.blade.php`
+
+6. [SendEmail Syntax Change] (https://laracasts.com/series/whats-new-in-laravel-5-3/episodes/6?autoplay=true)
+
+Please note that we have in our `.env`
+
+```
+MAIL_DRIVER=smtp
+MAIL_HOST=mailtrap.io
+MAIL_PORT=2525
+MAIL_USERNAME=null
+MAIL_PASSWORD=null
+```
+
+`http://mailtrap.io` is good site for developer to test send email using smtp, when we send in laravel email will go to your account at `mailtrap.io` to preview.
+
+7. Adding `$loop` variable when we foreach a collection in views. It allow us to know item in foreach is first, last and how many items remind.
+
+```
+@foreach ($users as user)
+    <li>{{ var_dump($loop); }}</li>
+    <li>{{$user->name}}</li>  
+@endofreach
+```
+8. [Laravel Passport] (https://laracasts.com/series/whats-new-in-laravel-5-3/episodes/13?autoplay=true)
+
+9. [Laravel Scout Search] (https://laracasts.com/series/whats-new-in-laravel-5-3/episodes/15)
+
+10. `lists` rename to `pluck`.
+
+### Packages
+
+```
+     "barryvdh/laravel-ide-helper": "^2.2",
+     "intervention/image": "^2.3",
+     "intervention/imagecache": "^2.3",
+     "cviebrock/eloquent-sluggable": "^4.0",
+     "laravelcollective/html": "^5.3",
+     "maatwebsite/excel": "^2.1",
+     "predis/predis": "^1.1",
+     "laracasts/flash": "^2.0",
+     "laravel/socialite": "^2.0"
+```
+### Setup
+
+Copy file `.env.example` => `.env`
+
+Tạo database và thay đổi thông tin database trong file `.env`.
+
+```
+$ composer íntall
+
+$ php artisan migrate
+
+$ php artisan key:generate
+
+$ chmod -R 777 public/files
+
+//add your email to admin.
+
+$ php artisan add:admin --email=manhquan.do@ved.com.vn
+```
+### Admin Authenticate and Permission.
+
+Authentication using G+, you need to access to `https://console.developers.google.com` to create an OAuth2 
+Credentials and add to `.env` :
+
+```
+#Google
+GOOGLE_CLIENT_ID=315338546630-82tcmg4vgtaahkgongjrhkdofpa31plj.apps.googleusercontent.com
+GOOGLE_CLIENT_SECRET=AlG_JigETRTcapDcnMiKlE4l
+GOOGLE_CALLBACK=http://local.example.com/admin/callback
+
+```
+Flow for authentication as below :
+
+User access to `http://local.example.com/admin` => go through `app\Http\Middleware\Admin\AdminAuthenticate.php` => Redirect to G+ => Back to method 
+`handleGoogleCallback` in `app\Http\Controller\Backend\AuthController`.
+
+Please note that when we create new Controller in Backend, need to add to `config/permissions.php`.
+
+### Frontend Authenticate.
+
+Garena authenticate.
+
+We can using hardLogin function which located in `app\Garena\Functions.php`.
+
+### Some notes about Coding
+
+1. All frontend method should be located in `app\Http\Controllers\Frontend\MainController.php`.
+
+2. When hard Login We also must comment in `app\Http\Kernel.php`
+
+```
+ \App\Http\Middleware\VerifyCsrfToken::class,
+```
+3. When Create new Controller in Backend or add new method to existed Controller at Backend, must add to 
+`config/permissions.php`.
+
+4. When working with databases, prefer to using `DB::` instead of Eloquent.
+
+5. All logical functions for project should be place in `app/Garena/Functions` as static method.
+
+* Fix bug
+
+1. 
+ 

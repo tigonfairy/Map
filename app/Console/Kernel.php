@@ -2,8 +2,12 @@
 
 namespace App\Console;
 
+use App\Console\Commands\AddAdmin;
+use App\Console\Commands\CrawlerAmazone;
+use App\Console\Commands\CrawByHin;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+use App\Console\Commands\CrawHin;
 
 class Kernel extends ConsoleKernel
 {
@@ -13,7 +17,10 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        //
+        AddAdmin::class,
+        CrawlerAmazone::class,
+        CrawByHin::class,
+        CrawHin::class,
     ];
 
     /**
@@ -24,8 +31,8 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')
-        //          ->hourly();
+//         $schedule->command('craw:hin')
+//                  ->withoutOverlapping()->dailyAt('11:00');
     }
 
     /**

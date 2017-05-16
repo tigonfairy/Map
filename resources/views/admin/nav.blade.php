@@ -30,11 +30,41 @@
             </li>
 
             <li class="nav-item">
-                <a href="{{ url('/') }}" class="nav-link nav-toggle">
+                <a href="{{ url('/admin') }}" class="nav-link nav-toggle">
                     <i class="icon-settings"></i>
                     <span class="title">DashBoard</span>
                     <span class="arrow"></span>
                 </a>
+            </li>
+
+            <li class="nav-item">
+                <a href="javascript:;" class="nav-link nav-toggle">
+                    <i class="icon-user"></i>
+                    <span class="title">Quản lý Tài Khoản</span>
+                    <span class="arrow"></span>
+                </a>
+                <ul class="sub-menu" >
+                    <li class="nav-item  ">
+                        <a href="{{route('Admin::user@index')}}" class="nav-link ">
+                            <i class="icon-lock"></i>
+                            <span class="title">Danh sách tài khoản</span>
+                        </a>
+                    </li>
+                    <li class="nav-item  ">
+                        <a href="{{route('Admin::role@index')}}" class="nav-link" >
+                            <i class="icon-lock"></i>
+                            <span class="title">Role</span>
+                        </a>
+                    </li>
+
+                    <li class="nav-item  ">
+                        <a href="{{route('Admin::permission@index')}}" class="nav-link" >
+                            <i class="icon-lock"></i>
+                            <span class="title">Permission</span>
+                        </a>
+                    </li>
+
+                </ul>
             </li>
 
         </ul>

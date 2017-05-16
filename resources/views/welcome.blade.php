@@ -1,5 +1,5 @@
-<!doctype html>
-<html lang="{{ config('app.locale') }}">
+<!DOCTYPE html>
+<html lang="en">
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -15,7 +15,7 @@
             html, body {
                 background-color: #fff;
                 color: #636b6f;
-                font-family: 'Raleway', sans-serif;
+                font-family: 'Raleway';
                 font-weight: 100;
                 height: 100vh;
                 margin: 0;
@@ -68,16 +68,13 @@
         <div class="flex-center position-ref full-height">
             @if (Route::has('login'))
                 <div class="top-right links">
-                    @if (Auth::check())
-                        <a href="{{ url('/home') }}">Home</a>
-                    @else
-                        <a href="{{ url('/login') }}">Login</a>
-                        <a href="{{ url('/register') }}">Register</a>
-                    @endif
+                    <a href="{{ url('/login') }}">Login</a>
+                    <a href="{{ url('/register') }}">Register</a>
                 </div>
             @endif
 
-            <div class="content">
+                @include('flash::message')
+                <div class="content">
                 <div class="title m-b-md">
                     Laravel
                 </div>

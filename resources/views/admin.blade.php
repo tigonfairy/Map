@@ -54,7 +54,7 @@
     <link href="/assets/global/plugins/jquery-file-upload/css/jquery.fileupload.css" rel="stylesheet" type="text/css"/>
     <link href="/assets/global/plugins/jquery-file-upload/css/jquery.fileupload-ui.css" rel="stylesheet"
           type="text/css"/>
-
+    <link href="/assets/global/plugins/jquery-nestable/jquery.nestable.css" rel="stylesheet" type="text/css" />
     <!-- END PAGE LEVEL PLUGINS -->
     <!-- BEGIN THEME GLOBAL STYLES -->
     <link href="/assets/global/css/components-md.min.css" rel="stylesheet" id="style_components" type="text/css"/>
@@ -64,7 +64,6 @@
     <link href="/assets/layouts/layout/css/layout.min.css" rel="stylesheet" type="text/css"/>
     <link href="/assets/layouts/layout/css/themes/darkblue.min.css" rel="stylesheet" type="text/css" id="style_color"/>
     <link href="/assets/layouts/layout/css/custom.min.css" rel="stylesheet" type="text/css"/>
-
 
     <!-- END THEME LAYOUT STYLES -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -87,6 +86,9 @@
         <div class="page-header-inner ">
             <!-- BEGIN LOGO -->
             <div class="page-logo">
+                <a href="{{ url('/') }}">
+                    <img src="/assets/images/logo.png" alt="logo" class="logo-default"
+                         style="width: 90px; margin-top: 10px"/> </a>
                 <div class="menu-toggler sidebar-toggler">
                     <span></span>
                 </div>
@@ -160,7 +162,7 @@
     <!-- END CONTAINER -->
     <!-- BEGIN FOOTER -->
     <div class="page-footer">
-        <div class="page-footer-inner"> 2017 &copy; Admin
+        <div class="page-footer-inner"> 2016 &copy; Admin Crawler Amazone
 
         </div>
         <div class="scroll-to-top">
@@ -240,7 +242,9 @@
 
 <!-- END THEME GLOBAL SCRIPTS -->
 <!-- BEGIN PAGE LEVEL SCRIPTS -->
+
 <script src="/assets/pages/scripts/dashboard.min.js" type="text/javascript"></script>
+
 <!-- END PAGE LEVEL SCRIPTS -->
 <!-- BEGIN THEME LAYOUT SCRIPTS -->
 <script src="/assets/layouts/layout/scripts/layout.min.js" type="text/javascript"></script>
@@ -251,8 +255,9 @@
 <script src="/assets/pages/scripts/components-date-time-pickers.min.js" type="text/javascript"></script>
 
 <script src="/js/admin/ckeditor/ckeditor.js"></script>
+<script src="/assets/global/plugins/jquery-nestable/jquery.nestable.js" type="text/javascript"></script>
 
-
+{{--<script src="/assets/pages/scripts/ui-nestable.min.js" type="text/javascript"></script>--}}
 <script>
     var baseUrl = '{{url('/admin')}}';
     $.ajaxSetup({
