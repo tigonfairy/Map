@@ -349,7 +349,7 @@
 
 </script>
 
-
+@stack('scripts_foot')
 @stack('scripts')
 
 </body>

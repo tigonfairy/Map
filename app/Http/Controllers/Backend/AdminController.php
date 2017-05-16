@@ -12,7 +12,7 @@ class AdminController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth.backend');
+        $this->middleware('auth');
     }
 
     /**
@@ -21,14 +21,14 @@ class AdminController extends Controller
      * @param null $old
      * @return string
      */
-    public function saveImage($file, $old = null)
-    {
-        $filename = md5(time()) . '.' . $file->getClientOriginalExtension();
-        Image::make($file->getRealPath())->save(public_path('files/'. $filename));
-
-        if ($old) {
-            @unlink(public_path('files/' .$old));
-        }
-        return $filename;
-    }
+//    public function saveImage($file, $old = null)
+//    {
+//        $filename = md5(time()) . '.' . $file->getClientOriginalExtension();
+//        Image::make($file->getRealPath())->save(public_path('files/'. $filename));
+//
+//        if ($old) {
+//            @unlink(public_path('files/' .$old));
+//        }
+//        return $filename;
+//    }
 }

@@ -9,5 +9,7 @@ class HomeController extends AdminController
     {
        return view('admin.index');
     }
-
+    public function dashboard(){
+        return view('admin.dashboard');
+    }
 }
