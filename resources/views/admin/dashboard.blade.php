@@ -77,7 +77,6 @@
 
 
         google.maps.event.addListener(map, 'click', function (e) {
-
             var ll = {lat: e.latLng.lat(), lng: e.latLng.lng()};
 
             //alert(e.latLng.lat());
@@ -117,6 +116,7 @@
 
             // For each place, get the icon, name and location.
             var bounds = new google.maps.LatLngBounds();
+
             places.forEach(function (place) {
                 var icon = {
                     url: place.icon,
@@ -140,6 +140,9 @@
                 } else {
                     bounds.extend(place.geometry.location);
                 }
+                var e = place.geometry.location;
+                var ll = {lat: e.lat(), lng: e.lng()};
+                getAddressByLatlng(ll);
             });
             map.fitBounds(bounds);
         });
