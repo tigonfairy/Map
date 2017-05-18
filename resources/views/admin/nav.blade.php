@@ -38,6 +38,14 @@
             </li>
 
             <li class="nav-item">
+                <a href="{{ url('/map') }}" class="nav-link nav-toggle">
+                    <i class="icon-settings"></i>
+                    <span class="title">Map</span>
+                    <span class="arrow"></span>
+                </a>
+            </li>
+
+            <li class="nav-item">
                 <a href="javascript:;" class="nav-link nav-toggle">
                     <i class="icon-user"></i>
                     <span class="title">Quản lý Tài Khoản</span>

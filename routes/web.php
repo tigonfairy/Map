@@ -24,6 +24,11 @@ Route::group(['middleware' => 'auth',
         return view('admin');
     });
 
+    Route::get('map', function() {
+        return view('admin.map.index');
+
+    });
+
 
     Route::group([
         'prefix' => 'users',

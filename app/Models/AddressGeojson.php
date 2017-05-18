@@ -4,20 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class UserPermission extends Model
+class AddressGeojson extends Model
 {
-    //
-    public $timestamps = false;
-
-
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
-    protected $fillable = ['user_id', 'permission_id','value'];
-
-    /**
-     * Get all of the tags for the post.
-     */
+    protected $table = 'address_geojson';
 }
