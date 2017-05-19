@@ -1,3 +1,8 @@
-.idea
+/public/storage
+/storage/*.key
 vendor
 .env
+/public/files
+.idea
+/vendor/*
+
