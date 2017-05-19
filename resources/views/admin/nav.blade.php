@@ -38,7 +38,7 @@
             </li>
 
             <li class="nav-item">
-                <a href="{{ url('/map') }}" class="nav-link nav-toggle">
+                <a href="{{route('Admin::map@index')}}" class="nav-link nav-toggle">
                     <i class="icon-settings"></i>
                     <span class="title">Map</span>
                     <span class="arrow"></span>

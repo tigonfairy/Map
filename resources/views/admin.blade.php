@@ -189,6 +189,7 @@
 <script src="/assets/global/scripts/datatable.js" type="text/javascript"></script>
 <script src="/assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.js"
         type="text/javascript"></script>
+
 <script src="/assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js"
         type="text/javascript"></script>
 <!-- END CORE PLUGINS -->
@@ -251,9 +252,7 @@
 <script src="/assets/layouts/layout/scripts/demo.min.js" type="text/javascript"></script>
 <script src="/assets/layouts/global/scripts/quick-sidebar.min.js" type="text/javascript"></script>
 <script src="/assets/layouts/global/scripts/quick-nav.min.js" type="text/javascript"></script>
-
 <script src="/assets/pages/scripts/components-date-time-pickers.min.js" type="text/javascript"></script>
-
 <script src="/js/admin/ckeditor/ckeditor.js"></script>
 <script src="/assets/global/plugins/jquery-nestable/jquery.nestable.js" type="text/javascript"></script>
 <script type="text/javascript" src="//maps.google.com/maps/api/js?sensor=true"></script>

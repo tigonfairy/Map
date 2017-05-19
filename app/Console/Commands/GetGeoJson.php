@@ -14,7 +14,7 @@ class GetGeoJson extends Command
      *
      * @var string
      */
-    protected $signature = 'get:data';
+    protected $signature = 'get:district';
 
     /**
      * The console command description.
@@ -57,7 +57,12 @@ class GetGeoJson extends Command
 
             $geometry = $feature['geometry'];
             $coordinates = $geometry['coordinates'][0];
-            $coordinates = json_encode($coordinates);
+            $newCoordinates = [];
+            foreach ($coordinates as $coordinate) {
+                $newCoordinate = array_reverse($coordinate);
+                array_push($newCoordinates,$newCoordinate);
+            }
+            $coordinates = json_encode($newCoordinates);
             AddressGeojson::forceCreate([
                 'province' => $province,
                 'district' => $district,

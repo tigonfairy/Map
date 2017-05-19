@@ -18,6 +18,16 @@
     <div class="content-wrapper">
       <div class="container">
         <div class="col-md-6 col-md-offset-3">
+            <select id="province">
+                <option value="">Chọn tỉnh</option>
+                @foreach($provinces as $provine)
+                    <option value="{{ $provine }}">{{ $provine }}</option>
+                @endforeach
+            </select>
+            <select id="district">
+                <option value="">Chọn huyện</option>
+            </select>
+            <button id ="search">Tìm kiếm</button>
         </div>
       </div>
 
@@ -38,27 +48,65 @@
 <script type="text/javascript">
   var map;
     $(document).ready(function(){
-        map = new GMaps({
-            div: '#map',
-            lat: -12.043333,
-            lng: -77.028333,
-            width : "100%",
-            height : '500px'
-        });
-        var path = [
-            [-12.040397656836609,-77.03373871559225],
-            [-12.040248585302038,-77.03993927003302],
-            [-12.050047116528843,-77.02448169303511],
-            [-12.044804866577001,-77.02154422636042]
-        ];
 
-        polygon = map.drawPolygon({
-            paths: path,
-            strokeColor: '#BBD8E9',
-            strokeOpacity: 1,
-            strokeWeight: 3,
-            fillColor: '#BBD8E9',
-            fillOpacity: 0.6
+        $('#province').on('change', '', function (e) {
+            var province = this.value;
+            $.ajax({
+                url: '{{ url('maps/province/districts') }}',
+                type:'post',
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    province : province
+                },
+                success: function(districts) {
+                    $("#district").html('');
+                    $.each(districts, function(key, district) {
+                        $("#district").append('<option value="' + district + '">' + district + '</option>')
+                    })
+                },
+                error: function() {
+
+                }
+            });
+        });
+
+        $( "#search" ).click(function() {
+            var province = $("#province").val();
+            var district = $("#district").val();
+            $.ajax({
+                url: '{{ url('maps/province/district/coordinates') }}',
+                type:'post',
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    province : province,
+                    district : district
+                },
+                success: function(coordinates) {
+                    var coordinate = JSON.parse(coordinates[0]);
+                    var middle = coordinate[Math.round((coordinate.length - 1) / 2)];
+                    map = new GMaps({
+                        div: '#map',
+                        lat: middle[0],
+                        lng: middle[1],
+                        width : "100%",
+                        height : '500px'
+                    });
+                    var path = coordinate;
+
+                    polygon = map.drawPolygon({
+                        paths: path,
+                        strokeColor: '#BBD8E9',
+                        strokeOpacity: 1,
+                        strokeWeight: 3,
+                        fillColor: '#BBD8E9',
+                        fillOpacity: 0.6,
+                        zoom:8
+                    });
+                },
+                error: function() {
+
+                }
+            });
         });
     });
 </script>
