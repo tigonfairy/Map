@@ -16,18 +16,10 @@ Route::group(['middleware' => 'auth',
     'namespace' => 'Backend',
     'as' => 'Admin::'
 ],function() {
-<<<<<<< HEAD
+
     Route::get('/', ['as' => 'dashboard', 'uses' => 'HomeController@dashboard']);
     Route::get('/admin', ['as' => 'dashboard', 'uses' => 'HomeController@dashboard']);
-=======
 
-    Route::get('/', function() {
-        return view('admin');
-    });
-    Route::get('admin', function() {
-        return view('admin');
-    });
->>>>>>> 49f4639ebfd8d567e801b2dd0da99f4729fca2fe
 
     Route::group([
         'prefix' => 'users',

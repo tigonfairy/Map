@@ -61,7 +61,7 @@ class AddProvinceJson extends Command
                     array_push($newCoordinates, $newCoordinate);
                 }
                 $coordinates = json_encode($newCoordinates);
-                $address = AddressGeojson::forceCreate([
+                AddressGeojson::firstOrCreate([
                     'province' => $province,
                     'coordinates' => $coordinates,
                     'district' => 'All',

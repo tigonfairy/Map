@@ -17,7 +17,7 @@ class CreateAddressGeojsonTable extends Migration
             $table->increments('id');
             $table->string('province');
             $table->string('district');
-            $table->string('coordinates');
+            $table->text('coordinates');
             $table->timestamps();
         });
     }
