@@ -16,11 +16,7 @@ class UserController extends Controller
         if (auth()->user()->cannot('list-user')) {
             abort(403);
         }
-        $users = User::orderBy('created_at');
-        if($request->input('search')){
-            $users = $users->where('email','like','%'.$request->input('search').'%');
-        }
-        $users = $users->paginate(8);
+        $users = User::orderBy('created_at')->get();
         return view('admin.user.index',compact('users'));
     }
 
@@ -69,7 +65,7 @@ class UserController extends Controller
 
 
         $user->save();
-        return redirect()->route('user@index')
+        return redirect()->route('Admin::user@index')
             ->with('success', 'Đã thêm Thanh vien');
     }
 
@@ -118,7 +114,7 @@ class UserController extends Controller
 
         $user->update($data);
 
-        return redirect()->route('user@edit', $user->id)
+        return redirect()->route('Admin::user@index', $user->id)
             ->with('success', 'Đã cập nhật thông tin User');
 
     }
@@ -131,7 +127,7 @@ class UserController extends Controller
 
         $user = User::findOrFail($id);
         $user->delete();
-        return redirect()->route('user@index')->with('success', 'Đã xoá thành công');
+        return redirect()->route('Admin::user@index')->with('success', 'Đã xoá thành công');
     }
 
 

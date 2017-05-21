@@ -17,11 +17,7 @@ class RoleController extends Controller
         if (auth()->user()->cannot('list-role')) {
             abort(403);
         }
-        $roles = Role::orderBy('id');
-        if($request->input('search')){
-            $roles = $roles->where('name','like','%'.$request->input('search').'%');
-        }
-        $roles = $roles->paginate(15);
+        $roles = Role::orderBy('id')->get();
         return view('admin.role.index',compact('roles'));
     }
 
@@ -54,7 +50,7 @@ class RoleController extends Controller
 
         $role->permissions()->sync($permissions);
 
-        return redirect()->route('role@index')
+        return redirect()->route('Admin::role@index')
             ->with('success', 'Đã thêm');
     }
 
@@ -94,7 +90,7 @@ class RoleController extends Controller
         $role->update($data);
 
 
-        return redirect()->route('role@index',$role->id)
+        return redirect()->route('Admin::role@index',$role->id)
             ->with('success', 'Đã cập nhật');
     }
 
@@ -106,7 +102,7 @@ class RoleController extends Controller
 
         $role = Role::findOrFail($id);
         $role->delete();
-        return redirect()->route('role@index')->with('success', 'Đã xoá thành công');
+        return redirect()->route('Admin::role@index')->with('success', 'Đã xoá thành công');
     }
 
 

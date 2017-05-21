@@ -10,7 +10,7 @@
 
             <div class="heading-elements">
                 <div class="heading-btn-group">
-                    <a href="{{route('Admin::user@add')}}" class="btn btn-link"><i class="icon-add"></i> Thêm thành viên</a>
+                    <a href="{{route('Admin::user@add')}}" class="btn btn-primary"><i class="icon-add"></i> Thêm thành viên</a>
 
                 </div>
             </div>
@@ -22,43 +22,16 @@
         <!-- Page content -->
 
             <div class="content-wrapper">
-                <div class="container">
-                    <div class="col-md-6 col-md-offset-3">
-
-                        <!-- Search Form -->
-                        <form role="form">
-
-                            <!-- Search Field -->
-                            <div class="row">
-                                <div class="form-group">
-                                    <div class="input-group">
-                                        <input class="form-control" type="text" name="search" placeholder="Search" required/>
-                                        <span class="input-group-btn">
-                            <button type="submit" class="btn btn-success btn-xs" data-toggle="modal" data-target="#edit-pro">Search</button>
-
-                  </span>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </form>
-                        <!-- End of Search Form -->
-
-                    </div>
-                </div>
                 @if (session('success'))
                     <div class="alert bg-success alert-styled-left">
                         <button type="button" class="close" data-dismiss="alert"><span>×</span><span class="sr-only">Close</span></button>
                         {{ session('success') }}
                     </div>
                 @endif
-                <div class="panel panel-flat">
-                    <div class="table-responsive">
-                        <table class="table table-hover">
+                        <table class="table table-striped table-bordered" cellspacing="0" width="100%" id="users-table">
                             <thead>
                             <tr>
                                 <th>Id</th>
-
                                 <th>Email</th>
                                 <th>Group</th>
                                 <th>Created_At</th>
@@ -82,15 +55,10 @@
                             @endforeach
                             </tbody>
                         </table>
-
-
-                    </div>
-
-                </div>
             </div>
             <!-- /main content -->
         </div>
-       <div style="float:right;"><?php echo $users->links(); ?></div>
+
         <!-- /page content -->
 
     <!-- /page container -->
@@ -98,16 +66,35 @@
 
 @endsection
 
-@push('scripts_foot')
+@push('scripts')
 <script>
     function xoaCat(){
         var conf = confirm("Bạn chắc chắn muốn xoá?");
         return conf;
     }
 
-</script>
-@endpush
+    $(document).ready(function() {
+        $('#users-table').DataTable({
+            "bInfo" : false,
+            "columns":[
+                {
+                    "sortable": true
+                },
+                {
+                    "sortable": false
+                },
+                {
+                    "sortable": false
+                },
+                {
+                    "sortable": false
+                },
+                {
+                    "sortable": false
+                }
+            ]
+        });
+    } );
 
-@push('scripts_ck')
-<script src="//cdn.ckeditor.com/4.5.9/standard/ckeditor.js"></script>
+</script>
 @endpush

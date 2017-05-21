@@ -42,8 +42,6 @@ class AuthServiceProvider extends ServiceProvider
             return true;
         }
         $permissions = $user->permissions->keyBy('id');
-
-       // dd($permission);
         if (isset($permissions[$permission])) {
             if ($permissions[$permission]->pivot->value == 0) {
                 return true;

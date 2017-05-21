@@ -10,7 +10,7 @@
 
     <div class="heading-elements">
       <div class="heading-btn-group">
-        <a href="{{ route('Admin::role@add') }}" class="btn btn-link"><i class="icon-add"></i> Thêm</a>
+        <a href="{{ route('Admin::role@add') }}" class="btn btn-primary"><i class="icon-add"></i> Thêm</a>
 
       </div>
     </div>
@@ -22,39 +22,15 @@
 
     <!-- Main content -->
     <div class="content-wrapper">
-      <div class="container">
-        <div class="col-md-6 col-md-offset-3">
 
-          <!-- Search Form -->
-          <form role="form">
-
-            <!-- Search Field -->
-            <div class="row">
-              <div class="form-group">
-                <div class="input-group">
-                  <input class="form-control" type="text" name="search" placeholder="Search" required/>
-                        <span class="input-group-btn">
-                            <button type="submit" class="btn btn-success btn-xs" data-toggle="modal" data-target="#edit-pro">Search</button>
-
-                  </span>
-                </div>
-              </div>
-            </div>
-
-          </form>
-          <!-- End of Search Form -->
-
-        </div>
-      </div>
       @if (session('success'))
         <div class="alert bg-success alert-styled-left">
           <button type="button" class="close" data-dismiss="alert"><span>×</span><span class="sr-only">Close</span></button>
           {{ session('success') }}
         </div>
       @endif
-      <div class="panel panel-flat">
-        <div class="table-responsive">
-          <table class="table table-hover">
+
+          <table class="table table-striped table-bordered" cellspacing="0" width="100%" id="roles-table" >
             <thead>
             <tr>
               <th>Id</th>
@@ -72,26 +48,38 @@
             @endforeach
             </tbody>
           </table>
-
-        </div>
-
-      </div>
     </div>
     <!-- /main content -->
   </div>
-  <div style="float:right;"><?php echo $roles->links(); ?></div>
 
 <!-- /page container -->
 
 
 @endsection
 
-@push('scripts_foot')
+@push('scripts')
 <script>
   function xoaCat(){
     var conf = confirm("Bạn chắc chắn muốn xoá?");
     return conf;
   }
+
+  $(document).ready(function() {
+      $('#roles-table').DataTable({
+          "bInfo" : false,
+          "columns":[
+              {
+                  "sortable": true
+              },
+              {
+                  "sortable": true
+              },
+              {
+                  "sortable": false
+              },
+          ]
+      });
+  } );
 
 </script>
 @endpush

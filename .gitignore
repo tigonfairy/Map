@@ -1,3 +1,14 @@
+<<<<<<< HEAD
 vendor
 .idea
 .env
+=======
+/public/storage
+/storage/*.key
+vendor
+.env
+/public/files
+.idea
+/vendor/*
+
+>>>>>>> 49f4639ebfd8d567e801b2dd0da99f4729fca2fe
