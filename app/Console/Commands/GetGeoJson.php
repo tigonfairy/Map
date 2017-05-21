@@ -63,11 +63,12 @@ class GetGeoJson extends Command
                 array_push($newCoordinates,$newCoordinate);
             }
             $coordinates = json_encode($newCoordinates);
-            AddressGeojson::forceCreate([
+            $address = AddressGeojson::firstOrCreate([
                 'province' => $province,
                 'district' => $district,
-                'coordinates' => $coordinates,
             ]);
+            $address->coordinates = $coordinates;
+            $address->save();
         }
 
         $this->line(Carbon::now()->toDateTimeString());

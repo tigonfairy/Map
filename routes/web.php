@@ -17,12 +17,9 @@ Route::group(['middleware' => 'auth',
     'as' => 'Admin::'
 ],function() {
 
-    Route::get('/', function() {
-        return view('admin');
-    });
-    Route::get('admin', function() {
-        return view('admin');
-    });
+    Route::get('/', ['as' => 'dashboard', 'uses' => 'HomeController@dashboard']);
+    Route::get('/admin', ['as' => 'dashboard', 'uses' => 'HomeController@dashboard']);
+
 
     Route::group([
         'prefix' => 'users',

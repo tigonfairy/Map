@@ -1,8 +1,8 @@
+vendor
+.idea
+.env
 /public/storage
 /storage/*.key
-vendor
-.env
 /public/files
-.idea
 /vendor/*
 

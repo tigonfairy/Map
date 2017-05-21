@@ -17,18 +17,20 @@
         <!-- Main content -->
         <div class="content-wrapper">
             <div class="row">
-                <div class="col-md-6 col-md-offset-3">
+                <div class="col-md-4 col-md-offset-3">
                     <select id="province">
-                        <option value="">Chọn tỉnh</option>
+                        <option value=""> Chọn tỉnh </option>
                         @foreach($provinces as $provine)
                             <option value="{{ $provine }}">{{ $provine }}</option>
                         @endforeach
                     </select>
+                </div>
+                <div class="col-md-3">
                     <select id="district">
                         <option value="">Chọn huyện</option>
                     </select>
-                    <button id="search">Tìm kiếm</button>
                 </div>
+                <button id="search" class="btn green">Tìm kiếm</button>
             </div>
 
             <div class="panel panel-flat">
@@ -45,10 +47,13 @@
 @endsection
 
 @push('scripts')
+
 <script type="text/javascript">
     var map;
-    $(document).ready(function () {
 
+    $(document).ready(function () {
+        $('#province').select2();
+        $('#district').select2();
         $('#province').on('change', '', function (e) {
             var province = this.value;
             $.ajax({
@@ -93,7 +98,9 @@
                         zoom: 9
                     });
                     var path = coordinate;
-
+                    var infoWindow = new google.maps.InfoWindow({
+                        content: 'you clicked a polyline'
+                    });
                     polygon = map.drawPolygon({
                         paths: path,
                         strokeColor: '#333',
@@ -101,14 +108,11 @@
                         strokeWeight: 1,
                         fillColor: '#ffcccc',
                         fillOpacity: 0.6,
-                        mouseover: function () {
-//                            this.infowindow.setContent(contentString);
-//                            this.infowindow.open(map);
+                        mouseover: function(clickEvent) {
+                            var position = clickEvent.latLng;
 
-//                            this.setOptions({
-//                                fillOpacity: 1,
-//                                fillColor: '#333'
-//                            });
+                            infoWindow.setPosition(position);
+                            infoWindow.open(map.map);
                         }
                     });
                 },
