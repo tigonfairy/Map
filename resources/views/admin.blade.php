@@ -255,7 +255,7 @@
 <script src="/assets/pages/scripts/components-date-time-pickers.min.js" type="text/javascript"></script>
 <script src="/js/admin/ckeditor/ckeditor.js"></script>
 <script src="/assets/global/plugins/jquery-nestable/jquery.nestable.js" type="text/javascript"></script>
-<script type="text/javascript" src="//maps.google.com/maps/api/js?sensor=true"></script>
+<script type="text/javascript" src="//maps.google.com/maps/api/js?sensor=true&libraries=drawing"></script>
 <script type="text/javascript" src="https://hpneo.github.io/gmaps/gmaps.js"></script>
 <script type="text/javascript" src="https://hpneo.github.io/gmaps/prettify/prettify.js"></script>
 {{--<script src="/assets/pages/scripts/ui-nestable.min.js" type="text/javascript"></script>--}}
