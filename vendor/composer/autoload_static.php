@@ -4,24 +4,24 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit5cd5110cb3af32e7cb038427f4d8384b
+class ComposerStaticInitba74133d388ed2e9906a9a9c5e47962f
 {
     public static $files = array (
         '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
-        '667aeda72477189d0494fecd327c3641' => __DIR__ . '/..' . '/symfony/var-dumper/Resources/functions/dump.php',
         '1d1b89d124cc9cb8219922c9d5569199' => __DIR__ . '/..' . '/hamcrest/hamcrest-php/hamcrest/Hamcrest.php',
         'a0edc8309cc5e1d60e3047b5df6b7052' => __DIR__ . '/..' . '/guzzlehttp/psr7/src/functions_include.php',
+        '667aeda72477189d0494fecd327c3641' => __DIR__ . '/..' . '/symfony/var-dumper/Resources/functions/dump.php',
         'c964ee0ededf28c96ebd9db5099ef910' => __DIR__ . '/..' . '/guzzlehttp/promises/src/functions_include.php',
         'bd9634f2d41831496de0d3dfe4c94881' => __DIR__ . '/..' . '/symfony/polyfill-php56/bootstrap.php',
         '37a3dc5111fe8f707ab4c132ef1dbc62' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/functions_include.php',
-        '5255c38a0faeba867671b61dfda6d864' => __DIR__ . '/..' . '/paragonie/random_compat/lib/random.php',
         '2c102faa651ef8ea5874edb585946bce' => __DIR__ . '/..' . '/swiftmailer/swiftmailer/lib/swift_required.php',
+        '5255c38a0faeba867671b61dfda6d864' => __DIR__ . '/..' . '/paragonie/random_compat/lib/random.php',
         'ad155f8f1cf0d418fe49e248db8c661b' => __DIR__ . '/..' . '/react/promise/src/functions_include.php',
-        'f18cc91337d49233e5754e93f3ed9ec3' => __DIR__ . '/..' . '/laravelcollective/html/src/helpers.php',
         'e7223560d890eab89cda23685e711e2c' => __DIR__ . '/..' . '/psy/psysh/src/Psy/functions.php',
-        'e23faeee409e941dc9b4c80386209c39' => __DIR__ . '/..' . '/laracasts/flash/src/Laracasts/Flash/functions.php',
+        'f18cc91337d49233e5754e93f3ed9ec3' => __DIR__ . '/..' . '/laravelcollective/html/src/helpers.php',
         'f0906e6318348a765ffb6eb24e0d0938' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Foundation/helpers.php',
         '58571171fd5812e6e447dce228f52f4d' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Support/helpers.php',
+        'e23faeee409e941dc9b4c80386209c39' => __DIR__ . '/..' . '/laracasts/flash/src/Laracasts/Flash/functions.php',
         '4aef16791e4784f6e330876353bacb83' => __DIR__ . '/../..' . '/app/functions/functions.php',
     );
 
@@ -295,8 +295,8 @@ class ComposerStaticInit5cd5110cb3af32e7cb038427f4d8384b
         ),
         'Intervention\\Image\\' => 
         array (
-            0 => __DIR__ . '/..' . '/intervention/imagecache/src/Intervention/Image',
-            1 => __DIR__ . '/..' . '/intervention/image/src/Intervention/Image',
+            0 => __DIR__ . '/..' . '/intervention/image/src/Intervention/Image',
+            1 => __DIR__ . '/..' . '/intervention/imagecache/src/Intervention/Image',
         ),
         'Illuminate\\' => 
         array (
@@ -458,7 +458,9 @@ class ComposerStaticInit5cd5110cb3af32e7cb038427f4d8384b
     );
 
     public static $classMap = array (
+        'ChangeCoordinatesColumn' => __DIR__ . '/../..' . '/database/migrations/2017_05_18_154155_change_coordinates_column.php',
         'CreateAccountsTable' => __DIR__ . '/../..' . '/database/migrations/2016_07_06_025600_create_accounts_table.php',
+        'CreateAddressGeojsonTable' => __DIR__ . '/../..' . '/database/migrations/2017_05_18_152554_create_address_geojson_table.php',
         'CreateAgentsTable' => __DIR__ . '/../..' . '/database/migrations/2017_05_16_221039_create_agents_table.php',
         'CreateRolePermissionTable' => __DIR__ . '/../..' . '/database/migrations/2016_11_12_221433_create_role_permission_table.php',
         'CreateUsersTable' => __DIR__ . '/../..' . '/database/migrations/2014_10_12_000000_create_users_table.php',
@@ -1032,10 +1034,10 @@ class ComposerStaticInit5cd5110cb3af32e7cb038427f4d8384b
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit5cd5110cb3af32e7cb038427f4d8384b::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit5cd5110cb3af32e7cb038427f4d8384b::$prefixDirsPsr4;
-            $loader->prefixesPsr0 = ComposerStaticInit5cd5110cb3af32e7cb038427f4d8384b::$prefixesPsr0;
-            $loader->classMap = ComposerStaticInit5cd5110cb3af32e7cb038427f4d8384b::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInitba74133d388ed2e9906a9a9c5e47962f::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInitba74133d388ed2e9906a9a9c5e47962f::$prefixDirsPsr4;
+            $loader->prefixesPsr0 = ComposerStaticInitba74133d388ed2e9906a9a9c5e47962f::$prefixesPsr0;
+            $loader->classMap = ComposerStaticInitba74133d388ed2e9906a9a9c5e47962f::$classMap;
 
         }, null, ClassLoader::class);
     }

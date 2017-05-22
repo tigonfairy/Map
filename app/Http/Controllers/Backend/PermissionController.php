@@ -16,12 +16,7 @@ class PermissionController extends Controller
         if (auth()->user()->cannot('list-permission')) {
             abort(403);
         }
-        $permissions = Permission::orderBy('created_at');
-        if($request->input('search')){
-            $permissions = $permissions->where('id','like','%'.$request->input('search').'%');
-        }
-
-        $permissions = $permissions->paginate(15);
+        $permissions = Permission::orderBy('created_at')->get();
 
         return view('admin.permission.index',compact('permissions'));
     }

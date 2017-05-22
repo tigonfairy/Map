@@ -16,8 +16,10 @@ Route::group(['middleware' => 'auth',
     'namespace' => 'Backend',
     'as' => 'Admin::'
 ],function() {
+
     Route::get('/', ['as' => 'dashboard', 'uses' => 'HomeController@dashboard']);
     Route::get('/admin', ['as' => 'dashboard', 'uses' => 'HomeController@dashboard']);
+
 
     Route::group([
         'prefix' => 'users',
@@ -53,6 +55,15 @@ Route::group(['middleware' => 'auth',
         Route::get('/{id}/edit', ['as' => 'edit', 'uses' => 'RoleController@edit']);
         Route::match(['put', 'patch'], '/{id}', ['as' => 'update', 'uses' => 'RoleController@update']);
         Route::get('/{id}/delete', ['as' => 'delete', 'uses' => 'RoleController@delete']);
+    });
+
+    Route::group([
+        'prefix' => 'maps',
+        'as' => 'map@',
+    ], function () {
+        Route::get('/', ['as' => 'index', 'uses' => 'MapController@index']);
+        Route::post('province/districts',['as' => 'district', 'uses' => 'MapController@getDistricts']);
+        Route::post('province/district/coordinates',['as' => 'coordinates', 'uses' => 'MapController@getCoordinates']);
     });
 
 });
