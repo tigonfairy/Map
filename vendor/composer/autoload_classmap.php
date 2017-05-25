@@ -6,10 +6,9 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
-    'ChangeCoordinatesColumn' => $baseDir . '/database/migrations/2017_05_18_154155_change_coordinates_column.php',
-    'CreateAccountsTable' => $baseDir . '/database/migrations/2016_07_06_025600_create_accounts_table.php',
     'CreateAddressGeojsonTable' => $baseDir . '/database/migrations/2017_05_18_152554_create_address_geojson_table.php',
     'CreateAgentsTable' => $baseDir . '/database/migrations/2017_05_16_221039_create_agents_table.php',
+    'CreateAreasTable' => $baseDir . '/database/migrations/2017_05_25_213810_create_areas_table.php',
     'CreateRolePermissionTable' => $baseDir . '/database/migrations/2016_11_12_221433_create_role_permission_table.php',
     'CreateUsersTable' => $baseDir . '/database/migrations/2014_10_12_000000_create_users_table.php',
     'CretePermissionTable' => $baseDir . '/database/migrations/2016_11_12_221309_crete_permission_table.php',
