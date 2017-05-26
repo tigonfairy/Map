@@ -161,7 +161,7 @@
                     // Add a listener for the "drag" event.
                     google.maps.event.addListener(drawingManager, "overlaycomplete", function (event) {
                         overlayDragListener(event.overlay);
-                        $('#vertices').val(event.overlay.getPath().getArray());
+                        getPolygonCoords(event.overlay);
                     });
 
                 },
@@ -178,6 +178,15 @@
             google.maps.event.addListener(overlay.getPath(), 'insert_at', function(event){
                 $('#vertices').val(overlay.getPath().getArray());
             });
+        }
+
+        function getPolygonCoords(bermudaTriangle) {
+            var len = bermudaTriangle.getPath().getLength();
+            var test = [];
+            for (var i = 0; i < len; i++) {
+                test.push(bermudaTriangle.getPath().getAt(i).toUrlValue(5));
+            }
+            console.log(test);
         }
     });
 </script>
