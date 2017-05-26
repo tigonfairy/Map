@@ -50,7 +50,9 @@
 
 <script type="text/javascript">
     var map;
-
+    var drawingManager;
+    var shapes = [];
+    var patch = [];
     $(document).ready(function () {
         $('#province').select2();
         $('#district').select2();
@@ -95,7 +97,7 @@
                         lng: middle[1],
                         width: "100%",
                         height: '500px',
-                        zoom: 9
+                        zoom: 11,
                     });
                     var path = coordinate;
                     var infoWindow = new google.maps.InfoWindow({
@@ -115,12 +117,77 @@
                             infoWindow.open(map.map);
                         }
                     });
+
+                    var drawingManager = new google.maps.drawing.DrawingManager({
+                        drawingControl: true,
+                        drawingControlOptions: {
+                            position: google.maps.ControlPosition.TOP_CENTER,
+                            drawingModes: [
+                                google.maps.drawing.OverlayType.POLYGON,
+                            ],
+                            polygonOptions: {
+                                strokeColor: '#333',
+                                strokeOpacity: 0.5,
+                                strokeWeight: 1,
+                                fillColor: '#ffcccc',
+                                fillOpacity: 0.6,
+                                editable:true,
+                                draggable: true
+                            }
+                        }});
+                    drawingManager.setMap(map.map);
+
+                    // Add a listener for creating new shape event.
+                    google.maps.event.addListener(drawingManager, "overlaycomplete", function (event) {
+                        var newShape = event.overlay;
+                        newShape.type = event.type;
+                        shapes.push(newShape);
+                        if (drawingManager.getDrawingMode()) {
+                            drawingManager.setDrawingMode(null);
+                        }
+
+                    });
+
+// add a listener for the drawing mode change event, delete any existing polygons
+                    google.maps.event.addListener(drawingManager, "drawingmode_changed", function () {
+                        if (drawingManager.getDrawingMode() != null) {
+                            for (var i = 0; i < shapes.length; i++) {
+                                shapes[i].setMap(null);
+                            }
+                            shapes = [];
+                        }
+                    });
+
+                    // Add a listener for the "drag" event.
+                    google.maps.event.addListener(drawingManager, "overlaycomplete", function (event) {
+                        overlayDragListener(event.overlay);
+                        getPolygonCoords(event.overlay);
+                    });
+
                 },
                 error: function () {
 
                 }
             });
         });
+
+        function overlayDragListener(overlay) {
+            google.maps.event.addListener(overlay.getPath(), 'set_at', function(event){
+                $('#vertices').val(overlay.getPath().getArray());
+            });
+            google.maps.event.addListener(overlay.getPath(), 'insert_at', function(event){
+                $('#vertices').val(overlay.getPath().getArray());
+            });
+        }
+
+        function getPolygonCoords(bermudaTriangle) {
+            var len = bermudaTriangle.getPath().getLength();
+            var test = [];
+            for (var i = 0; i < len; i++) {
+                test.push(bermudaTriangle.getPath().getAt(i).toUrlValue(5));
+            }
+            console.log(test);
+        }
     });
 </script>
 
