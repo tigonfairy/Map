@@ -113,6 +113,7 @@ return array(
     'Collective\\Html\\HtmlServiceProvider' => $vendorDir . '/laravelcollective/html/src/HtmlServiceProvider.php',
     'CreateAddressGeojsonTable' => $baseDir . '/database/migrations/2017_05_18_152554_create_address_geojson_table.php',
     'CreateAgentsTable' => $baseDir . '/database/migrations/2017_05_16_221039_create_agents_table.php',
+    'CreateAreasTable' => $baseDir . '/database/migrations/2017_05_25_213810_create_areas_table.php',
     'CreateRolePermissionTable' => $baseDir . '/database/migrations/2016_11_12_221433_create_role_permission_table.php',
     'CreateUsersTable' => $baseDir . '/database/migrations/2014_10_12_000000_create_users_table.php',
     'CretePermissionTable' => $baseDir . '/database/migrations/2016_11_12_221309_crete_permission_table.php',

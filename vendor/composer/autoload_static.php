@@ -565,6 +565,7 @@ class ComposerStaticInitd83162a922f8ff0f8b49c9f514a2ebb6
         'Collective\\Html\\HtmlServiceProvider' => __DIR__ . '/..' . '/laravelcollective/html/src/HtmlServiceProvider.php',
         'CreateAddressGeojsonTable' => __DIR__ . '/../..' . '/database/migrations/2017_05_18_152554_create_address_geojson_table.php',
         'CreateAgentsTable' => __DIR__ . '/../..' . '/database/migrations/2017_05_16_221039_create_agents_table.php',
+        'CreateAreasTable' => __DIR__ . '/../..' . '/database/migrations/2017_05_25_213810_create_areas_table.php',
         'CreateRolePermissionTable' => __DIR__ . '/../..' . '/database/migrations/2016_11_12_221433_create_role_permission_table.php',
         'CreateUsersTable' => __DIR__ . '/../..' . '/database/migrations/2014_10_12_000000_create_users_table.php',
         'CretePermissionTable' => __DIR__ . '/../..' . '/database/migrations/2016_11_12_221309_crete_permission_table.php',
