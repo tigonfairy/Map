@@ -64,6 +64,8 @@ Route::group(['middleware' => 'auth',
         Route::get('/', ['as' => 'index', 'uses' => 'MapController@index']);
         Route::post('province/districts',['as' => 'district', 'uses' => 'MapController@getDistricts']);
         Route::post('province/district/coordinates',['as' => 'coordinates', 'uses' => 'MapController@getCoordinates']);
+        Route::get('/add-map', ['as' => 'addMap', 'uses' => 'MapController@addMap']);
+        Route::post('/add-map', ['as' => 'addMapPost', 'uses' => 'MapController@addMapPost']);
     });
 
 });

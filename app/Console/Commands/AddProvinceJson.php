@@ -61,16 +61,17 @@ class AddProvinceJson extends Command
                     array_push($newCoordinates, $newCoordinate);
                 }
                 $coordinates = json_encode($newCoordinates);
-                AddressGeojson::firstOrCreate([
-                    'province' => $province,
+                $slug = str_slug($province);
+                $address  = AddressGeojson::firstOrCreate([
+                    'slug' => $slug,
                     'coordinates' => $coordinates,
-                    'district' => 'All',
                 ]);
+                $address->name = $province;
+                $address->save();
             }
 
             $this->line(Carbon::now()->toDateTimeString());
         }catch (\Exception $ex){
-//            dd($ex->getTraceAsString());
 
         }
     }
