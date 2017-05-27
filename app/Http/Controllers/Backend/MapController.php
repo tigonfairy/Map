@@ -35,4 +35,11 @@ class MapController extends Controller
         return $coordinates;
     }
 
+    public function addMap(Request $request){
+        $locations = AddressGeojson::get();
+        return view('admin.map.addMap',compact('locations'));
+    }
+    public function addMapPost(Request $request){
+        dd($request->all());
+    }
 }

@@ -8,6 +8,6 @@ class AddressGeojson extends Model
 {
     protected $table = 'address_geojson';
     protected $fillable = [
-        'province','district','coordinates'
+        'name','slug','coordinates'
     ];
 }

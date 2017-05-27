@@ -63,11 +63,13 @@ class GetGeoJson extends Command
                 array_push($newCoordinates,$newCoordinate);
             }
             $coordinates = json_encode($newCoordinates);
+            $name = $district.','.$province;
+            $slug = str_slug($name);
             $address = AddressGeojson::firstOrCreate([
-                'province' => $province,
-                'district' => $district,
+                'slug' => $slug,
             ]);
             $address->coordinates = $coordinates;
+            $address->name = $name;
             $address->save();
         }
 
