@@ -21,6 +21,7 @@ class CreateUsersTable extends Migration
             $table->string('code')->unique();
             $table->integer('manager_id')->nullable();
             $table->string('position')->nullable();
+            $table->string('remember_token')->nullable();
             $table->timestamps();
         });
     }

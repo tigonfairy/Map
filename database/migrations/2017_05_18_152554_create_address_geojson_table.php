@@ -15,8 +15,8 @@ class CreateAddressGeojsonTable extends Migration
     {
         Schema::create('address_geojson', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('province');
-            $table->string('district');
+            $table->string('name');
+            $table->string('slug');
             $table->text('coordinates');
             $table->timestamps();
         });
