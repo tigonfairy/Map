@@ -29,7 +29,9 @@ class UserController extends Controller
 
         $roles = Role::all();
         $permission = Permission::all();
-        return view('admin.user.form',compact('roles','permission'));
+        $users = User::pluck('name', 'id')->all();
+
+        return view('admin.user.form',compact('roles','permission', 'users'));
     }
 
     public function store(Request $request)
@@ -39,6 +41,9 @@ class UserController extends Controller
         }
 
         $this->validate($request,[
+            'name' =>'required',
+            'code' =>'required',
+            'position' =>'required',
             'email' =>'required|email',
             'password' => 'required',
             'password_confirmation' => 'required|same:password'
@@ -78,10 +83,10 @@ class UserController extends Controller
         $user = User::findOrFail($id);
         $roles = Role::all();
         $userRoles = $user->roles->keyBy('id');
-        // ['id' => ['id' => '', 'name' => ''], ...]
         $userPermissions = $user->permissions->keyBy('id');
         $permission = Permission::all();
-        return view('admin.user.form', compact('user','roles', 'userRoles','permission','userPermissions'));
+        $users = User::pluck('name', 'id')->all();
+        return view('admin.user.form', compact('user','roles', 'userRoles', 'permission', 'userPermissions', 'users'));
     }
 
     public function update($id, Request $request)
@@ -91,6 +96,12 @@ class UserController extends Controller
         }
 
         $user = User::findOrFail($id);
+
+        $this->validate($request,[
+            'name' =>'required',
+            'code' =>'required',
+            'position' =>'required'
+        ]);
 
         $data = $request->all();
         if (!$request->input('password')) {
