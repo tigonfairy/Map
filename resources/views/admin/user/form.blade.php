@@ -37,17 +37,62 @@
                   <input type="hidden" name="_method" value="PUT">
                   @endif
                           <!---------- Name------------>
-                  {{--<div class="form-group {{ $errors->has('name') ? 'has-error has-feedback' : '' }}">--}}
-                    {{--<label for="name" class="control-label text-semibold">Tên</label>--}}
-                    {{--<i class="icon-question4 text-muted text-size-mini cursor-pointer js-help-icon" data-content="Tên của Doanh nghiệp"></i>--}}
-                    {{--<input type="text" id="name" name="name" class="form-control" value="{{ old('name') ?: @$user->name }}" />--}}
-                    {{--@if ($errors->has('name'))--}}
-                      {{--<div class="form-control-feedback">--}}
-                        {{--<i class="icon-notification2"></i>--}}
-                      {{--</div>--}}
-                      {{--<div class="help-block">{{ $errors->first('name') }}</div>--}}
-                    {{--@endif--}}
-                  {{--</div>--}}
+                  <div class="form-group {{ $errors->has('name') ? 'has-error has-feedback' : '' }}">
+                    <label for="name" class="control-label text-semibold">Họ và tên</label>
+                    <i class="icon-question4 text-muted text-size-mini cursor-pointer js-help-icon" data-content="Họ và tên"></i>
+                    <input type="text" id="name" name="name" class="form-control" value="{{ old('name') ?: @$user->name }}" />
+                    @if ($errors->has('name'))
+                      <div class="form-control-feedback">
+                        <i class="icon-notification2"></i>
+                      </div>
+                      <div class="help-block">{{ $errors->first('name') }}</div>
+                    @endif
+                  </div>
+
+                <!---------- Code------------>
+                <div class="form-group {{ $errors->has('code') ? 'has-error has-feedback' : '' }}">
+                  <label for="name" class="control-label text-semibold">Mã nhân viên</label>
+                  <i class="icon-question4 text-muted text-size-mini cursor-pointer js-help-icon" data-content="Mã nhân viên"></i>
+                  <input type="text" id="code" name="code" class="form-control" value="{{ old('code') ?: @$user->code }}" />
+                  @if ($errors->has('code'))
+                    <div class="form-control-feedback">
+                      <i class="icon-notification2"></i>
+                    </div>
+                    <div class="help-block">{{ $errors->first('code') }}</div>
+                  @endif
+                </div>
+
+                <!---------- Manager ID------------>
+                <div class="form-group {{ $errors->has('manager_id') ? 'has-error has-feedback' : '' }}">
+                  <label for="name" class="control-label text-semibold">Người Quản Lý</label>
+                  <i class="icon-question4 text-muted text-size-mini cursor-pointer js-help-icon" data-content="Người Quản Lý"></i>
+                  <select name="manager_id" class="form-control">
+                    <option value="">-- Chọn quản lý --</option>
+                    @foreach($users as $id => $name)
+                      <option value="{{ $id }}" {{ $id == @$user->manager_id ? "selected=selected" : ""}}>{{ $name }}</option>
+                    @endforeach
+                  </select>
+                  @if ($errors->has('code'))
+                    <div class="form-control-feedback">
+                      <i class="icon-notification2"></i>
+                    </div>
+                    <div class="help-block">{{ $errors->first('manager_id') }}</div>
+                  @endif
+                </div>
+
+                <!---------- Position ------------>
+                <div class="form-group {{ $errors->has('code') ? 'has-error has-feedback' : '' }}">
+                  <label for="name" class="control-label text-semibold">Vị trí</label>
+                  <i class="icon-question4 text-muted text-size-mini cursor-pointer js-help-icon" data-content="Vị trí"></i>
+                  <input type="text" id="position" name="position" class="form-control" value="{{ old('code') ?: @$user->position }}" />
+                  @if ($errors->has('code'))
+                    <div class="form-control-feedback">
+                      <i class="icon-notification2"></i>
+                    </div>
+                    <div class="help-block">{{ $errors->first('position') }}</div>
+                  @endif
+                </div>
+
                   <!------------------ Email--------------->
                   <div class="form-group {{ $errors->has('email') ? 'has-error has-feedback' : '' }}">
                     <label for="name" class="control-label text-semibold">Email</label>
