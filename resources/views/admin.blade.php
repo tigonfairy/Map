@@ -48,7 +48,6 @@
     <link href="/assets/global/plugins/select2/css/select2-bootstrap.min.css" rel="stylesheet" type="text/css"/>
     <link href="/assets/pages/css/blog.min.css" rel="stylesheet" type="text/css"/>
 
-
     <link href="/assets/global/plugins/jquery-file-upload/blueimp-gallery/blueimp-gallery.min.css" rel="stylesheet"
           type="text/css"/>
     <link href="/assets/global/plugins/jquery-file-upload/css/jquery.fileupload.css" rel="stylesheet" type="text/css"/>
@@ -64,6 +63,7 @@
     <link href="/assets/layouts/layout/css/layout.min.css" rel="stylesheet" type="text/css"/>
     <link href="/assets/layouts/layout/css/themes/darkblue.min.css" rel="stylesheet" type="text/css" id="style_color"/>
     <link href="/assets/layouts/layout/css/custom.min.css" rel="stylesheet" type="text/css"/>
+    <link href="/css/custom.css" rel="stylesheet" type="text/css"/>
 
     <!-- END THEME LAYOUT STYLES -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -116,7 +116,7 @@
                             <li>
                                 <a href="{{ url('/logout') }}"
                                    onclick="event.preventDefault();
-         document.getElementById('logout-form').submit();">
+                                 document.getElementById('logout-form').submit();">
                                     Đăng xuất
                                 </a>
                                 <form id="logout-form"
