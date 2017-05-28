@@ -14,10 +14,8 @@ class MapController extends Controller
         if (auth()->user()->cannot('map')) {
             abort(403);
         }
-
-        $provinces = AddressGeojson::groupBy('province')->pluck('province');
-
-        return view('admin.map.index',compact('provinces'));
+        $locations = AddressGeojson::all();
+        return view('admin.map.index',compact('locations'));
     }
 
     public function getDistricts(Request $request)
@@ -36,10 +34,32 @@ class MapController extends Controller
     }
 
     public function addMap(Request $request){
-        $locations = AddressGeojson::get();
-        return view('admin.map.addMap',compact('locations'));
+        return view('admin.map.addMap');
     }
     public function addMapPost(Request $request){
-        dd($request->all());
+        $this->validate($request,[
+           'name' => 'required',
+            'coordinates' => 'required'
+        ],[
+            'name.required' => 'Vui lòng nhập tên',
+            'coordinates.required' => 'Chưa vẽ vùng địa lý'
+        ]);
+
+        $data=$request->all();
+
+        $slug = str_slug($data['name']);
+        $count = AddressGeojson::where("slug",$slug)->count();
+        if($count > 0){
+            $slug = $slug.time();
+        }
+        $coordinates = json_decode($data['coordinates'],true);
+        $newCoordinates = [];
+        foreach ($coordinates as $coor){
+            $c = explode(",", $coor);
+            array_push($newCoordinates, $c);
+        }
+
+        $coordinates = json_encode($newCoordinates);
+        AddressGeojson::create(['name' => $data['name'],'slug' => $slug, 'coordinates' => $coordinates]);
     }
 }
