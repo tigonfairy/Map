@@ -17,34 +17,43 @@
         <!-- Main content -->
         <div class="content-wrapper">
             <div class="row">
-                <div class="col-md-4 col-md-offset-3">
-                    <select id="province">
-                        <option value=""> Chọn tỉnh </option>
-                        @foreach($provinces as $provine)
-                            <option value="{{ $provine }}">{{ $provine }}</option>
-                        @endforeach
-                    </select>
+                <div class="col-md-7">
+                    <div class="row">
+                        <select id="locations">
+                            <option value=""> Chọn vùng</option>
+                            @foreach($locations as $location)
+                                <option value="{{$location->coordinates}}">{{ $location->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="row">
+                        <div class="panel panel-flat">
+                            <div class="table-responsive">
+                                <div id="map"></div>
+                            </div>
+
+                        </div>
+                    </div>
+
                 </div>
-                <div class="col-md-3">
-                    <select id="district">
-                        <option value="">Chọn huyện</option>
-                    </select>
+                <div class="col-md-5">
+
                 </div>
-                <button id="search" class="btn green">Tìm kiếm</button>
             </div>
 
-            <div class="panel panel-flat">
-                <div class="table-responsive">
-                    <div id="map"></div>
-                </div>
 
-            </div>
         </div>
         <!-- /main content -->
     </div>
 
     <!-- /page container -->
 @endsection
+@push('scripts_foot')
+<script type="text/javascript"
+        src="//maps.google.com/maps/api/js??key=AIzaSyDUMRn1pnBk97Zay94WiBbMgdVlBh_vwYs&&sensor=true&libraries=drawing"></script>
+<script type="text/javascript" src="https://hpneo.github.io/gmaps/gmaps.js"></script>
+<script type="text/javascript" src="https://hpneo.github.io/gmaps/prettify/prettify.js"></script>
+@endpush
 
 @push('scripts')
 
@@ -54,140 +63,46 @@
     var shapes = [];
     var patch = [];
     $(document).ready(function () {
-        $('#province').select2();
-        $('#district').select2();
-        $('#province').on('change', '', function (e) {
-            var province = this.value;
-            $.ajax({
-                url: '{{ url('maps/province/districts') }}',
-                type: 'post',
-                data: {
-                    _token: '{{ csrf_token() }}',
-                    province: province
-                },
-                success: function (districts) {
-                    $("#district").html('');
-                    $.each(districts, function (key, district) {
-                        $("#district").append('<option value="' + district + '">' + district + '</option>')
-                    })
-                },
-                error: function () {
+        $('#locations').select2();
 
-                }
-            });
-        });
+        $('#locations').on('change', '', function (e) {
+            var coordinates = $(this).val();
 
-        $("#search").click(function () {
-            var province = $("#province").val();
-            var district = $("#district").val();
-            $.ajax({
-                url: '{{ url('maps/province/district/coordinates') }}',
-                type: 'post',
-                data: {
-                    _token: '{{ csrf_token() }}',
-                    province: province,
-                    district: district
-                },
-                success: function (coordinates) {
-                    var coordinate = JSON.parse(coordinates[0]);
-                    var middle = coordinate[Math.round((coordinate.length - 1) / 2)];
-                    map = new GMaps({
-                        div: '#map',
-                        lat: middle[0],
-                        lng: middle[1],
-                        width: "100%",
-                        height: '500px',
-                        zoom: 11,
-                    });
-                    var path = coordinate;
-                    var infoWindow = new google.maps.InfoWindow({
-                        content: 'you clicked a polyline'
-                    });
-                    polygon = map.drawPolygon({
-                        paths: path,
-                        strokeColor: '#333',
-                        strokeOpacity: 0.5,
-                        strokeWeight: 1,
-                        fillColor: '#ffcccc',
-                        fillOpacity: 0.6,
-                        mouseover: function(clickEvent) {
-                            var position = clickEvent.latLng;
-
-                            infoWindow.setPosition(position);
-                            infoWindow.open(map.map);
-                        }
-                    });
-
-                    var drawingManager = new google.maps.drawing.DrawingManager({
-                        drawingControl: true,
-                        drawingControlOptions: {
-                            position: google.maps.ControlPosition.TOP_CENTER,
-                            drawingModes: [
-                                google.maps.drawing.OverlayType.POLYGON,
-                            ],
-                            polygonOptions: {
-                                strokeColor: '#333',
-                                strokeOpacity: 0.5,
-                                strokeWeight: 1,
-                                fillColor: '#ffcccc',
-                                fillOpacity: 0.6,
-                                editable:true,
-                                draggable: true
-                            }
-                        }});
-                    drawingManager.setMap(map.map);
-
-                    // Add a listener for creating new shape event.
-                    google.maps.event.addListener(drawingManager, "overlaycomplete", function (event) {
-                        var newShape = event.overlay;
-                        newShape.type = event.type;
-                        shapes.push(newShape);
-                        if (drawingManager.getDrawingMode()) {
-                            drawingManager.setDrawingMode(null);
-                        }
-
-                    });
-
-// add a listener for the drawing mode change event, delete any existing polygons
-                    google.maps.event.addListener(drawingManager, "drawingmode_changed", function () {
-                        if (drawingManager.getDrawingMode() != null) {
-                            for (var i = 0; i < shapes.length; i++) {
-                                shapes[i].setMap(null);
-                            }
-                            shapes = [];
-                        }
-                    });
-
-                    // Add a listener for the "drag" event.
-                    google.maps.event.addListener(drawingManager, "overlaycomplete", function (event) {
-                        overlayDragListener(event.overlay);
-                        getPolygonCoords(event.overlay);
-                    });
-
-                },
-                error: function () {
-
-                }
-            });
-        });
-
-        function overlayDragListener(overlay) {
-            google.maps.event.addListener(overlay.getPath(), 'set_at', function(event){
-                $('#vertices').val(overlay.getPath().getArray());
-            });
-            google.maps.event.addListener(overlay.getPath(), 'insert_at', function(event){
-                $('#vertices').val(overlay.getPath().getArray());
-            });
-        }
-
-        function getPolygonCoords(bermudaTriangle) {
-            var len = bermudaTriangle.getPath().getLength();
-            var test = [];
-            for (var i = 0; i < len; i++) {
-                test.push(bermudaTriangle.getPath().getAt(i).toUrlValue(5));
+            var coordinate = JSON.parse(coordinates);
+            var bounds = new google.maps.LatLngBounds();
+            for (i = 0; i < coordinate.length; i++) {
+                var c = coordinate[i];
+                bounds.extend(new google.maps.LatLng(c[0], c[1]));
             }
-            console.log(test);
-        }
+            map = new GMaps({
+                div: '#map',
+                lat: bounds.getCenter().lat(),
+                lng:bounds.getCenter().lng(),
+                width: "100%",
+                height: '500px',
+                zoom: 8
+            });
+            var path = coordinate;
+            var infoWindow = new google.maps.InfoWindow({
+                content: 'you clicked a polyline'
+            });
+            polygon = map.drawPolygon({
+                paths: path,
+                strokeColor: '#333',
+                strokeOpacity: 0.5,
+                strokeWeight: 1,
+                fillColor: '#333',
+                fillOpacity: 0.6,
+                mouseover: function (clickEvent) {
+                    var position = clickEvent.latLng;
+
+                    infoWindow.setPosition(position);
+                    infoWindow.open(map.map);
+                }
+            });
+
+        });
+
     });
 </script>
 

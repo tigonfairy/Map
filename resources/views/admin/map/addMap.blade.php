@@ -1,5 +1,6 @@
 @extends('admin')
 @section('content')
+
     <!-- Page header -->
     <div class="page-header">
         <div class="page-header-content">
@@ -17,11 +18,17 @@
         <!-- Main content -->
         <div class="content-wrapper">
             <div class="row">
-                <div class="col-md-5">
+                <div class="col-md-7">
+
                     <form method="post" id="geocoding_form">
-                        <label class="col-md-3" for="address">Address:</label>
-                        <input type="text" id="address" name="address" class="form-control">
-                        <button type="submit" class="btn btn-info">Search</button>
+                        <div class="row">
+                            <div class="col-md-5">
+                                <input type="text" id="address" name="address" placeholder="Nhập vị trí" class="form-control">
+                            </div>
+                            <div class="col-md-4">
+                                <button type="submit" class="btn btn-info">Search</button>
+                            </div>
+                        </div>
                     </form>
                     <div class="panel panel-flat">
                         <div class="table-responsive">
@@ -30,14 +37,15 @@
 
                     </div>
                 </div>
-                <div class="col-md-7">
+                <div class="col-md-5">
                     <form action="{{route('Admin::map@addMapPost')}}" method="POST">
                         {{ csrf_field() }}
                     <div class="form-group">
                         <label class="col-md-3 control-label">Tên</label>
-                        <div class="col-md-4">
-                            <input type="text" class="form-control name" name="name" placeholder="Enter text">
+                        <div class="col-md-9">
+                            <input type="text" class="form-control name" name="name" placeholder="Nhập tên vùng địa lý">
                         </div>
+                        <input type="hidden" class="form-control " id="coordinates" name="coordinates" >
                     </div>
                         <button type="submit" class="btn btn-info">Tạo</button>
                     </form>
@@ -77,26 +85,22 @@
             zoom: 11
         });
 
-        map.addListener('click', function (e) {
-            console.log(11);
-            var ll = {lat: e.latLng.lat(), lng: e.latLng.lng()};
-
-            map.removeMarkers();
-            markers = [];
-            map.addMarker({
-                lat: ll.lat,
-                lng: ll.lng,
-                title: 'Lima',
-                click: function(e) {
-                    alert('You clicked in this marker');
-                }
-            });
-
-
-            console.log(ll);
-
-
-        });
+//        map.addListener('click', function (e) {
+//
+//            var ll = {lat: e.latLng.lat(), lng: e.latLng.lng()};
+//
+//            map.removeMarkers();
+//            markers = [];
+//            map.addMarker({
+//                lat: ll.lat,
+//                lng: ll.lng,
+//                title: 'Lima',
+//                click: function(e) {
+//                    alert('You clicked in this marker');
+//                }
+//            });
+//
+//        });
         $('#geocoding_form').submit(function(e){
             e.preventDefault();
             GMaps.geocode({
@@ -177,7 +181,7 @@
             for (var i = 0; i < len; i++) {
                 test.push(bermudaTriangle.getPath().getAt(i).toUrlValue(5));
             }
-            $('.name').val(JSON.stringify(test));
+            $('#coordinates').val(JSON.stringify(test));
         }
     });
 </script>
