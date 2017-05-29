@@ -40,27 +40,25 @@
             <li class="nav-item">
                 <a href="javascript:;" class="nav-link nav-toggle">
                     <i class="icon-user"></i>
-                    <span class="title">Quản lý Map</span>
+                    <span class="title">Map</span>
                     <span class="arrow"></span>
                 </a>
                 <ul class="sub-menu" >
                     <li class="nav-item  ">
                         <a href="{{route('Admin::map@index')}}" class="nav-link nav-toggle">
                             <i class="icon-settings"></i>
-                            <span class="title">Map</span>
+                            <span class="title">Quản lý Map</span>
                             <span class="arrow"></span>
                         </a>
                     </li>
-
                     <li class="nav-item  ">
                         <a href="{{route('Admin::map@addMap')}}" class="nav-link nav-toggle">
                             <i class="icon-settings"></i>
-                            <span class="title">Khoanh vùng </span>
+                            <span class="title">Thêm vùng</span>
                             <span class="arrow"></span>
                         </a>
                     </li>
                 </ul>
-
             </li>
 
             <li class="nav-item">
