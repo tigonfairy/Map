@@ -6,4 +6,6 @@ vendor
 /public/files
 /vendor/*
 vendor/*
+storage
+bootstrap
 
