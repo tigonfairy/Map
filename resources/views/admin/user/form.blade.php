@@ -72,7 +72,7 @@
                       <option value="{{ $id }}" {{ $id == @$user->manager_id ? "selected=selected" : ""}}>{{ $name }}</option>
                     @endforeach
                   </select>
-                  @if ($errors->has('code'))
+                  @if ($errors->has('manager_id'))
                     <div class="form-control-feedback">
                       <i class="icon-notification2"></i>
                     </div>
@@ -85,7 +85,7 @@
                   <label for="name" class="control-label text-semibold">Vị trí</label>
                   <i class="icon-question4 text-muted text-size-mini cursor-pointer js-help-icon" data-content="Vị trí"></i>
                   <input type="text" id="position" name="position" class="form-control" value="{{ old('code') ?: @$user->position }}" />
-                  @if ($errors->has('code'))
+                  @if ($errors->has('position'))
                     <div class="form-control-feedback">
                       <i class="icon-notification2"></i>
                     </div>
