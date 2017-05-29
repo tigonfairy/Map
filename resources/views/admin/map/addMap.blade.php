@@ -41,7 +41,7 @@
                     <form action="{{route('Admin::map@addMapPost')}}" method="POST">
                         {{ csrf_field() }}
                     <div class="form-group">
-                        <label class="col-md-3 control-label">Tên</label>
+                        <label class="col-md-3 control-label">Tên vùng địa lý</label>
                         <div class="col-md-9">
                             <input type="text" class="form-control name" name="name" placeholder="Nhập tên vùng địa lý">
                         </div>
