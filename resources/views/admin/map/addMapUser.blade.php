@@ -52,10 +52,10 @@
                                         <div class="form-group {{ $errors->has('place') ? 'has-error has-feedback' : '' }}">
                                             <label for="name" class="control-label text-semibold">Vùng quản lý</label>
                                             <i class="icon-question4 text-muted text-size-mini cursor-pointer js-help-icon" data-content="Vùng quản lý"></i>
-                                            <select name="place[]" class="places" multiple style="width:100%" onChange="getSelectedOptions(this)">
+                                            <select name="place[]" id="locations" class="places" multiple style="width:100%" >
                                                 <option value="">-- Chọn vùng quản lý --</option>
                                                 @foreach($places as $key => $value)
-                                                    <option data-coordinate="{{ $value->coordinates }}" value="{{  $value->id }}">{{ $value->name }}</option>
+                                                    <option data-coordinate="{{ $value->coordinates }}" id="{{$value->id}}" value="{{ $value->id }}">{{ $value->name }}</option>
                                                 @endforeach
                                             </select>
                                             @if ($errors->has('place'))
@@ -90,8 +90,8 @@
 @endsection
 @push('scripts_foot')
 <script type="text/javascript" src="//maps.google.com/maps/api/js??key=AIzaSyDUMRn1pnBk97Zay94WiBbMgdVlBh_vwYs&&sensor=true&libraries=drawing"></script>
-<script type="text/javascript" src="https://hpneo.github.io/gmaps/gmaps.js"></script>
-<script type="text/javascript" src="https://hpneo.github.io/gmaps/prettify/prettify.js"></script>
+<script type="text/javascript" src="/js/gmaps.js"></script>
+<script type="text/javascript" src="/js/prettify.js"></script>
 @endpush
 
 @push('scripts')
@@ -103,21 +103,14 @@
     var shapes = [];
     var patch = [];
     var markers = [];
+    var polygonArray = [];
     $(document).ready(function () {
+        Array.prototype.insert = function ( index, item ) {
+            this.splice( index, 0, item );
+        };
         $(".users").select2();
         var places = $(".places").select2({});
         var opts = [];
-
-//        $(places).change(function () {
-//            var selections = $(this).select2('data');
-//            $.each(selections, function (idx, obj) {
-//                if (!selected[obj.id]) {
-//                    selected[obj.id] = obj;
-//                    alert(obj);
-//                }
-//            })
-//        });
-
         map = new GMaps({
             div: '#map',
             lat: 21.0277644,
@@ -126,89 +119,52 @@
             height: '500px',
             zoom: 11
         });
-
-        $('#geocoding_form').submit(function(e){
-            e.preventDefault();
-            GMaps.geocode({
-                address: $('#address').val().trim(),
-                callback: function(results, status){
-                    if(status=='OK'){
-                        var latlng = results[0].geometry.location;
-                        map.setCenter(latlng.lat(), latlng.lng());
-                        map.addMarker({
-                            lat: latlng.lat(),
-                            lng: latlng.lng()
-                        });
-                    }
-                }
-            });
-        });
-            var drawingManager = new google.maps.drawing.DrawingManager({
-                drawingControl: true,
-                drawingControlOptions: {
-                    position: google.maps.ControlPosition.TOP_CENTER,
-                    drawingModes: [
-                        google.maps.drawing.OverlayType.POLYGON,
-                    ],
-                    polygonOptions: {
-                        strokeColor: '#333',
-                        strokeOpacity: 0.5,
-                        strokeWeight: 0.5,
-                        fillColor: '#ffcccc',
-                        fillOpacity: 0.6,
-                        editable:true,
-                        draggable: true
-                    }
-                }});
-            drawingManager.setMap(map.map);
-
-            // Add a listener for creating new shape event.
-            google.maps.event.addListener(drawingManager, "overlaycomplete", function (event) {
-                var newShape = event.overlay;
-                newShape.type = event.type;
-                shapes.push(newShape);
-                if (drawingManager.getDrawingMode()) {
-                    drawingManager.setDrawingMode(null);
+        $('#locations').on("select2:select", function (e) {
+            var id = e.params.data.element.attributes.getNamedItem('id').value;
+            var coordinates = e.params.data.element.attributes.getNamedItem('data-coordinate').value;
+            var coordinate = JSON.parse(coordinates);
+            if(coordinate){
+                var bounds = new google.maps.LatLngBounds();
+                for (i = 0; i < coordinate.length; i++) {
+                    var c = coordinate[i];
+                    bounds.extend(new google.maps.LatLng(c[0], c[1]));
                 }
 
-            });
+                var path = coordinate;
+                var infoWindow = new google.maps.InfoWindow({
+                    content: 'you clicked a polyline'
+                });
+                polygon = map.drawPolygon({
+                    paths: path,
+                    strokeColor: '#333',
+                    strokeOpacity: 0.5,
+                    strokeWeight: 1,
+                    fillColor: '#333',
+                    fillOpacity: 0.6,
+                    mouseover: function (clickEvent) {
+                        var position = clickEvent.latLng;
 
-// add a listener for the drawing mode change event, delete any existing polygons
-            google.maps.event.addListener(drawingManager, "drawingmode_changed", function () {
-                if (drawingManager.getDrawingMode() != null) {
-                    for (var i = 0; i < shapes.length; i++) {
-                        shapes[i].setMap(null);
+                        infoWindow.setPosition(position);
+                        infoWindow.open(map.map);
                     }
-                    shapes = [];
-                }
-            });
-
-            // Add a listener for the "drag" event.
-            google.maps.event.addListener(drawingManager, "overlaycomplete", function (event) {
-                overlayDragListener(event.overlay);
-                getPolygonCoords(event.overlay);
-            });
-
-//        });
-
-
-        function overlayDragListener(overlay) {
-            google.maps.event.addListener(overlay.getPath(), 'set_at', function(event){
-                $('#vertices').val(overlay.getPath().getArray());
-            });
-            google.maps.event.addListener(overlay.getPath(), 'insert_at', function(event){
-                $('#vertices').val(overlay.getPath().getArray());
-            });
-        }
-
-        function getPolygonCoords(bermudaTriangle) {
-            var len = bermudaTriangle.getPath().getLength();
-            var test = [];
-            for (var i = 0; i < len; i++) {
-                test.push(bermudaTriangle.getPath().getAt(i).toUrlValue(5));
+                });
+                console.log(id);
+                polygonArray[id] = polygon;
+                console.log( polygonArray[id]);
             }
-            $('#coordinates').val(JSON.stringify(test));
-        }
+
+        });
+        $('#locations').on("select2:unselect", function (e) {
+            var id = e.params.data.element.attributes.getNamedItem('id').value;
+            var coordinates = e.params.data.element.attributes.getNamedItem('data-coordinate').value;
+            var coordinate = JSON.parse(coordinates);
+            if (coordinate) {
+              map.removePolygon(polygonArray);
+            }
+
+        });
+//        removePolygon
+
     });
 </script>
 @endpush
