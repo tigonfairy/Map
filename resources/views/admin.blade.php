@@ -86,9 +86,7 @@
         <div class="page-header-inner ">
             <!-- BEGIN LOGO -->
             <div class="page-logo">
-                <a href="{{ url('/') }}">
-                    <img src="/assets/images/logo.png" alt="logo" class="logo-default"
-                         style="width: 90px; margin-top: 10px"/> </a>
+
                 <div class="menu-toggler sidebar-toggler">
                     <span></span>
                 </div>

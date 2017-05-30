@@ -47,7 +47,7 @@
     <div class="col-md-6 login-container bs-reset">
 
       <div class="login-content">
-        <h1>ICHECK CRAWLER LOGIN</h1>
+        <h1>LOGIN</h1>
         <p>Vui lòng đăng nhập vào hệ thống</p>
         <form class="form-horizontal" role="form" method="POST" action="{{ url('/login') }}">
           {{ csrf_field() }}
