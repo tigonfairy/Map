@@ -55,7 +55,7 @@
                                             <select name="place[]" class="places" multiple style="width:100%" onChange="getSelectedOptions(this)">
                                                 <option value="">-- Chọn vùng quản lý --</option>
                                                 @foreach($places as $key => $value)
-                                                    <option data-coordinate="{{ $value->coordinates }}" value="{{  $value->id }}">{{ $value->name }}</option>
+                                                    <option VALUE="{{ $value->id }}" value="{{ $value->coordinates }}">{{ $value->name }}</option>
                                                 @endforeach
                                             </select>
                                             @if ($errors->has('place'))
@@ -97,6 +97,21 @@
 @push('scripts')
 
 <script type="text/javascript">
+
+    function getSelectedOptions(sel) {
+        var opts = [], opt;
+        var len = sel.options.length;
+        for (var i = 0; i < len; i++) {
+            opt = sel.options[i];
+
+            if (opt.selected) {
+               // opts.push(opt);
+                console.log(opt);
+            }
+        }
+
+        return opts;
+    }
 
     var map;
     var drawingManager;
