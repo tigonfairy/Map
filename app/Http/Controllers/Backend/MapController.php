@@ -82,8 +82,10 @@ class MapController extends Controller
         ]);
 
         $data=$request->all();
+        foreach($data['place'] as $id){
+            UserAddress::create(['user_id' => $data['user_id'], 'place' => $id]);
+        }
 
-        UserAddress::create(['user_id' => $data['user_id'], 'place' => json_encode($data['place'])]);
+        return redirect()->back();
     }
-
 }
