@@ -458,6 +458,7 @@ class ComposerStaticInitd83162a922f8ff0f8b49c9f514a2ebb6
     );
 
     public static $classMap = array (
+        'AddUserAddressTable' => __DIR__ . '/../..' . '/database/migrations/2017_05_30_001449_add_user_address_table.php',
         'App\\Account' => __DIR__ . '/../..' . '/app/Account.php',
         'App\\Console\\Commands\\AddAdmin' => __DIR__ . '/../..' . '/app/Console/Commands/AddAdmin.php',
         'App\\Console\\Commands\\AddProvinceJson' => __DIR__ . '/../..' . '/app/Console/Commands/AddProvinceJson.php',
@@ -498,6 +499,7 @@ class ComposerStaticInitd83162a922f8ff0f8b49c9f514a2ebb6
         'App\\Models\\Role' => __DIR__ . '/../..' . '/app/Models/Role.php',
         'App\\Models\\RolePermission' => __DIR__ . '/../..' . '/app/Models/RolePermission.php',
         'App\\Models\\User' => __DIR__ . '/../..' . '/app/Models/User.php',
+        'App\\Models\\UserAddress' => __DIR__ . '/../..' . '/app/Models/UserAddress.php',
         'App\\Models\\UserPermission' => __DIR__ . '/../..' . '/app/Models/UserPermission.php',
         'App\\Models\\UserRole' => __DIR__ . '/../..' . '/app/Models/UserRole.php',
         'App\\Providers\\AppServiceProvider' => __DIR__ . '/../..' . '/app/Providers/AppServiceProvider.php',

@@ -6,6 +6,7 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'AddUserAddressTable' => $baseDir . '/database/migrations/2017_05_30_001449_add_user_address_table.php',
     'App\\Account' => $baseDir . '/app/Account.php',
     'App\\Console\\Commands\\AddAdmin' => $baseDir . '/app/Console/Commands/AddAdmin.php',
     'App\\Console\\Commands\\AddProvinceJson' => $baseDir . '/app/Console/Commands/AddProvinceJson.php',
@@ -46,6 +47,7 @@ return array(
     'App\\Models\\Role' => $baseDir . '/app/Models/Role.php',
     'App\\Models\\RolePermission' => $baseDir . '/app/Models/RolePermission.php',
     'App\\Models\\User' => $baseDir . '/app/Models/User.php',
+    'App\\Models\\UserAddress' => $baseDir . '/app/Models/UserAddress.php',
     'App\\Models\\UserPermission' => $baseDir . '/app/Models/UserPermission.php',
     'App\\Models\\UserRole' => $baseDir . '/app/Models/UserRole.php',
     'App\\Providers\\AppServiceProvider' => $baseDir . '/app/Providers/AppServiceProvider.php',

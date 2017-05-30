@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Backend;
 
+use App\User;
+use App\Models\UserAddress;
 use Illuminate\Http\Request;
 use App\Models\AddressGeojson;
 use App\Http\Controllers\Controller;
@@ -33,9 +35,10 @@ class MapController extends Controller
         return $coordinates;
     }
 
-    public function addMap(Request $request){
+    public function addMap(){
         return view('admin.map.addMap');
     }
+
     public function addMapPost(Request $request){
         $this->validate($request,[
            'name' => 'required',
@@ -62,4 +65,25 @@ class MapController extends Controller
         $coordinates = json_encode($newCoordinates);
         AddressGeojson::create(['name' => $data['name'],'slug' => $slug, 'coordinates' => $coordinates]);
     }
+
+    public function addMapUser(){
+        $users = User::all();
+        $places = AddressGeojson::all();
+        return view('admin.map.addMapUser',compact('users', 'places'));
+    }
+
+    public function addMapUserPost(Request $request){
+        $this->validate($request,[
+            'user_id' => 'required',
+            'place' => 'required'
+        ],[
+            'user_id.required' => 'Vui lòng chọn nhân viên quản lý',
+            'place.required' => 'Vui lòng chọn vùng quản lý'
+        ]);
+
+        $data=$request->all();
+
+        UserAddress::create(['user_id' => $data['user_id'], 'place' => json_encode($data['place'])]);
+    }
+
 }
