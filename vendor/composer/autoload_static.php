@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInitf5c550d1b6b81b1db5e11f4eca6d2286
+class ComposerStaticInitd83162a922f8ff0f8b49c9f514a2ebb6
 {
     public static $files = array (
         '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
@@ -458,6 +458,7 @@ class ComposerStaticInitf5c550d1b6b81b1db5e11f4eca6d2286
     );
 
     public static $classMap = array (
+        'AddUserAddressTable' => __DIR__ . '/../..' . '/database/migrations/2017_05_30_001449_add_user_address_table.php',
         'App\\Account' => __DIR__ . '/../..' . '/app/Account.php',
         'App\\Console\\Commands\\AddAdmin' => __DIR__ . '/../..' . '/app/Console/Commands/AddAdmin.php',
         'App\\Console\\Commands\\AddProvinceJson' => __DIR__ . '/../..' . '/app/Console/Commands/AddProvinceJson.php',
@@ -498,6 +499,7 @@ class ComposerStaticInitf5c550d1b6b81b1db5e11f4eca6d2286
         'App\\Models\\Role' => __DIR__ . '/../..' . '/app/Models/Role.php',
         'App\\Models\\RolePermission' => __DIR__ . '/../..' . '/app/Models/RolePermission.php',
         'App\\Models\\User' => __DIR__ . '/../..' . '/app/Models/User.php',
+        'App\\Models\\UserAddress' => __DIR__ . '/../..' . '/app/Models/UserAddress.php',
         'App\\Models\\UserPermission' => __DIR__ . '/../..' . '/app/Models/UserPermission.php',
         'App\\Models\\UserRole' => __DIR__ . '/../..' . '/app/Models/UserRole.php',
         'App\\Providers\\AppServiceProvider' => __DIR__ . '/../..' . '/app/Providers/AppServiceProvider.php',
@@ -4786,10 +4788,10 @@ class ComposerStaticInitf5c550d1b6b81b1db5e11f4eca6d2286
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInitf5c550d1b6b81b1db5e11f4eca6d2286::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInitf5c550d1b6b81b1db5e11f4eca6d2286::$prefixDirsPsr4;
-            $loader->prefixesPsr0 = ComposerStaticInitf5c550d1b6b81b1db5e11f4eca6d2286::$prefixesPsr0;
-            $loader->classMap = ComposerStaticInitf5c550d1b6b81b1db5e11f4eca6d2286::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInitd83162a922f8ff0f8b49c9f514a2ebb6::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInitd83162a922f8ff0f8b49c9f514a2ebb6::$prefixDirsPsr4;
+            $loader->prefixesPsr0 = ComposerStaticInitd83162a922f8ff0f8b49c9f514a2ebb6::$prefixesPsr0;
+            $loader->classMap = ComposerStaticInitd83162a922f8ff0f8b49c9f514a2ebb6::$classMap;
 
         }, null, ClassLoader::class);
     }
