@@ -89,7 +89,8 @@
     <!-- /page container -->
 @endsection
 @push('scripts_foot')
-<script type="text/javascript" src="//maps.google.com/maps/api/js??key=AIzaSyDUMRn1pnBk97Zay94WiBbMgdVlBh_vwYs&&sensor=true&libraries=drawing"></script>
+
+<script type="text/javascript" src="https://maps.google.com/maps/api/js?key=AIzaSyDUMRn1pnBk97Zay94WiBbMgdVlBh_vwYs&libraries=drawing"></script>
 <script type="text/javascript" src="/js/gmaps.js"></script>
 <script type="text/javascript" src="/js/prettify.js"></script>
 @endpush
@@ -129,19 +130,20 @@
                     bounds.extend(new google.maps.LatLng(c[0], c[1]));
                 }
                 var path = coordinate;
+
+
+//                map = new GMaps({
+//                    div: '#map',
+//                    lat: bounds.getCenter().lat(),
+//                    lng:bounds.getCenter().lng(),
+//                    width: "100%",
+//                    height: '500px',
+//                    zoom: 11
+//                });
+                map.setCenter(bounds.getCenter().lat(),bounds.getCenter().lng());
                 var infoWindow = new google.maps.InfoWindow({
                     content: 'you clicked a polyline'
                 });
-
-                map = new GMaps({
-                    div: '#map',
-                    lat: bounds.getCenter().lat(),
-                    lng:bounds.getCenter().lng(),
-                    width: "100%",
-                    height: '500px',
-                    zoom: 11
-                });
-
                 polygon = map.drawPolygon({
                     paths: path,
                     strokeColor: '#333',
@@ -153,6 +155,11 @@
                         var position = clickEvent.latLng;
                         infoWindow.setPosition(position);
                         infoWindow.open(map.map);
+                    },
+                    mouseout:function(clickEvent){
+                        if (infoWindow) {
+                            infoWindow.close();
+                        }
                     }
                 });
 
