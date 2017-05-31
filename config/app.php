@@ -12,7 +12,7 @@ return [
     | any other location as required by the application or its packages.
     */
 
-    'name' => 'ICHECK',
+    'name' => 'MAP',
 
     /*
     |--------------------------------------------------------------------------
@@ -78,6 +78,10 @@ return [
     */
 
     'locale' => 'en',
+
+    'locales' => ['en' => 'English', 'vn' => 'Vietnamese'],
+
+    'skip_locales' => ['auth'],
 
     /*
     |--------------------------------------------------------------------------
