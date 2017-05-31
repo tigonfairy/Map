@@ -23,22 +23,12 @@ class Language  {
     */
     public function handle($request, Closure $next)
     {
-        // Make sure the current local exists
-        $locale = $request->segment(1);
-        // If the locale is added to to skip_locales array continue without locale
-        if (in_array($locale, $this->app->config->get('app.skip_locales'))) {
-            return $next($request);
-        } else {
-            // If the locale does not exist in the locales array continue with the fallback_locale
-            if (! array_key_exists($locale, $this->app->config->get('app.locales'))) {
-                $segments = $request->segments();
-                array_unshift($segments, $this->app->config->get('app.fallback_locale'));
-                // $segments[0] = $this->app->config->get('app.fallback_locale');
-                return $this->redirector->to(implode('/', $segments));
-            }
+        $raw_locale = \Session::get('locale');
+        if (in_array($raw_locale, \Config::get('app.locales'))) {
+            $locale = $raw_locale;
         }
-        $this->app->setLocale($locale);
-
+        else $locale = \Config::get('app.locale');
+        \App::setLocale($locale);
         return $next($request);
     }
 

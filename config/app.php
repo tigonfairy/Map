@@ -81,7 +81,7 @@ return [
 
     'locales' => ['en' => 'English', 'vn' => 'Vietnamese'],
 
-    'skip_locales' => ['auth'],
+    'skip_locales' => ['auth',''],
 
     /*
     |--------------------------------------------------------------------------

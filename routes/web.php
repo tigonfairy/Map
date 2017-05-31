@@ -10,8 +10,15 @@
 | to using a Closure or controller method. Build something great!
 |
 */
+Route::get('setlocale/{locale}', function ($locale) {
+    if (in_array($locale, \Config::get('app.locales'))) {
+        Session::put('locale', $locale);
+    }
+    return redirect()->back();
+});
 
 Auth::routes();
+
 Route::group(['middleware' => 'auth',
     'namespace' => 'Backend',
     'as' => 'Admin::'

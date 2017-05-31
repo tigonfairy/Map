@@ -38,7 +38,7 @@ class RouteServiceProvider extends ServiceProvider
      */
     public function map(Request $request)
     {
-        $locale = $request->segment(1);
+        $locale = \Session::get('locale');
         if($locale) {
             $this->app->setLocale($locale);
             $this->prefix = $locale;
