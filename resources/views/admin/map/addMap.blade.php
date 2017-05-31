@@ -63,8 +63,8 @@
 @endsection
 @push('scripts_foot')
 <script type="text/javascript" src="//maps.google.com/maps/api/js??key=AIzaSyDUMRn1pnBk97Zay94WiBbMgdVlBh_vwYs&&sensor=true&libraries=drawing"></script>
-<script type="text/javascript" src="https://hpneo.github.io/gmaps/gmaps.js"></script>
-<script type="text/javascript" src="https://hpneo.github.io/gmaps/prettify/prettify.js"></script>
+<script type="text/javascript" src="/js/gmaps.js"></script>
+<script type="text/javascript" src="/js/prettify.js"></script>
 @endpush
 
 @push('scripts')
