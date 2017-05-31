@@ -61,9 +61,9 @@
                     </li>
 
                     <li class="nav-item  ">
-                        <a href="{{route('Admin::map@addMapUser')}}" class="nav-link nav-toggle">
+                        <a href="{{route('Admin::map@listMapUser')}}" class="nav-link nav-toggle">
                             <i class="icon-settings"></i>
-                            <span class="title">Thêm vùng theo người quản lý</span>
+                            <span class="title">Danh sách vùng kinh doanh</span>
                             <span class="arrow"></span>
                         </a>
                     </li>
