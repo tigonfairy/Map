@@ -22,21 +22,6 @@ class MapController extends Controller
         return view('admin.map.index',compact('locations'));
     }
 
-    public function getDistricts(Request $request)
-    {
-        $province = $request->input('province');
-        $district = AddressGeojson::where('province',$province)->pluck('district');
-        return $district;
-    }
-
-    public function getCoordinates(Request $request)
-    {
-        $province = $request->input('province');
-        $district = $request->input('district');
-        $coordinates = AddressGeojson::where('province',$province)->where('district',$district)->pluck('coordinates');
-        return $coordinates;
-    }
-
     public function addMap(){
         return view('admin.map.addMap');
     }
@@ -49,9 +34,7 @@ class MapController extends Controller
             'name.required' => 'Vui lòng nhập tên',
             'coordinates.required' => 'Chưa vẽ vùng địa lý'
         ]);
-
         $data=$request->all();
-
         $slug = str_slug($data['name']);
         $count = AddressGeojson::where("slug",$slug)->count();
         if($count > 0){
@@ -63,13 +46,22 @@ class MapController extends Controller
             $c = explode(",", $coor);
             array_push($newCoordinates, $c);
         }
-
         $coordinates = json_encode($newCoordinates);
         AddressGeojson::create(['name' => $data['name'],'slug' => $slug, 'coordinates' => $coordinates]);
     }
     public function listMapUser(Request $request){
-        $areas = Area::paginate(20);
+        $areas = Area::select('*');
+        if($request->input('q')){
+            $key = $request->input('q');
+            $areas = $areas->where('name','like','%'.$key.'%');
+        }
+        $areas = $areas->paginate(10);
         return view('admin.map.listMapUser',compact('areas'));
+    }
+    public function mapUserDetail(Request $request,$id){
+        $area = Area::findOrFail($id);
+        $locations = $area->address;
+        return view('admin.map.mapUserDetail',compact('area','locations'));
     }
     public function addMapUser(){
         $users = User::all();
@@ -89,6 +81,6 @@ class MapController extends Controller
         if($data['place']){
             $area->address()->sync($data['place']);
         }
-        return redirect()->back();
+        return redirect()->route('Admin::map@listMapUser')->with('success','Tạo vùng kinh doanh thành công');
     }
 }

@@ -73,6 +73,7 @@ Route::group(['middleware' => 'auth',
         Route::post('/add-map', ['as' => 'addMapPost', 'uses' => 'MapController@addMapPost']);
 
         Route::get('/list-map-user',[ 'as' => 'listMapUser','uses' => 'MapController@listMapUser']);
+        Route::get('/map-user-detail/{id}',[ 'as' => 'mapUserDetail','uses' => 'MapController@mapUserDetail']);
         Route::get('/add-map-user', ['as' => 'addMapUser', 'uses' => 'MapController@addMapUser']);
         Route::post('/add-map-user', ['as' => 'addMapUserPost', 'uses' => 'MapController@addMapUserPost']);
     });

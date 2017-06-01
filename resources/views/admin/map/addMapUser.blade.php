@@ -150,10 +150,6 @@
 
 <script type="text/javascript">
     var map;
-    var drawingManager;
-    var shapes = [];
-    var patch = [];
-    var markers = [];
     var polygonArray = [];
     $(document).ready(function () {
 
@@ -172,13 +168,13 @@
                     return queryParameters;
                 },
                 processResults: function(data, page) {
-                    console.log(data);
                     return {
                         results: $.map(data, function (item) {
                             return {
                                 text: item.name,
                                 slug: item.slug,
                                 id: item.id,
+                                coordinates:item.coordinates
                             }
                         })
                     };
@@ -191,26 +187,23 @@
         });
 
 
-
         $(".users").select2();
-
         Array.prototype.insert = function (index, item) {
             this.splice(index, 0, item);
         };
 
-
         var opts = [];
-//        map = new GMaps({
-//            div: '#map',
-//            lat: 21.0277644,
-//            lng: 105.83415979999995,
-//            width: "100%",
-//            height: '500px',
-//            zoom: 11
-//        });
+        map = new GMaps({
+            div: '#map',
+            lat: 21.0277644,
+            lng: 105.83415979999995,
+            width: "100%",
+            height: '500px',
+            zoom: 11
+        });
         $('#locations').on("select2:select", function (e) {
-            var id = e.params.data.element.attributes.getNamedItem('id').value;
-            var coordinates = e.params.data.element.attributes.getNamedItem('data-coordinate').value;
+            var id = e.params.data.id;
+            var coordinates = e.params.data.coordinates;
             var coordinate = JSON.parse(coordinates);
             if (coordinate) {
                 var bounds = new google.maps.LatLngBounds();
@@ -246,8 +239,8 @@
             }
         });
         $('#locations').on("select2:unselect", function (e) {
-            var id = e.params.data.element.attributes.getNamedItem('id').value;
-            var coordinates = e.params.data.element.attributes.getNamedItem('data-coordinate').value;
+            var id = e.params.data.id;
+            var coordinates = e.params.data.coordinates;
             var coordinate = JSON.parse(coordinates);
             if (coordinate) {
                 map.removePolygon(polygonArray[id]);
