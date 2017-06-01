@@ -77,4 +77,18 @@ Route::group(['middleware' => 'auth',
         Route::post('/add-map-user', ['as' => 'addMapUserPost', 'uses' => 'MapController@addMapUserPost']);
     });
 
+    Route::group([
+        'prefix' => 'apis',
+        'as' => 'Api::',
+    ], function () {
+        Route::group([
+            'prefix' => 'area',
+            'as' => 'area@',
+        ], function () {
+            Route::get('/get-list-areas', ['as' => 'getListAreas', 'uses' => 'ApiController@getListAreas']);
+        });
+
+
+    });
+
 });
