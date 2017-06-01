@@ -10,10 +10,8 @@
 | to using a Closure or controller method. Build something great!
 |
 */
-Route::get('setlocale/{locale}', function ($locale) {
-    if (in_array($locale, \Config::get('app.locales'))) {
-        Session::put('locale', $locale);
-    }
+Route::get('language/{locale}', function ($locale) {
+    Session::put('locale', $locale);
     return redirect()->back();
 });
 
@@ -24,6 +22,10 @@ Route::group(['middleware' => 'auth',
     'as' => 'Admin::'
 ],function() {
 
+    if (Session::has('locale')) {
+        App::setLocale(Session::get('locale'));
+    }
+
     Route::get('/', ['as' => 'dashboard', 'uses' => 'HomeController@dashboard']);
     Route::get('/admin', ['as' => 'dashboard', 'uses' => 'HomeController@dashboard']);
 
@@ -32,6 +34,7 @@ Route::group(['middleware' => 'auth',
         'prefix' => 'users',
         'as' => 'user@',
     ], function () {
+        Route::get('/datatables', ['as' => 'datatables', 'uses' => 'UserController@getDatatables']);
         Route::get('/', ['as' => 'index', 'uses' => 'UserController@index']);
         Route::get('/add', ['as' => 'add', 'uses' => 'UserController@add']);
         Route::post('/store', ['as' => 'store', 'uses' => 'UserController@store']);

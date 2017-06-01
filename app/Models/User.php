@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-
+use Datatables;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+
 class User extends Authenticatable
 {
 //    use Authenticatable;
@@ -14,7 +15,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'email', 'permission_id', 'remember_token', 'password','code', 'name','manager_id','position'
+        'email', 'permission_id', 'remember_token', 'password', 'code', 'name', 'manager_id', 'position'
     ];
 
     /**
@@ -37,4 +38,21 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Permission::class, 'user_permissions')->withPivot('value');
     }
+
+    public static function getDatatables()
+    {
+        $model = static::select([
+            'id', 'email', 'created_at'
+        ])->with('roles');
+
+        return Datatables::eloquent($model)
+            ->filter(function ($query) {
+            })
+            ->editColumn('group', function ($model) {
+                return $model->roles ? $model->roles->first()['name'] : '';
+            })
+            ->addColumn('action', 'admin.user.datatables.action')
+            ->make(true);
+    }
+
 }

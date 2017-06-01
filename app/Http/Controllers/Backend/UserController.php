@@ -141,5 +141,11 @@ class UserController extends Controller
         return redirect()->route('Admin::user@index')->with('success', 'Đã xoá thành công');
     }
 
+    public function getDatatables()
+    {
+        return User::getDatatables();
+    }
+
+
 
 }
