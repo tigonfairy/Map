@@ -23,12 +23,7 @@
     <div class="content-wrapper">
       <div class="row">
         <div class="col-md-offset-2 col-md-8">
-          @if (session('success'))
-            <div class="alert bg-success alert-styled-left">
-              <button type="button" class="close" data-dismiss="alert"><span>×</span><span class="sr-only">Close</span></button>
-              {{ session('success') }}
-            </div>
-          @endif
+          @include('admin.flash')
           <div class="panel panel-flat">
             <div class="panel-body">
               <form method="POST" action="{{ isset($user) ? route('Admin::user@update', [$user->id] ): route('Admin::user@store') }}">
