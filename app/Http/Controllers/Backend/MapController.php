@@ -73,8 +73,7 @@ class MapController extends Controller
     }
     public function addMapUser(){
         $users = User::all();
-        $places = AddressGeojson::all();
-        return view('admin.map.addMapUser',compact('users', 'places'));
+        return view('admin.map.addMapUser',compact('users'));
     }
 
     public function addMapUserPost(Request $request){

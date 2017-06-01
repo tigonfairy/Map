@@ -67,11 +67,11 @@
                                     <i class="icon-question4 text-muted text-size-mini cursor-pointer js-help-icon"
                                        data-content="Vùng quản lý"></i>
                                     <select name="place[]" id="locations" class="places" multiple style="width:100%">
-                                        <option value="">-- Chọn vùng quản lý --</option>
-                                        @foreach($places as $key => $value)
-                                            <option data-coordinate="{{ $value->coordinates }}" id="{{$value->id}}"
-                                                    value="{{ $value->id }}">{{ $value->name }}</option>
-                                        @endforeach
+                                        {{--<option value="">-- Chọn vùng quản lý --</option>--}}
+                                        {{--@foreach($places as $key => $value)--}}
+                                            {{--<option data-coordinate="{{ $value->coordinates }}" id="{{$value->id}}"--}}
+                                                    {{--value="{{ $value->id }}">{{ $value->name }}</option>--}}
+                                        {{--@endforeach--}}
                                     </select>
                                     @if ($errors->has('place'))
                                         <div class="form-control-feedback">
@@ -156,20 +156,58 @@
     var markers = [];
     var polygonArray = [];
     $(document).ready(function () {
+
+        //load ajax selct2
+        $(".places").select2({
+            'placeholder' : 'Nhập từ khóa để tìm kiếm vị trí',
+            ajax : {
+                url : "{{route('Admin::Api::area@getListAreas')}}",
+                dataType:'json',
+                delay:500,
+                data: function (params) {
+
+                    var queryParameters = {
+                        q: params.term
+                    }
+                    return queryParameters;
+                },
+                processResults: function(data, page) {
+                    console.log(data);
+                    return {
+                        results: $.map(data, function (item) {
+                            return {
+                                text: item.name,
+                                slug: item.slug,
+                                id: item.id,
+                            }
+                        })
+                    };
+                },
+                dropdownCssClass: "bigdrop", // apply css that makes the dropdown taller
+                escapeMarkup: function(m) {
+                    return m;
+                }
+            }
+        });
+
+
+
+        $(".users").select2();
+
         Array.prototype.insert = function (index, item) {
             this.splice(index, 0, item);
         };
-        $(".users").select2();
-        var places = $(".places").select2({});
+
+
         var opts = [];
-        map = new GMaps({
-            div: '#map',
-            lat: 21.0277644,
-            lng: 105.83415979999995,
-            width: "100%",
-            height: '500px',
-            zoom: 11
-        });
+//        map = new GMaps({
+//            div: '#map',
+//            lat: 21.0277644,
+//            lng: 105.83415979999995,
+//            width: "100%",
+//            height: '500px',
+//            zoom: 11
+//        });
         $('#locations').on("select2:select", function (e) {
             var id = e.params.data.element.attributes.getNamedItem('id').value;
             var coordinates = e.params.data.element.attributes.getNamedItem('data-coordinate').value;
