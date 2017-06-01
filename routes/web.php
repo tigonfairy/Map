@@ -10,8 +10,15 @@
 | to using a Closure or controller method. Build something great!
 |
 */
+Route::get('setlocale/{locale}', function ($locale) {
+    if (in_array($locale, \Config::get('app.locales'))) {
+        Session::put('locale', $locale);
+    }
+    return redirect()->back();
+});
 
 Auth::routes();
+
 Route::group(['middleware' => 'auth',
     'namespace' => 'Backend',
     'as' => 'Admin::'
@@ -62,10 +69,10 @@ Route::group(['middleware' => 'auth',
         'as' => 'map@',
     ], function () {
         Route::get('/', ['as' => 'index', 'uses' => 'MapController@index']);
-        Route::post('province/districts',['as' => 'district', 'uses' => 'MapController@getDistricts']);
-        Route::post('province/district/coordinates',['as' => 'coordinates', 'uses' => 'MapController@getCoordinates']);
         Route::get('/add-map', ['as' => 'addMap', 'uses' => 'MapController@addMap']);
         Route::post('/add-map', ['as' => 'addMapPost', 'uses' => 'MapController@addMapPost']);
+
+        Route::get('/list-map-user',[ 'as' => 'listMapUser','uses' => 'MapController@listMapUser']);
         Route::get('/add-map-user', ['as' => 'addMapUser', 'uses' => 'MapController@addMapUser']);
         Route::post('/add-map-user', ['as' => 'addMapUserPost', 'uses' => 'MapController@addMapUserPost']);
     });

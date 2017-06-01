@@ -16,9 +16,10 @@ class CreateAreasTable extends Migration
         Schema::create('areas', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name')->nullable();
-            $table->integer('location');
             $table->integer('manager_id');
             $table->integer('parent_id')->nullable()->default(0);
+            $table->string('border_color')->default('#333');
+            $table->string('background_color')->default('#333');
             $table->timestamps();
         });
     }

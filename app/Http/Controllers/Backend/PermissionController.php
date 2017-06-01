@@ -45,7 +45,7 @@ class PermissionController extends Controller
         $permission = Permission::create($data);
         $permission->save();
 
-        return redirect()->route('permission@index')
+        return redirect()->route('Admin::permission@index')
             ->with('success', 'Đã thêm');
     }
 
@@ -75,7 +75,7 @@ class PermissionController extends Controller
 
         $permission->update($data);
         $permission->save();
-        return redirect()->route('permission@index',$permission->id)
+        return redirect()->route('Admin::permission@index',$permission->id)
             ->with('success', 'Đã cập nhật');
     }
 

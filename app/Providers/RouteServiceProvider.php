@@ -2,8 +2,10 @@
 
 namespace App\Providers;
 
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
+
 
 class RouteServiceProvider extends ServiceProvider
 {
@@ -15,6 +17,7 @@ class RouteServiceProvider extends ServiceProvider
      * @var string
      */
     protected $namespace = 'App\Http\Controllers';
+    protected $prefix;
 
     /**
      * Define your route model bindings, pattern filters, etc.
@@ -33,8 +36,14 @@ class RouteServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function map()
+    public function map(Request $request)
     {
+        $locale = \Session::get('locale');
+        if($locale) {
+            $this->app->setLocale($locale);
+            $this->prefix = $locale;
+        }
+
         $this->mapWebRoutes();
 
         $this->mapApiRoutes();
@@ -51,10 +60,15 @@ class RouteServiceProvider extends ServiceProvider
      */
     protected function mapWebRoutes()
     {
-        Route::group([
+        $parameters = [
             'middleware' => 'web',
             'namespace' => $this->namespace,
-        ], function ($router) {
+        ];
+        if ($this->prefix) {
+            $parameters['prefix'] = $this->prefix;
+        }
+
+        Route::group($parameters, function ($router) {
             require base_path('routes/web.php');
         });
     }
@@ -68,11 +82,13 @@ class RouteServiceProvider extends ServiceProvider
      */
     protected function mapApiRoutes()
     {
-        Route::group([
-            'middleware' => 'api',
+        $parameters = [
+            'middleware' => 'web',
             'namespace' => $this->namespace,
             'prefix' => 'api',
-        ], function ($router) {
+        ];
+
+        Route::group($parameters, function ($router) {
             require base_path('routes/api.php');
         });
     }

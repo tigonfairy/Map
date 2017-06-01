@@ -1,11 +1,10 @@
-vendor
+
 .idea
 .env
 /public/storage
 /storage/*.key
 /public/files
-/vendor/*
-vendor/*
+/vendor
 storage
 bootstrap
 

@@ -64,7 +64,8 @@
     <link href="/assets/layouts/layout/css/themes/darkblue.min.css" rel="stylesheet" type="text/css" id="style_color"/>
     <link href="/assets/layouts/layout/css/custom.min.css" rel="stylesheet" type="text/css"/>
     <link href="/css/custom.css" rel="stylesheet" type="text/css"/>
-
+    <link href="/assets/global/plugins/bootstrap-colorpicker/css/colorpicker.css" rel="stylesheet" type="text/css" />
+    <link href="/assets/global/plugins/jquery-minicolors/jquery.minicolors.css" rel="stylesheet" type="text/css" />
     <!-- END THEME LAYOUT STYLES -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="shortcut icon" href="favicon.ico"/>
@@ -199,40 +200,33 @@
 <script src="/assets/global/plugins/bootstrap-daterangepicker/daterangepicker.min.js" type="text/javascript"></script>
 <script src="/assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js"
         type="text/javascript"></script>
-<script src="/assets/global/plugins/bootstrap-timepicker/js/bootstrap-timepicker.min.js"
-        type="text/javascript"></script>
-<script src="/assets/global/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"
-        type="text/javascript"></script>
-<script src="/assets/global/plugins/clockface/js/clockface.js" type="text/javascript"></script>
-<script src="/assets/global/plugins/morris/morris.min.js" type="text/javascript"></script>
-<script src="/assets/global/plugins/morris/raphael-min.js" type="text/javascript"></script>
-<script src="/assets/global/plugins/counterup/jquery.waypoints.min.js" type="text/javascript"></script>
-<script src="/assets/global/plugins/counterup/jquery.counterup.min.js" type="text/javascript"></script>
-<script src="/assets/global/plugins/amcharts/amcharts/amcharts.js" type="text/javascript"></script>
-<script src="/assets/global/plugins/amcharts/amcharts/serial.js" type="text/javascript"></script>
-<script src="/assets/global/plugins/amcharts/amcharts/pie.js" type="text/javascript"></script>
-<script src="/assets/global/plugins/amcharts/amcharts/radar.js" type="text/javascript"></script>
-<script src="/assets/global/plugins/amcharts/amcharts/themes/light.js" type="text/javascript"></script>
-<script src="/assets/global/plugins/amcharts/amcharts/themes/patterns.js" type="text/javascript"></script>
-<script src="/assets/global/plugins/amcharts/amcharts/themes/chalk.js" type="text/javascript"></script>
-<script src="/assets/global/plugins/amcharts/ammap/ammap.js" type="text/javascript"></script>
-<script src="/assets/global/plugins/amcharts/ammap/maps/js/worldLow.js" type="text/javascript"></script>
-<script src="/assets/global/plugins/amcharts/amstockcharts/amstock.js" type="text/javascript"></script>
-<script src="/assets/global/plugins/fullcalendar/fullcalendar.min.js" type="text/javascript"></script>
-<script src="/assets/global/plugins/horizontal-timeline/horizontal-timeline.js" type="text/javascript"></script>
-<script src="/assets/global/plugins/flot/jquery.flot.min.js" type="text/javascript"></script>
-<script src="/assets/global/plugins/flot/jquery.flot.resize.min.js" type="text/javascript"></script>
-<script src="/assets/global/plugins/flot/jquery.flot.categories.min.js" type="text/javascript"></script>
-<script src="/assets/global/plugins/jquery-easypiechart/jquery.easypiechart.min.js" type="text/javascript"></script>
-<script src="/assets/global/plugins/jquery.sparkline.min.js" type="text/javascript"></script>
-<script src="/assets/global/plugins/jqvmap/jqvmap/jquery.vmap.js" type="text/javascript"></script>
-<script src="/assets/global/plugins/jqvmap/jqvmap/maps/jquery.vmap.russia.js" type="text/javascript"></script>
-<script src="/assets/global/plugins/jqvmap/jqvmap/maps/jquery.vmap.world.js" type="text/javascript"></script>
-<script src="/assets/global/plugins/jqvmap/jqvmap/maps/jquery.vmap.europe.js" type="text/javascript"></script>
-<script src="/assets/global/plugins/jqvmap/jqvmap/maps/jquery.vmap.germany.js" type="text/javascript"></script>
-<script src="/assets/global/plugins/jqvmap/jqvmap/maps/jquery.vmap.usa.js" type="text/javascript"></script>
-<script src="/assets/global/plugins/jqvmap/jqvmap/data/jquery.vmap.sampledata.js" type="text/javascript"></script>
-<script src="/assets/global/plugins/bootbox/bootbox.min.js" type="text/javascript"></script>
+{{--<script src="/assets/global/plugins/bootstrap-timepicker/js/bootstrap-timepicker.min.js"--}}
+        {{--type="text/javascript"></script>--}}
+{{--<script src="/assets/global/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"--}}
+        {{--type="text/javascript"></script>--}}
+{{--<script src="/assets/global/plugins/clockface/js/clockface.js" type="text/javascript"></script>--}}
+{{--<script src="/assets/global/plugins/morris/morris.min.js" type="text/javascript"></script>--}}
+{{--<script src="/assets/global/plugins/morris/raphael-min.js" type="text/javascript"></script>--}}
+{{--<script src="/assets/global/plugins/counterup/jquery.waypoints.min.js" type="text/javascript"></script>--}}
+{{--<script src="/assets/global/plugins/counterup/jquery.counterup.min.js" type="text/javascript"></script>--}}
+{{--<script src="/assets/global/plugins/amcharts/amcharts/amcharts.js" type="text/javascript"></script>--}}
+{{--<script src="/assets/global/plugins/amcharts/amcharts/serial.js" type="text/javascript"></script>--}}
+{{--<script src="/assets/global/plugins/amcharts/amcharts/pie.js" type="text/javascript"></script>--}}
+{{--<script src="/assets/global/plugins/amcharts/amcharts/radar.js" type="text/javascript"></script>--}}
+{{--<script src="/assets/global/plugins/amcharts/amcharts/themes/light.js" type="text/javascript"></script>--}}
+{{--<script src="/assets/global/plugins/amcharts/amcharts/themes/patterns.js" type="text/javascript"></script>--}}
+{{--<script src="/assets/global/plugins/amcharts/amcharts/themes/chalk.js" type="text/javascript"></script>--}}
+{{--<script src="/assets/global/plugins/amcharts/ammap/ammap.js" type="text/javascript"></script>--}}
+{{--<script src="/assets/global/plugins/amcharts/ammap/maps/js/worldLow.js" type="text/javascript"></script>--}}
+{{--<script src="/assets/global/plugins/amcharts/amstockcharts/amstock.js" type="text/javascript"></script>--}}
+{{--<script src="/assets/global/plugins/fullcalendar/fullcalendar.min.js" type="text/javascript"></script>--}}
+{{--<script src="/assets/global/plugins/horizontal-timeline/horizontal-timeline.js" type="text/javascript"></script>--}}
+{{--<script src="/assets/global/plugins/flot/jquery.flot.min.js" type="text/javascript"></script>--}}
+{{--<script src="/assets/global/plugins/flot/jquery.flot.resize.min.js" type="text/javascript"></script>--}}
+{{--<script src="/assets/global/plugins/flot/jquery.flot.categories.min.js" type="text/javascript"></script>--}}
+{{--<script src="/assets/global/plugins/jquery-easypiechart/jquery.easypiechart.min.js" type="text/javascript"></script>--}}
+{{--<script src="/assets/global/plugins/jquery.sparkline.min.js" type="text/javascript"></script>--}}
+
 <script src="/assets/global/plugins/select2/js/select2.full.min.js" type="text/javascript"></script>
 <!-- END PAGE LEVEL PLUGINS -->
 <!-- BEGIN THEME GLOBAL SCRIPTS -->
@@ -242,7 +236,7 @@
 <!-- END THEME GLOBAL SCRIPTS -->
 <!-- BEGIN PAGE LEVEL SCRIPTS -->
 
-<script src="/assets/pages/scripts/dashboard.min.js" type="text/javascript"></script>
+{{--<script src="/assets/pages/scripts/dashboard.min.js" type="text/javascript"></script>--}}
 
 <!-- END PAGE LEVEL SCRIPTS -->
 <!-- BEGIN THEME LAYOUT SCRIPTS -->
@@ -253,9 +247,17 @@
 <script src="/assets/pages/scripts/components-date-time-pickers.min.js" type="text/javascript"></script>
 <script src="/js/admin/ckeditor/ckeditor.js"></script>
 <script src="/assets/global/plugins/jquery-nestable/jquery.nestable.js" type="text/javascript"></script>
-{{--<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDUMRn1pnBk97Zay94WiBbMgdVlBh_vwYs"></script>--}}
 
-{{--<script src="/assets/pages/scripts/ui-nestable.min.js" type="text/javascript"></script>--}}
+
+<script src="/assets/global/plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.js" type="text/javascript"></script>
+<script src="/assets/global/plugins/jquery-minicolors/jquery.minicolors.min.js" type="text/javascript"></script>
+<!-- END PAGE LEVEL PLUGINS -->
+<!-- BEGIN THEME GLOBAL SCRIPTS -->
+<script src="/assets/global/scripts/app.min.js" type="text/javascript"></script>
+<!-- END THEME GLOBAL SCRIPTS -->
+<!-- BEGIN PAGE LEVEL SCRIPTS -->
+<script src="/assets/pages/scripts/components-color-pickers.min.js" type="text/javascript"></script>
+
 <script>
     var baseUrl = '{{url('/admin')}}';
     $.ajaxSetup({

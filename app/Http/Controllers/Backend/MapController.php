@@ -6,6 +6,8 @@ use App\User;
 use App\Models\UserAddress;
 use Illuminate\Http\Request;
 use App\Models\AddressGeojson;
+use App\Models\Area;
+use App\Models\AreaUser;
 use App\Http\Controllers\Controller;
 class MapController extends Controller
 {
@@ -65,7 +67,10 @@ class MapController extends Controller
         $coordinates = json_encode($newCoordinates);
         AddressGeojson::create(['name' => $data['name'],'slug' => $slug, 'coordinates' => $coordinates]);
     }
-
+    public function listMapUser(Request $request){
+        $areas = Area::paginate(20);
+        return view('admin.map.listMapUser',compact('areas'));
+    }
     public function addMapUser(){
         $users = User::all();
         $places = AddressGeojson::all();
@@ -74,18 +79,17 @@ class MapController extends Controller
 
     public function addMapUserPost(Request $request){
         $this->validate($request,[
-            'user_id' => 'required',
+            'manager_id' => 'required',
             'place' => 'required'
         ],[
-            'user_id.required' => 'Vui lòng chọn nhân viên quản lý',
+            'manager_id.required' => 'Vui lòng chọn nhân viên quản lý',
             'place.required' => 'Vui lòng chọn vùng quản lý'
         ]);
-
         $data=$request->all();
-        foreach($data['place'] as $id){
-            UserAddress::create(['user_id' => $data['user_id'], 'place' => $id]);
+        $area = Area::create($data);
+        if($data['place']){
+            $area->address()->sync($data['place']);
         }
-
         return redirect()->back();
     }
 }
