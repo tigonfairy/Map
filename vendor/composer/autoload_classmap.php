@@ -6,6 +6,7 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'AddColumnLogs' => $baseDir . '/database/migrations/2017_06_03_005309_add_column_logs.php',
     'App\\Account' => $baseDir . '/app/Account.php',
     'App\\Console\\Commands\\AddAdmin' => $baseDir . '/app/Console/Commands/AddAdmin.php',
     'App\\Console\\Commands\\AddProvinceJson' => $baseDir . '/app/Console/Commands/AddProvinceJson.php',
@@ -43,6 +44,7 @@ return array(
     'App\\Jobs\\CrawProductUrl' => $baseDir . '/app/Jobs/CrawProductUrl.php',
     'App\\Models\\AddressGeojson' => $baseDir . '/app/Models/AddressGeojson.php',
     'App\\Models\\Area' => $baseDir . '/app/Models/Area.php',
+    'App\\Models\\Log' => $baseDir . '/app/Models/Log.php',
     'App\\Models\\Permission' => $baseDir . '/app/Models/Permission.php',
     'App\\Models\\Role' => $baseDir . '/app/Models/Role.php',
     'App\\Models\\RolePermission' => $baseDir . '/app/Models/RolePermission.php',
@@ -117,6 +119,7 @@ return array(
     'CreateAgentsTable' => $baseDir . '/database/migrations/2017_05_16_221039_create_agents_table.php',
     'CreateAreaAddressTable' => $baseDir . '/database/migrations/2017_05_31_233657_create_area_address_table.php',
     'CreateAreasTable' => $baseDir . '/database/migrations/2017_05_25_213811_create_areas_table.php',
+    'CreateLogsTable' => $baseDir . '/database/migrations/2017_06_03_003615_create_logs_table.php',
     'CreateRolePermissionTable' => $baseDir . '/database/migrations/2016_11_12_221433_create_role_permission_table.php',
     'CreateUsersTable' => $baseDir . '/database/migrations/2014_10_12_000000_create_users_table.php',
     'CretePermissionTable' => $baseDir . '/database/migrations/2016_11_12_221309_crete_permission_table.php',

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Auth;
 use Illuminate\Database\Eloquent\Model;
 
 class UserPermission extends Model
@@ -20,4 +21,40 @@ class UserPermission extends Model
     /**
      * Get all of the tags for the post.
      */
+
+    public static function boot()
+    {
+        parent::boot();
+
+        static::created(function ($userPermission) {
+
+            return Log::forceCreate([
+                'user_id'     => Auth::user()->id ? Auth::user()->id : 0,
+                'object_id'   => $userPermission->id,
+                'object_type' => 'UserPermission',
+                'action'      => 'created',
+                'data'      => json_encode($userPermission),
+            ]);
+        });
+        static::updated(function ($userPermission) {
+
+            return Log::forceCreate([
+                'user_id'     => Auth::user()->id ? Auth::user()->id : 0,
+                'object_id'   => $userPermission->id,
+                'object_type' => 'UserPermission',
+                'action'      => 'updated',
+                'data'      => json_encode($userPermission),
+                'current_data'      => json_encode($userPermission->getOriginal()),
+            ]);
+        });
+        static::deleted(function ($userPermission) {
+            return Log::forceCreate([
+                'user_id'     => Auth::user()->id ? Auth::user()->id : 0,
+                'object_id'   => $userPermission->id,
+                'object_type' => 'UserPermission',
+                'action'      => 'deleted',
+                'current_data'      => json_encode($userPermission->getOriginal()),
+            ]);
+        });
+    }
 }

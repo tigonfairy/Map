@@ -10,19 +10,19 @@
 | to using a Closure or controller method. Build something great!
 |
 */
-Route::get('setlocale/{locale}', function ($locale) {
-    if (in_array($locale, \Config::get('app.locales'))) {
-        Session::put('locale', $locale);
-    }
+
+Route::get('language/{locale}', function ($locale) {
+    Session::put('locale', $locale);
     return redirect()->back();
 });
 
 Auth::routes();
 
-Route::group(['middleware' => 'auth',
+Route::group(['middleware' => ['auth','language'],
     'namespace' => 'Backend',
     'as' => 'Admin::'
 ],function() {
+
 
     Route::get('/', ['as' => 'dashboard', 'uses' => 'HomeController@dashboard']);
     Route::get('/admin', ['as' => 'dashboard', 'uses' => 'HomeController@dashboard']);
@@ -32,6 +32,7 @@ Route::group(['middleware' => 'auth',
         'prefix' => 'users',
         'as' => 'user@',
     ], function () {
+        Route::get('/datatables', ['as' => 'datatables', 'uses' => 'UserController@getDatatables']);
         Route::get('/', ['as' => 'index', 'uses' => 'UserController@index']);
         Route::get('/add', ['as' => 'add', 'uses' => 'UserController@add']);
         Route::post('/store', ['as' => 'store', 'uses' => 'UserController@store']);
