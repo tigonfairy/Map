@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Auth;
 use Datatables;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
@@ -53,6 +54,42 @@ class User extends Authenticatable
             })
             ->addColumn('action', 'admin.user.datatables.action')
             ->make(true);
+    }
+
+    public static function boot()
+    {
+        parent::boot();
+
+        static::created(function ($user) {
+
+            return Log::forceCreate([
+                'user_id'     => Auth::user()->id ? Auth::user()->id : 0,
+                'object_id'   => $user->id,
+                'object_type' => 'User',
+                'action'      => 'created',
+                'data'      => json_encode($user),
+            ]);
+        });
+        static::updated(function ($user) {
+
+            return Log::forceCreate([
+                'user_id'     => Auth::user()->id ? Auth::user()->id : 0,
+                'object_id'   => $user->id,
+                'object_type' => 'User',
+                'action'      => 'updated',
+                'data'      => json_encode($user),
+                'current_data'      => json_encode($user->getOriginal()),
+            ]);
+        });
+        static::deleted(function ($user) {
+            return Log::forceCreate([
+                'user_id'     => Auth::user()->id ? Auth::user()->id : 0,
+                'object_id'   => $user->id,
+                'object_type' => 'User',
+                'action'      => 'deleted',
+                'current_data'      => json_encode($user->getOriginal()),
+            ]);
+        });
     }
 
 }
