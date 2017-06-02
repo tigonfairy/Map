@@ -10,10 +10,8 @@
 | to using a Closure or controller method. Build something great!
 |
 */
-Route::get('setlocale/{locale}', function ($locale) {
-    if (in_array($locale, \Config::get('app.locales'))) {
-        \Session::put('locale', $locale);
-    }
+Route::get('language/{locale}', function ($locale) {
+    Session::put('locale', $locale);
     return redirect()->back();
 });
 
@@ -24,6 +22,10 @@ Route::group(['middleware' => 'auth',
     'as' => 'Admin::'
 ],function() {
 
+    if (Session::has('locale')) {
+        App::setLocale(Session::get('locale'));
+    }
+
     Route::get('/', ['as' => 'dashboard', 'uses' => 'HomeController@dashboard']);
     Route::get('/admin', ['as' => 'dashboard', 'uses' => 'HomeController@dashboard']);
 
@@ -32,6 +34,7 @@ Route::group(['middleware' => 'auth',
         'prefix' => 'users',
         'as' => 'user@',
     ], function () {
+        Route::get('/datatables', ['as' => 'datatables', 'uses' => 'UserController@getDatatables']);
         Route::get('/', ['as' => 'index', 'uses' => 'UserController@index']);
         Route::get('/add', ['as' => 'add', 'uses' => 'UserController@add']);
         Route::post('/store', ['as' => 'store', 'uses' => 'UserController@store']);
@@ -73,8 +76,23 @@ Route::group(['middleware' => 'auth',
         Route::post('/add-map', ['as' => 'addMapPost', 'uses' => 'MapController@addMapPost']);
 
         Route::get('/list-map-user',[ 'as' => 'listMapUser','uses' => 'MapController@listMapUser']);
+        Route::get('/map-user-detail/{id}',[ 'as' => 'mapUserDetail','uses' => 'MapController@mapUserDetail']);
         Route::get('/add-map-user', ['as' => 'addMapUser', 'uses' => 'MapController@addMapUser']);
         Route::post('/add-map-user', ['as' => 'addMapUserPost', 'uses' => 'MapController@addMapUserPost']);
+    });
+
+    Route::group([
+        'prefix' => 'apis',
+        'as' => 'Api::',
+    ], function () {
+        Route::group([
+            'prefix' => 'area',
+            'as' => 'area@',
+        ], function () {
+            Route::get('/get-list-areas', ['as' => 'getListAreas', 'uses' => 'ApiController@getListAreas']);
+        });
+
+
     });
 
 });

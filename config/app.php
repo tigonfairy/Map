@@ -79,7 +79,7 @@ return [
 
     'locale' => 'en',
 
-    'locales' => ['en' => 'English', 'vn' => 'Vietnamese'],
+    'locales' => ['en', 'vn'],
 
     'skip_locales' => ['auth',''],
 
