@@ -10,6 +10,7 @@
 | to using a Closure or controller method. Build something great!
 |
 */
+
 Route::get('language/{locale}', function ($locale) {
     Session::put('locale', $locale);
     return redirect()->back();
