@@ -32,7 +32,7 @@
             <li class="nav-item">
                 <a href="{{ url('/admin') }}" class="nav-link nav-toggle">
                     <i class="icon-settings"></i>
-                    <span class="title">DashBoard</span>
+                    <span class="title">{{ trans('home.Dashboard') }}</span>
                     <span class="arrow"></span>
                 </a>
             </li>
@@ -40,7 +40,7 @@
             <li class="nav-item">
                 <a href="javascript:;" class="nav-link nav-toggle">
                     <i class="icon-user"></i>
-                    <span class="title">Map</span>
+                    <span class="title">{{ trans('home.Map') }}</span>
                     <span class="arrow"></span>
                 </a>
                 <ul class="sub-menu" >

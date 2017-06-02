@@ -4,19 +4,19 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInitba74133d388ed2e9906a9a9c5e47962f
+class ComposerStaticInitd83162a922f8ff0f8b49c9f514a2ebb6
 {
     public static $files = array (
         '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
+        '667aeda72477189d0494fecd327c3641' => __DIR__ . '/..' . '/symfony/var-dumper/Resources/functions/dump.php',
         '1d1b89d124cc9cb8219922c9d5569199' => __DIR__ . '/..' . '/hamcrest/hamcrest-php/hamcrest/Hamcrest.php',
         'a0edc8309cc5e1d60e3047b5df6b7052' => __DIR__ . '/..' . '/guzzlehttp/psr7/src/functions_include.php',
-        '667aeda72477189d0494fecd327c3641' => __DIR__ . '/..' . '/symfony/var-dumper/Resources/functions/dump.php',
         'c964ee0ededf28c96ebd9db5099ef910' => __DIR__ . '/..' . '/guzzlehttp/promises/src/functions_include.php',
         'bd9634f2d41831496de0d3dfe4c94881' => __DIR__ . '/..' . '/symfony/polyfill-php56/bootstrap.php',
         '37a3dc5111fe8f707ab4c132ef1dbc62' => __DIR__ . '/..' . '/guzzlehttp/guzzle/src/functions_include.php',
+        'ad155f8f1cf0d418fe49e248db8c661b' => __DIR__ . '/..' . '/react/promise/src/functions_include.php',
         '2c102faa651ef8ea5874edb585946bce' => __DIR__ . '/..' . '/swiftmailer/swiftmailer/lib/swift_required.php',
         '5255c38a0faeba867671b61dfda6d864' => __DIR__ . '/..' . '/paragonie/random_compat/lib/random.php',
-        'ad155f8f1cf0d418fe49e248db8c661b' => __DIR__ . '/..' . '/react/promise/src/functions_include.php',
         'e7223560d890eab89cda23685e711e2c' => __DIR__ . '/..' . '/psy/psysh/src/Psy/functions.php',
         'f18cc91337d49233e5754e93f3ed9ec3' => __DIR__ . '/..' . '/laravelcollective/html/src/helpers.php',
         'f0906e6318348a765ffb6eb24e0d0938' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Foundation/helpers.php',
@@ -458,10 +458,12 @@ class ComposerStaticInitba74133d388ed2e9906a9a9c5e47962f
     );
 
     public static $classMap = array (
+        'AddColumnLogs' => __DIR__ . '/../..' . '/database/migrations/2017_06_03_005309_add_column_logs.php',
         'CreateAddressGeojsonTable' => __DIR__ . '/../..' . '/database/migrations/2017_05_18_152554_create_address_geojson_table.php',
         'CreateAgentsTable' => __DIR__ . '/../..' . '/database/migrations/2017_05_16_221039_create_agents_table.php',
         'CreateAreaAddressTable' => __DIR__ . '/../..' . '/database/migrations/2017_05_31_233657_create_area_address_table.php',
         'CreateAreasTable' => __DIR__ . '/../..' . '/database/migrations/2017_05_25_213811_create_areas_table.php',
+        'CreateLogsTable' => __DIR__ . '/../..' . '/database/migrations/2017_06_03_003615_create_logs_table.php',
         'CreateRolePermissionTable' => __DIR__ . '/../..' . '/database/migrations/2016_11_12_221433_create_role_permission_table.php',
         'CreateUsersTable' => __DIR__ . '/../..' . '/database/migrations/2014_10_12_000000_create_users_table.php',
         'CretePermissionTable' => __DIR__ . '/../..' . '/database/migrations/2016_11_12_221309_crete_permission_table.php',
@@ -1034,10 +1036,10 @@ class ComposerStaticInitba74133d388ed2e9906a9a9c5e47962f
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInitba74133d388ed2e9906a9a9c5e47962f::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInitba74133d388ed2e9906a9a9c5e47962f::$prefixDirsPsr4;
-            $loader->prefixesPsr0 = ComposerStaticInitba74133d388ed2e9906a9a9c5e47962f::$prefixesPsr0;
-            $loader->classMap = ComposerStaticInitba74133d388ed2e9906a9a9c5e47962f::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInitd83162a922f8ff0f8b49c9f514a2ebb6::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInitd83162a922f8ff0f8b49c9f514a2ebb6::$prefixDirsPsr4;
+            $loader->prefixesPsr0 = ComposerStaticInitd83162a922f8ff0f8b49c9f514a2ebb6::$prefixesPsr0;
+            $loader->classMap = ComposerStaticInitd83162a922f8ff0f8b49c9f514a2ebb6::$classMap;
 
         }, null, ClassLoader::class);
     }

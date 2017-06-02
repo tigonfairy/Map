@@ -2,8 +2,10 @@
 
 namespace App\Models;
 
-
+use Auth;
+use Datatables;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+
 class User extends Authenticatable
 {
 //    use Authenticatable;
@@ -14,7 +16,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'email', 'permission_id', 'remember_token', 'password','code', 'name','manager_id','position'
+        'email', 'permission_id', 'remember_token', 'password', 'code', 'name', 'manager_id', 'position'
     ];
 
     /**
@@ -37,4 +39,57 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Permission::class, 'user_permissions')->withPivot('value');
     }
+
+    public static function getDatatables()
+    {
+        $model = static::select([
+            'id', 'email', 'created_at'
+        ])->with('roles');
+
+        return Datatables::eloquent($model)
+            ->filter(function ($query) {
+            })
+            ->editColumn('group', function ($model) {
+                return $model->roles ? $model->roles->first()['name'] : '';
+            })
+            ->addColumn('action', 'admin.user.datatables.action')
+            ->make(true);
+    }
+
+    public static function boot()
+    {
+        parent::boot();
+
+        static::created(function ($user) {
+
+            return Log::forceCreate([
+                'user_id'     => Auth::user()->id ? Auth::user()->id : 0,
+                'object_id'   => $user->id,
+                'object_type' => 'User',
+                'action'      => 'created',
+                'data'      => json_encode($user),
+            ]);
+        });
+        static::updated(function ($user) {
+
+            return Log::forceCreate([
+                'user_id'     => Auth::user()->id ? Auth::user()->id : 0,
+                'object_id'   => $user->id,
+                'object_type' => 'User',
+                'action'      => 'updated',
+                'data'      => json_encode($user),
+                'current_data'      => json_encode($user->getOriginal()),
+            ]);
+        });
+        static::deleted(function ($user) {
+            return Log::forceCreate([
+                'user_id'     => Auth::user()->id ? Auth::user()->id : 0,
+                'object_id'   => $user->id,
+                'object_type' => 'User',
+                'action'      => 'deleted',
+                'current_data'      => json_encode($user->getOriginal()),
+            ]);
+        });
+    }
+
 }

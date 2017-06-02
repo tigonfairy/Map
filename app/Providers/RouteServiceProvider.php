@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use Session;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
@@ -38,10 +39,9 @@ class RouteServiceProvider extends ServiceProvider
      */
     public function map(Request $request)
     {
-        $locale = \Session::get('locale');
+        $locale = Session::get('locale');
         if($locale) {
             $this->app->setLocale($locale);
-            $this->prefix = $locale;
         }
 
         $this->mapWebRoutes();
