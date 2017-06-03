@@ -42,7 +42,6 @@ class RouteServiceProvider extends ServiceProvider
         $locale = Session::get('locale');
         if($locale) {
             $this->app->setLocale($locale);
-            $this->prefix = $locale;
         }
 
         $this->mapWebRoutes();

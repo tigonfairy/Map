@@ -14,6 +14,6 @@ return [
     */
 
     'Map' => 'Bản Đồ',
-    'Dashboard'     => 'Quản trị',
+    'Dashboard' => 'Quản trị',
 
 ];
