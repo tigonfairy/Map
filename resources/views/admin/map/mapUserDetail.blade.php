@@ -5,7 +5,8 @@
     <div class="page-header">
         <div class="page-header-content">
             <div class="page-title">
-                <h2>Chi tiết vùng kinh doanh</h2>
+                <h2>Chi tiết vùng kinh doanh : {{$area->name}}</h2>
+                <h4>Quản lý : {{$area->user->email}}</h4>
             </div>
         </div>
     </div>
@@ -42,8 +43,18 @@
         zoom: 11
     });
     @foreach($locations as $location)
-            var c = "{{$location->coordinates}}";
+    var c = "{{$location->coordinates}}";
     var coordinate = JSON.parse(c);
+    @php
+    $border_color = '#333';
+    $background_color = '#333';
+            if($area->border_color){
+            $border_color = $area->border_color;
+            }
+     if($area->background_color){
+            $background_color = $area->background_color;
+            }
+            @endphp
     if (coordinate) {
         var bounds = new google.maps.LatLngBounds();
         for (i = 0; i < coordinate.length; i++) {
@@ -52,24 +63,24 @@
         }
         var path = coordinate;
         map.setCenter(bounds.getCenter().lat(), bounds.getCenter().lng());
-        var infoWindow = new google.maps.InfoWindow({
-            content: 'you clicked a polyline'
+        var infoWindow{{$location->id}} = new google.maps.InfoWindow({
+            content: "<p>{{$location->name}}</p>"
         });
         polygon = map.drawPolygon({
             paths: path,
-            strokeColor: '#333',
-            strokeOpacity: 0.5,
+            strokeColor: "{{$border_color}}",
+            strokeOpacity: 1,
             strokeWeight: 1,
-            fillColor: '#333',
+            fillColor: "{{$background_color}}",
             fillOpacity: 0.6,
             mouseover: function (clickEvent) {
                 var position = clickEvent.latLng;
-                infoWindow.setPosition(position);
-                infoWindow.open(map.map);
+                infoWindow{{$location->id}}.setPosition(position);
+                infoWindow{{$location->id}}.open(map.map);
             },
             mouseout: function (clickEvent) {
-                if (infoWindow) {
-                    infoWindow.close();
+                if (infoWindow{{$location->id}}) {
+                    infoWindow{{$location->id}}.close();
                 }
             }
         });

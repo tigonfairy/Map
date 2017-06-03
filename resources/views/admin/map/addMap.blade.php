@@ -22,7 +22,7 @@
 
                     <form method="post" id="geocoding_form">
                         <div class="row">
-                            <div class="col-md-5">
+                            <div class="col-md-8">
                                 <input type="text" id="address" name="address" placeholder="Nhập vị trí" class="form-control">
                             </div>
                             <div class="col-md-4">
@@ -47,7 +47,10 @@
                         </div>
                         <input type="hidden" class="form-control " id="coordinates" name="coordinates" >
                     </div>
-                        <button type="submit" class="btn btn-info">Tạo</button>
+                        <div class="row btn-submit-add-map">
+                            <button type="submit" class="btn btn-info">Tạo</button>
+                        </div>
+
                     </form>
                 </div>
 

@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers\Backend;
 
+use App\Models\Agent;
 use App\User;
 use App\Models\UserAddress;
 use Illuminate\Http\Request;
 use App\Models\AddressGeojson;
 use App\Models\Area;
-use App\Models\AreaUser;
 use App\Http\Controllers\Controller;
 class MapController extends Controller
 {
@@ -82,5 +82,26 @@ class MapController extends Controller
             $area->address()->sync($data['place']);
         }
         return redirect()->route('Admin::map@listMapUser')->with('success','Tạo vùng kinh doanh thành công');
+    }
+
+    public function addAgency(Request $request){
+        $users = User::all();
+        return view('admin.map.addAgency',compact('users'));
+    }
+    public function addMapAgencyPost(Request $request){
+        $this->validate($request,[
+            'manager_id' => 'required',
+            'name' => 'required',
+            'lat' => 'required',
+            'lng' => 'required'
+        ],[
+            'manager_id.required' => 'Vui lòng chọn nhân viên quản lý',
+            'name.required' => 'Vui lòng nhập tên cho đại lý',
+            'lat.required' => 'Vui lòng chọn đại lý',
+            'lng.required' => 'Vui lòng chọn đại lý'
+        ]);
+        $data = $request->all();
+        $agent = Agent::create($data);
+        return redirect()->route('Admin::map@listMapUser')->with('success','Tạo đại lý thành công');
     }
 }

@@ -4,18 +4,13 @@ namespace App\Models;
 
 use Auth;
 use Illuminate\Database\Eloquent\Model;
-
-class Area extends Model
+class Agent extends Model
 {
-    protected $table = 'areas';
+    protected $table = 'agents';
     protected $fillable = [
-        'name','manager_id','parent_id','border_color','background_color'
+        'name','manager_id','lat','lng'
     ];
 
-    public function address()
-    {
-        return $this->belongsToMany(AddressGeojson::class, 'area_address','area_id','address_id');
-    }
     public function user(){
         return $this->belongsTo(User::class,'manager_id','id');
     }
@@ -23,34 +18,34 @@ class Area extends Model
     {
         parent::boot();
 
-        static::created(function ($area) {
+        static::created(function ($agent) {
 
             return Log::forceCreate([
                 'user_id'     => Auth::user()->id ? Auth::user()->id : 0,
-                'object_id'   => $area->id,
+                'object_id'   => $agent->id,
                 'object_type' => 'Area',
                 'action'      => 'created',
-                'data'      => json_encode($area),
+                'data'      => json_encode($agent),
             ]);
         });
-        static::updated(function ($area) {
+        static::updated(function ($agent) {
 
             return Log::forceCreate([
                 'user_id'     => Auth::user()->id ? Auth::user()->id : 0,
-                'object_id'   => $area->id,
+                'object_id'   => $agent->id,
                 'object_type' => 'Area',
                 'action'      => 'updated',
-                'data'      => json_encode($area),
-                'current_data'      => json_encode($area->getOriginal()),
+                'data'      => json_encode($agent),
+                'current_data'      => json_encode($agent->getOriginal()),
             ]);
         });
-        static::deleted(function ($area) {
+        static::deleted(function ($agent) {
             return Log::forceCreate([
                 'user_id'     => Auth::user()->id ? Auth::user()->id : 0,
-                'object_id'   => $area->id,
+                'object_id'   => $agent->id,
                 'object_type' => 'Area',
                 'action'      => 'deleted',
-                'current_data'      => json_encode($area->getOriginal()),
+                'current_data'      => json_encode($agent->getOriginal()),
             ]);
         });
     }
