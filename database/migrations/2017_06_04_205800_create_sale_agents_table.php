@@ -18,8 +18,8 @@ class CreateSaleAgentsTable extends Migration
             $table->integer('agent_id');
             $table->integer('product_id');
             $table->text('month');
-            $table->integer('sale_plan');
-            $table->integer('sale_real');
+            $table->integer('sales_plan');
+            $table->integer('sales_real');
             $table->timestamps();
         });
     }

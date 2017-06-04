@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers\Backend;
 
+use App\User;
+use App\Models\Area;
 use App\Models\Agent;
 use App\Models\Product;
-use App\User;
-use App\Models\UserAddress;
+use App\Models\SaleAgent;
 use Illuminate\Http\Request;
 use App\Models\AddressGeojson;
-use App\Models\Area;
 use App\Http\Controllers\Controller;
+
 class MapController extends Controller
 {
 

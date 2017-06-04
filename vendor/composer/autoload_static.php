@@ -467,7 +467,7 @@ class ComposerStaticInitf5c550d1b6b81b1db5e11f4eca6d2286
         'CreateLogsTable' => __DIR__ . '/../..' . '/database/migrations/2017_06_03_003615_create_logs_table.php',
         'CreateProductsTable' => __DIR__ . '/../..' . '/database/migrations/2017_06_04_180838_create_products_table.php',
         'CreateRolePermissionTable' => __DIR__ . '/../..' . '/database/migrations/2016_11_12_221433_create_role_permission_table.php',
-        'CreateSaleAgentsTable' => __DIR__ . '/../..' . '/database/migrations/2017_06_04_162835_create_sale_agents_table.php',
+        'CreateSaleAgentsTable' => __DIR__ . '/../..' . '/database/migrations/2017_06_04_205800_create_sale_agents_table.php',
         'CreateUsersTable' => __DIR__ . '/../..' . '/database/migrations/2014_10_12_000000_create_users_table.php',
         'CretePermissionTable' => __DIR__ . '/../..' . '/database/migrations/2016_11_12_221309_crete_permission_table.php',
         'CreteRoleTable' => __DIR__ . '/../..' . '/database/migrations/2016_11_12_221301_crete_role_table.php',

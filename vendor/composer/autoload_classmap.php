@@ -15,7 +15,7 @@ return array(
     'CreateLogsTable' => $baseDir . '/database/migrations/2017_06_03_003615_create_logs_table.php',
     'CreateProductsTable' => $baseDir . '/database/migrations/2017_06_04_180838_create_products_table.php',
     'CreateRolePermissionTable' => $baseDir . '/database/migrations/2016_11_12_221433_create_role_permission_table.php',
-    'CreateSaleAgentsTable' => $baseDir . '/database/migrations/2017_06_04_162835_create_sale_agents_table.php',
+    'CreateSaleAgentsTable' => $baseDir . '/database/migrations/2017_06_04_205800_create_sale_agents_table.php',
     'CreateUsersTable' => $baseDir . '/database/migrations/2014_10_12_000000_create_users_table.php',
     'CretePermissionTable' => $baseDir . '/database/migrations/2016_11_12_221309_crete_permission_table.php',
     'CreteRoleTable' => $baseDir . '/database/migrations/2016_11_12_221301_crete_role_table.php',
