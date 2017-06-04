@@ -15,5 +15,5 @@ return [
 
     'Map' => 'Map',
     'Dashboard' => 'Dashboard',
-
+    'Product' => 'Product'
 ];

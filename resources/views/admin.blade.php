@@ -53,6 +53,8 @@
     <link href="/assets/global/plugins/jquery-file-upload/css/jquery.fileupload.css" rel="stylesheet" type="text/css"/>
     <link href="/assets/global/plugins/jquery-file-upload/css/jquery.fileupload-ui.css" rel="stylesheet"
           type="text/css"/>
+    <link rel="stylesheet" type="text/css" media="screen" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/themes/base/jquery-ui.css">
+
     <link href="/assets/global/plugins/jquery-nestable/jquery.nestable.css" rel="stylesheet" type="text/css" />
     <!-- END PAGE LEVEL PLUGINS -->
     <!-- BEGIN THEME GLOBAL STYLES -->
@@ -66,6 +68,7 @@
 
     <link href="/assets/global/plugins/bootstrap-colorpicker/css/colorpicker.css" rel="stylesheet" type="text/css" />
     <link href="/assets/global/plugins/jquery-minicolors/jquery.minicolors.css" rel="stylesheet" type="text/css" />
+
     <!-- END THEME LAYOUT STYLES -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="shortcut icon" href="favicon.ico"/>
@@ -73,6 +76,9 @@
     <style>
         .select2-container {
             width: auto !important;
+        }
+        .ui-datepicker-calendar {
+            display: none !important;
         }
     </style>
 
@@ -203,8 +209,6 @@
 <script src="/assets/global/plugins/datatables/plugins/bootstrap/datatables.bootstrap.js"
         type="text/javascript"></script>
 
-<script src="/assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js"
-        type="text/javascript"></script>
 <!-- END CORE PLUGINS -->
 <!-- BEGIN PAGE LEVEL PLUGINS -->
 <!-- BEGIN PAGE LEVEL PLUGINS -->
@@ -212,8 +216,7 @@
 <script src="/assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.js" type="text/javascript"></script>
 <script src="/assets/global/plugins/moment.min.js" type="text/javascript"></script>
 <script src="/assets/global/plugins/bootstrap-daterangepicker/daterangepicker.min.js" type="text/javascript"></script>
-<script src="/assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js"
-        type="text/javascript"></script>
+
 {{--<script src="/assets/global/plugins/bootstrap-timepicker/js/bootstrap-timepicker.min.js"--}}
         {{--type="text/javascript"></script>--}}
 {{--<script src="/assets/global/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"--}}

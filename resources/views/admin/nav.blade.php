@@ -73,6 +73,32 @@
             <li class="nav-item">
                 <a href="javascript:;" class="nav-link nav-toggle">
                     <i class="icon-user"></i>
+                    <span class="title">{{ trans('home.Product') }}</span>
+                    <span class="arrow"></span>
+                </a>
+                <ul class="sub-menu" >
+
+                    <li class="nav-item  ">
+                        <a href="{{route('Admin::product@add')}}" class="nav-link nav-toggle">
+                            <i class="icon-settings"></i>
+                            <span class="title">Thêm Sản Phẩm</span>
+                            <span class="arrow"></span>
+                        </a>
+                    </li>
+
+                    <li class="nav-item  ">
+                        <a href="{{route('Admin::product@index')}}" class="nav-link nav-toggle">
+                            <i class="icon-settings"></i>
+                            <span class="title">Danh Sách</span>
+                            <span class="arrow"></span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
+            <li class="nav-item">
+                <a href="javascript:;" class="nav-link nav-toggle">
+                    <i class="icon-user"></i>
                     <span class="title">Quản lý Tài Khoản</span>
                     <span class="arrow"></span>
                 </a>
