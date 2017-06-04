@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Backend;
 
 use App\Models\Agent;
+use App\Models\Product;
 use App\User;
 use App\Models\UserAddress;
 use Illuminate\Http\Request;
@@ -103,5 +104,29 @@ class MapController extends Controller
         $data = $request->all();
         $agent = Agent::create($data);
         return redirect()->route('Admin::map@listMapUser')->with('success','Tạo đại lý thành công');
+    }
+
+    public function addDataAgency(Request $request){
+        $agents = Agent::all();
+        $products = Product::all();
+        return view('admin.map.addDataAgency',compact('agents', 'products'));
+    }
+    public function addDataAgencyPost(Request $request){
+        $this->validate($request,[
+            'agent_id' => 'required',
+            'product_id' => 'required',
+            'month' => 'required',
+            'sales_plan' => 'required',
+            'sales_real' => 'required',
+        ],[
+            'agent_id.required' => 'Vui lòng chọn đại lý',
+            'product_id.required' => 'Vui lòng chọn nhóm sản phẩm',
+            'month.required' => 'Vui lòng chọn thời gian',
+            'sales_plan.required' => 'Vui lòng nhập doanh số kế hoạch',
+            'sales_real.required' => 'Vui lòng nhập doanh số thực tế',
+        ]);
+        $data = $request->all();
+        SaleAgent::create($data);
+        return redirect()->route('Admin::map@listMapUser')->with('success','Tạo dữ liệu cho đại lý thành công');
     }
 }

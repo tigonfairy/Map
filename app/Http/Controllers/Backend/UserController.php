@@ -16,8 +16,7 @@ class UserController extends Controller
         if (auth()->user()->cannot('list-user')) {
             abort(403);
         }
-        $users = User::orderBy('created_at')->get();
-        return view('admin.user.index',compact('users'));
+        return view('admin.user.index');
     }
 
     public function add()
@@ -145,7 +144,4 @@ class UserController extends Controller
     {
         return User::getDatatables();
     }
-
-
-
 }

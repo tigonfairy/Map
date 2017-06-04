@@ -15,5 +15,6 @@ return [
 
     'Map' => 'Bản Đồ',
     'Dashboard' => 'Quản trị',
+    'Product' => 'Sản phẩm',
 
 ];

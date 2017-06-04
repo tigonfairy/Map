@@ -27,7 +27,6 @@ Route::group(['middleware' => ['auth','language'],
     Route::get('/', ['as' => 'dashboard', 'uses' => 'HomeController@dashboard']);
     Route::get('/admin', ['as' => 'dashboard', 'uses' => 'HomeController@dashboard']);
 
-
     Route::group([
         'prefix' => 'users',
         'as' => 'user@',
@@ -41,6 +40,7 @@ Route::group(['middleware' => ['auth','language'],
         Route::get('/{id}/delete', ['as' => 'delete', 'uses' => 'UserController@delete']);
 
     });
+
     Route::group([
         'prefix' => 'permissions',
         'as' => 'permission@',
@@ -53,6 +53,7 @@ Route::group(['middleware' => ['auth','language'],
         Route::get('/{id}/delete', ['as' => 'delete', 'uses' => 'PermissionController@delete']);
 
     });
+
     Route::group([
         'prefix' => 'roles',
         'as' => 'role@',
@@ -77,7 +78,9 @@ Route::group(['middleware' => ['auth','language'],
         Route::get('/add-map-user', ['as' => 'addMapUser', 'uses' => 'MapController@addMapUser']);
         Route::post('/add-map-user', ['as' => 'addMapUserPost', 'uses' => 'MapController@addMapUserPost']);
         Route::get('/add-agency', ['as' => 'addAgency', 'uses' => 'MapController@addAgency']);
-         Route::post('/add-agency', ['as' => 'addMapAgencyPost', 'uses' => 'MapController@addMapAgencyPost']);
+        Route::post('/add-agency', ['as' => 'addMapAgencyPost', 'uses' => 'MapController@addMapAgencyPost']);
+        Route::get('/add-data-agency', ['as' => 'addDataAgency', 'uses' => 'MapController@addDataAgency']);
+        Route::post('/add-data-agency', ['as' => 'addDataAgencyPost', 'uses' => 'MapController@addDataAgencyPost']);
     });
 
     Route::group([
@@ -90,7 +93,19 @@ Route::group(['middleware' => ['auth','language'],
         ], function () {
             Route::get('/get-list-areas', ['as' => 'getListAreas', 'uses' => 'ApiController@getListAreas']);
         });
+    });
 
+    Route::group([
+        'prefix' => 'products',
+        'as' => 'product@',
+    ], function () {
+        Route::get('/datatables', ['as' => 'datatables', 'uses' => 'ProductController@getDatatables']);
+        Route::get('/', ['as' => 'index', 'uses' => 'ProductController@index']);
+        Route::get('/add', ['as' => 'add', 'uses' => 'ProductController@add']);
+        Route::post('/store', ['as' => 'store', 'uses' => 'ProductController@store']);
+        Route::get('/{id}/edit', ['as' => 'edit', 'uses' => 'ProductController@edit']);
+        Route::match(['put', 'patch'], '/{id}', ['as' => 'update', 'uses' => 'ProductController@update']);
+        Route::get('/{id}/delete', ['as' => 'delete', 'uses' => 'ProductController@delete']);
 
     });
 
