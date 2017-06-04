@@ -53,11 +53,11 @@
                                             <option value="{{$value->id}}">{{ $value->email }}</option>
                                         @endforeach
                                     </select>
-                                    @if ($errors->has('user_id'))
+                                    @if ($errors->has('manager_id'))
                                         <div class="form-control-feedback">
                                             <i class="icon-notification2"></i>
                                         </div>
-                                        <div class="help-block">{{ $errors->first('user_id') }}</div>
+                                        <div class="help-block">{{ $errors->first('manager_id') }}</div>
                                     @endif
                                 </div>
 

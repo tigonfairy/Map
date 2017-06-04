@@ -3,8 +3,8 @@
 /public/storage
 /storage/*.key
 /public/files
-/vendor
+vendor
 storage
 bootstrap
-vendor
-/vendor/composer/autoload_classmap.php
+
+
