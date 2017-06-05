@@ -86,6 +86,15 @@ class MapController extends Controller
         return redirect()->route('Admin::map@listMapUser')->with('success','Tạo vùng kinh doanh thành công');
     }
 
+    public function listAgency(Request $request){
+        $agents = Agent::select('*');
+        if($request->input('q')){
+            $key = $request->input('q');
+            $agents = $agents->where('name','like','%'.$key.'%');
+        }
+        $agents = $agents->paginate(10);
+        return view('admin.map.listAgency',compact('agents'));
+    }
     public function addAgency(Request $request){
         $users = User::all();
         return view('admin.map.addAgency',compact('users'));
@@ -106,6 +115,10 @@ class MapController extends Controller
         $agent = Agent::create($data);
         return redirect()->route('Admin::map@listMapUser')->with('success','Tạo đại lý thành công');
     }
+
+
+
+
 
     public function addDataAgency(Request $request){
         $agents = Agent::all();
@@ -137,4 +150,6 @@ class MapController extends Controller
 
         return redirect()->route('Admin::map@listMapUser')->with('success','Tạo dữ liệu cho đại lý thành công');
     }
+
+
 }

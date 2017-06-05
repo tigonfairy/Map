@@ -16,5 +16,8 @@ return [
     'Map' => 'Bản Đồ',
     'Dashboard' => 'Quản trị',
     'Product' => 'Sản phẩm',
-
+    'managerMap' => 'Quản lý map',
+    'addLocation' => 'Thêm vùng địa lý',
+    'managerAgency' => 'Quản lý đại lý',
+    'listBusinessArea' => 'Danh sách vùng kinh doanh'
 ];
