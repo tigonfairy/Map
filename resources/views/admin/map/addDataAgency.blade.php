@@ -43,24 +43,6 @@
                                     @endif
                                 </div>
 
-                                <!---------- Type of Product ------------>
-                                    <div class="form-group {{ $errors->has('product_id') ? 'has-error has-feedback' : '' }}">
-                                        <label for="name" class="control-label text-semibold">Sản phẩm</label>
-                                        <i class="icon-question4 text-muted text-size-mini cursor-pointer js-help-icon" data-content="Sản phẩm"></i>
-                                        <select name="product_id" class="form-control">
-                                            <option value="">-- Chọn nhóm sản phẩm --</option>
-                                            @foreach($products as $key => $value)
-                                                <option value="{{ $value->id }}">{{ $value->name }}</option>
-                                            @endforeach
-                                        </select>
-                                        @if ($errors->has('product_id'))
-                                            <div class="form-control-feedback">
-                                                <i class="icon-notification2"></i>
-                                            </div>
-                                            <div class="help-block">{{ $errors->first('product_id') }}</div>
-                                        @endif
-                                    </div>
-
                                     <!---------- Thời gian ------------>
                                     <div class="form-group {{ $errors->has('month') ? 'has-error has-feedback' : '' }}">
                                         <label for="name" class="control-label text-semibold">Thời gian</label>
@@ -74,32 +56,30 @@
                                         @endif
                                     </div>
 
-                                <!------------------ Doanh số kế hoạch--------------->
-                                <div class="form-group {{ $errors->has('sales_plan') ? 'has-error has-feedback' : '' }}">
-                                    <label for="name" class="control-label text-semibold">Doanh số kế hoạch</label>
-                                    <i class="icon-question4 text-muted text-size-mini cursor-pointer js-help-icon" data-content="Doanh số kế hoạch"></i>
-                                    <input type="text"  id="sales_plan" name="sales_plan" class="form-control" value="{{ old('sales_plan') }}" />
-                                    @if ($errors->has('sales_plan'))
-                                        <div class="form-control-feedback">
-                                            <i class="icon-notification2"></i>
-                                        </div>
-                                        <div class="help-block">{{ $errors->first('sales_plan') }}</div>
-                                    @endif
-                                </div>
+                                <!---------- Type of Product - Doanh số kế hoạch - Doanh số thực tế ------------>
 
-                                    <!------------------ Doanh số thực tế--------------->
-                                    <div class="form-group {{ $errors->has('sales_real') ? 'has-error has-feedback' : '' }}">
-                                        <label for="name" class="control-label text-semibold">Doanh số kế hoạch</label>
-                                        <i class="icon-question4 text-muted text-size-mini cursor-pointer js-help-icon" data-content="Doanh số kế hoạch"></i>
-                                        <input type="text"  id="sales_plan" name="sales_real" class="form-control" value="{{ old('sales_real') }}" />
-                                        @if ($errors->has('sales_real'))
-                                            <div class="form-control-feedback">
-                                                <i class="icon-notification2"></i>
-                                            </div>
-                                            <div class="help-block">{{ $errors->first('sales_real') }}</div>
-                                        @endif
+                                    <div class="form-group">
+                                        <table class="table table-striped table-bordered" cellspacing="0" width="100%">
+                                            <thead>
+                                                <th>Id</th>
+                                                <th>Tên nhóm sản phẩm</th>
+                                                <th>Doanh số kế hoạch</th>
+                                                <th>Doanh số thực tế</th>
+                                            </thead>
+
+                                            <tbody>
+                                                @foreach($products as $key => $value)
+                                                    <tr>
+                                                        <input type="hidden" name="product_id[]" value="{{ $value->id }}" />
+                                                        <td>{{ $value->id }}</td>
+                                                        <td>{{  $value->name }}</td>
+                                                        <td><input type="text"  id="sales_plan" name="sales_plan[]" class="form-control" value="0" /></td>
+                                                        <td><input type="text"  id="sales_real" name="sales_real[]" class="form-control" value="0" /></td>
+                                                    </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
                                     </div>
-
 
                         <div class="text-right">
                             <button type="submit" class="btn btn-primary">{{ isset($user) ? 'Cập nhật' : 'Thêm mới' }}</button>

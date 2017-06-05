@@ -125,22 +125,29 @@ class MapController extends Controller
         $products = Product::all();
         return view('admin.map.addDataAgency',compact('agents', 'products'));
     }
-    public function addDataAgencyPost(Request $request){
-        $this->validate($request,[
+    public function addDataAgencyPost(){
+        $this->validate(request(),[
             'agent_id' => 'required',
-            'product_id' => 'required',
             'month' => 'required',
-            'sales_plan' => 'required',
-            'sales_real' => 'required',
         ],[
             'agent_id.required' => 'Vui lòng chọn đại lý',
-            'product_id.required' => 'Vui lòng chọn nhóm sản phẩm',
             'month.required' => 'Vui lòng chọn thời gian',
-            'sales_plan.required' => 'Vui lòng nhập doanh số kế hoạch',
-            'sales_real.required' => 'Vui lòng nhập doanh số thực tế',
         ]);
-        $data = $request->all();
-        SaleAgent::create($data);
+
+        $product_ids = request('product_id');
+        $sales_plan = request('sales_plan');
+        $sales_real = request('sales_real');
+
+        foreach ($product_ids as $key => $product_id) {
+            SaleAgent::create([
+                'agent_id' => request('agent_id'),
+                'product_id' => $product_id,
+                'month' => request('month'),
+                'sales_plan' => $sales_plan[$key] ? $sales_plan[$key] : 0,
+                'sales_real' => $sales_real[$key] ? $sales_real[$key] : 0,
+            ]);
+        }
+
         return redirect()->route('Admin::map@listMapUser')->with('success','Tạo dữ liệu cho đại lý thành công');
     }
 
