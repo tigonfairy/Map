@@ -15,5 +15,9 @@ return [
 
     'Map' => 'Map',
     'Dashboard' => 'Dashboard',
-    'Product' => 'Product'
+    'Product' => 'Product',
+    'managerMap' => 'Manager Map',
+    'addLocation' => 'Add Location',
+    'managerAgency' => 'Manager Agency',
+    'listBusinessArea' => 'List Business Area'
 ];

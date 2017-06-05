@@ -1,5 +1,4 @@
 .idea
-.env
 /public/storage
 /storage/*.key
 /public/files
@@ -7,4 +6,4 @@ vendor
 storage
 bootstrap
 
-
+/.env

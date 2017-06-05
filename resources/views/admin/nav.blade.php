@@ -19,14 +19,8 @@
                     <span></span>
                 </div>
             </li>
-            <!-- END SIDEBAR TOGGLER BUTTON -->
-            <!-- DOC: To remove the search box from the sidebar you just need to completely remove the below "sidebar-search-wrapper" LI element -->
             <li class="sidebar-search-wrapper">
-                <!-- BEGIN RESPONSIVE QUICK SEARCH FORM -->
-                <!-- DOC: Apply "sidebar-search-bordered" class the below search form to have bordered search box -->
-                <!-- DOC: Apply "sidebar-search-bordered sidebar-search-solid" class the below search form to have bordered & solid search box -->
 
-                <!-- END RESPONSIVE QUICK SEARCH FORM -->
             </li>
 
             <li class="nav-item">
@@ -47,7 +41,7 @@
                     <li class="nav-item  ">
                         <a href="{{route('Admin::map@index')}}" class="nav-link nav-toggle">
                             <i class="icon-settings"></i>
-                            <span class="title">Quản lý Map</span>
+                            <span class="title">{{ trans('home.managerMap') }}</span>
                             <span class="arrow"></span>
                         </a>
                     </li>
@@ -55,15 +49,22 @@
                     <li class="nav-item  ">
                         <a href="{{route('Admin::map@addMap')}}" class="nav-link nav-toggle">
                             <i class="icon-settings"></i>
-                            <span class="title">Thêm vùng địa lý</span>
+                            <span class="title">{{ trans('home.addLocation') }}</span>
                             <span class="arrow"></span>
                         </a>
                     </li>
 
                     <li class="nav-item  ">
+                        <a href="{{route('Admin::map@listAgency')}}" class="nav-link nav-toggle">
+                            <i class="icon-settings"></i>
+                            <span class="title">{{ trans('home.managerAgency') }}</span>
+                            <span class="arrow"></span>
+                        </a>
+                    </li>
+                    <li class="nav-item  ">
                         <a href="{{route('Admin::map@listMapUser')}}" class="nav-link nav-toggle">
                             <i class="icon-settings"></i>
-                            <span class="title">Danh sách vùng kinh doanh</span>
+                            <span class="title">{{ trans('home.listBusinessArea') }}</span>
                             <span class="arrow"></span>
                         </a>
                     </li>
