@@ -97,7 +97,14 @@ Route::group(['middleware' => ['auth','language'],
         Route::get('/{id}/edit', ['as' => 'edit', 'uses' => 'ProductController@edit']);
         Route::match(['put', 'patch'], '/{id}', ['as' => 'update', 'uses' => 'ProductController@update']);
         Route::get('/{id}/delete', ['as' => 'delete', 'uses' => 'ProductController@delete']);
+    });
 
+    Route::group([
+        'prefix' => 'logs',
+        'as' => 'log@',
+    ], function () {
+        Route::get('/datatables', ['as' => 'datatables', 'uses' => 'HistoryController@getDatatables']);
+        Route::get('/', ['as' => 'index', 'uses' => 'HistoryController@index']);
     });
 
 });

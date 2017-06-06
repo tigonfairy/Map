@@ -80,6 +80,16 @@
         .ui-datepicker-calendar {
             display: none !important;
         }
+        td.details-control {
+            background: url('/assets/images/details_open.png') no-repeat center center;
+            cursor: pointer;
+        }
+        tr.details td.details-control {
+            background: url('/assets/images/details_close.png') no-repeat center center;
+        }
+        tfoot {
+            display: table-header-group;
+        }
     </style>
 @stack('style_head')
 </head>
