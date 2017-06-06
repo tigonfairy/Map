@@ -11,9 +11,9 @@ class ApiController extends Controller
 
         $places = AddressGeojson::select('*');
         if($request->input('q')){
-            $places = $places->where('name','like','%'.$request->input('q').'%');
+            $places = $places->where('name','like','%'.$request->input('q').'%')->orWhere('slug','like','%'.$request->input('q').'%');
         }
-        $places = $places->limit(5)->get();
+        $places = $places->orderBy('id','desc')->limit(50)->get();
         return $places;
     }
 }
