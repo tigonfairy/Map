@@ -79,7 +79,15 @@
                 <div class="form-group {{ $errors->has('code') ? 'has-error has-feedback' : '' }}">
                   <label for="name" class="control-label text-semibold">Vị trí</label>
                   <i class="icon-question4 text-muted text-size-mini cursor-pointer js-help-icon" data-content="Vị trí"></i>
-                  <input type="text" id="position" name="position" class="form-control" value="{{ old('code') ?: @$user->position }}" />
+                  {{--<input type="text" id="position" name="position" class="form-control" value="{{ old('code') ?: @$user->position }}" />--}}
+                    <?php  $positions = config('map.positions')  ?>
+                  <select name="position" class="form-control">
+                    <option value="">-- Chọn vị trí --</option>
+                    @foreach($positions as $key => $value)
+                      <option value="{{ $key }}" {{ $key == @$user->position ? "selected=selected" : ""}}>{{ $value }}</option>
+                    @endforeach
+                  </select>
+
                   @if ($errors->has('position'))
                     <div class="form-control-feedback">
                       <i class="icon-notification2"></i>
