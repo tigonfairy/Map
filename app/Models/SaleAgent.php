@@ -28,6 +28,17 @@ class SaleAgent extends Model
 
         return Datatables::eloquent($model)
             ->filter(function ($query) {
+                if (request()->has('agent')) {
+                    $query->whereHas('agent', function($query)
+                    {
+                        $query->where('name', 'like' , '%'.request('agent').'%' );
+                    });
+                }
+
+                if (request()->has('month')) {
+                    $query->where('month', request('month') );
+                }
+
             })
             ->editColumn('agent', function ($model) {
                 return $model->agent ? $model->agent->name : '';

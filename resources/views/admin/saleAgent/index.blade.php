@@ -36,8 +36,8 @@
                 <tfoot>
                 <tr>
                     <th></th>
-                    <th></th>
-                    <th></th>
+                    <th><input type="text" class="form-control" name="db_agent_name" placeholder=""/></th>
+                    <th><input type="text" id="month" name = "db_month" class="form-control monthPicker" value="" /></th>
                     <th></th>
                 </tr>
                 </tfoot>
@@ -73,7 +73,8 @@
             ajax: {
                 url: '{!! route('Admin::saleAgent@datatables') !!}',
                 data: function (d) {
-
+                    d.agent = $('input[name=db_agent_name]').val();
+                    d.month = $('input[name=db_month]').val();
                 }
             },
             columns: [
@@ -84,52 +85,24 @@
             ]
         });
 
-        $('.input-daterange-datepicker').daterangepicker({
-            autoUpdateInput: false,
-            dateLimit: {
-                days: 60
-            },
-            showDropdowns: true,
-            showWeekNumbers: true,
-            timePicker: false,
-            timePickerIncrement: 1,
-            timePicker12Hour: true,
-            ranges: {
-                'Today': [moment(), moment()],
-                'Yesterday': [moment().subtract(1, 'days'), moment()],
-                'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-                'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-                'This Month': [moment().startOf('month'), moment().endOf('month')],
-                'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
-            },
-            opens: 'left',
-            drops: 'down',
-            buttonClasses: ['btn', 'btn-sm'],
-            applyClass: 'btn-default',
-            cancelClass: 'btn-white',
-            separator: ' to ',
-            locale: {
-                format: 'DD/MM/YYYY',
-                applyLabel: 'Submit',
-                cancelLabel: 'Clear',
-                fromLabel: 'From',
-                toLabel: 'To',
-                customRangeLabel: 'Custom',
-                daysOfWeek: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'],
-                monthNames: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
-                firstDay: 1
+        dt.columns().every( function () {
+            $( 'input', this.footer() ).on( 'keyup change', function () {
+                dt.draw();
+            } );
+        } );
+
+        $('.monthPicker').datepicker( {
+            changeMonth: true,
+            changeYear: true,
+            showButtonPanel: true,
+            dateFormat: 'mm-yy',
+            onClose: function(dateText, inst) {
+                var month = $("#ui-datepicker-div .ui-datepicker-month :selected").val();
+                var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val();
+                $(this).datepicker('setDate', new Date(year, month, 1));
+                dt.draw();
             }
         });
-
-        $('.input-daterange-datepicker').on('apply.daterangepicker', function (ev, picker) {
-            $(this).val(picker.startDate.format('DD/MM/YYYY') + ' - ' + picker.endDate.format('DD/MM/YYYY'));
-        });
-
-        $('.input-daterange-datepicker').on('cancel.daterangepicker', function (ev, picker) {
-            $(this).val('');
-        });
-
-
     } );
 
 
