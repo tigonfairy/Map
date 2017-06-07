@@ -136,4 +136,12 @@ Route::group(['middleware' => ['auth','language'],
         Route::get('/', ['as' => 'index', 'uses' => 'HistoryController@index']);
     });
 
+    Route::group([
+        'prefix' => 'configs',
+        'as' => 'config@',
+    ], function () {
+        Route::get('/', ['as' => 'index', 'uses' => 'ConfigController@index']);
+        Route::post('/store', ['as' => 'store', 'uses' => 'ConfigController@store']);
+    });
+
 });
