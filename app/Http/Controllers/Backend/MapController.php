@@ -13,7 +13,6 @@ use App\Http\Controllers\Controller;
 
 class MapController extends Controller
 {
-
     public function index()
     {
 
@@ -51,6 +50,7 @@ class MapController extends Controller
         $coordinates = json_encode($newCoordinates);
         AddressGeojson::create(['name' => $data['name'],'slug' => $slug, 'coordinates' => $coordinates]);
     }
+
     public function listMapUser(Request $request){
         $areas = Area::select('*');
         if($request->input('q')){
@@ -60,6 +60,7 @@ class MapController extends Controller
         $areas = $areas->paginate(10);
         return view('admin.map.listMapUser',compact('areas'));
     }
+
     public function mapUserDetail(Request $request,$id){
         $area = Area::findOrFail($id);
         $locations = $area->address;
@@ -95,10 +96,12 @@ class MapController extends Controller
         $agents = $agents->paginate(10);
         return view('admin.map.listAgency',compact('agents'));
     }
+
     public function addAgency(Request $request){
         $users = User::all();
         return view('admin.map.addAgency',compact('users'));
     }
+
     public function addMapAgencyPost(Request $request){
         $this->validate($request,[
             'manager_id' => 'required',
@@ -115,41 +118,4 @@ class MapController extends Controller
         $agent = Agent::create($data);
         return redirect()->route('Admin::map@listMapUser')->with('success','Tạo đại lý thành công');
     }
-
-
-
-
-
-    public function addDataAgency(Request $request){
-        $agents = Agent::all();
-        $products = Product::all();
-        return view('admin.map.addDataAgency',compact('agents', 'products'));
-    }
-    public function addDataAgencyPost(){
-        $this->validate(request(),[
-            'agent_id' => 'required',
-            'month' => 'required',
-        ],[
-            'agent_id.required' => 'Vui lòng chọn đại lý',
-            'month.required' => 'Vui lòng chọn thời gian',
-        ]);
-
-        $product_ids = request('product_id');
-        $sales_plan = request('sales_plan');
-        $sales_real = request('sales_real');
-
-        foreach ($product_ids as $key => $product_id) {
-            SaleAgent::create([
-                'agent_id' => request('agent_id'),
-                'product_id' => $product_id,
-                'month' => request('month'),
-                'sales_plan' => $sales_plan[$key] ? $sales_plan[$key] : 0,
-                'sales_real' => $sales_real[$key] ? $sales_real[$key] : 0,
-            ]);
-        }
-
-        return redirect()->route('Admin::map@listMapUser')->with('success','Tạo dữ liệu cho đại lý thành công');
-    }
-
-
 }
