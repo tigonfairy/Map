@@ -42,9 +42,7 @@
 @endsection
 @push('scripts_foot')
 <script src="/assets/pages/scripts/components-bootstrap-switch.min.js" type="text/javascript"></script>
-<script src="/js/FullScreenControl.js" type="text/javascript"></script>
-<script type="text/javascript"
-        src="https://maps.google.com/maps/api/js?key=AIzaSyDUMRn1pnBk97Zay94WiBbMgdVlBh_vwYs&libraries=drawing"></script>
+<script type="text/javascript" src="https://maps.google.com/maps/api/js?key=AIzaSyDUMRn1pnBk97Zay94WiBbMgdVlBh_vwYs&libraries=drawing"></script>
 <script type="text/javascript" src="/js/gmaps.js"></script>
 <script type="text/javascript" src="/js/prettify.js"></script>
 @endpush

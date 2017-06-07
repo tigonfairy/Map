@@ -113,7 +113,7 @@ class MapController extends Controller
         ]);
         $data = $request->all();
         $agent = Agent::create($data);
-        return redirect()->route('Admin::map@listMapUser')->with('success','Tạo đại lý thành công');
+        return redirect()->route('Admin::map@listAgency')->with('success','Tạo đại lý thành công');
     }
 
 
@@ -148,8 +148,12 @@ class MapController extends Controller
             ]);
         }
 
-        return redirect()->route('Admin::map@listMapUser')->with('success','Tạo dữ liệu cho đại lý thành công');
+        return redirect()->route('Admin::map@listAgency')->with('success','Tạo dữ liệu cho đại lý thành công');
     }
 
-
+    public function agentDetail(Request $request,$id){
+        $agent = Agent::find($id);
+        return view('admin.map.agentDetail',compact('agent'));
+//        dd($agent->product);
+    }
 }

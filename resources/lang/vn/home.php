@@ -19,5 +19,11 @@ return [
     'managerMap' => 'Quản lý map',
     'addLocation' => 'Thêm vùng địa lý',
     'managerAgency' => 'Quản lý đại lý',
-    'listBusinessArea' => 'Danh sách vùng kinh doanh'
+    'listBusinessArea' => 'Danh sách vùng kinh doanh',
+    'addProduct' => 'Thêm sản phẩm',
+    'listProduct' => 'Danh sách',
+    'managerAccount' => 'Quản lý tài khoản',
+    'listAccount' => 'Danh sách tài khoản',
+    'role' => 'Nhóm quyền',
+    'permission' => 'Quyền',
 ];

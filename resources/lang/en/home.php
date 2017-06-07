@@ -19,5 +19,11 @@ return [
     'managerMap' => 'Manager Map',
     'addLocation' => 'Add Location',
     'managerAgency' => 'Manager Agency',
-    'listBusinessArea' => 'List Business Area'
+    'listBusinessArea' => 'List Business Area',
+    'addProduct' => 'Add Product',
+    'listProduct' => 'List Product',
+    'managerAccount' => 'Manager Account',
+    'listAccount' => 'List Account',
+    'role' => 'Role',
+    'permission' => 'Permission',
 ];

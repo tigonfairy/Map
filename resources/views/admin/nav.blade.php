@@ -82,7 +82,7 @@
                     <li class="nav-item  ">
                         <a href="{{route('Admin::product@add')}}" class="nav-link nav-toggle">
                             <i class="icon-settings"></i>
-                            <span class="title">Thêm Sản Phẩm</span>
+                            <span class="title">{{ trans('home.addProduct') }}</span>
                             <span class="arrow"></span>
                         </a>
                     </li>
@@ -90,7 +90,7 @@
                     <li class="nav-item  ">
                         <a href="{{route('Admin::product@index')}}" class="nav-link nav-toggle">
                             <i class="icon-settings"></i>
-                            <span class="title">Danh Sách</span>
+                            <span class="title">{{ trans('home.listProduct') }}</span>
                             <span class="arrow"></span>
                         </a>
                     </li>
@@ -100,27 +100,27 @@
             <li class="nav-item">
                 <a href="javascript:;" class="nav-link nav-toggle">
                     <i class="icon-user"></i>
-                    <span class="title">Quản lý Tài Khoản</span>
+                    <span class="title">{{ trans('home.managerAccount') }}</span>
                     <span class="arrow"></span>
                 </a>
                 <ul class="sub-menu" >
                     <li class="nav-item  ">
                         <a href="{{route('Admin::user@index')}}" class="nav-link ">
                             <i class="icon-lock"></i>
-                            <span class="title">Danh sách tài khoản</span>
+                            <span class="title">{{ trans('home.listAccount') }}</span>
                         </a>
                     </li>
                     <li class="nav-item  ">
                         <a href="{{route('Admin::role@index')}}" class="nav-link" >
                             <i class="icon-lock"></i>
-                            <span class="title">Role</span>
+                            <span class="title">{{ trans('home.role') }}</span>
                         </a>
                     </li>
 
                     <li class="nav-item  ">
                         <a href="{{route('Admin::permission@index')}}" class="nav-link" >
                             <i class="icon-lock"></i>
-                            <span class="title">Permission</span>
+                            <span class="title">{{ trans('home.permission') }}</span>
                         </a>
                     </li>
 

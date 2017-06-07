@@ -12,7 +12,17 @@ Route::group(['middleware' => ['auth','language'],
     'namespace' => 'Backend',
     'as' => 'Admin::'
 ],function() {
-
+    Route::group([
+        'prefix' => 'apis',
+        'as' => 'Api::',
+    ], function () {
+        Route::group([
+            'prefix' => 'area',
+            'as' => 'area@',
+        ], function () {
+            Route::get('/get-list-areas', ['as' => 'getListAreas', 'uses' => 'ApiController@getListAreas']);
+        });
+    });
 
     Route::get('/', ['as' => 'dashboard', 'uses' => 'HomeController@dashboard']);
     Route::get('/admin', ['as' => 'dashboard', 'uses' => 'HomeController@dashboard']);
@@ -72,19 +82,10 @@ Route::group(['middleware' => ['auth','language'],
         Route::post('/add-agency', ['as' => 'addMapAgencyPost', 'uses' => 'MapController@addMapAgencyPost']);
         Route::get('/add-data-agency', ['as' => 'addDataAgency', 'uses' => 'MapController@addDataAgency']);
         Route::post('/add-data-agency', ['as' => 'addDataAgencyPost', 'uses' => 'MapController@addDataAgencyPost']);
+        Route::get('/agent-detail/{id}',[ 'as' => 'agentDetail','uses' => 'MapController@agentDetail']);
     });
 
-    Route::group([
-        'prefix' => 'apis',
-        'as' => 'Api::',
-    ], function () {
-        Route::group([
-            'prefix' => 'area',
-            'as' => 'area@',
-        ], function () {
-            Route::get('/get-list-areas', ['as' => 'getListAreas', 'uses' => 'ApiController@getListAreas']);
-        });
-    });
+
 
     Route::group([
         'prefix' => 'products',

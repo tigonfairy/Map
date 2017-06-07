@@ -134,9 +134,6 @@
                 lat: ll.lat,
                 lng: ll.lng,
                 title: 'Lima',
-                click: function(e) {
-                    alert('You clicked in this marker');
-                }
             });
             $('#lat').val(ll.lat);
             $('#lng').val(ll.lng);

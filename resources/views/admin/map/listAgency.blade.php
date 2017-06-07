@@ -42,7 +42,7 @@
                 <tr>
                     <th>Name</th>
                     <th>Quản lý</th>
-                    {{--<th>Action</th>--}}
+                    <th>Action</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -50,10 +50,10 @@
                     <tr role="row" id="">
                         <td>{{$agent->name}}</td>
                         <td>{{$agent->user->email}}</td>
-                        {{--<td><a href="{{route('Admin::map@mapUserDetail',[$agent->id])}}">--}}
-                                {{--<button type="button" class="btn btn-info btn-xs">Chi tiết</button></a>--}}
+                        <td><a href="{{route('Admin::map@agentDetail',[$agent->id])}}">
+                                <button type="button" class="btn btn-info btn-xs">Chi tiết</button></a>
 
-                        {{--</td>--}}
+                        </td>
                     </tr>
                 @endforeach
                 </tbody>
