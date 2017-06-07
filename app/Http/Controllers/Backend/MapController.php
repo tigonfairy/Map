@@ -13,7 +13,6 @@ use App\Http\Controllers\Controller;
 
 class MapController extends Controller
 {
-
     public function index()
     {
 
@@ -51,6 +50,7 @@ class MapController extends Controller
         $coordinates = json_encode($newCoordinates);
         AddressGeojson::create(['name' => $data['name'],'slug' => $slug, 'coordinates' => $coordinates]);
     }
+
     public function listMapUser(Request $request){
         $areas = Area::select('*');
         if($request->input('q')){
@@ -60,6 +60,7 @@ class MapController extends Controller
         $areas = $areas->paginate(10);
         return view('admin.map.listMapUser',compact('areas'));
     }
+
     public function mapUserDetail(Request $request,$id){
         $area = Area::findOrFail($id);
         $locations = $area->address;
@@ -95,10 +96,12 @@ class MapController extends Controller
         $agents = $agents->paginate(10);
         return view('admin.map.listAgency',compact('agents'));
     }
+
     public function addAgency(Request $request){
         $users = User::all();
         return view('admin.map.addAgency',compact('users'));
     }
+
     public function addMapAgencyPost(Request $request){
         $this->validate($request,[
             'manager_id' => 'required',
@@ -115,6 +118,7 @@ class MapController extends Controller
         $agent = Agent::create($data);
         return redirect()->route('Admin::map@listAgency')->with('success','Tạo đại lý thành công');
     }
+<<<<<<< HEAD
 
 
 
@@ -156,4 +160,6 @@ class MapController extends Controller
         return view('admin.map.agentDetail',compact('agent'));
 //        dd($agent->product);
     }
+=======
+>>>>>>> b0e8d26e9600bfb04b906fb27913b554e821d8e7
 }

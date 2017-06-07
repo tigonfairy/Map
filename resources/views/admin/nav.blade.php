@@ -100,7 +100,37 @@
             <li class="nav-item">
                 <a href="javascript:;" class="nav-link nav-toggle">
                     <i class="icon-user"></i>
+<<<<<<< HEAD
                     <span class="title">{{ trans('home.managerAccount') }}</span>
+=======
+                    <span class="title">Doanh số</span>
+                    <span class="arrow"></span>
+                </a>
+                <ul class="sub-menu" >
+
+                    <li class="nav-item  ">
+                        <a href="{{route('Admin::saleAgent@add')}}" class="nav-link nav-toggle">
+                            <i class="icon-settings"></i>
+                            <span class="title">Thêm Doanh Số cho Đại lý</span>
+                            <span class="arrow"></span>
+                        </a>
+                    </li>
+
+                    <li class="nav-item  ">
+                        <a href="{{route('Admin::saleAgent@index')}}" class="nav-link nav-toggle">
+                            <i class="icon-settings"></i>
+                            <span class="title">Danh Sách</span>
+                            <span class="arrow"></span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
+            <li class="nav-item">
+                <a href="javascript:;" class="nav-link nav-toggle">
+                    <i class="icon-user"></i>
+                    <span class="title">Quản lý Tài Khoản</span>
+>>>>>>> b0e8d26e9600bfb04b906fb27913b554e821d8e7
                     <span class="arrow"></span>
                 </a>
                 <ul class="sub-menu" >
