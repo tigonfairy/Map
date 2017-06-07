@@ -118,7 +118,6 @@ class MapController extends Controller
         $agent = Agent::create($data);
         return redirect()->route('Admin::map@listAgency')->with('success','Tạo đại lý thành công');
     }
-<<<<<<< HEAD
 
 
 
@@ -158,8 +157,7 @@ class MapController extends Controller
     public function agentDetail(Request $request,$id){
         $agent = Agent::find($id);
         return view('admin.map.agentDetail',compact('agent'));
-//        dd($agent->product);
+
     }
-=======
->>>>>>> b0e8d26e9600bfb04b906fb27913b554e821d8e7
+
 }

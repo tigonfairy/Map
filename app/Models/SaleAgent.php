@@ -10,11 +10,13 @@ class SaleAgent extends Model
 {
     protected $table = 'sale_agents';
     protected $fillable = ['id', 'agent_id', 'product_id', 'month', 'sales_plan', 'sales_real'];
-<<<<<<< HEAD
-    public function product(){
-        return $this->hasOne(Product::class,'id','product_id');
-=======
 
+
+    public function product()
+    {
+        return $this->hasOne(Product::class, 'id', 'product_id');
+
+    }
     public function agent() {
         return $this->belongsTo(Agent::class, 'agent_id');
     }
@@ -85,6 +87,6 @@ class SaleAgent extends Model
                 'current_data'      => json_encode($saleAgent->getOriginal()),
             ]);
         });
->>>>>>> b0e8d26e9600bfb04b906fb27913b554e821d8e7
+
     }
 }

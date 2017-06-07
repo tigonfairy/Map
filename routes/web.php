@@ -1,6 +1,5 @@
 <?php
 
-
 Route::get('language/{locale}', function ($locale) {
     Session::put('locale', $locale);
     return redirect()->back();
@@ -80,15 +79,12 @@ Route::group(['middleware' => ['auth','language'],
         Route::post('/add-map-user', ['as' => 'addMapUserPost', 'uses' => 'MapController@addMapUserPost']);
         Route::get('/add-agency', ['as' => 'addAgency', 'uses' => 'MapController@addAgency']);
         Route::post('/add-agency', ['as' => 'addMapAgencyPost', 'uses' => 'MapController@addMapAgencyPost']);
-<<<<<<< HEAD
+
         Route::get('/add-data-agency', ['as' => 'addDataAgency', 'uses' => 'MapController@addDataAgency']);
         Route::post('/add-data-agency', ['as' => 'addDataAgencyPost', 'uses' => 'MapController@addDataAgencyPost']);
         Route::get('/agent-detail/{id}',[ 'as' => 'agentDetail','uses' => 'MapController@agentDetail']);
     });
 
-
-=======
-    });
 
     Route::group([
         'prefix' => 'saleAgents',
@@ -117,7 +113,7 @@ Route::group(['middleware' => ['auth','language'],
             Route::get('/get-list-areas', ['as' => 'getListAreas', 'uses' => 'ApiController@getListAreas']);
         });
     });
->>>>>>> b0e8d26e9600bfb04b906fb27913b554e821d8e7
+
 
     Route::group([
         'prefix' => 'products',

@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Backend;
 
 
 use App\Models\Agent;
-use App\Models\product;
+use App\Models\Product;
 use App\Models\SaleAgent;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
