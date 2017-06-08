@@ -187,7 +187,8 @@ return [
         App\Providers\AuthServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
-        Yajra\Datatables\DatatablesServiceProvider::class
+        Yajra\Datatables\DatatablesServiceProvider::class,
+        Greggilbert\Recaptcha\RecaptchaServiceProvider::class,
 
     ],
 
@@ -241,6 +242,7 @@ return [
         'Excel' => Maatwebsite\Excel\Facades\Excel::class,
         'Socialite' => Laravel\Socialite\Facades\Socialite::class,
         'Datatables' => Yajra\Datatables\Facades\Datatables::class,
+        'Recaptcha' => Greggilbert\Recaptcha\Facades\Recaptcha::class,
     ],
 
 ];

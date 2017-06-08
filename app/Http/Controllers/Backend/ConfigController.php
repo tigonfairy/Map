@@ -11,7 +11,7 @@ class ConfigController extends Controller
     {
         $config = [];
         if (file_exists(public_path().'/config/config.json')) {
-            $config = $features = json_decode(file_get_contents(public_path().'/config/config.json'),true);
+            $config = json_decode(file_get_contents(public_path().'/config/config.json'),true);
         }
         return view('admin.config.index', compact('config'));
     }

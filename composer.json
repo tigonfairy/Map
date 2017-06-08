@@ -20,7 +20,8 @@
         "elasticquent/elasticquent": "dev-master",
         "fabpot/goutte" : "dev-master",
         "yajra/laravel-datatables-oracle":"6.*",
-        "doctrine/dbal": "v2.4.2"
+        "doctrine/dbal": "v2.4.2",
+        "greggilbert/recaptcha": "dev-master"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

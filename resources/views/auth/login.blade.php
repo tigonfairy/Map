@@ -72,14 +72,21 @@
               @endif</div>
           </div>
           <div class="row">
-            <div class="col-sm-2 text-right">
+            <div class="col-xs-6">
               <input type="checkbox" name="remember" />
               <span> Remember </span>
+              <button class="btn blue" type="submit" style="float: right">Đăng Nhập</button>
             </div>
-            <div class="col-sm-8 text-right">
-
-              <button class="btn blue" type="submit">Đăng Nhập</button>
+            @if (isset($config['recaptcha']) && $config['recaptcha'] == 1)
+            <div class="col-xs-6">
+              {!! Recaptcha::render() !!}
+              @if ($errors->has('g-recaptcha-response'))
+                <span class="help-block">
+                  <strong>{{ $errors->first('g-recaptcha-response') }}</strong>
+                </span>
+              @endif</div>
             </div>
+            @endif
           </div>
         </form>
         <!-- END FORGOT PASSWORD FORM -->
@@ -119,10 +126,9 @@
 <script src="../assets/global/plugins/jquery-validation/js/additional-methods.min.js" type="text/javascript"></script>
 <script src="../assets/global/plugins/select2/js/select2.full.min.js" type="text/javascript"></script>
 <script src="../assets/global/plugins/backstretch/jquery.backstretch.min.js" type="text/javascript"></script>
-
 <script src="../assets/global/scripts/app.min.js" type="text/javascript"></script>
-
 <script src="../assets/pages/scripts/login-5.min.js" type="text/javascript"></script>
+<script src='https://www.google.com/recaptcha/api.js'></script>
 
 
 </body>
