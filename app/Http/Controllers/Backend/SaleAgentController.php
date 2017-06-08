@@ -14,7 +14,6 @@ class SaleAgentController extends Controller
 
     public function index(Request $request)
     {
-
         if (auth()->user()->cannot('list-saleAgent')) {
             abort(403);
         }

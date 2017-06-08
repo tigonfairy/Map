@@ -104,14 +104,6 @@
                             <span class="arrow"></span>
                         </a>
                     </li>
-
-                    <li class="nav-item  ">
-                        <a href="{{route('Admin::saleAgent@index')}}" class="nav-link nav-toggle">
-                            <i class="icon-settings"></i>
-                            <span class="title">Danh Sách</span>
-                            <span class="arrow"></span>
-                        </a>
-                    </li>
                 </ul>
             </li>
 
