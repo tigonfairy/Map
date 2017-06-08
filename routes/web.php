@@ -71,14 +71,21 @@ Route::group(['middleware' => ['auth','language'],
     ], function () {
         Route::get('/', ['as' => 'index', 'uses' => 'MapController@index']);
         Route::get('/add-map', ['as' => 'addMap', 'uses' => 'MapController@addMap']);
+        Route::get('/add-map', ['as' => 'addMap', 'uses' => 'MapController@addMap']);
         Route::post('/add-map', ['as' => 'addMapPost', 'uses' => 'MapController@addMapPost']);
         Route::get('/list-map-user',[ 'as' => 'listMapUser','uses' => 'MapController@listMapUser']);
         Route::get('/list-agency',[ 'as' => 'listAgency','uses' => 'MapController@listAgency']);
         Route::get('/map-user-detail/{id}',[ 'as' => 'mapUserDetail','uses' => 'MapController@mapUserDetail']);
+        Route::get('/map-user-delete/{id}',[ 'as' => 'mapUserDelete','uses' => 'MapController@mapUserDelete']);
         Route::get('/add-map-user', ['as' => 'addMapUser', 'uses' => 'MapController@addMapUser']);
         Route::post('/add-map-user', ['as' => 'addMapUserPost', 'uses' => 'MapController@addMapUserPost']);
+        Route::get('/{id}/edit-map-user', ['as' => 'editMapUser', 'uses' => 'MapController@editMapUser']);
+        Route::post('/{id}/edit-map-user', ['as' => 'editMapUser', 'uses' => 'MapController@editMapUserPost']);
+
+
         Route::get('/add-agency', ['as' => 'addAgency', 'uses' => 'MapController@addAgency']);
         Route::post('/add-agency', ['as' => 'addMapAgencyPost', 'uses' => 'MapController@addMapAgencyPost']);
+        Route::get('/delete-agency/{id}', ['as' => 'agentDelete', 'uses' => 'MapController@agentDelete']);
 
         Route::get('/add-data-agency', ['as' => 'addDataAgency', 'uses' => 'MapController@addDataAgency']);
         Route::post('/add-data-agency', ['as' => 'addDataAgencyPost', 'uses' => 'MapController@addDataAgencyPost']);

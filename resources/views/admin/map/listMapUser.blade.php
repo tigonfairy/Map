@@ -53,8 +53,13 @@
                         <td>{{$area->name}}</td>
                         <td>{{$area->border_color}} <span style="display:inline-block;width: 20px;height:20px;background:{{$area->border_color}}"></span></td>
                         <td>{{$area->background_color}} <span style="display:inline-block;width: 20px;height:20px;background:{{$area->background_color}}"></span></td>
-                        <td><a href="{{route('Admin::map@mapUserDetail',[$area->id])}}">
+                        <td>
+                            <a href="{{route('Admin::map@mapUserDetail',[$area->id])}}">
                                 <button type="button" class="btn btn-info btn-xs">Chi tiết</button></a>
+                    <a href="{{route('Admin::map@editMapUser',[$area->id])}}">
+                                <button type="button" class="btn btn-warning btn-xs">Sửa</button></a>
+
+                            <a onclick="return xoaCat();" href="{{route('Admin::map@mapUserDelete',[$area->id])}}" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-remove"></span> Del</a>
                         </td>
                     </tr>
                 @endforeach

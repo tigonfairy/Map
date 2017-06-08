@@ -52,7 +52,7 @@
                         <td>{{$agent->user->email}}</td>
                         <td><a href="{{route('Admin::map@agentDetail',[$agent->id])}}">
                                 <button type="button" class="btn btn-info btn-xs">Chi tiết</button></a>
-
+                            <a onclick="return xoaCat();" href="{{route('Admin::map@agentDelete',[$agent->id])}}" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-remove"></span> Del</a>
                         </td>
                     </tr>
                 @endforeach

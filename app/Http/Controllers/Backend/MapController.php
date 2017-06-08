@@ -49,8 +49,31 @@ class MapController extends Controller
         }
         $coordinates = json_encode($newCoordinates);
         AddressGeojson::create(['name' => $data['name'],'slug' => $slug, 'coordinates' => $coordinates]);
+        return redirect()->back()->with('success','Tạo vùng địa lý thành công');
     }
+    public function editMapUser(Request $request,$id){
+        $area = Area::findOrFail($id);
+        $users = User::all();
+        $areaAddress =  $area->address;
+        return view('admin.map.addMapUser',compact('users','area','areaAddress'));
+    }
+    public function editMapUserPost(Request $request,$id){
+        $area = Area::findOrFail($id);
+        $this->validate($request,[
+            'manager_id' => 'required',
+            'place' => 'required'
+        ],[
+            'manager_id.required' => 'Vui lòng chọn nhân viên quản lý',
+            'place.required' => 'Vui lòng chọn vùng quản lý'
+        ]);
+        $data=$request->all();
+        $area->update($data);
+        if($data['place']){
+            $area->address()->sync($data['place']);
+        }
+        return redirect()->route('Admin::map@listMapUser')->with('success','Sửa vùng kinh doanh thành công');
 
+    }
     public function listMapUser(Request $request){
         $areas = Area::select('*');
         if($request->input('q')){
@@ -115,12 +138,9 @@ class MapController extends Controller
             'lng.required' => 'Vui lòng chọn đại lý'
         ]);
         $data = $request->all();
-        $agent = Agent::create($data);
+        Agent::create($data);
         return redirect()->route('Admin::map@listAgency')->with('success','Tạo đại lý thành công');
     }
-
-
-
 
 
     public function addDataAgency(Request $request){
@@ -159,5 +179,27 @@ class MapController extends Controller
         return view('admin.map.agentDetail',compact('agent'));
 
     }
+    public function mapUserDelete(Request $request,$id){
 
+        $area = Area::find($id);
+        if($area){
+            $area->address()->sync([]);
+            $area->delete();
+            return redirect()->back()->with('success','Xóa thành công!!');
+        }else{
+            return redirect()->back()->with('error','Không tồn tại !!');
+        }
+
+    }
+    public function agentDelete(Request $request,$id){
+        $agent = Agent::find($id);
+        if($agent){
+            SaleAgent::where('agent_id',$id)->detete();
+            $agent->delete();
+            return redirect()->back()->with('success','Xóa thành công!!');
+        }else{
+            return redirect()->back()->with('error','Không tồn tại !!');
+        }
+
+    }
 }

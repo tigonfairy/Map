@@ -4,5 +4,4 @@
 /public/files
 vendor
 storage
-bootstrap
 /.env

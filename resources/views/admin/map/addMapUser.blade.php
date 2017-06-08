@@ -5,7 +5,7 @@
     <div class="page-header">
         <div class="page-header-content">
             <div class="page-title">
-                <h2>Tạo vùng quản lý theo nhân viên</h2>
+                <h2>{{(isset($area)? 'Sửa vùng quản lý :'.$area->name : ' Tạo vùng quản lý theo nhân viên')}}</h2>
             </div>
 
         </div>
@@ -19,21 +19,23 @@
         <div class="content-wrapper">
             <div class="row">
                 <div class="col-md-offset-2 col-md-8">
-                    @if (session('success'))
-                        <div class="alert bg-success alert-styled-left">
-                            <button type="button" class="close" data-dismiss="alert"><span>×</span><span
-                                        class="sr-only">Close</span></button>
-                            {{ session('success') }}
-                        </div>
-                    @endif
+                    @include('admin.flash')
                     <div class="panel panel-flat">
                         <div class="panel-body">
-                            <form method="POST" action="{{route('Admin::map@addMapUserPost')}}">
+                            <form method="POST"
+                                  @if(isset($area))
+                                  action="{{route('Admin::map@editMapUser',['id' => $area->id])}}"
+                                          @else
+                                  action="{{route('Admin::map@addMapUserPost')}}"
+                                          @endif
+
+
+                            >
                             {{ csrf_field() }}
                                 <div class="form-group {{ $errors->has('name') ? 'has-error has-feedback' : '' }}">
                                     <label for="name" class="control-label text-semibold">Tên</label>
                                     <i class="icon-question4 text-muted text-size-mini cursor-pointer js-help-icon" data-content="Tên của vùng"></i>
-                                    <input type="text" id="name" name="name" class="form-control" value="{{ old('name') ?: @$permission->id }}" />
+                                    <input type="text" id="name" name="name" class="form-control" value="{{ old('name') ?: @$area->name }}" />
                                     @if ($errors->has('name'))
                                         <div class="form-control-feedback">
                                             <i class="icon-notification2"></i>
@@ -50,7 +52,7 @@
                                     <select name="manager_id" class="users">
                                         <option value="">-- Chọn quản lý --</option>
                                         @foreach($users as $key => $value)
-                                            <option value="{{$value->id}}">{{ $value->email }}</option>
+                                            <option value="{{$value->id}}" @if( isset($area) and $area->manager_id == $value->id) selected @endif>{{ $value->email }}</option>
                                         @endforeach
                                     </select>
                                     @if ($errors->has('manager_id'))
@@ -66,12 +68,14 @@
                                     <label for="name" class="control-label text-semibold">Vùng quản lý</label>
                                     <i class="icon-question4 text-muted text-size-mini cursor-pointer js-help-icon"
                                        data-content="Vùng quản lý"></i>
+
                                     <select name="place[]" id="locations" class="places" multiple style="width:100%">
-                                        {{--<option value="">-- Chọn vùng quản lý --</option>--}}
-                                        {{--@foreach($places as $key => $value)--}}
-                                            {{--<option data-coordinate="{{ $value->coordinates }}" id="{{$value->id}}"--}}
-                                                    {{--value="{{ $value->id }}">{{ $value->name }}</option>--}}
-                                        {{--@endforeach--}}
+                                        @if(isset($areaAddress) )
+                                            @foreach($areaAddress as $address)
+                                                <option data-coordinates="{{ $address->coordinates }}" id="{{$address->id}}"
+                                                        value="{{ $address->id }}" selected>{{ $address->name }}</option>
+                                                @endforeach
+                                            @endif
                                     </select>
                                     @if ($errors->has('place'))
                                         <div class="form-control-feedback">
@@ -92,13 +96,13 @@
                                     <div class="form-group">
                                         <label class="control-label col-md-3">Màu nền</label>
                                         <div class="col-md-6">
-                                            <div class="input-group color colorpicker-default" data-color="#3865a8"
+                                            <div class="input-group color colorpicker-default" data-color="{{isset($area) ? $area->background_color : '#3865a8'}}"
                                                  data-color-format="rgba">
-                                                <input type="text" class="form-control" value="#3865a8"
+                                                <input type="text" class="form-control" value="{{isset($area) ? $area->background_color : '#3865a8'}}"
                                                        name="background_color" >
                                                 <span class="input-group-btn">
                                                     <button class="btn default" type="button"><i
-                                                                style="background-color: #3865a8;"></i>&nbsp;</button>
+                                                                style="background-color: {{isset($area) ? $area->background_color : '#3865a8'}};"></i>&nbsp;</button>
                                                 </span>
                                             </div>
                                         </div>
@@ -108,13 +112,13 @@
                                     <div class="form-group">
                                         <label class="control-label col-md-3">Màu của border</label>
                                         <div class="col-md-6">
-                                            <div class="input-group color colorpicker-default" data-color="#3865a8"
+                                            <div class="input-group color colorpicker-default" data-color="{{isset($area) ? $area->border_color : '#3865a8'}}"
                                                  data-color-format="rgba">
-                                                <input type="text" class="form-control" value="#3865a8"
+                                                <input type="text" class="form-control" value="{{isset($area) ? $area->border_color : '#3865a8'}}"
                                                        name="border_color" >
                                                 <span class="input-group-btn">
                                                     <button class="btn default" type="button"><i
-                                                                style="background-color: #3865a8;"></i>&nbsp;</button>
+                                                                style="background-color: {{isset($area) ? $area->border_color : '#3865a8'}};"></i>&nbsp;</button>
                                                 </span>
                                             </div>
                                         </div>
@@ -123,7 +127,7 @@
 
                                 <div class="row" style="margin-top: 10px">
                                     <div class="text-right">
-                                        <button type="submit" class="btn btn-primary">Thêm mới</button>
+                                        <button type="submit" class="btn btn-primary">{{isset($area) ? 'Cập nhật' : 'Thêm mới'}}</button>
                                     </div>
                                 </div>
 
@@ -201,7 +205,45 @@
             height: '500px',
             zoom: 11
         });
-        $('#locations').on("select2:select", function (e) {
+        @if(isset($areaAddress))
+            @foreach($areaAddress as $address)
+        var coordinate = JSON.parse("{{$address->coordinates}}");
+        if (coordinate) {
+            var bounds = new google.maps.LatLngBounds();
+            for (i = 0; i < coordinate.length; i++) {
+                var c = coordinate[i];
+                bounds.extend(new google.maps.LatLng(c[0], c[1]));
+            }
+            var path = coordinate;
+            map.setCenter(bounds.getCenter().lat(), bounds.getCenter().lng());
+            var infoWindow = new google.maps.InfoWindow({
+                content: 'you clicked a polyline'
+            });
+            polygon = map.drawPolygon({
+                paths: path,
+                strokeColor: '#333',
+                strokeOpacity: 0.5,
+                strokeWeight: 1,
+                fillColor: '#333',
+                fillOpacity: 0.6,
+                mouseover: function (clickEvent) {
+                    var position = clickEvent.latLng;
+                    infoWindow.setPosition(position);
+                    infoWindow.open(map.map);
+                },
+                mouseout: function (clickEvent) {
+                    if (infoWindow) {
+                        infoWindow.close();
+                    }
+                }
+            });
+
+            polygonArray["{{$address->id}}"] = polygon;
+        }
+            @endforeach
+    @endif
+
+$('#locations').on("select2:select", function (e) {
             var id = e.params.data.id;
             var coordinates = e.params.data.coordinates;
             var coordinate = JSON.parse(coordinates);
@@ -239,8 +281,12 @@
             }
         });
         $('#locations').on("select2:unselect", function (e) {
+
             var id = e.params.data.id;
             var coordinates = e.params.data.coordinates;
+           if(coordinates == undefined){
+               var coordinates = e.params.data.element.attributes.getNamedItem('data-coordinates').value;
+           }
             var coordinate = JSON.parse(coordinates);
             if (coordinate) {
                 map.removePolygon(polygonArray[id]);
