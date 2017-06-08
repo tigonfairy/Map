@@ -35,7 +35,7 @@
                                 <div class="form-group {{ $errors->has('name') ? 'has-error has-feedback' : '' }}">
                                     <label for="name" class="control-label text-semibold">Tên</label>
                                     <i class="icon-question4 text-muted text-size-mini cursor-pointer js-help-icon" data-content="Tên của vùng"></i>
-                                    <input type="text" id="name" name="name" class="form-control" value="{{ old('name') ?: @$area->name }}" />
+                                    <input type="text" id="name" name="name" class="form-control" value="{{(isset($area) ? @$area->name : old('name'))}}" />
                                     @if ($errors->has('name'))
                                         <div class="form-control-feedback">
                                             <i class="icon-notification2"></i>
@@ -52,7 +52,7 @@
                                     <select name="manager_id" class="users">
                                         <option value="">-- Chọn quản lý --</option>
                                         @foreach($users as $key => $value)
-                                            <option value="{{$value->id}}" @if( isset($area) and $area->manager_id == $value->id) selected @endif>{{ $value->email }}</option>
+                                            <option value="{{$value->id}}"  @if( isset($area) and $area->manager_id == $value->id) selected  @elseif(old('manager_id') == $value->id) selected @endif >{{ $value->email }}</option>
                                         @endforeach
                                     </select>
                                     @if ($errors->has('manager_id'))
