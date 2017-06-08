@@ -189,6 +189,32 @@ class MapController extends Controller
 
     }
 
+    public function editAgent(Request $request,$id){
+        $agent = Agent::findOrFail($id);
+        $users = User::all();
+        return view('admin.map.addAgency',compact('users','agent'));
+
+    }
+
+    public function editAgentPost(Request $request,$id){
+        $data = $request->all();
+        $this->validate($request,[
+            'manager_id' => 'required',
+            'name' => 'required',
+            'lat' => 'required',
+            'lng' => 'required'
+        ],[
+            'manager_id.required' => 'Vui lòng chọn nhân viên quản lý',
+            'name.required' => 'Vui lòng nhập tên cho đại lý',
+            'lat.required' => 'Vui lòng chọn đại lý',
+            'lng.required' => 'Vui lòng chọn đại lý'
+        ]);
+        $agent = Agent::findOrFail($id);
+
+        $agent->update($data);
+        return redirect()->route('Admin::map@listAgency')->with('success','Sửa đại lý thành công');
+    }
+
     public function mapUserDelete(Request $request,$id){
 
         $area = Area::find($id);

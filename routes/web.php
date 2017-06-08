@@ -80,11 +80,14 @@ Route::group(['middleware' => ['auth','language'],
         Route::get('/add-map-user', ['as' => 'addMapUser', 'uses' => 'MapController@addMapUser']);
         Route::post('/add-map-user', ['as' => 'addMapUserPost', 'uses' => 'MapController@addMapUserPost']);
         Route::get('/{id}/edit-map-user', ['as' => 'editMapUser', 'uses' => 'MapController@editMapUser']);
+
         Route::post('/{id}/edit-map-user', ['as' => 'editMapUser', 'uses' => 'MapController@editMapUserPost']);
 
 
         Route::get('/add-agency', ['as' => 'addAgency', 'uses' => 'MapController@addAgency']);
         Route::post('/add-agency', ['as' => 'addMapAgencyPost', 'uses' => 'MapController@addMapAgencyPost']);
+        Route::get('/{id}/edit-agent', ['as' => 'editAgent', 'uses' => 'MapController@editAgent']);
+        Route::post('/{id}/edit-agent', ['as' => 'editAgent', 'uses' => 'MapController@editAgentPost']);
         Route::get('/delete-agency/{id}', ['as' => 'agentDelete', 'uses' => 'MapController@agentDelete']);
 
         Route::get('/add-data-agency', ['as' => 'addDataAgency', 'uses' => 'MapController@addDataAgency']);

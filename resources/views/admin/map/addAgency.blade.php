@@ -5,7 +5,7 @@
     <div class="page-header">
         <div class="page-header-content">
             <div class="page-title">
-                <h2>Tạo đại lý</h2>
+                <h2> {{(isset($agent) ? "Sửa đại lý :".$agent->name : 'Tạo đại lý' )}}</h2>
             </div>
 
         </div>
@@ -45,12 +45,20 @@
                     </div>
                 </div>
                 <div class="col-md-5">
-                    <form action="{{route('Admin::map@addMapAgencyPost')}}" method="POST">
+                    <form
+                            @if(isset($agent))
+                            action="{{route('Admin::map@editAgent',['id' => $agent->id])}}"
+                            @else
+                            action="{{route('Admin::map@addMapUserPost')}}"
+                            @endif
+
+
+                            method="POST">
                         {{ csrf_field() }}
                     <div class="form-group">
                         <label class="col-md-3 control-label">Tên đại lý</label>
                         <div class="col-md-9">
-                            <input type="text" class="form-control name" name="name" value="{{old('name')}}" placeholder="Nhập tên đại lý">
+                            <input type="text" class="form-control name" name="name" value="{{(isset($agent) ? @$agent->name : old('name'))}}" placeholder="Nhập tên đại lý">
                         </div>
                         @if ($errors->has('name'))
                             <div class="form-control-feedback">
@@ -58,8 +66,8 @@
                             </div>
                             <div class="help-block">{{ $errors->first('name') }}</div>
                         @endif
-                        <input type="hidden" class="form-control " id="lat" name="lat" value="{{old('lat')}}">
-                        <input type="hidden" class="form-control " id="lng" name="lng" value="{{old('lng')}}">
+                        <input type="hidden" class="form-control " id="lat" name="lat" value="{{(isset($agent) ? @$agent->lat : old('lat'))}}">
+                        <input type="hidden" class="form-control " id="lng" name="lng" value="{{(isset($agent) ? @$agent->lng : old('lng'))}}">
                         <div class="clearfix"></div>
                     </div>
 
@@ -72,7 +80,7 @@
                             <select name="manager_id" class="users form-control">
                                 <option value="">-- Chọn quản lý --</option>
                                 @foreach($users as $key => $value)
-                                    <option value="{{$value->id}}" @if(old('manager_id') == $value->id) selected @endif>{{ $value->email}}</option>
+                                    <option value="{{$value->id}}" @if( isset($agent) and $agent->manager_id == $value->id) selected  @elseif(old('manager_id') == $value->id) selected @endif >{{ $value->email}}</option>
                                 @endforeach
                             </select>
                             @if ($errors->has('manager_id'))
@@ -110,7 +118,7 @@
                         </div>
 
                         <div class="row btn-submit-add-map">
-                            <button type="submit" class="btn btn-info">Tạo</button>
+                            <button type="submit" class="btn btn-info">{{isset($agent) ? 'Cập nhật' : 'Thêm mới'}}</button>
                         </div>
 
                     </form>
@@ -154,16 +162,25 @@
 
             var ll = {lat: e.latLng.lat(), lng: e.latLng.lng()};
             map.removeMarkers();
-            markers = [];
+
             map.addMarker({
                 lat: ll.lat,
                 lng: ll.lng,
-                title: 'Lima',
+                title: 'Lima'
             });
             $('#lat').val(ll.lat);
             $('#lng').val(ll.lng);
 
         });
+        @if(isset($agent))
+          map.removeMarkers();
+
+        map.addMarker({
+            lat: "{{$agent->lat}}",
+            lng: "{{$agent->lng}}",
+            title: 'Lima'
+        });
+        @endif
         $('#geocoding_form').submit(function(e){
             e.preventDefault();
             map.removeMarkers();
