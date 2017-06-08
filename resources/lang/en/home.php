@@ -26,4 +26,5 @@ return [
     'listAccount' => 'List Account',
     'role' => 'Role',
     'permission' => 'Permission',
+    'search' => 'Search',
 ];

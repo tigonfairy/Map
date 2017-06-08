@@ -48,9 +48,9 @@
                     <form action="{{route('Admin::map@addMapAgencyPost')}}" method="POST">
                         {{ csrf_field() }}
                     <div class="form-group">
-                        <label class="col-md-3 control-label">Tên vùng địa lý</label>
+                        <label class="col-md-3 control-label">Tên đại lý</label>
                         <div class="col-md-9">
-                            <input type="text" class="form-control name" name="name" value="{{old('name')}}" placeholder="Nhập tên vùng địa lý">
+                            <input type="text" class="form-control name" name="name" value="{{old('name')}}" placeholder="Nhập tên đại lý">
                         </div>
                         @if ($errors->has('name'))
                             <div class="form-control-feedback">
@@ -85,6 +85,30 @@
                             </div>
                             <div class="clearfix"></div>
                         </div>
+
+                        <div class="form-group {{ $errors->has('user_id') ? 'has-error has-feedback' : '' }}">
+                            <label for="name" class="control-label text-semibold col-md-3">Trực thuộc vùng</label>
+                            <i class="icon-question4 text-muted text-size-mini cursor-pointer js-help-icon"
+                               data-content="Nhân viên quản Lý"></i>
+                            <div class="col-md-9">
+
+                                <select name="area_id" class="areas form-control">
+                                    <option value="">-- Chọn vùng trực thuộc --</option>
+                                    @foreach($areas as $key => $value)
+                                        <option value="{{$value->id}}" @if(old('area_id') == $value->id) selected @endif>{{ $value->name }}</option>
+                                    @endforeach
+                                </select>
+                                @if ($errors->has('area_id'))
+                                    <div class="form-control-feedback">
+                                        <i class="icon-notification2"></i>
+                                    </div>
+                                    <div class="help-block">{{ $errors->first('area_id') }}</div>
+                                @endif
+
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+
                         <div class="row btn-submit-add-map">
                             <button type="submit" class="btn btn-info">Tạo</button>
                         </div>
@@ -116,6 +140,7 @@
 
     $(document).ready(function () {
         $('.users').select2();
+        $('.areas').select2();
         map = new GMaps({
             div: '#map',
             lat: 21.0277644,

@@ -90,6 +90,9 @@ Route::group(['middleware' => ['auth','language'],
         Route::get('/add-data-agency', ['as' => 'addDataAgency', 'uses' => 'MapController@addDataAgency']);
         Route::post('/add-data-agency', ['as' => 'addDataAgencyPost', 'uses' => 'MapController@addDataAgencyPost']);
         Route::get('/agent-detail/{id}',[ 'as' => 'agentDetail','uses' => 'MapController@agentDetail']);
+
+        Route::get('/search', ['as' => 'search', 'uses' => 'MapController@search']);
+        Route::get('/data-search', ['as' => 'dataSearch', 'uses' => 'MapController@dataSearch']);
     });
 
 

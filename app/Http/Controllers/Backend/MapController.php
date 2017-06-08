@@ -24,6 +24,7 @@ class MapController extends Controller
     }
 
     public function addMap(){
+
         return view('admin.map.addMap');
     }
 
@@ -48,15 +49,18 @@ class MapController extends Controller
             array_push($newCoordinates, $c);
         }
         $coordinates = json_encode($newCoordinates);
-        AddressGeojson::create(['name' => $data['name'],'slug' => $slug, 'coordinates' => $coordinates]);
+        $address = AddressGeojson::create(['name' => $data['name'],'slug' => $slug, 'coordinates' => $coordinates]);
+
         return redirect()->back()->with('success','Tạo vùng địa lý thành công');
     }
+
     public function editMapUser(Request $request,$id){
         $area = Area::findOrFail($id);
         $users = User::all();
         $areaAddress =  $area->address;
         return view('admin.map.addMapUser',compact('users','area','areaAddress'));
     }
+
     public function editMapUserPost(Request $request,$id){
         $area = Area::findOrFail($id);
         $this->validate($request,[
@@ -74,6 +78,7 @@ class MapController extends Controller
         return redirect()->route('Admin::map@listMapUser')->with('success','Sửa vùng kinh doanh thành công');
 
     }
+
     public function listMapUser(Request $request){
         $areas = Area::select('*');
         if($request->input('q')){
@@ -89,6 +94,7 @@ class MapController extends Controller
         $locations = $area->address;
         return view('admin.map.mapUserDetail',compact('area','locations'));
     }
+
     public function addMapUser(){
         $users = User::all();
         return view('admin.map.addMapUser',compact('users'));
@@ -122,17 +128,20 @@ class MapController extends Controller
 
     public function addAgency(Request $request){
         $users = User::all();
-        return view('admin.map.addAgency',compact('users'));
+        $areas = Area::all();
+        return view('admin.map.addAgency',compact('users', 'areas'));
     }
 
     public function addMapAgencyPost(Request $request){
         $this->validate($request,[
             'manager_id' => 'required',
+            'area_id' => 'required',
             'name' => 'required',
             'lat' => 'required',
             'lng' => 'required'
         ],[
             'manager_id.required' => 'Vui lòng chọn nhân viên quản lý',
+            'area_id.required' => 'Vui lòng chọn vùng trực thuộc',
             'name.required' => 'Vui lòng nhập tên cho đại lý',
             'lat.required' => 'Vui lòng chọn đại lý',
             'lng.required' => 'Vui lòng chọn đại lý'
@@ -142,12 +151,12 @@ class MapController extends Controller
         return redirect()->route('Admin::map@listAgency')->with('success','Tạo đại lý thành công');
     }
 
-
     public function addDataAgency(Request $request){
         $agents = Agent::all();
         $products = Product::all();
         return view('admin.map.addDataAgency',compact('agents', 'products'));
     }
+
     public function addDataAgencyPost(){
         $this->validate(request(),[
             'agent_id' => 'required',
@@ -179,6 +188,7 @@ class MapController extends Controller
         return view('admin.map.agentDetail',compact('agent'));
 
     }
+
     public function mapUserDelete(Request $request,$id){
 
         $area = Area::find($id);
@@ -191,6 +201,7 @@ class MapController extends Controller
         }
 
     }
+
     public function agentDelete(Request $request,$id){
         $agent = Agent::find($id);
         if($agent){
@@ -200,6 +211,24 @@ class MapController extends Controller
         }else{
             return redirect()->back()->with('error','Không tồn tại !!');
         }
+
+    }
+
+    public function search() {
+        $areas = Area::all();
+        $agents = Agent::all();
+        $users = User::all();
+
+        return view('admin.map.search', compact('areas', 'agents', 'users'));
+    }
+
+    public function dataSearch(Request $request) {
+
+        if(request()->has('area_id')) {
+            $area_id = $request->input('area_id');
+        }
+
+        $area_polygon = Area::find('$area_id');
 
     }
 }

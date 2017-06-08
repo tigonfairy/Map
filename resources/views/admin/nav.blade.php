@@ -52,10 +52,19 @@
                             <span class="arrow"></span>
                         </a>
                     </li>
+
                     <li class="nav-item  ">
                         <a href="{{route('Admin::map@listMapUser')}}" class="nav-link nav-toggle">
                             <i class="icon-settings"></i>
                             <span class="title">{{ trans('home.listBusinessArea') }}</span>
+                            <span class="arrow"></span>
+                        </a>
+                    </li>
+
+                    <li class="nav-item  ">
+                        <a href="{{route('Admin::map@search')}}" class="nav-link nav-toggle">
+                            <i class="icon-settings"></i>
+                            <span class="title">{{ trans('home.search') }}</span>
                             <span class="arrow"></span>
                         </a>
                     </li>
