@@ -252,9 +252,9 @@ class MapController extends Controller
 
         if(request()->has('area_id')) {
             $area_id = $request->input('area_id');
+            $area_polygon = Area::find($area_id)->address()->pluck('coordinates');
+            $agent_area = Area::find($area_id)->address()->pluck('coordinates');
         }
-
-        $area_polygon = Area::find('$area_id');
 
     }
 }

@@ -49,13 +49,11 @@
                             @if(isset($agent))
                             action="{{route('Admin::map@editAgent',['id' => $agent->id])}}"
                             @else
-                            action="{{route('Admin::map@addMapUserPost')}}"
+                            action="{{route('Admin::map@addMapAgencyPost')}}"
                             @endif
-
-
                             method="POST">
                         {{ csrf_field() }}
-                    <div class="form-group">
+                    <div class="form-group {{ $errors->has('name') ? 'has-error has-feedback' : '' }}">
                         <label class="col-md-3 control-label">Tên đại lý</label>
                         <div class="col-md-9">
                             <input type="text" class="form-control name" name="name" value="{{(isset($agent) ? @$agent->name : old('name'))}}" placeholder="Nhập tên đại lý">
@@ -66,12 +64,13 @@
                             </div>
                             <div class="help-block">{{ $errors->first('name') }}</div>
                         @endif
+
                         <input type="hidden" class="form-control " id="lat" name="lat" value="{{(isset($agent) ? @$agent->lat : old('lat'))}}">
                         <input type="hidden" class="form-control " id="lng" name="lng" value="{{(isset($agent) ? @$agent->lng : old('lng'))}}">
                         <div class="clearfix"></div>
                     </div>
 
-                        <div class="form-group {{ $errors->has('user_id') ? 'has-error has-feedback' : '' }}">
+                        <div class="form-group {{ $errors->has('manager_id') ? 'has-error has-feedback' : '' }}">
                             <label for="name" class="control-label text-semibold col-md-3">Nhân viên quản Lý</label>
                             <i class="icon-question4 text-muted text-size-mini cursor-pointer js-help-icon"
                                data-content="Nhân viên quản Lý"></i>
@@ -94,7 +93,7 @@
                             <div class="clearfix"></div>
                         </div>
 
-                        <div class="form-group {{ $errors->has('user_id') ? 'has-error has-feedback' : '' }}">
+                        <div class="form-group {{ $errors->has('area_id') ? 'has-error has-feedback' : '' }}">
                             <label for="name" class="control-label text-semibold col-md-3">Trực thuộc vùng</label>
                             <i class="icon-question4 text-muted text-size-mini cursor-pointer js-help-icon"
                                data-content="Nhân viên quản Lý"></i>
@@ -106,6 +105,7 @@
                                         <option value="{{$value->id}}" @if(old('area_id') == $value->id) selected @endif>{{ $value->name }}</option>
                                     @endforeach
                                 </select>
+
                                 @if ($errors->has('area_id'))
                                     <div class="form-control-feedback">
                                         <i class="icon-notification2"></i>
