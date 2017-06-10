@@ -23,10 +23,14 @@
                     <form method="post" id="geocoding_form">
                         <div class="row">
                             <div class="col-md-8">
+                                <div class="form-group">
                                 <input type="text" id="address" name="address" placeholder="Nhập vị trí" class="form-control">
+                                    </div>
                             </div>
                             <div class="col-md-4">
+                                <div class="form-group">
                                 <button type="submit" class="btn btn-info">Search</button>
+                                </div>
                             </div>
                         </div>
                     </form>
@@ -38,31 +42,30 @@
                     </div>
                 </div>
                 <div class="col-md-5">
-                    <div class="panel panel-flat">
-                        <div class="panel-body">
-
-                            <form action="{{route('Admin::map@addMapPost')}}" method="POST">
-                                {{ csrf_field() }}
-                                <div class="form-group {{ $errors->has('name') ? 'has-error has-feedback' : '' }}">
-                                    <label for="name" class="control-label text-semibold">Tên vùng địa lý</label>
-                                        <input type="text" class="form-control name" name="name" placeholder="Nhập tên vùng địa lý">
-                                    @if ($errors->has('name'))
-                                        <div class="form-control-feedback">
-                                            <i class="icon-notification2"></i>
-                                        </div>
-                                        <div class="help-block">{{ $errors->first('name') }}</div>
-                                    @endif
-                                    <input type="hidden" class="form-control " id="coordinates" name="coordinates" >
-                                </div>
-                                <div class="text-right">
+                    <form action="{{route('Admin::map@addMapUserPost')}}" method="POST">
+                        {{ csrf_field() }}
+                    <div class="form-group">
+                        <label class="col-md-4 control-label">Tên vùng địa lý</label>
+                        <div class="col-md-8">
+                            <input type="text" class="form-control name" name="name" placeholder="Nhập tên vùng địa lý">
+                        </div>
+                        <input type="hidden" class="form-control " id="coordinates" name="coordinates" >
+                        <div class="clearfix"></div>
+                    </div>
+                        <div class="form-group">
+                            <div class="col-md-8 col-md-offset-4">
+                                <div class=" btn-submit-add-map">
                                     <button type="submit" class="btn btn-info">Tạo</button>
                                 </div>
-                            </form>
-
+                            </div>
                         </div>
-                    </div>
+                    </form>
                 </div>
+
+                {{--<button id="search" class="btn green">Tìm kiếm</button>--}}
             </div>
+
+
         </div>
         <!-- /main content -->
     </div>

@@ -7,6 +7,7 @@ use App\Models\Area;
 use App\Models\Agent;
 use App\Models\Product;
 use App\Models\SaleAgent;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Models\AddressGeojson;
 use App\Http\Controllers\Controller;
@@ -184,8 +185,12 @@ class MapController extends Controller
 
     public function agentDetail(Request $request,$id){
         $agent = Agent::find($id);
-        return view('admin.map.agentDetail',compact('agent'));
-
+        $month = Carbon::now()->format('m-Y');
+        if($request->input('month')){
+            $month = $request->input('month');
+        }
+        $products = $agent->product()->where('month',$month)->get();
+        return view('admin.map.agentDetail',compact('agent','products','month'));
     }
 
     public function editAgent(Request $request,$id){
