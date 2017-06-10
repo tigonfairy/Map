@@ -93,7 +93,7 @@
                             </div>
                             <div class="clearfix"></div>
                         </div>
-                        <div class="row btn-submit-add-map">
+                        <div class="col-md-9 col-md-offset-3 btn-submit-add-map">
                             <button type="submit" class="btn btn-info">{{isset($agent) ? 'Cập nhật' : 'Thêm mới'}}</button>
                         </div>
 

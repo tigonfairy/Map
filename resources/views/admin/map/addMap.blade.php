@@ -23,10 +23,14 @@
                     <form method="post" id="geocoding_form">
                         <div class="row">
                             <div class="col-md-8">
+                                <div class="form-group">
                                 <input type="text" id="address" name="address" placeholder="Nhập vị trí" class="form-control">
+                                    </div>
                             </div>
                             <div class="col-md-4">
+                                <div class="form-group">
                                 <button type="submit" class="btn btn-info">Search</button>
+                                </div>
                             </div>
                         </div>
                     </form>
@@ -41,16 +45,20 @@
                     <form action="{{route('Admin::map@addMapUserPost')}}" method="POST">
                         {{ csrf_field() }}
                     <div class="form-group">
-                        <label class="col-md-3 control-label">Tên vùng địa lý</label>
-                        <div class="col-md-9">
+                        <label class="col-md-4 control-label">Tên vùng địa lý</label>
+                        <div class="col-md-8">
                             <input type="text" class="form-control name" name="name" placeholder="Nhập tên vùng địa lý">
                         </div>
                         <input type="hidden" class="form-control " id="coordinates" name="coordinates" >
+                        <div class="clearfix"></div>
                     </div>
-                        <div class="row btn-submit-add-map">
-                            <button type="submit" class="btn btn-info">Tạo</button>
+                        <div class="form-group">
+                            <div class="col-md-8 col-md-offset-4">
+                                <div class=" btn-submit-add-map">
+                                    <button type="submit" class="btn btn-info">Tạo</button>
+                                </div>
+                            </div>
                         </div>
-
                     </form>
                 </div>
 
