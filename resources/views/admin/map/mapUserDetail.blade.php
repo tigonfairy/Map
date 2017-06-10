@@ -8,8 +8,8 @@
         <div class="page-header-content">
             <div class="col-md-9">
                 <div class="page-title">
-                    <h2>Chi tiết vùng kinh doanh : {{$area->name}}</h2>
-                    <h4>Quản lý : {{$area->user->email}}</h4>
+                    <h2>{{ trans('home.show') . ' ' . trans('home.area_sale') }} : {{$area->name}}</h2>
+                    <h4>{{ trans('home.manager') }} : {{$area->user->email}}</h4>
                 </div>
             </div>
             {{--<div class="col-md-3">--}}

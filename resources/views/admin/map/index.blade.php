@@ -4,7 +4,7 @@
     <div class="page-header">
         <div class="page-header-content">
             <div class="page-title">
-                <h2>Map</h2>
+                <h2>{{ trans('home.Map') }}</h2>
             </div>
 
         </div>
@@ -20,7 +20,7 @@
                 <div class="col-md-7">
                     <div class="row">
                         <select id="locations">
-                            <option value=""> Chọn vùng</option>
+                            <option value=""> {{ trans('home.Select_Place') }}</option>
                             @foreach($locations as $location)
                                 <option value="{{$location->coordinates}}">{{ $location->name }}</option>
                             @endforeach

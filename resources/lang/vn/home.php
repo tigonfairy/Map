@@ -1,6 +1,6 @@
 <?php
 
-return [
+return array(
 
     /*
     |--------------------------------------------------------------------------
@@ -27,4 +27,29 @@ return [
     'role' => 'Nhóm quyền',
     'permission' => 'Quyền',
     'search' => 'Tìm kiếm',
-];
+    'Select_Place' => 'Chọn Vùng',
+    'import_position' => 'Nhập vị trí',
+    'name_location' => 'Tên vùng địa lý',
+    'create' => 'Tạo',
+    'list_agency' => 'Danh sách các đại lý',
+    'create_agency' => 'Thêm đại lý',
+    'name' => 'Tên',
+    'manager' => 'Quản lý',
+    'action' => 'Thao tác',
+    'show' => 'Chi tiết',
+    'edit' => 'Sửa',
+    'delete' => 'Xóa',
+    'agency' => 'Đại lý',
+    'time' => 'Thời gian',
+    'sale_plan' => 'Doanh số theo kế hoạch',
+    'sale_real' => 'Doanh số theo thực tế',
+    'place' => 'Vùng',
+    'update' => 'Cập nhật',
+    'select' => 'Chọn',
+    'area_sale' => 'Vùng kinh doanh',
+    'list' => 'Danh sách',
+    'color' => 'Màu sắc',
+    'border' => 'Đường viền',
+    'background' => 'Màu nền',
+
+);

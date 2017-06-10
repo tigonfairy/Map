@@ -8,8 +8,8 @@
         <div class="page-header-content">
             <div class="col-md-9">
                 <div class="page-title">
-                    <h2>Chi tiết đại lý : {{$agent->name}}</h2>
-                    <h4>Quản lý bởi: {{$agent->user->email}}</h4>
+                    <h2>{{ trans('home.agency') }} : {{$agent->name}}</h2>
+                    <h4>{{ trans('home.manager') }}: {{$agent->user->email}}</h4>
                 </div>
             </div>
             {{--<div class="col-md-3">--}}
@@ -36,7 +36,7 @@
                 {{--số liệu--}}
                 <div class="col-xs-6">
                     <div class="form-group {{ $errors->has('month') ? 'has-error has-feedback' : '' }}">
-                        <label for="name" class="control-label text-semibold col-md-3">Thời gian</label>
+                        <label for="name" class="control-label text-semibold col-md-3">{{ trans('home.time') }}</label>
                         <i class="icon-question4 text-muted text-size-mini cursor-pointer js-help-icon"
                            data-content="Thời gian"></i>
                         <div class="col-md-9">
@@ -55,9 +55,9 @@
                         <table class="table table-striped table-bordered" cellspacing="0" width="100%" id="users-table">
                             <thead>
                             <tr>
-                                <th>Nhóm sp</th>
-                                <th>Doanh số kế hoạch</th>
-                                <th>Doanh số thực tế</th>
+                                <th>{{ trans('home.Product') }}</th>
+                                <th>{{ trans('home.sale_plan') }}</th>
+                                <th>{{ trans('home.sale_real') }}</th>
                             </tr>
                             </thead>
                             <tbody>

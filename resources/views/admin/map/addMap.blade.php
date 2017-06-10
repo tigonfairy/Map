@@ -5,7 +5,7 @@
     <div class="page-header">
         <div class="page-header-content">
             <div class="page-title">
-                <h2>Tạo vùng địa lý</h2>
+                <h2>{{ trans('home.addLocation') }}</h2>
             </div>
 
         </div>
@@ -24,12 +24,12 @@
                         <div class="row">
                             <div class="col-md-8">
                                 <div class="form-group">
-                                <input type="text" id="address" name="address" placeholder="Nhập vị trí" class="form-control">
+                                <input type="text" id="address" name="address" placeholder="{{ trans('home.import_position') }}" class="form-control">
                                     </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group">
-                                <button type="submit" class="btn btn-info">Search</button>
+                                <button type="submit" class="btn btn-info">{{ trans('home.search') }}</button>
                                 </div>
                             </div>
                         </div>
@@ -45,9 +45,9 @@
                     <form action="{{route('Admin::map@addMapUserPost')}}" method="POST">
                         {{ csrf_field() }}
                     <div class="form-group">
-                        <label class="col-md-4 control-label">Tên vùng địa lý</label>
+                        <label class="col-md-4 control-label">{{ trans('home.name_location') }}</label>
                         <div class="col-md-8">
-                            <input type="text" class="form-control name" name="name" placeholder="Nhập tên vùng địa lý">
+                            <input type="text" class="form-control name" name="name" placeholder="{{ trans('home.name_location') }}">
                         </div>
                         <input type="hidden" class="form-control " id="coordinates" name="coordinates" >
                         <div class="clearfix"></div>
@@ -55,7 +55,7 @@
                         <div class="form-group">
                             <div class="col-md-8 col-md-offset-4">
                                 <div class=" btn-submit-add-map">
-                                    <button type="submit" class="btn btn-info">Tạo</button>
+                                    <button type="submit" class="btn btn-info">{{ trans('home.create') }}</button>
                                 </div>
                             </div>
                         </div>
