@@ -49,7 +49,7 @@
                             @if(isset($agent))
                             action="{{route('Admin::map@editAgent',['id' => $agent->id])}}"
                             @else
-                            action="{{route('Admin::map@addMapUserPost')}}"
+                            action="{{route('Admin::map@addMapAgencyPost')}}"
                             @endif
 
 
@@ -89,7 +89,6 @@
                                 </div>
                                 <div class="help-block">{{ $errors->first('manager_id') }}</div>
                             @endif
-
                             </div>
                             <div class="clearfix"></div>
                         </div>
@@ -142,7 +141,7 @@
 <script type="text/javascript">
     var map;
     var markers = [];
-
+    var polygonArray = [];
     $(document).ready(function () {
         $('.users').select2();
         $(".places").select2({
@@ -199,8 +198,7 @@
 
         });
         @if(isset($agent))
-          map.removeMarkers();
-
+        map.removeMarkers();
         map.addMarker({
             lat: "{{$agent->lat}}",
             lng: "{{$agent->lng}}",
@@ -225,6 +223,65 @@
                     }
                 }
             });
+        });
+
+
+        $('#locations').on("select2:select", function (e) {
+            var id = e.params.data.id;
+            var coordinates = e.params.data.coordinates;
+            var coordinate = JSON.parse(coordinates);
+            if (coordinate) {
+                var bounds = new google.maps.LatLngBounds();
+                for (i = 0; i < coordinate.length; i++) {
+                    var c = coordinate[i];
+                    bounds.extend(new google.maps.LatLng(c[0], c[1]));
+                }
+                var path = coordinate;
+                map.setCenter(bounds.getCenter().lat(), bounds.getCenter().lng());
+                var infoWindow = new google.maps.InfoWindow({
+                    content: 'you clicked a polyline'
+                });
+                polygon = map.drawPolygon({
+                    paths: path,
+                    strokeColor: '#333',
+                    strokeOpacity: 0.5,
+                    strokeWeight: 1,
+                    fillColor: '#333',
+                    fillOpacity: 0.6,
+                    mouseover: function (e) {
+                        var ll = {lat: e.latLng.lat(), lng: e.latLng.lng()};
+                        map.removeMarkers();
+
+                        map.addMarker({
+                            lat: ll.lat,
+                            lng: ll.lng,
+                            title: 'Lima'
+                        });
+                        $('#lat').val(ll.lat);
+                        $('#lng').val(ll.lng);
+                    },
+                    mouseout: function (e) {
+                        if (infoWindow) {
+                            infoWindow.close();
+                        }
+                    }
+                });
+
+                polygonArray[id] = polygon;
+            }
+        });
+
+        $('#locations').on("select2:unselect", function (e) {
+
+            var id = e.params.data.id;
+            var coordinates = e.params.data.coordinates;
+            if(coordinates == undefined){
+                var coordinates = e.params.data.element.attributes.getNamedItem('data-coordinates').value;
+            }
+            var coordinate = JSON.parse(coordinates);
+            if (coordinate) {
+                map.removePolygon(polygonArray[id]);
+            }
         });
 
     });

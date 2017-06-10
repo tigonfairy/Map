@@ -241,7 +241,7 @@
             @endforeach
     @endif
 
-$('#locations').on("select2:select", function (e) {
+        $('#locations').on("select2:select", function (e) {
             var id = e.params.data.id;
             var coordinates = e.params.data.coordinates;
             var coordinate = JSON.parse(coordinates);
@@ -278,6 +278,7 @@ $('#locations').on("select2:select", function (e) {
                 polygonArray[id] = polygon;
             }
         });
+
         $('#locations').on("select2:unselect", function (e) {
 
             var id = e.params.data.id;
