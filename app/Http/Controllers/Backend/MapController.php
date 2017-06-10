@@ -128,8 +128,7 @@ class MapController extends Controller
 
     public function addAgency(Request $request){
         $users = User::all();
-        $areas = Area::all();
-        return view('admin.map.addAgency',compact('users', 'areas'));
+        return view('admin.map.addAgency',compact('users'));
     }
 
     public function addMapAgencyPost(Request $request){
