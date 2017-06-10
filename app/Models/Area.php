@@ -16,9 +16,11 @@ class Area extends Model
     {
         return $this->belongsToMany(AddressGeojson::class, 'area_address','area_id','address_id');
     }
+
     public function user(){
         return $this->belongsTo(User::class,'manager_id','id');
     }
+
     public static function boot()
     {
         parent::boot();

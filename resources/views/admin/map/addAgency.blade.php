@@ -93,6 +93,27 @@
                             </div>
                             <div class="clearfix"></div>
                         </div>
+                        <div class="form-group {{ $errors->has('area_id') ? 'has-error has-feedback' : '' }}">
+                            <label for="name" class="control-label text-semibold col-md-3">Trực thuộc vùng</label>
+                            <div class="col-md-9">
+                            <select name="area_id" class="places" id ="locations" style="width:100%">
+                                @if(isset($areas))
+                                    @foreach($areas as $key => $value)
+                                        <option value="{{$value->id}}" @if(old('area_id') == $value->id) selected @endif>{{ $value->name }}</option>
+                                    @endforeach
+                                @endif
+                            </select>
+
+                            @if ($errors->has('area_id'))
+                                <div class="form-control-feedback">
+                                    <i class="icon-notification2"></i>
+                                </div>
+                                <div class="help-block">{{ $errors->first('area_id') }}</div>
+                            @endif
+
+                            <div class="clearfix"></div>
+                            </div>
+                        </div>
                         <div class="col-md-9 col-md-offset-3 btn-submit-add-map">
                             <button type="submit" class="btn btn-info">{{isset($agent) ? 'Cập nhật' : 'Thêm mới'}}</button>
                         </div>
@@ -124,6 +145,36 @@
 
     $(document).ready(function () {
         $('.users').select2();
+        $(".places").select2({
+            'placeholder' : 'Chọn vùng trực thuộc',
+            ajax : {
+                url : "{{route('Admin::Api::area@getListAreas')}}",
+                dataType:'json',
+                delay:500,
+                data: function (params) {
+                    var queryParameters = {
+                        q: params.term
+                    }
+                    return queryParameters;
+                },
+                processResults: function(data, page) {
+                    return {
+                        results: $.map(data, function (item) {
+                            return {
+                                text: item.name,
+                                slug: item.slug,
+                                id: item.id,
+                                coordinates:item.coordinates
+                            }
+                        })
+                    };
+                },
+                dropdownCssClass: "bigdrop", // apply css that makes the dropdown taller
+                escapeMarkup: function(m) {
+                    return m;
+                }
+            }
+        });
         map = new GMaps({
             div: '#map',
             lat: 21.0277644,

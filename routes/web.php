@@ -93,6 +93,9 @@ Route::group(['middleware' => ['auth','language'],
         Route::get('/add-data-agency', ['as' => 'addDataAgency', 'uses' => 'MapController@addDataAgency']);
         Route::post('/add-data-agency', ['as' => 'addDataAgencyPost', 'uses' => 'MapController@addDataAgencyPost']);
         Route::get('/agent-detail/{id}',[ 'as' => 'agentDetail','uses' => 'MapController@agentDetail']);
+
+        Route::get('/search', ['as' => 'search', 'uses' => 'MapController@search']);
+        Route::get('/data-search', ['as' => 'dataSearch', 'uses' => 'MapController@dataSearch']);
     });
 
 
@@ -100,8 +103,6 @@ Route::group(['middleware' => ['auth','language'],
         'prefix' => 'saleAgents',
         'as' => 'saleAgent@',
     ], function () {
-        Route::get('/datatables', ['as' => 'datatables', 'uses' => 'SaleAgentController@getDatatables']);
-        Route::get('/', ['as' => 'index', 'uses' => 'SaleAgentController@index']);
         Route::get('/add', ['as' => 'add', 'uses' => 'SaleAgentController@add']);
         Route::post('/store', ['as' => 'store', 'uses' => 'SaleAgentController@store']);
         Route::get('/{agentId}/{month}/edit', ['as' => 'edit', 'uses' => 'SaleAgentController@edit']);

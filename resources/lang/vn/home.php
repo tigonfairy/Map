@@ -26,4 +26,5 @@ return [
     'listAccount' => 'Danh sách tài khoản',
     'role' => 'Nhóm quyền',
     'permission' => 'Quyền',
+    'search' => 'Tìm kiếm',
 ];
