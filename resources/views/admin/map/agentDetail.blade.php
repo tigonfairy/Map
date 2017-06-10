@@ -35,7 +35,19 @@
                     </div>
                 {{--số liệu--}}
                     <div class="col-xs-6">
-                        @if($agent->product)
+                        <div class="form-group {{ $errors->has('month') ? 'has-error has-feedback' : '' }}">
+                            <label for="name" class="control-label text-semibold">Thời gian</label>
+                            <i class="icon-question4 text-muted text-size-mini cursor-pointer js-help-icon" data-content="Thời gian"></i>
+                            <input type="text" id="month" name="month" class="form-control monthPicker" value="{{ old('month') ?: @$saleAgent[0]->month }}" />
+                            @if ($errors->has('month'))
+                                <div class="form-control-feedback">
+                                    <i class="icon-notification2"></i>
+                                </div>
+                                <div class="help-block">{{ $errors->first('month') }}</div>
+                            @endif
+                        </div>
+
+                    @if($agent->product)
                         <table class="table table-striped table-bordered" cellspacing="0" width="100%" id="users-table">
                             <thead>
                             <tr>
@@ -77,6 +89,22 @@
 @push('scripts')
 <script>
     $(document).ready(function(){
+
+        $('.monthPicker').datepicker( {
+            changeMonth: true,
+            changeYear: true,
+            showButtonPanel: true,
+            dateFormat: 'mm-yy',
+            onClose: function(dateText, inst) {
+                var month = $("#ui-datepicker-div .ui-datepicker-month :selected").val();
+                var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val();
+                $(this).datepicker('setDate', new Date(year, month, 1));
+                var url  = window.location.origin + window.location.pathname;
+                url = url+'?month='+$(this).val();
+                window.location.href = url;
+            }
+        });
+
 
     var heightPageContent = $('.page-content').height();
     var heightPageHeader = $('.page-header-content').height();
