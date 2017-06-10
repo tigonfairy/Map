@@ -5,7 +5,7 @@
     <div class="page-header">
         <div class="page-header-content">
             <div class="page-title">
-                <h2> {{(isset($agent) ? "Sửa đại lý :".$agent->name : 'Tạo đại lý' )}}</h2>
+                <h2> {{(isset($agent) ? trans('home.edit'). "  ". trans('home.agency') . " : ".$agent->name : trans('home.create'). trans('home.agency') )}}</h2>
             </div>
 
         </div>
@@ -23,7 +23,7 @@
                     <form method="post" id="geocoding_form">
                         <div class="row">
                             <div class="col-md-8">
-                                <input type="text" id="address" name="address" placeholder="Nhập vị trí" class="form-control">
+                                <input type="text" id="address" name="address" placeholder="{{ trans('home.import_position') }}" class="form-control">
                                 @if ($errors->has('lat') or $errors->has('lng'))
                                     <div class="form-control-feedback">
                                         <i class="icon-notification2"></i>
@@ -33,7 +33,7 @@
 
                             </div>
                             <div class="col-md-4">
-                                <button type="submit" class="btn btn-info">Search</button>
+                                <button type="submit" class="btn btn-info">{{ trans('home.search') }}</button>
                             </div>
                         </div>
                     </form>
@@ -56,7 +56,7 @@
                             method="POST">
                         {{ csrf_field() }}
                     <div class="form-group">
-                        <label class="col-md-3 control-label">Tên vùng địa lý</label>
+                        <label class="col-md-3 control-label">{{ trans('home.name') }}</label>
                         <div class="col-md-9">
                             <input type="text" class="form-control name" name="name" value="{{(isset($agent) ? @$agent->name : old('name'))}}" placeholder="Nhập tên vùng địa lý">
                         </div>
@@ -72,13 +72,13 @@
                     </div>
 
                         <div class="form-group {{ $errors->has('user_id') ? 'has-error has-feedback' : '' }}">
-                            <label for="name" class="control-label text-semibold col-md-3">Nhân viên quản Lý</label>
+                            <label for="name" class="control-label text-semibold col-md-3">{{ trans('home.manager') }}</label>
                             <i class="icon-question4 text-muted text-size-mini cursor-pointer js-help-icon"
                                data-content="Nhân viên quản Lý"></i>
                             <div class="col-md-9">
 
                             <select name="manager_id" class="users form-control">
-                                <option value="">-- Chọn quản lý --</option>
+                                <option value="">{{ '--'. trans('home.select'). ' '. trans('home.manager') .'--' }}</option>
                                 @foreach($users as $key => $value)
                                     <option value="{{$value->id}}" @if( isset($agent) and $agent->manager_id == $value->id) selected  @elseif(old('manager_id') == $value->id) selected @endif >{{ $value->email}}</option>
                                 @endforeach
@@ -93,7 +93,7 @@
                             <div class="clearfix"></div>
                         </div>
                         <div class="form-group {{ $errors->has('area_id') ? 'has-error has-feedback' : '' }}">
-                            <label for="name" class="control-label text-semibold col-md-3">Trực thuộc vùng</label>
+                            <label for="name" class="control-label text-semibold col-md-3">{{ trans('home.place') }}</label>
                             <div class="col-md-9">
                             <select name="area_id" class="places" id ="locations" style="width:100%">
                                 @if(isset($areas))
@@ -114,7 +114,7 @@
                             </div>
                         </div>
                         <div class="col-md-9 col-md-offset-3 btn-submit-add-map">
-                            <button type="submit" class="btn btn-info">{{isset($agent) ? 'Cập nhật' : 'Thêm mới'}}</button>
+                            <button type="submit" class="btn btn-info">{{isset($agent) ? trans('home.update') : trans('home.create')}}</button>
                         </div>
 
                     </form>
@@ -144,7 +144,36 @@
     var polygonArray = [];
     $(document).ready(function () {
         $('.users').select2();
-        $('.places').select2();
+        $(".places").select2({
+            'placeholder' : "{{'-- '. trans('home.select'). ' '. trans('home.manager') .' --'}}",
+            ajax : {
+                url : "{{route('Admin::Api::area@getListAreas')}}",
+                dataType:'json',
+                delay:500,
+                data: function (params) {
+                    var queryParameters = {
+                        q: params.term
+                    }
+                    return queryParameters;
+                },
+                processResults: function(data, page) {
+                    return {
+                        results: $.map(data, function (item) {
+                            return {
+                                text: item.name,
+                                slug: item.slug,
+                                id: item.id,
+                                coordinates:item.coordinates
+                            }
+                        })
+                    };
+                },
+                dropdownCssClass: "bigdrop", // apply css that makes the dropdown taller
+                escapeMarkup: function(m) {
+                    return m;
+                }
+            }
+        });
         map = new GMaps({
             div: '#map',
             lat: 21.0277644,

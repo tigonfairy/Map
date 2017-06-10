@@ -5,7 +5,7 @@
     <div class="page-header">
         <div class="page-header-content">
             <div class="page-title">
-                <h2>{{(isset($area)? 'Sửa vùng quản lý :'.$area->name : ' Tạo vùng quản lý theo nhân viên')}}</h2>
+                <h2>{{(isset($area)? trans('home.edit').' ' . trans('home.area_sale'). ' : ' .$area->name : trans('home.create').' ' . trans('home.area_sale'))}}</h2>
             </div>
 
         </div>
@@ -31,7 +31,7 @@
                             >
                             {{ csrf_field() }}
                                 <div class="form-group {{ $errors->has('name') ? 'has-error has-feedback' : '' }}">
-                                    <label for="name" class="control-label text-semibold">Tên</label>
+                                    <label for="name" class="control-label text-semibold">{{ trans('home.name') }}</label>
                                     <i class="icon-question4 text-muted text-size-mini cursor-pointer js-help-icon" data-content="Tên của vùng"></i>
                                     <input type="text" id="name" name="name" class="form-control" value="{{(isset($area) ? @$area->name : old('name'))}}" />
                                     @if ($errors->has('name'))
@@ -44,11 +44,11 @@
 
                             <!---------- Manager ID------------>
                                 <div class="form-group {{ $errors->has('user_id') ? 'has-error has-feedback' : '' }}">
-                                    <label for="name" class="control-label text-semibold">Nhân viên quản Lý</label>
+                                    <label for="name" class="control-label text-semibold">{{ trans('home.manager') }}</label>
                                     <i class="icon-question4 text-muted text-size-mini cursor-pointer js-help-icon"
                                        data-content="Nhân viên quản Lý"></i>
                                     <select name="manager_id" class="users">
-                                        <option value="">-- Chọn quản lý --</option>
+                                        <option value="">{{ ' -- ' . trans('home.select') . ' ' . trans('home.manager') . ' -- ' }}</option>
                                         @foreach($users as $key => $value)
                                             <option value="{{$value->id}}"  @if( isset($area) and $area->manager_id == $value->id) selected  @elseif(old('manager_id') == $value->id) selected @endif >{{ $value->email }}</option>
                                         @endforeach
@@ -63,7 +63,7 @@
 
                                 <!---------- Place ID------------>
                                 <div class="form-group {{ $errors->has('place') ? 'has-error has-feedback' : '' }}">
-                                    <label for="name" class="control-label text-semibold">Vùng quản lý</label>
+                                    <label for="name" class="control-label text-semibold">{{ trans('home.place') }}</label>
                                     <i class="icon-question4 text-muted text-size-mini cursor-pointer js-help-icon"
                                        data-content="Vùng quản lý"></i>
 
@@ -92,7 +92,7 @@
                                 </div>
                                 <div class="row">
                                     <div class="form-group">
-                                        <label class="control-label col-md-3">Màu nền</label>
+                                        <label class="control-label col-md-3">{{ trans('home.background') }}</label>
                                         <div class="col-md-6">
                                             <div class="input-group color colorpicker-default" data-color="{{isset($area) ? $area->background_color : '#3865a8'}}"
                                                  data-color-format="rgba">
@@ -108,7 +108,7 @@
                                 </div>
                                 <div class="row">
                                     <div class="form-group">
-                                        <label class="control-label col-md-3">Màu của border</label>
+                                        <label class="control-label col-md-3">{{ trans('home.color'). ' '. trans('home.border')  }}</label>
                                         <div class="col-md-6">
                                             <div class="input-group color colorpicker-default" data-color="{{isset($area) ? $area->border_color : '#3865a8'}}"
                                                  data-color-format="rgba">
@@ -125,7 +125,7 @@
 
                                 <div class="row" style="margin-top: 10px">
                                     <div class="text-right">
-                                        <button type="submit" class="btn btn-primary">{{isset($area) ? 'Cập nhật' : 'Thêm mới'}}</button>
+                                        <button type="submit" class="btn btn-primary">{{isset($area) ? trans('home.update') : trans('home.create')}}</button>
                                     </div>
                                 </div>
 
@@ -157,7 +157,7 @@
 
         //load ajax selct2
         $(".places").select2({
-            'placeholder' : 'Nhập từ khóa để tìm kiếm vị trí',
+            'placeholder' : "{{ trans('home.import_position') }}",
             ajax : {
                 url : "{{route('Admin::Api::area@getListAddress')}}",
                 dataType:'json',
