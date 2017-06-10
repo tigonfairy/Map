@@ -17,6 +17,9 @@ class Agent extends Model
     public function product(){
         return $this->hasMany(SaleAgent::class,'agent_id','id');
     }
+    public function area(){
+        return $this->belongsTo(Area::class,'area_id','id');
+    }
     public static function boot()
     {
         parent::boot();

@@ -98,7 +98,7 @@
                             <select name="area_id" class="places" id ="locations" style="width:100%">
                                 @if(isset($areas))
                                     @foreach($areas as $key => $value)
-                                        <option value="{{$value->id}}" @if(old('area_id') == $value->id) selected @endif>{{ $value->name }}</option>
+                                        <option value="{{$value->id}}" @if(isset($agent) and $agent->area_id == $value->id) selected @elseif(old('area_id') == $value->id) selected @endif>{{ $value->name }}</option>
                                     @endforeach
                                 @endif
                             </select>

@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\AddressGeojson;
 class ApiController extends Controller
 {
-    public function getListAreas(Request $request){
+    public function getListAddress(Request $request){
 
         $places = AddressGeojson::select('*');
         if($request->input('q')){
