@@ -49,7 +49,7 @@
                             @if(isset($agent))
                             action="{{route('Admin::map@editAgent',['id' => $agent->id])}}"
                             @else
-                            action="{{route('Admin::map@addMapUserPost')}}"
+                            action="{{route('Admin::map@addMapAgencyPost')}}"
                             @endif
 
 
