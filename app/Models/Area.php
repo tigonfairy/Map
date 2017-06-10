@@ -20,7 +20,9 @@ class Area extends Model
     public function user(){
         return $this->belongsTo(User::class,'manager_id','id');
     }
-
+    public function agent(){
+        return $this->hasMany(Agent::class,'area_id','id');
+    }
     public static function boot()
     {
         parent::boot();

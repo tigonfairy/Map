@@ -93,7 +93,8 @@
             lng: 105.83415979999995,
             width: "100%",
             height: '500px',
-            zoom: 11
+            zoom: 11,
+            fullscreenControl:true
         });
 
 //        map.addListener('click', function (e) {

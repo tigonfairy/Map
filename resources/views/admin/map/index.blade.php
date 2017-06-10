@@ -77,7 +77,8 @@
                 lng:bounds.getCenter().lng(),
                 width: "100%",
                 height: '500px',
-                zoom: 8
+                zoom: 8,
+                fullscreenControl:true
             });
             var path = coordinate;
             var infoWindow = new google.maps.InfoWindow({

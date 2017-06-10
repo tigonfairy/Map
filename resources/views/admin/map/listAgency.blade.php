@@ -42,6 +42,7 @@
                 <tr>
                     <th>Name</th>
                     <th>Quản lý</th>
+                    <th>Trực thuộc vùng</th>
                     <th>Action</th>
                 </tr>
                 </thead>
@@ -50,6 +51,7 @@
                     <tr role="row" id="">
                         <td>{{$agent->name}}</td>
                         <td>{{$agent->user->email}}</td>
+                        <td>{{$agent->area->name}}</td>
                         <td><a href="{{route('Admin::map@agentDetail',[$agent->id])}}">
                                 <button type="button" class="btn btn-info btn-xs">Chi tiết</button></a>
                             <a href="{{route('Admin::map@editAgent',[$agent->id])}}">

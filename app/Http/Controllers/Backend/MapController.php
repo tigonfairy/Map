@@ -93,7 +93,8 @@ class MapController extends Controller
     public function mapUserDetail(Request $request,$id){
         $area = Area::findOrFail($id);
         $locations = $area->address;
-        return view('admin.map.mapUserDetail',compact('area','locations'));
+        $agents = $area->agent;
+        return view('admin.map.mapUserDetail',compact('area','locations','agents'));
     }
 
     public function addMapUser(){
@@ -129,7 +130,8 @@ class MapController extends Controller
 
     public function addAgency(Request $request){
         $users = User::all();
-        return view('admin.map.addAgency',compact('users'));
+        $areas = Area::all();
+        return view('admin.map.addAgency',compact('users','areas'));
     }
 
     public function addMapAgencyPost(Request $request){
@@ -196,7 +198,8 @@ class MapController extends Controller
     public function editAgent(Request $request,$id){
         $agent = Agent::findOrFail($id);
         $users = User::all();
-        return view('admin.map.addAgency',compact('users','agent'));
+        $areas = Area::all();
+        return view('admin.map.addAgency',compact('users','agent','areas'));
 
     }
 
@@ -205,11 +208,13 @@ class MapController extends Controller
         $this->validate($request,[
             'manager_id' => 'required',
             'name' => 'required',
+            'area_id' => 'required',
             'lat' => 'required',
             'lng' => 'required'
         ],[
             'manager_id.required' => 'Vui lòng chọn nhân viên quản lý',
             'name.required' => 'Vui lòng nhập tên cho đại lý',
+            'area_id.required' => 'Vui lòng chọn vùng trực thuộc',
             'lat.required' => 'Vui lòng chọn đại lý',
             'lng.required' => 'Vui lòng chọn đại lý'
         ]);

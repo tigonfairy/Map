@@ -159,7 +159,7 @@
         $(".places").select2({
             'placeholder' : 'Nhập từ khóa để tìm kiếm vị trí',
             ajax : {
-                url : "{{route('Admin::Api::area@getListAreas')}}",
+                url : "{{route('Admin::Api::area@getListAddress')}}",
                 dataType:'json',
                 delay:500,
                 data: function (params) {
@@ -201,7 +201,8 @@
             lng: 105.83415979999995,
             width: "100%",
             height: '500px',
-            zoom: 11
+            zoom: 11,
+            fullscreenControl:true
         });
         @if(isset($areaAddress))
             @foreach($areaAddress as $address)

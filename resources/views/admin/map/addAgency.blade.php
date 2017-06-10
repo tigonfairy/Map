@@ -98,7 +98,7 @@
                             <select name="area_id" class="places" id ="locations" style="width:100%">
                                 @if(isset($areas))
                                     @foreach($areas as $key => $value)
-                                        <option value="{{$value->id}}" @if(old('area_id') == $value->id) selected @endif>{{ $value->name }}</option>
+                                        <option value="{{$value->id}}" @if(isset($agent) and $agent->area_id == $value->id) selected @elseif(old('area_id') == $value->id) selected @endif>{{ $value->name }}</option>
                                     @endforeach
                                 @endif
                             </select>
@@ -144,36 +144,7 @@
     var polygonArray = [];
     $(document).ready(function () {
         $('.users').select2();
-        $(".places").select2({
-            'placeholder' : 'Chọn vùng trực thuộc',
-            ajax : {
-                url : "{{route('Admin::Api::area@getListAreas')}}",
-                dataType:'json',
-                delay:500,
-                data: function (params) {
-                    var queryParameters = {
-                        q: params.term
-                    }
-                    return queryParameters;
-                },
-                processResults: function(data, page) {
-                    return {
-                        results: $.map(data, function (item) {
-                            return {
-                                text: item.name,
-                                slug: item.slug,
-                                id: item.id,
-                                coordinates:item.coordinates
-                            }
-                        })
-                    };
-                },
-                dropdownCssClass: "bigdrop", // apply css that makes the dropdown taller
-                escapeMarkup: function(m) {
-                    return m;
-                }
-            }
-        });
+        $('.places').select2();
         map = new GMaps({
             div: '#map',
             lat: 21.0277644,
