@@ -28,8 +28,6 @@
                                           @else
                                   action="{{route('Admin::map@addMapUserPost')}}"
                                           @endif
-
-
                             >
                             {{ csrf_field() }}
                                 <div class="form-group {{ $errors->has('name') ? 'has-error has-feedback' : '' }}">

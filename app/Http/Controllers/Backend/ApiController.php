@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Models\AddressGeojson;
 class ApiController extends Controller
 {
-
     public function getListAreas(Request $request){
 
         $places = AddressGeojson::select('*');
@@ -16,4 +15,5 @@ class ApiController extends Controller
         $places = $places->orderBy('id','desc')->limit(50)->get();
         return $places;
     }
+
 }

@@ -45,59 +45,77 @@
                     </div>
                 </div>
                 <div class="col-md-5">
-                    <form
-                            @if(isset($agent))
-                            action="{{route('Admin::map@editAgent',['id' => $agent->id])}}"
-                            @else
-                            action="{{route('Admin::map@addMapUserPost')}}"
-                            @endif
+                    <div class="panel panel-flat">
+                        <div class="panel-body">
+                            <form
+                                    @if(isset($agent))
+                                    action="{{route('Admin::map@editAgent',['id' => $agent->id])}}"
+                                    @else
+                                    action="{{route('Admin::map@addMapAgencyPost')}}"
+                                    @endif
+                                    method="POST">
+                                {{ csrf_field() }}
+                                <div class="form-group {{ $errors->has('name') ? 'has-error has-feedback' : '' }}">
+                                    <label class="col-md-3 control-label">Tên đại lý</label>
+                                    <input type="text" class="form-control name" name="name" value="{{(isset($agent) ? @$agent->name : old('name'))}}" placeholder="Nhập tên đại lý">
+                                    @if ($errors->has('name'))
+                                        <div class="form-control-feedback">
+                                            <i class="icon-notification2"></i>
+                                        </div>
+                                        <div class="help-block">{{ $errors->first('name') }}</div>
+                                    @endif
 
+                                    <input type="hidden" class="form-control " id="lat" name="lat" value="{{(isset($agent) ? @$agent->lat : old('lat'))}}">
+                                    <input type="hidden" class="form-control " id="lng" name="lng" value="{{(isset($agent) ? @$agent->lng : old('lng'))}}">
+                                    <div class="clearfix"></div>
+                                </div>
 
-                            method="POST">
-                        {{ csrf_field() }}
-                    <div class="form-group">
-                        <label class="col-md-3 control-label">Tên vùng địa lý</label>
-                        <div class="col-md-9">
-                            <input type="text" class="form-control name" name="name" value="{{(isset($agent) ? @$agent->name : old('name'))}}" placeholder="Nhập tên vùng địa lý">
+                                <div class="form-group {{ $errors->has('manager_id') ? 'has-error has-feedback' : '' }}">
+                                    <label for="name" class="control-label text-semibold col-md-3">Nhân viên quản Lý</label>
+                                    <i class="icon-question4 text-muted text-size-mini cursor-pointer js-help-icon"
+                                       data-content="Nhân viên quản Lý"></i>
+                                    <select name="manager_id" class="users form-control">
+                                            <option value="">-- Chọn quản lý --</option>
+                                            @foreach($users as $key => $value)
+                                                <option value="{{$value->id}}" @if( isset($agent) and $agent->manager_id == $value->id) selected  @elseif(old('manager_id') == $value->id) selected @endif >{{ $value->email}}</option>
+                                            @endforeach
+                                    </select>
+                                    @if ($errors->has('manager_id'))
+                                            <div class="form-control-feedback">
+                                                <i class="icon-notification2"></i>
+                                            </div>
+                                            <div class="help-block">{{ $errors->first('manager_id') }}</div>
+                                        @endif
+                                    <div class="clearfix"></div>
+                                </div>
+
+                                <div class="form-group {{ $errors->has('area_id') ? 'has-error has-feedback' : '' }}">
+                                    <label for="name" class="control-label text-semibold col-md-3">Trực thuộc vùng</label>
+
+                                    <select name="area_id" class="places" style="width:100%">
+                                        @if(isset($areas))
+                                            @foreach($areas as $key => $value)
+                                                <option value="{{$value->id}}" @if(old('area_id') == $value->id) selected @endif>{{ $value->name }}</option>
+                                            @endforeach
+                                        @endif
+                                    </select>
+
+                                    @if ($errors->has('area_id'))
+                                            <div class="form-control-feedback">
+                                                <i class="icon-notification2"></i>
+                                            </div>
+                                            <div class="help-block">{{ $errors->first('area_id') }}</div>
+                                    @endif
+                                    <div class="clearfix"></div>
+                                </div>
+
+                                <div class="text-right">
+                                    <button type="submit" class="btn btn-info">{{isset($agent) ? 'Cập nhật' : 'Thêm mới'}}</button>
+                                </div>
+                            </form>
                         </div>
-                        @if ($errors->has('name'))
-                            <div class="form-control-feedback">
-                                <i class="icon-notification2"></i>
-                            </div>
-                            <div class="help-block">{{ $errors->first('name') }}</div>
-                        @endif
-                        <input type="hidden" class="form-control " id="lat" name="lat" value="{{(isset($agent) ? @$agent->lat : old('lat'))}}">
-                        <input type="hidden" class="form-control " id="lng" name="lng" value="{{(isset($agent) ? @$agent->lng : old('lng'))}}">
-                        <div class="clearfix"></div>
                     </div>
 
-                        <div class="form-group {{ $errors->has('user_id') ? 'has-error has-feedback' : '' }}">
-                            <label for="name" class="control-label text-semibold col-md-3">Nhân viên quản Lý</label>
-                            <i class="icon-question4 text-muted text-size-mini cursor-pointer js-help-icon"
-                               data-content="Nhân viên quản Lý"></i>
-                            <div class="col-md-9">
-
-                            <select name="manager_id" class="users form-control">
-                                <option value="">-- Chọn quản lý --</option>
-                                @foreach($users as $key => $value)
-                                    <option value="{{$value->id}}" @if( isset($agent) and $agent->manager_id == $value->id) selected  @elseif(old('manager_id') == $value->id) selected @endif >{{ $value->email}}</option>
-                                @endforeach
-                            </select>
-                            @if ($errors->has('manager_id'))
-                                <div class="form-control-feedback">
-                                    <i class="icon-notification2"></i>
-                                </div>
-                                <div class="help-block">{{ $errors->first('manager_id') }}</div>
-                            @endif
-
-                            </div>
-                            <div class="clearfix"></div>
-                        </div>
-                        <div class="row btn-submit-add-map">
-                            <button type="submit" class="btn btn-info">{{isset($agent) ? 'Cập nhật' : 'Thêm mới'}}</button>
-                        </div>
-
-                    </form>
                 </div>
 
                 {{--<button id="search" class="btn green">Tìm kiếm</button>--}}
@@ -124,6 +142,38 @@
 
     $(document).ready(function () {
         $('.users').select2();
+        //load ajax selct2
+        $(".places").select2({
+            'placeholder' : 'Chọn vùng trực thuộc',
+            ajax : {
+                url : "{{route('Admin::Api::area@getListAreas')}}",
+                dataType:'json',
+                delay:500,
+                data: function (params) {
+
+                    var queryParameters = {
+                        q: params.term
+                    }
+                    return queryParameters;
+                },
+                processResults: function(data, page) {
+                    return {
+                        results: $.map(data, function (item) {
+                            return {
+                                text: item.name,
+                                slug: item.slug,
+                                id: item.id,
+                                coordinates:item.coordinates
+                            }
+                        })
+                    };
+                },
+                dropdownCssClass: "bigdrop", // apply css that makes the dropdown taller
+                escapeMarkup: function(m) {
+                    return m;
+                }
+            }
+        });
         map = new GMaps({
             div: '#map',
             lat: 21.0277644,

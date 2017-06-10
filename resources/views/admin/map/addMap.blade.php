@@ -38,26 +38,31 @@
                     </div>
                 </div>
                 <div class="col-md-5">
-                    <form action="{{route('Admin::map@addMapUserPost')}}" method="POST">
-                        {{ csrf_field() }}
-                    <div class="form-group">
-                        <label class="col-md-3 control-label">Tên vùng địa lý</label>
-                        <div class="col-md-9">
-                            <input type="text" class="form-control name" name="name" placeholder="Nhập tên vùng địa lý">
+                    <div class="panel panel-flat">
+                        <div class="panel-body">
+
+                            <form action="{{route('Admin::map@addMapPost')}}" method="POST">
+                                {{ csrf_field() }}
+                                <div class="form-group {{ $errors->has('name') ? 'has-error has-feedback' : '' }}">
+                                    <label for="name" class="control-label text-semibold">Tên vùng địa lý</label>
+                                        <input type="text" class="form-control name" name="name" placeholder="Nhập tên vùng địa lý">
+                                    @if ($errors->has('name'))
+                                        <div class="form-control-feedback">
+                                            <i class="icon-notification2"></i>
+                                        </div>
+                                        <div class="help-block">{{ $errors->first('name') }}</div>
+                                    @endif
+                                    <input type="hidden" class="form-control " id="coordinates" name="coordinates" >
+                                </div>
+                                <div class="text-right">
+                                    <button type="submit" class="btn btn-info">Tạo</button>
+                                </div>
+                            </form>
+
                         </div>
-                        <input type="hidden" class="form-control " id="coordinates" name="coordinates" >
                     </div>
-                        <div class="row btn-submit-add-map">
-                            <button type="submit" class="btn btn-info">Tạo</button>
-                        </div>
-
-                    </form>
                 </div>
-
-                {{--<button id="search" class="btn green">Tìm kiếm</button>--}}
             </div>
-
-
         </div>
         <!-- /main content -->
     </div>
