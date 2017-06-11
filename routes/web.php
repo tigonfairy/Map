@@ -25,6 +25,8 @@ Route::group(['middleware' => ['auth','language'],
 
     Route::get('/', ['as' => 'dashboard', 'uses' => 'HomeController@dashboard']);
     Route::get('/admin', ['as' => 'dashboard', 'uses' => 'HomeController@dashboard']);
+    Route::post('/', ['as' => 'dashboard', 'uses' => 'HomeController@dashboard']);
+    Route::post('/admin', ['as' => 'dashboard', 'uses' => 'HomeController@dashboard']);
 
     Route::group([
         'prefix' => 'users',
