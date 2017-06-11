@@ -125,12 +125,14 @@ class MapController extends Controller
             $agents = $agents->where('name','like','%'.$key.'%');
         }
         $agents = $agents->paginate(10);
+
         return view('admin.map.listAgency',compact('agents'));
     }
 
     public function addAgency(Request $request){
         $users = User::all();
         $areas = Area::all();
+
         return view('admin.map.addAgency',compact('users','areas'));
     }
 
