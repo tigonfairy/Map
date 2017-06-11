@@ -51,5 +51,7 @@ return array(
     'color' => 'Màu sắc',
     'border' => 'Đường viền',
     'background' => 'Màu nền',
-
+    'statistic' => 'Thống kê',
+    'total_sale_real' => 'Tổng doanh số thực tế',
+    'total_sale_plan' => 'Tổng doanh số kế hoạch',
 );

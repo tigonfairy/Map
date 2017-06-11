@@ -51,4 +51,7 @@ return [
     'color' => 'Color',
     'border' => 'Border',
     'background' => 'Background',
+    'statistic' => 'Statistic',
+    'total_sale_real' => 'Total of sale real',
+    'total_sale_plan' => 'Total of sale plan',
 ];

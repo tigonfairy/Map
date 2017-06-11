@@ -26,41 +26,44 @@
         <!-- Page content -->
         <div class="content-wrapper">
             <div class="row">
-                <form method="post" action="">
-                    {{ csrf_field() }}
-                    <div class="row">
+                <div class="col-md-12">
+                    <form method="post" action="">
+                            {{ csrf_field() }}
+                            <div class="row">
 
-                        <div class="col-md-2">
-                            <div class="form-group">
-                                <input type="text" id="month" name="month" class="form-control monthPicker"
-                                           value="{{ old('month') ?: $month }}"/>
+                                <div class="col-md-2">
+                                    <div class="form-group">
+                                        <input type="text" id="month" name="month" class="form-control monthPicker"
+                                               value="{{ old('month') ?: $month }}"/>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-2">
+                                    <select name="area_id" class="areas form-control">
+                                        <option value="">{{ ' -- '. trans('home.select'). ' '. trans('home.place') . ' -- ' }}</option>
+                                        @foreach($areas as $key => $value)
+                                            <option value="{{$value->id}}" @if(old('area_id') == $value->id) selected @endif>{{ $value->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <button type="submit" class="btn btn-info">{{ trans('home.statistic') }}</button>
+                                </div>
+                            </div>
+                        </form>
+                </div>
+                @if(count($dataSales) > 0)
+                    @foreach($dataSales as $key => $dataSale)
+                        <div class="col-md-3">
+                            <div class="panel panel-flat">
+                                <div class="panel-body">
+                                    <div id="{{ $dataSale['id'] }}"></div>
+                                </div>
                             </div>
                         </div>
-
-                        <div class="col-md-2">
-                            <select name="area_id" class="areas form-control">
-                                <option value="">-- Chọn vùng trực thuộc --</option>
-                                @foreach($areas as $key => $value)
-                                    <option value="{{$value->id}}" @if(old('area_id') == $value->id) selected @endif>{{ $value->name }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-
-                        <div class="col-md-4">
-                            <button type="submit" class="btn btn-info">{{ trans('home.search') }}</button>
-                        </div>
-                    </div>
-                </form>
-
-                <table class="columns">
-                    <tr>
-                        @if(count($dataSales) > 0)
-                            @foreach($dataSales as $key => $dataSale)
-                                <td><div id="{{ $dataSale['id'] }}" style="border: 1px solid #ccc"></div></td>
-                            @endforeach
-                        @endif
-                    </tr>
-                </table>
+                    @endforeach
+                @endif
             </div>
         </div>
     </div>
@@ -96,9 +99,9 @@
                     var title = "{{  $dataSale['area'] }}";
                     var dataSales =  {!!  $dataSale['data'] !!};
                     var data = new google.visualization.DataTable();
-                        data.addColumn('string', 'Product');
-                        data.addColumn('number', 'Total sales Real');
-                        data.addColumn('number', 'Total sales Plan');
+                        data.addColumn('string', "{{ trans('home.product') }}");
+                        data.addColumn('number', "{{ trans('home.total_sale_real') }}");
+                        data.addColumn('number', "{{ trans('home.total_sale_plan') }}");
 
                     $.each(dataSales, function( index, value ) {
                         data.addRows([
