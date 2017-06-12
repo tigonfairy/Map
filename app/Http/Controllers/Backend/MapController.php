@@ -246,10 +246,7 @@ class MapController extends Controller
     public function agentDelete(Request $request,$id){
         $agent = Agent::find($id);
         if($agent){
-            $saleAgent = SaleAgent::where('agent_id',$id)->get();
-            if(count($saleAgent) > 0) {
-                $saleAgent->delete();
-            }
+            $saleAgent = SaleAgent::where('agent_id',$id)->delete();
             $agent->delete();
             return redirect()->back()->with('success','Xóa thành công!!');
         }else{
