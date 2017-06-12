@@ -42,7 +42,7 @@
                     </div>
                 </div>
                 <div class="col-md-5">
-                    <form action="{{route('Admin::map@addMapUserPost')}}" method="POST">
+                    <form action="{{route('Admin::map@addMapPost')}}" method="POST">
                         {{ csrf_field() }}
                     <div class="form-group">
                         <label class="col-md-4 control-label">{{ trans('home.name_location') }}</label>

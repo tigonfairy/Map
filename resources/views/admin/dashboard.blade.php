@@ -39,7 +39,7 @@
                                 </div>
 
                                 <div class="col-md-2">
-                                    <select name="area_id" class="areas form-control">
+                                    <select name="area_id" class="areas form-control"  style="width:100%">
                                         <option value="">{{ ' -- '. trans('home.select'). ' '. trans('home.place') . ' -- ' }}</option>
                                         @foreach($areas as $key => $value)
                                             <option value="{{$value->id}}" @if(old('area_id') == $value->id) selected @endif>{{ $value->name }}</option>
@@ -55,7 +55,7 @@
                 </div>
                 @if(count($dataSales) > 0)
                     @foreach($dataSales as $key => $dataSale)
-                        <div class="col-md-3">
+                        <div class="col-md-6">
                             <div class="panel panel-flat">
                                 <div class="panel-body">
                                     <div id="{{ $dataSale['id'] }}"></div>
@@ -70,7 +70,9 @@
         <!-- /main content -->
 @endsection
 @push('scripts_foot')
+@if(count($dataSales) > 0)
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+@endif
 <script type="text/javascript">
     $(document).ready(function () {
 
@@ -85,7 +87,7 @@
                 $(this).datepicker('setDate', new Date(year, month, 1));
             }
         });
-
+        @if(count($dataSales) > 0)
         // Load Charts and the corechart package.
         google.charts.load('current', {'packages':['bar']});
         // Draw the pie chart
@@ -93,13 +95,13 @@
 
         // Callback that draws the pie chart for Sarah's pizza.
         function drawChart() {
-            @if(count($dataSales) > 0)
+
                 @foreach($dataSales as $key => $dataSale)
                     var id = "{{ $dataSale['id'] }}";
                     var title = "{{  $dataSale['area'] }}";
                     var dataSales =  {!!  $dataSale['data'] !!};
                     var data = new google.visualization.DataTable();
-                        data.addColumn('string', "{{ trans('home.product') }}");
+                        data.addColumn('string', "{{ trans('home.Product') }}");
                         data.addColumn('number', "{{ trans('home.total_sale_real') }}");
                         data.addColumn('number', "{{ trans('home.total_sale_plan') }}");
 
@@ -121,8 +123,8 @@
                     var chart = new google.charts.Bar(document.getElementById(id));
                     chart.draw(data, google.charts.Bar.convertOptions(options));
                 @endforeach
-            @endif
         }
+        @endif
     });
 </script>
 @endpush
