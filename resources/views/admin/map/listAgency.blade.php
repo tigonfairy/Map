@@ -51,7 +51,7 @@
                         <tr role="row" id="">
                             <td>{{$agent->name}}</td>
                             <td>{{$agent->user->email}}</td>
-                            <td>{{$agent->area->name}}</td>
+                            <td>{!! $agent->area ? $agent->area->name : '' !!}</td>
                             <td><a href="{{route('Admin::map@agentDetail',[$agent->id])}}">
                                     <button type="button" class="btn btn-info btn-xs">{{ trans('home.show') }}</button></a>
                                 <a href="{{route('Admin::map@editAgent',[$agent->id])}}">
