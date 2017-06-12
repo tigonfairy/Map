@@ -5,12 +5,12 @@
     <div class="page-header">
         <div class="page-header-content">
             <div class="page-title">
-                <h2>{{ trans('home.list'). ' '. trans('home.area_sale') }}</h2>
+                <h2>{{ trans('home.listBusinessArea')}}</h2>
             </div>
 
             <div class="heading-elements">
                 <div class="heading-btn-group">
-                    <a href="{{route('Admin::map@addMapUser')}}" class="btn btn-primary"><i class="icon-add"></i> {{ trans('home.create') . ' ' . trans('home.area_sale') }}</a>
+                    <a href="{{route('Admin::map@addMapUser')}}" class="btn btn-primary"><i class="icon-add"></i> {{ trans('home.createBusinessArea')}}</a>
 
                 </div>
             </div>
@@ -22,7 +22,7 @@
             <div class="col-xs-6 col-xs-offset-3">
 
                 <input type="text" name="q" class="form-control" value="{{Request::input('q')}}"
-                       placeholder="Nhập tên để tìm kiếm"/>
+                       placeholder="{{trans('home.placeholderSearchName')}}"/>
 
             </div>
             <button type="submit" class="btn btn-primary">{{ trans('home.search') }}</button>

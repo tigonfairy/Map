@@ -20,6 +20,7 @@ return array(
     'addLocation' => 'Thêm vùng địa lý',
     'managerAgency' => 'Quản lý đại lý',
     'listBusinessArea' => 'Danh sách vùng kinh doanh',
+    'createBusinessArea' => 'Tạo vùng kinh doanh',
     'addProduct' => 'Thêm sản phẩm',
     'listProduct' => 'Danh sách',
     'managerAccount' => 'Quản lý tài khoản',
@@ -54,4 +55,7 @@ return array(
     'statistic' => 'Thống kê',
     'total_sale_real' => 'Tổng doanh số thực tế',
     'total_sale_plan' => 'Tổng doanh số kế hoạch',
+    'managerArea' => "Trực thuộc vùng kinh doanh",
+    'placeholderSearchName' => 'Nhập tên để tìm kiếm'
+
 );

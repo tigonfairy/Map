@@ -20,6 +20,7 @@ return [
     'addLocation' => 'Add Location',
     'managerAgency' => 'Manager Agency',
     'listBusinessArea' => 'List Business Area',
+    'createBusinessArea' => 'Create Business Area',
     'addProduct' => 'Add Product',
     'listProduct' => 'List Product',
     'managerAccount' => 'Manager Account',
@@ -54,4 +55,6 @@ return [
     'statistic' => 'Statistic',
     'total_sale_real' => 'Total of sale real',
     'total_sale_plan' => 'Total of sale plan',
+    'managerArea' => 'Manager Area',
+    'placeholderSearchName' => 'Enter name to search'
 ];

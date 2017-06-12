@@ -25,15 +25,18 @@
                             <form method="POST"
                                   @if(isset($area))
                                   action="{{route('Admin::map@editMapUser',['id' => $area->id])}}"
-                                          @else
+                                  @else
                                   action="{{route('Admin::map@addMapUserPost')}}"
-                                          @endif
+                                    @endif
                             >
-                            {{ csrf_field() }}
+                                {{ csrf_field() }}
                                 <div class="form-group {{ $errors->has('name') ? 'has-error has-feedback' : '' }}">
-                                    <label for="name" class="control-label text-semibold">{{ trans('home.name') }}</label>
-                                    <i class="icon-question4 text-muted text-size-mini cursor-pointer js-help-icon" data-content="Tên của vùng"></i>
-                                    <input type="text" id="name" name="name" class="form-control" value="{{(isset($area) ? @$area->name : old('name'))}}" />
+                                    <label for="name"
+                                           class="control-label text-semibold">{{ trans('home.name') }}</label>
+                                    <i class="icon-question4 text-muted text-size-mini cursor-pointer js-help-icon"
+                                       data-content="Tên của vùng"></i>
+                                    <input type="text" id="name" name="name" class="form-control"
+                                           value="{{(isset($area) ? @$area->name : old('name'))}}"/>
                                     @if ($errors->has('name'))
                                         <div class="form-control-feedback">
                                             <i class="icon-notification2"></i>
@@ -42,15 +45,18 @@
                                     @endif
                                 </div>
 
-                            <!---------- Manager ID------------>
+                                <!---------- Manager ID------------>
                                 <div class="form-group {{ $errors->has('user_id') ? 'has-error has-feedback' : '' }}">
-                                    <label for="name" class="control-label text-semibold">{{ trans('home.manager') }}</label>
+                                    <label for="name"
+                                           class="control-label text-semibold">{{ trans('home.manager') }}</label>
                                     <i class="icon-question4 text-muted text-size-mini cursor-pointer js-help-icon"
                                        data-content="Nhân viên quản Lý"></i>
                                     <select name="manager_id" class="users">
                                         <option value="">{{ ' -- ' . trans('home.select') . ' ' . trans('home.manager') . ' -- ' }}</option>
                                         @foreach($users as $key => $value)
-                                            <option value="{{$value->id}}"  @if( isset($area) and $area->manager_id == $value->id) selected  @elseif(old('manager_id') == $value->id) selected @endif >{{ $value->email }}</option>
+                                            <option value="{{$value->id}}"
+                                                    @if( isset($area) and $area->manager_id == $value->id) selected
+                                                    @elseif(old('manager_id') == $value->id) selected @endif >{{ $value->email }}</option>
                                         @endforeach
                                     </select>
                                     @if ($errors->has('manager_id'))
@@ -61,25 +67,50 @@
                                     @endif
                                 </div>
 
+
                                 <!---------- Place ID------------>
                                 <div class="form-group {{ $errors->has('place') ? 'has-error has-feedback' : '' }}">
-                                    <label for="name" class="control-label text-semibold">{{ trans('home.place') }}</label>
+                                    <label for="name"
+                                           class="control-label text-semibold">{{ trans('home.place') }}</label>
                                     <i class="icon-question4 text-muted text-size-mini cursor-pointer js-help-icon"
                                        data-content="Vùng quản lý"></i>
 
                                     <select name="place[]" id="locations" class="places" multiple style="width:100%">
                                         @if(isset($areaAddress) )
                                             @foreach($areaAddress as $address)
-                                                <option data-coordinates="{{ $address->coordinates }}" id="{{$address->id}}"
-                                                        value="{{ $address->id }}" selected>{{ $address->name }}</option>
-                                                @endforeach
-                                            @endif
+                                                <option data-coordinates="{{ $address->coordinates }}"
+                                                        id="{{$address->id}}"
+                                                        value="{{ $address->id }}"
+                                                        selected>{{ $address->name }}</option>
+                                            @endforeach
+                                        @endif
                                     </select>
                                     @if ($errors->has('place'))
                                         <div class="form-control-feedback">
                                             <i class="icon-notification2"></i>
                                         </div>
                                         <div class="help-block">{{ $errors->first('place') }}</div>
+                                    @endif
+                                </div>
+                                <!---------- parent ID------------>
+                                <div class="form-group {{ $errors->has('parent_id') ? 'has-error has-feedback' : '' }}">
+                                    <label for="name"
+                                           class="control-label text-semibold">{{ trans('home.managerArea') }}</label>
+                                    <i class="icon-question4 text-muted text-size-mini cursor-pointer js-help-icon"
+                                       data-content="Vùng quản lý"></i>
+
+                                    <select name="parent_id" id="areas_parent" class="areas_parent" style="width:100%">
+                                        @if(isset($area) and $area->managerArea)
+                                            <option id="{{$area->managerArea->id}}"
+                                                    value="{{ $area->managerArea->id }}"
+                                                    selected>{{ $area->managerArea->name }}</option>
+                                        @endif
+                                    </select>
+                                    @if ($errors->has('parent_id'))
+                                        <div class="form-control-feedback">
+                                            <i class="icon-notification2"></i>
+                                        </div>
+                                        <div class="help-block">{{ $errors->first('parent_id') }}</div>
                                     @endif
                                 </div>
 
@@ -94,10 +125,12 @@
                                     <div class="form-group">
                                         <label class="control-label col-md-3">{{ trans('home.background') }}</label>
                                         <div class="col-md-6">
-                                            <div class="input-group color colorpicker-default" data-color="{{isset($area) ? $area->background_color : '#3865a8'}}"
+                                            <div class="input-group color colorpicker-default"
+                                                 data-color="{{isset($area) ? $area->background_color : '#3865a8'}}"
                                                  data-color-format="rgba">
-                                                <input type="text" class="form-control" value="{{isset($area) ? $area->background_color : '#3865a8'}}"
-                                                       name="background_color" >
+                                                <input type="text" class="form-control"
+                                                       value="{{isset($area) ? $area->background_color : '#3865a8'}}"
+                                                       name="background_color">
                                                 <span class="input-group-btn">
                                                     <button class="btn default" type="button"><i
                                                                 style="background-color: {{isset($area) ? $area->background_color : '#3865a8'}};"></i>&nbsp;</button>
@@ -110,10 +143,12 @@
                                     <div class="form-group">
                                         <label class="control-label col-md-3">{{ trans('home.color'). ' '. trans('home.border')  }}</label>
                                         <div class="col-md-6">
-                                            <div class="input-group color colorpicker-default" data-color="{{isset($area) ? $area->border_color : '#3865a8'}}"
+                                            <div class="input-group color colorpicker-default"
+                                                 data-color="{{isset($area) ? $area->border_color : '#3865a8'}}"
                                                  data-color-format="rgba">
-                                                <input type="text" class="form-control" value="{{isset($area) ? $area->border_color : '#3865a8'}}"
-                                                       name="border_color" >
+                                                <input type="text" class="form-control"
+                                                       value="{{isset($area) ? $area->border_color : '#3865a8'}}"
+                                                       name="border_color">
                                                 <span class="input-group-btn">
                                                     <button class="btn default" type="button"><i
                                                                 style="background-color: {{isset($area) ? $area->border_color : '#3865a8'}};"></i>&nbsp;</button>
@@ -125,7 +160,8 @@
 
                                 <div class="row" style="margin-top: 10px">
                                     <div class="text-right">
-                                        <button type="submit" class="btn btn-primary">{{isset($area) ? trans('home.update') : trans('home.create')}}</button>
+                                        <button type="submit"
+                                                class="btn btn-primary">{{isset($area) ? trans('home.update') : trans('home.create')}}</button>
                                     </div>
                                 </div>
 
@@ -157,11 +193,11 @@
 
         //load ajax selct2
         $(".places").select2({
-            'placeholder' : "{{ trans('home.import_position') }}",
-            ajax : {
-                url : "{{route('Admin::Api::area@getListAddress')}}",
-                dataType:'json',
-                delay:500,
+            'placeholder': "{{ trans('home.import_position') }}",
+            ajax: {
+                url: "{{route('Admin::Api::area@getListAddress')}}",
+                dataType: 'json',
+                delay: 500,
                 data: function (params) {
 
                     var queryParameters = {
@@ -169,20 +205,61 @@
                     }
                     return queryParameters;
                 },
-                processResults: function(data, page) {
+                processResults: function (data, page) {
                     return {
                         results: $.map(data, function (item) {
                             return {
                                 text: item.name,
                                 slug: item.slug,
                                 id: item.id,
-                                coordinates:item.coordinates
+                                coordinates: item.coordinates
                             }
                         })
                     };
                 },
                 dropdownCssClass: "bigdrop", // apply css that makes the dropdown taller
-                escapeMarkup: function(m) {
+                escapeMarkup: function (m) {
+                    return m;
+                }
+            }
+        });
+
+
+        $(".areas_parent").select2({
+            'placeholder': "{{ trans('home.import_position') }}",
+            ajax: {
+                url: "{{route('Admin::Api::area@getListAreas')}}",
+                dataType: 'json',
+                delay: 500,
+                data: function (params) {
+
+                    var queryParameters = {
+                        q: params.term
+                    }
+                    return queryParameters;
+                },
+                processResults: function (data, page) {
+                    return {
+                        results: $.map(data, function (item) {
+                            @if(isset($area))
+                                    if(item.id != "{{$area->id}}"){
+                                return {
+                                    text: item.name,
+                                    id: item.id
+                                };
+                            }
+                            @else
+                                    return {
+                                text: item.name,
+                                id: item.id
+                            };
+                            @endif
+
+                        })
+                    };
+                },
+                dropdownCssClass: "bigdrop", // apply css that makes the dropdown taller
+                escapeMarkup: function (m) {
                     return m;
                 }
             }
@@ -202,10 +279,10 @@
             width: "100%",
             height: '500px',
             zoom: 11,
-            fullscreenControl:true
+            fullscreenControl: true
         });
-        @if(isset($areaAddress))
-            @foreach($areaAddress as $address)
+                @if(isset($areaAddress))
+                @foreach($areaAddress as $address)
         var coordinate = JSON.parse("{{$address->coordinates}}");
         if (coordinate) {
             var bounds = new google.maps.LatLngBounds();
@@ -239,10 +316,10 @@
 
             polygonArray["{{$address->id}}"] = polygon;
         }
-            @endforeach
-    @endif
+        @endforeach
+@endif
 
-        $('#locations').on("select2:select", function (e) {
+    $('#locations').on("select2:select", function (e) {
             var id = e.params.data.id;
             var coordinates = e.params.data.coordinates;
             var coordinate = JSON.parse(coordinates);
@@ -284,9 +361,9 @@
 
             var id = e.params.data.id;
             var coordinates = e.params.data.coordinates;
-           if(coordinates == undefined){
-               var coordinates = e.params.data.element.attributes.getNamedItem('data-coordinates').value;
-           }
+            if (coordinates == undefined) {
+                var coordinates = e.params.data.element.attributes.getNamedItem('data-coordinates').value;
+            }
             var coordinate = JSON.parse(coordinates);
             if (coordinate) {
                 map.removePolygon(polygonArray[id]);

@@ -20,6 +20,7 @@ Route::group(['middleware' => ['auth','language'],
             'as' => 'area@',
         ], function () {
             Route::get('/get-list-areas', ['as' => 'getListAreas', 'uses' => 'ApiController@getListAreas']);
+            Route::get('/get-list-address', ['as' => 'getListAddress', 'uses' => 'ApiController@getListAddress']);
         });
     });
 

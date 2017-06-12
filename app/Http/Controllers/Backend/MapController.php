@@ -59,6 +59,7 @@ class MapController extends Controller
         $area = Area::findOrFail($id);
         $users = User::all();
         $areaAddress =  $area->address;
+
         return view('admin.map.addMapUser',compact('users','area','areaAddress'));
     }
 
@@ -111,6 +112,9 @@ class MapController extends Controller
             'place.required' => 'Vui lòng chọn vùng quản lý'
         ]);
         $data=$request->all();
+        if(isset($data['parent_id'])){
+            $data['parent_id'] = intval($data['parent_id']);
+        }
         $area = Area::create($data);
         if($data['place']){
             $area->address()->sync($data['place']);
