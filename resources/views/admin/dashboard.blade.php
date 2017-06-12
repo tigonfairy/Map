@@ -98,8 +98,11 @@
 
                 @foreach($dataSales as $key => $dataSale)
                     var id = "{{ $dataSale['id'] }}";
-                    var title = "{{  $dataSale['area'] }}";
+                    var title = "{{ $dataSale['area'] }}";
                     var dataSales =  {!!  $dataSale['data'] !!};
+                    if (dataSales.length > 0) {
+
+                    }
                     var data = new google.visualization.DataTable();
                         data.addColumn('string', "{{ trans('home.Product') }}");
                         data.addColumn('number', "{{ trans('home.total_sale_real') }}");
@@ -110,6 +113,12 @@
                             [value.product_name, parseInt(value.total_sales_real),  parseInt(value.total_sales_plan)]
                         ]);
                     });
+
+                    if (data.getNumberOfRows() === 0) {
+                        data.addRows([
+                            ['No Data',0,0]
+                        ]);
+                    }
 
                     // Set options for Sarah's pie chart.
                     var options = {
