@@ -26,53 +26,43 @@
         <!-- Page content -->
         <div class="content-wrapper">
             <div class="row">
-                <div class="col-md-12">
-                    <form method="post" action="">
-                            {{ csrf_field() }}
-                            <div class="row">
+                {{--<div class="col-md-12">--}}
+                    {{--<form method="post" action="">--}}
+                            {{--{{ csrf_field() }}--}}
+                            {{--<div class="row">--}}
 
-                                <div class="col-md-2">
-                                    <div class="form-group">
-                                        <input type="text" id="month" name="month" class="form-control monthPicker"
-                                               value="{{ old('month') ?: $month }}"/>
-                                    </div>
-                                </div>
+                                {{--<div class="col-md-2">--}}
+                                    {{--<div class="form-group">--}}
+                                        {{--<input type="text" id="month" name="month" class="form-control monthPicker"--}}
+                                               {{--value="{{ old('month') ?: $month }}"/>--}}
+                                    {{--</div>--}}
+                                {{--</div>--}}
 
-                                <div class="col-md-2">
-                                    <select name="area_id" class="areas form-control"  style="width:100%">
-                                        <option value="">{{ ' -- '. trans('home.select'). ' '. trans('home.place') . ' -- ' }}</option>
-                                        @foreach($areas as $key => $value)
-                                            <option value="{{$value->id}}" @if(old('area_id') == $value->id) selected @endif>{{ $value->name }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
+                                {{--<div class="col-md-2">--}}
+                                    {{--<select name="area_id" class="areas form-control"  style="width:100%">--}}
+                                        {{--<option value="">{{ ' -- '. trans('home.select'). ' '. trans('home.place') . ' -- ' }}</option>--}}
+                                        {{--@foreach($areas as $key => $value)--}}
+                                            {{--<option value="{{$value->id}}" @if(old('area_id') == $value->id) selected @endif>{{ $value->name }}</option>--}}
+                                        {{--@endforeach--}}
+                                    {{--</select>--}}
+                                {{--</div>--}}
 
-                                <div class="col-md-4">
-                                    <button type="submit" class="btn btn-info">{{ trans('home.statistic') }}</button>
-                                </div>
-                            </div>
-                        </form>
-                </div>
-                @if(count($dataSales) > 0)
-                    @foreach($dataSales as $key => $dataSale)
-                        <div class="col-md-6">
-                            <div class="panel panel-flat">
-                                <div class="panel-body">
-                                    <div id="{{ $dataSale['id'] }}"></div>
-                                </div>
-                            </div>
-                        </div>
-                    @endforeach
-                @endif
+                                {{--<div class="col-md-4">--}}
+                                    {{--<button type="submit" class="btn btn-info">{{ trans('home.statistic') }}</button>--}}
+                                {{--</div>--}}
+                            {{--</div>--}}
+                        {{--</form>--}}
+                {{--</div>--}}
+
+                <div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
             </div>
         </div>
     </div>
         <!-- /main content -->
 @endsection
 @push('scripts_foot')
-@if(count($dataSales) > 0)
-<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-@endif
+<script src="/js/highcharts.js"></script>
+{{--<script src="https://code.highcharts.com/highcharts.js"></script>--}}
 <script type="text/javascript">
     $(document).ready(function () {
 
@@ -87,53 +77,65 @@
                 $(this).datepicker('setDate', new Date(year, month, 1));
             }
         });
-        @if(count($dataSales) > 0)
-        // Load Charts and the corechart package.
-        google.charts.load('current', {'packages':['bar']});
-        // Draw the pie chart
-        google.charts.setOnLoadCallback(drawChart);
 
-        // Callback that draws the pie chart for Sarah's pizza.
-        function drawChart() {
+        Highcharts.chart('container', {
+            chart: {
+                type: 'column'
+            },
+            title: {
+                text: 'Tiến độ doanh số'
+            },
+            subtitle: {
+//                text: 'Source: WorldClimate.com'
+            },
+            xAxis: {
+                categories: [
+                    'Jan',
+                    'Feb',
+                    'Mar',
+                    'Apr',
+                    'May',
+                    'Jun',
+                    'Jul',
+                    'Aug',
+                    'Sep',
+                    'Oct',
+                    'Nov',
+                    'Dec'
+                ],
+                crosshair: true
+            },
+            yAxis: {
+                min: 0,
+                title: {
+                    text: 'Rainfall (mm)'
+                }
+            },
+            tooltip: {
+                headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+                pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                '<td style="padding:0"><b>{point.y:.1f} mm</b></td></tr>',
+                footerFormat: '</table>',
+                shared: true,
+                useHTML: true
+            },
+            plotOptions: {
+                column: {
+                    pointPadding: 0.2,
+                    borderWidth: 0
+                }
+            },
+            series: [{
+                name: 'DTKH',
+                data: [49.9, 71.5, 106.4, 129.2, 144.0, 176.0, 135.6, 148.5, 216.4, 194.1, 95.6, 54.4]
 
-                @foreach($dataSales as $key => $dataSale)
-                    var id = "{{ $dataSale['id'] }}";
-                    var title = "{{ $dataSale['area'] }}";
-                    var dataSales =  {!!  $dataSale['data'] !!};
-                    if (dataSales.length > 0) {
+            }, {
+                name: 'DTTT',
+                data: [83.6, 78.8, 98.5, 93.4, 106.0, 84.5, 105.0, 104.3, 91.2, 83.5, 106.6, 92.3]
 
-                    }
-                    var data = new google.visualization.DataTable();
-                        data.addColumn('string', "{{ trans('home.Product') }}");
-                        data.addColumn('number', "{{ trans('home.total_sale_real') }}");
-                        data.addColumn('number', "{{ trans('home.total_sale_plan') }}");
+            }]
+        });
 
-                    $.each(dataSales, function( index, value ) {
-                        data.addRows([
-                            [value.product_name, parseInt(value.total_sales_real),  parseInt(value.total_sales_plan)]
-                        ]);
-                    });
-
-                    if (data.getNumberOfRows() === 0) {
-                        data.addRows([
-                            ['No Data',0,0]
-                        ]);
-                    }
-
-                    // Set options for Sarah's pie chart.
-                    var options = {
-                        chart: {
-                            title: title,
-                            width:400,
-                            height:300
-                        }
-                    };
-
-                    var chart = new google.charts.Bar(document.getElementById(id));
-                    chart.draw(data, google.charts.Bar.convertOptions(options));
-                @endforeach
-        }
-        @endif
     });
 </script>
 @endpush
