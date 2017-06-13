@@ -140,6 +140,7 @@
                 infoWindow.open(map.map);
             }
         });
+        map.setCenter("{{$agent->lat}}","{{$agent->lng}}");
 
 
     });

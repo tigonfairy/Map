@@ -30,11 +30,52 @@
 
             <div class="row">
 
-                <div class="baomap" style="width: 50%">
+                <div class="baomap col-xs-6" >
                     <div id="map"></div>
                 </div>
 
+                {{--số liệu--}}
+                <div class="col-xs-6">
+                    <div class="form-group {{ $errors->has('month') ? 'has-error has-feedback' : '' }}">
+                        <label for="name" class="control-label text-semibold col-md-3">{{ trans('home.time') }}</label>
+                        <i class="icon-question4 text-muted text-size-mini cursor-pointer js-help-icon"
+                           data-content="Thời gian"></i>
+                        <div class="col-md-9">
+                            <input type="text" id="month" name="month" class="form-control monthPicker col-md-9"
+                                   value="{{ old('month') ?: $month }}"/>
+                        </div>
+                        @if ($errors->has('month'))
+                            <div class="form-control-feedback">
+                                <i class="icon-notification2"></i>
+                            </div>
+                            <div class="help-block">{{ $errors->first('month') }}</div>
+                        @endif
+                    </div>
 
+                    @if(count($products))
+                        <table class="table table-striped table-bordered" cellspacing="0" width="100%" id="users-table">
+                            <thead>
+                            <tr>
+                                <th>{{ trans('home.Product') }}</th>
+                                <th>{{ trans('home.sale_plan') }}</th>
+                                <th>{{ trans('home.sale_real') }}</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            @foreach($products as $p)
+                                <tr role="row" id="">
+                                    <td>{{$p->name}}</td>
+                                    <td>{{$p->sales_plan}}</td>
+                                    <td>{{$p->sales_real}}</td>
+
+                                </tr>
+                            @endforeach
+                            </tbody>
+                        </table>
+                    @endif
+
+
+                </div>
             </div>
         </div>
     </div>
@@ -96,7 +137,7 @@
                 strokeOpacity: 1,
                 strokeWeight: 1,
                 fillColor: "{{$background_color}}",
-                fillOpacity: 0.6,
+                fillOpacity: 0.4,
                 mouseover: function (clickEvent) {
                     var position = clickEvent.latLng;
                     infoWindow{{$location->id}}.setPosition(position);
@@ -112,11 +153,23 @@
         }
         @endforeach
        @foreach($agents as $agent)
+        var contentString = '<div id="content">' +
+                '<p id="name">' + "{{$agent->name}}" + '</p>' +
+                '<p id="manager">' + '{{$agent->user->email}}' + '</p>' +
+
+                '</div>';
+            var infoWindow = new google.maps.InfoWindow({
+                content: contentString
+            });
 
           map.addMarker({
             lat: "{{$agent->lat}}",
             lng: "{{$agent->lng}}",
-            title:  "{{$agent->name}}"
+            title:  "{{$agent->name}}",
+            click: function (e) {
+                infoWindow.setPosition({lat: e.position.lat(), lng: e.position.lng()});
+                infoWindow.open(map.map);
+            }
         });
         @endforeach
     });

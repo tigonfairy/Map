@@ -26,6 +26,9 @@ class Area extends Model
     public function managerArea(){
         return $this->belongsTo(Area::class,'parent_id','id');
     }
+    public function subArea(){
+        return $this->belongsTo(Area::class,'id','parent_id');
+    }
     public static function boot()
     {
         parent::boot();

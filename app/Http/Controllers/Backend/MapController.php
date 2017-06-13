@@ -11,7 +11,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Models\AddressGeojson;
 use App\Http\Controllers\Controller;
-
+use DB;
 class MapController extends Controller
 {
     public function index()
@@ -93,9 +93,28 @@ class MapController extends Controller
 
     public function mapUserDetail(Request $request,$id){
         $area = Area::findOrFail($id);
+        $month = Carbon::now()->format('m-Y');
+        if($request->input('month')){
+            $month = $request->input('month');
+        }
+
+        $listIds=[];
+        $listIds = $area->subArea()->get()->pluck('id')->toArray();
+        $listIds[] = $id;
         $locations = $area->address;
-        $agents = $area->agent;
-        return view('admin.map.mapUserDetail',compact('area','locations','agents'));
+        $agents = Agent::whereIn('area_id',$listIds)->get();
+        if($agents){
+            $idAgent = clone $agents;
+            $idAgent = $idAgent->pluck('id')->toArray();
+        }
+
+        $products = DB::table('sale_agents')
+            ->select(\DB::raw('SUM(sales_plan) as sales_plan,SUM(sales_real) as sales_real,product_id,products.name'))
+            ->groupBy('product_id')
+            ->whereIn('agent_id',$idAgent)->where('month',$month)
+            ->join('products','sale_agents.product_id','=','products.id')
+            ->get();
+        return view('admin.map.mapUserDetail',compact('area','locations','agents','month','products'));
     }
 
     public function addMapUser(){
@@ -179,13 +198,14 @@ class MapController extends Controller
         $sales_real = request('sales_real');
 
         foreach ($product_ids as $key => $product_id) {
-            SaleAgent::create([
+            $sale = SaleAgent::firstOrCreate([
                 'agent_id' => request('agent_id'),
                 'product_id' => $product_id,
                 'month' => request('month'),
-                'sales_plan' => $sales_plan[$key] ? $sales_plan[$key] : 0,
-                'sales_real' => $sales_real[$key] ? $sales_real[$key] : 0,
             ]);
+            $sale->sales_plan = $sales_plan[$key] ? $sales_plan[$key] : 0;
+            $sale->sales_real = $sales_real[$key] ? $sales_real[$key] : 0;
+            $sale->save();
         }
 
         return redirect()->route('Admin::map@listAgency')->with('success','Tạo dữ liệu cho đại lý thành công');
