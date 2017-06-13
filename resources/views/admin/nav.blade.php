@@ -29,13 +29,13 @@
                     <span class="arrow"></span>
                 </a>
                 <ul class="sub-menu" >
-                    <li class="nav-item  ">
-                        <a href="{{route('Admin::map@index')}}" class="nav-link nav-toggle">
-                            <i class="icon-settings"></i>
-                            <span class="title">{{ trans('home.managerMap') }}</span>
-                            <span class="arrow"></span>
-                        </a>
-                    </li>
+                    {{--<li class="nav-item  ">--}}
+                        {{--<a href="{{route('Admin::map@index')}}" class="nav-link nav-toggle">--}}
+                            {{--<i class="icon-settings"></i>--}}
+                            {{--<span class="title">{{ trans('home.managerMap') }}</span>--}}
+                            {{--<span class="arrow"></span>--}}
+                        {{--</a>--}}
+                    {{--</li>--}}
 
                     <li class="nav-item  ">
                         <a href="{{route('Admin::map@addMap')}}" class="nav-link nav-toggle">
