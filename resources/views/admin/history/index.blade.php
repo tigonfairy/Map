@@ -71,7 +71,7 @@
             autoWidth: false,
             processing: true,
             serverSide: true,
-            pageLength: 20,
+            "pageLength": 10,
             'searching': false,
             ajax: {
                 url: '{!! route('Admin::log@datatables') !!}',
