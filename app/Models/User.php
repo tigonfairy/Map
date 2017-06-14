@@ -28,7 +28,12 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
-
+    public function area(){
+        return $this->hasMany(Area::class,'manager_id','id');
+    }
+    public function agent(){
+        return $this->hasMany(Agent::class,'manager_id','id');
+    }
     public function roles()
     {
         return $this->belongsToMany(Role::class, 'user_roles');

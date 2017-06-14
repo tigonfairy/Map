@@ -108,7 +108,7 @@
             yAxis: {
                 min: 0,
                 title: {
-                    text: 'Rainfall (mm)'
+                    text: 'Doanh số '
                 }
             },
             tooltip: {
