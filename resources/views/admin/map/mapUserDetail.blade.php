@@ -92,6 +92,20 @@
 @push('scripts')
 <script>
     $(document).ready(function () {
+        $('.monthPicker').datepicker({
+            changeMonth: true,
+            changeYear: true,
+            showButtonPanel: true,
+            dateFormat: 'mm-yy',
+            onClose: function (dateText, inst) {
+                var month = $("#ui-datepicker-div .ui-datepicker-month :selected").val();
+                var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val();
+                $(this).datepicker('setDate', new Date(year, month, 1));
+                var url = window.location.origin + window.location.pathname;
+                url = url + '?month=' + $(this).val();
+                window.location.href = url;
+            }
+        });
 
         var heightPageContent = $('.page-content').height();
         var heightPageHeader = $('.page-header-content').height();
