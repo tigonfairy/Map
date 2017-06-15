@@ -54,7 +54,16 @@
                         {{--</form>--}}
                 {{--</div>--}}
 
-                <div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+                <div id="container" class="row" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+                <div class="row">
+                    <div class="col-xs-6">
+
+                    </div>
+                    <div class="col-xs-6" id="chartSp" style="min-width: 310px; height: 400px; margin: 0 auto">
+
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>
@@ -77,7 +86,7 @@
                 $(this).datepicker('setDate', new Date(year, month, 1));
             }
         });
-
+        //chart cot
         Highcharts.chart('container', {
             chart: {
                 type: 'column'
@@ -127,7 +136,6 @@
             },
             series: [{
                 name: 'DTKH',
-//                data: [49.9, 71.5, 106.4, 129.2, 144.0, 176.0, 135.6, 148.5, 216.4, 194.1, 95.6, 54.4]
                 data: {{json_encode($sales_plan)}}
 
             }, {
@@ -136,6 +144,58 @@
 
             }]
         });
+//
+
+        Highcharts.chart('chartSp', {
+            chart: {
+                plotBackgroundColor: null,
+                plotBorderWidth: null,
+                plotShadow: false,
+                type: 'pie'
+            },
+            title: {
+                text: 'Browser market shares January, 2015 to May, 2015'
+            },
+            tooltip: {
+                pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+            },
+            plotOptions: {
+                pie: {
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    dataLabels: {
+                        enabled: false
+                    },
+                    showInLegend: true
+                }
+            },
+            series: [{
+                name: 'Brands',
+                colorByPoint: true,
+                data: [{
+                    name: 'Microsoft Internet Explorer',
+                    y: 56.33
+                }, {
+                    name: 'Chrome',
+                    y: 24.03,
+                    sliced: true,
+                    selected: true
+                }, {
+                    name: 'Firefox',
+                    y: 10.38
+                }, {
+                    name: 'Safari',
+                    y: 4.77
+                }, {
+                    name: 'Opera',
+                    y: 0.91
+                }, {
+                    name: 'Proprietary or Undetectable',
+                    y: 0.2
+                }]
+            }]
+        });
+
 
     });
 </script>
