@@ -23,32 +23,19 @@
                     <form method="post" id="geocoding_form">
                         <div class="row">
                             <div class="col-md-2">
-                                <select name="area_id" class="areas form-control">
-                                    <option value="">-- Chọn vùng trực thuộc --</option>
-                                    @foreach($areas as $key => $value)
-                                        <option value="{{$value->id}}" @if(old('area_id') == $value->id) selected @endif>{{ $value->name }}</option>
-                                    @endforeach
+                                <select name="search_type" class="search_type form-control">
+                                    <option value="">-- Chọn loại search --</option>
+                                    <option value="1">Theo vùng</option>
+                                    <option value="2">Theo giám sát vùng</option>
+                                    <option value="3">Theo nhân viên kinh doanh</option>
+                                    <option value="4">Theo đại lý</option>
                                 </select>
                             </div>
 
                             <div class="col-md-2">
-                                <select name="agent_id" class="agents form-control">
-                                    <option value="">-- Chọn đại lý --</option>
-                                    @foreach($agents as $key => $value)
-                                        <option value="{{$value->id}}">{{ $value->name}}</option>
-                                    @endforeach
+                                <select name="data_search" class="data_search form-control">
                                 </select>
                             </div>
-
-                            <div class="col-md-2">
-                                <select name="manager_id" class="users form-control">
-                                    <option value="">-- Chọn quản lý --</option>
-                                    @foreach($users as $key => $value)
-                                        <option value="{{$value->id}}" @if(old('manager_id') == $value->id) selected @endif>{{ $value->email}}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-
 
                             <div class="col-md-4">
                                 <button type="submit" class="btn btn-info">Search</button>
@@ -85,9 +72,6 @@
     var markers = [];
 
     $(document).ready(function () {
-        $('.users').select2();
-        $('.areas').select2();
-        $('.agents').select2();
         map = new GMaps({
             div: '#map',
             lat: 21.0277644,
@@ -97,6 +81,19 @@
             zoom: 11
         });
 
+        $( ".search_type" ).change(function() {
+            var search_type = $(this).val();
+            if (search_type == 1) {
+                getListAreas();
+            } else if (search_type == 2) {
+                getListSaleAdmins();
+            } else if (search_type == 3) {
+                getListSaleMans();
+            } else if (search_type == 4) {
+                getListAgents();
+            }
+        });
+        
         $('#geocoding_form').submit(function(e){
             e.preventDefault();
             $.ajax({
@@ -109,7 +106,22 @@
                 }
             });
         });
+        
+        function getListAreas() {
+            
+        }
 
+        function getListSaleAdmins() {
+
+        }
+
+        function getListSaleMans() {
+
+        }
+
+        function getListAgents() {
+
+        }
     });
 </script>
 @endpush
