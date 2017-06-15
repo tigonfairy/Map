@@ -17,14 +17,21 @@ class HomeController extends AdminController
     }
     public function dashboard(Request $request){
         $user = auth()->user();
-        $area = $user->area()->get()->pluck('id')->toArray();
-        $subArea = Area::whereIn('parent_id',$area)->get()->pluck('id')->toArray();
-        $areaIds = array_unique(array_merge($area,$subArea));
-        $agents = Agent::whereIn('area_id',$areaIds)->get()->pluck('id')->toArray();
         $year = Carbon::now()->year;
-        //agent Id of user
-        $agentId = $user->agent()->get()->pluck('id')->toArray();
-        $agentId= array_unique(array_merge($agentId,$agents));
+        if($user->email == 'admin@gmail.com'){
+            $area = Area::select('*')->get()->pluck('id')->toArray();
+            $agentId = Agent::whereIn('area_id',$area)->get()->pluck('id')->toArray();
+        }else{
+            $area = $user->area()->get()->pluck('id')->toArray();
+            $subArea = Area::whereIn('parent_id',$area)->get()->pluck('id')->toArray();
+            $areaIds = array_unique(array_merge($area,$subArea));
+            $agents = Agent::whereIn('area_id',$areaIds)->get()->pluck('id')->toArray();
+            //agent Id of user
+            $agentId = $user->agent()->get()->pluck('id')->toArray();
+            $agentId= array_unique(array_merge($agentId,$agents));
+        }
+
+        //chart cot
 
         $products = DB::table('sale_agents')
             ->select(\DB::raw('SUM(sales_plan) as sales_plan,SUM(sales_real) as sales_real,month'))
@@ -44,6 +51,21 @@ class HomeController extends AdminController
             $sales_real[$key] = intval($product->sales_real);
 
         }
+
+        //end chart cot
+
+
+//        $productsTt = DB::table('sale_agents')
+//            ->select(\DB::raw('SUM(sales_plan) as sales_plan,SUM(sales_real) as sales_real,month,product_id,products.name'))
+//            ->whereIn('agent_id',$agentId)->groupBy('month')->groupBy('product_id')
+//            ->where('month','like','%'.$year.'%')->orderBy('month')
+//            ->join('products','sale_agents.product_id','=','products.id')
+//            ->get()->toArray();
+
+
+
+
+
         return view('admin.dashboard', compact('month','sales_plan','sales_plan','sales_real'));
     }
 }
