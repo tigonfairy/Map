@@ -26,5 +26,14 @@ class ApiController extends Controller
         return $places;
     }
 
+    public function getListSaleAdmins(Request $request){
+
+        $places = Area::select('*');
+        if($request->input('q')){
+            $places = $places->where('name','like','%'.$request->input('q').'%');
+        }
+        $places = $places->orderBy('id','desc')->limit(50)->get();
+        return $places;
+    }
 
 }

@@ -284,11 +284,25 @@ class MapController extends Controller
     }
 
     public function dataSearch(Request $request) {
+        $typeSearch = $request->input('type_search');
+        $dataSearch = $request->input('data_search');
+        if($typeSearch == 'areas') {
+            $area = Area::findOrFail($dataSearch);
+            $listIds=[];
+            $listIds = $area->subArea()->get()->pluck('id')->toArray();
+            $listIds[] = $dataSearch;
+            $locations = $area->address;
+            $agents = Agent::whereIn('area_id',$listIds)->get();
+            if($agents){
+                $idAgent = clone $agents;
+                $idAgent = $idAgent->pluck('id')->toArray();
+            }
 
-        if(request()->has('area_id')) {
-            $area_id = $request->input('area_id');
-            $area_polygon = Area::find($area_id)->address()->pluck('coordinates');
-            $agent_area = Area::find($area_id)->address()->pluck('coordinates');
+            return response()->json([
+                'area' =>  $area,
+                'locations' =>  $locations,
+                'agents' =>  $agents,
+            ]);
         }
 
     }

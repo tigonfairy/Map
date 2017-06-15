@@ -22,6 +22,13 @@ Route::group(['middleware' => ['auth','language'],
             Route::get('/get-list-areas', ['as' => 'getListAreas', 'uses' => 'ApiController@getListAreas']);
             Route::get('/get-list-address', ['as' => 'getListAddress', 'uses' => 'ApiController@getListAddress']);
         });
+
+        Route::group([
+            'prefix' => 'saleAdmin',
+            'as' => 'saleAdmin@',
+        ], function () {
+            Route::get('/get-list-saleAdmins', ['as' => 'getListSaleAdmins', 'uses' => 'ApiController@getListSaleAdmins']);
+        });
     });
 
     Route::get('/', ['as' => 'dashboard', 'uses' => 'HomeController@dashboard']);
@@ -83,7 +90,6 @@ Route::group(['middleware' => ['auth','language'],
         Route::get('/add-map-user', ['as' => 'addMapUser', 'uses' => 'MapController@addMapUser']);
         Route::post('/add-map-user', ['as' => 'addMapUserPost', 'uses' => 'MapController@addMapUserPost']);
         Route::get('/{id}/edit-map-user', ['as' => 'editMapUser', 'uses' => 'MapController@editMapUser']);
-
         Route::post('/{id}/edit-map-user', ['as' => 'editMapUser', 'uses' => 'MapController@editMapUserPost']);
 
 
@@ -115,21 +121,6 @@ Route::group(['middleware' => ['auth','language'],
         Route::get('/{agentId}/{month}/delete', ['as' => 'delete', 'uses' => 'SaleAgentController@delete']);
 
     });
-
-
-
-    Route::group([
-        'prefix' => 'apis',
-        'as' => 'Api::',
-    ], function () {
-        Route::group([
-            'prefix' => 'area',
-            'as' => 'area@',
-        ], function () {
-            Route::get('/get-list-address', ['as' => 'getListAddress', 'uses' => 'ApiController@getListAddress']);
-        });
-    });
-
 
     Route::group([
         'prefix' => 'products',
