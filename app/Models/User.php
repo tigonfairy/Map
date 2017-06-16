@@ -51,9 +51,25 @@ class User extends Authenticatable
 
     public static function getDatatables()
     {
-        $model = static::select([
-            'id', 'email', 'created_at'
-        ])->with('roles');
+        $user = auth()->user();
+        if($user->email == 'admin@gmail.com') {
+            $model = static::select([
+                'id', 'email', 'created_at'
+            ])->with('roles');
+        } else {
+            $users = $user->manager()->get();
+            $userIds = $user->manager()->get()->pluck('id')->toArray();
+            foreach ($users as $key => $value) {
+                $userId = $value->manager()->get()->pluck('id')->toArray();
+                foreach ($userId as $k => $v) {
+                    $userIds[] = $v;
+                }
+            }
+            $model = static::select([
+                'id', 'email', 'created_at'
+            ])->with('roles')->whereIn('id', $userIds);
+        }
+
 
         return Datatables::eloquent($model)
             ->filter(function ($query) {

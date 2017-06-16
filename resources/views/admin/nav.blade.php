@@ -1,7 +1,5 @@
 <div class="page-sidebar-wrapper">
-
     <div class="page-sidebar navbar-collapse collapse">
-
         <ul class="page-sidebar-menu  page-header-fixed " data-keep-expanded="false" data-auto-scroll="true"
             data-slide-speed="200" style="padding-top: 20px">
 
@@ -145,16 +143,22 @@
                         </a>
                     </li>
 
-                    <li class="nav-item  ">
-                        <a href="{{route('Admin::permission@index')}}" class="nav-link" >
-                            <i class="icon-lock"></i>
-                            <span class="title">{{ trans('home.permission') }}</span>
-                        </a>
-                    </li>
-
+                    {{--<li class="nav-item  ">--}}
+                        {{--<a href="{{route('Admin::permission@index')}}" class="nav-link" >--}}
+                            {{--<i class="icon-lock"></i>--}}
+                            {{--<span class="title">{{ trans('home.permission') }}</span>--}}
+                        {{--</a>--}}
+                    {{--</li>--}}
                 </ul>
             </li>
 
+            <li class="nav-item">
+                <a href="{{route('Admin::config@index')}}" class="nav-link nav-toggle">
+                    <i class="icon-settings"></i>
+                    <span class="title">{{ trans('home.config') }}</span>
+                    <span class="arrow"></span>
+                </a>
+            </li>
         </ul>
         <!-- END SIDEBAR MENU -->
         <!-- END SIDEBAR MENU -->

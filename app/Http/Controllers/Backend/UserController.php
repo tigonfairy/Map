@@ -12,8 +12,7 @@ class UserController extends Controller
 
     public function index(Request $request)
     {
-
-        if (auth()->user()->cannot('list-user')) {
+        if (auth()->user()->roles->first()['id'] == 3) {
             abort(403);
         }
         return view('admin.user.index');
@@ -21,8 +20,7 @@ class UserController extends Controller
 
     public function add()
     {
-
-        if (auth()->user()->cannot('add-user')) {
+        if (auth()->user()->roles->first()['id'] == 3) {
             abort(403);
         }
 
@@ -35,7 +33,7 @@ class UserController extends Controller
 
     public function store(Request $request)
     {
-        if (auth()->user()->cannot('add-user')) {
+        if (auth()->user()->roles->first()['id'] == 3) {
             abort(403);
         }
 
@@ -56,16 +54,14 @@ class UserController extends Controller
         $data['password'] = bcrypt($password);
         $user = User::create($data);
         $user->roles()->sync($request->input('role',[]));
-        $permissions = [];
+//        $permissions = [];
 
 
-        foreach($request->input('status',[]) as $permissionId => $value) {
-
-            $permissions[$permissionId] = ['value' => $value];
-
-        }
-
-        $user->permissions()->sync($permissions);
+//        foreach($request->input('status',[]) as $permissionId => $value) {
+//            $permissions[$permissionId] = ['value' => $value];
+//        }
+//
+//        $user->permissions()->sync($permissions);
 
 
         $user->save();
@@ -75,7 +71,7 @@ class UserController extends Controller
 
     public function edit($id)
     {
-        if (auth()->user()->cannot('edit-user')) {
+        if (auth()->user()->roles->first()['id'] == 3) {
             abort(403);
         }
 
@@ -90,7 +86,7 @@ class UserController extends Controller
 
     public function update($id, Request $request)
     {
-        if (auth()->user()->cannot('edit-user')) {
+        if (auth()->user()->roles->first()['id'] == 3) {
             abort(403);
         }
 
@@ -110,16 +106,16 @@ class UserController extends Controller
         }
 
         $user->roles()->sync($request->input('role',[]));
-        $permissions = [];
-
-
-        foreach($request->input('status',[]) as $permissionId => $value) {
-
-            $permissions[$permissionId] = ['value' => $value];
-
-        }
-
-        $user->permissions()->sync($permissions);
+//        $permissions = [];
+//
+//
+//        foreach($request->input('status',[]) as $permissionId => $value) {
+//
+//            $permissions[$permissionId] = ['value' => $value];
+//
+//        }
+//
+//        $user->permissions()->sync($permissions);
 
 
         $user->update($data);
@@ -131,7 +127,7 @@ class UserController extends Controller
 
     public function delete($id)
     {
-        if (auth()->user()->cannot('delete-user')) {
+        if (auth()->user()->roles->first()['id'] == 3) {
             abort(403);
         }
 
@@ -142,6 +138,9 @@ class UserController extends Controller
 
     public function getDatatables()
     {
+        if (auth()->user()->roles->first()['id'] == 3) {
+            abort(403);
+        }
         return User::getDatatables();
     }
 }

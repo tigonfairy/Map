@@ -56,6 +56,6 @@ return array(
     'total_sale_real' => 'Tổng doanh số thực tế',
     'total_sale_plan' => 'Tổng doanh số kế hoạch',
     'managerArea' => "Trực thuộc vùng kinh doanh",
-    'placeholderSearchName' => 'Nhập tên để tìm kiếm'
-
+    'placeholderSearchName' => 'Nhập tên để tìm kiếm',
+    'config' => 'Cấu hình',
 );

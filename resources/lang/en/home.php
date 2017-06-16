@@ -56,5 +56,6 @@ return [
     'total_sale_real' => 'Total of sale real',
     'total_sale_plan' => 'Total of sale plan',
     'managerArea' => 'Manager Area',
-    'placeholderSearchName' => 'Enter name to search'
+    'placeholderSearchName' => 'Enter name to search',
+    'config' => 'Config',
 ];
