@@ -26,52 +26,55 @@
         <!-- Page content -->
         <div class="content-wrapper">
             <div class="row">
-                {{--<div class="col-md-12">--}}
-                    {{--<form method="post" action="">--}}
-                            {{--{{ csrf_field() }}--}}
-                            {{--<div class="row">--}}
 
-                                {{--<div class="col-md-2">--}}
-                                    {{--<div class="form-group">--}}
-                                        {{--<input type="text" id="month" name="month" class="form-control monthPicker"--}}
-                                               {{--value="{{ old('month') ?: $month }}"/>--}}
-                                    {{--</div>--}}
-                                {{--</div>--}}
-
-                                {{--<div class="col-md-2">--}}
-                                    {{--<select name="area_id" class="areas form-control"  style="width:100%">--}}
-                                        {{--<option value="">{{ ' -- '. trans('home.select'). ' '. trans('home.place') . ' -- ' }}</option>--}}
-                                        {{--@foreach($areas as $key => $value)--}}
-                                            {{--<option value="{{$value->id}}" @if(old('area_id') == $value->id) selected @endif>{{ $value->name }}</option>--}}
-                                        {{--@endforeach--}}
-                                    {{--</select>--}}
-                                {{--</div>--}}
-
-                                {{--<div class="col-md-4">--}}
-                                    {{--<button type="submit" class="btn btn-info">{{ trans('home.statistic') }}</button>--}}
-                                {{--</div>--}}
-                            {{--</div>--}}
-                        {{--</form>--}}
-                {{--</div>--}}
 
                 <div id="container" class="row" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
-                <div class="row">
+                <div class="col-xs-12">
                     <div class="col-xs-6">
+                        <div class="col-xs-12">
+                        <div class="col-xs-6">
+                            <label><input type="radio" name="radio2" checked class="icheck radioButton"  value="1">Tháng
+                                gần nhất </label>
+                        </div>
+                        <div class="col-xs-6">
+                            <label><input type="radio" name="radio2" class="icheck radioButton"
+                                          value="2">Tháng có doanh số cao nhất</label>
+                        </div>
 
-                    </div>
-                    <div class="col-xs-6" id="chartSp" style="min-width: 310px; height: 400px; margin: 0 auto">
 
-                    </div>
+                        <div class="col-xs-6">
+                            <label>
+                                <input type="radio" name="radio2" class="icheck radioButton"
+                                       value="3">Trung bình tháng</label>
+                        </div>
+                        <div class="col-xs-6">
+                            <label>
+                                <input type="radio" name="radio2"  class="icheck radioButton"
+                                       value="4">Tổng sản lượng</label>
+                        </div>
+                        </div>
+                        <div class="col-xs-12" id="tableData">
+
+                        </div>
+
                 </div>
+                <div class="col-xs-6" id="chartSp" style="min-width: 310px; height: 400px; margin: 0 auto">
 
+                </div>
             </div>
+
         </div>
     </div>
-        <!-- /main content -->
+
+    </div>
+
+
+
+    <!-- /main content -->
 @endsection
 @push('scripts_foot')
 <script src="/js/highcharts.js"></script>
-{{--<script src="https://code.highcharts.com/highcharts.js"></script>--}}
+
 <script type="text/javascript">
     $(document).ready(function () {
 
@@ -89,7 +92,10 @@
         //chart cot
         Highcharts.chart('container', {
             chart: {
-                type: 'column'
+                type: 'column',
+                style: {
+                    fontFamily: 'serif'
+                }
             },
             title: {
                 text: 'Tiến độ doanh số'
@@ -144,17 +150,20 @@
 
             }]
         });
-//
 
-        Highcharts.chart('chartSp', {
+
+        var chartSp = Highcharts.chart('chartSp', {
             chart: {
                 plotBackgroundColor: null,
                 plotBorderWidth: null,
                 plotShadow: false,
-                type: 'pie'
+                type: 'pie',
+                style: {
+                    fontFamily: 'serif'
+                }
             },
             title: {
-                text: 'Browser market shares January, 2015 to May, 2015'
+                text: 'Biểu đổ'
             },
             tooltip: {
                 pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
@@ -164,39 +173,142 @@
                     allowPointSelect: true,
                     cursor: 'pointer',
                     dataLabels: {
-                        enabled: false
+                        enabled: true
                     },
                     showInLegend: true
                 }
             },
-            series: [{
-                name: 'Brands',
-                colorByPoint: true,
-                data: [{
-                    name: 'Microsoft Internet Explorer',
-                    y: 56.33
-                }, {
-                    name: 'Chrome',
-                    y: 24.03,
-                    sliced: true,
-                    selected: true
-                }, {
-                    name: 'Firefox',
-                    y: 10.38
-                }, {
-                    name: 'Safari',
-                    y: 4.77
-                }, {
-                    name: 'Opera',
-                    y: 0.91
-                }, {
-                    name: 'Proprietary or Undetectable',
-                    y: 0.2
-                }]
-            }]
+            series: []
         });
 
 
+        $.ajax({
+            method:"post",
+            url: "{{route('Admin::chart')}}",
+            headers: {
+                'X-CSRF-Token': "{{ csrf_token() }}"
+            },
+            data: {
+                type : 1
+            },
+            dataType:'json',
+            success: function (data) {
+                if(data.title){
+                    chartSp.setTitle({
+                        text : 'Biểu đô tháng '+data.title
+                    });
+                }
+
+                if(data.chart){
+                    var seriesLength = chartSp.series.length;
+                    for(var i = seriesLength - 1; i > -1; i--)
+                    {
+                        //chart.series[i].remove();
+                        if(chartSp.series[i].name ==document.getElementById("series_name").value)
+                            chartSp.series[i].remove();
+                    }
+
+                    chartSp.addSeries(
+                            {
+                                name: 'S/p',
+                                colorByPoint: true,
+                                data: data.chart
+                            }
+                    )
+                }
+                if(data.table){
+                    var table = data.table;
+                    var string = '<table class="table table-striped table-bordered" cellspacing="0" width="100%">' +
+                            ' <thead> <tr> <th>Sản phẩm</th> <th>Doanh số</th></tr></thead><tbody>';
+
+                    table.forEach(function(value){
+                        string += '<tr>';
+                        string += '<td>';
+                        string += value.name;
+                        string += '</td>';
+                        string += '<td>';
+                        string += value.y;
+                        string += '</td>';
+
+                        string += '</tr>';
+
+                    });
+                    string +='</tbody></table>';
+                    $('#tableData').html(string);
+                }
+
+
+
+            },
+            error: function (err) {
+                console.log(err);
+                alert('Lỗi, hãy thử lại sau');
+            }
+        });
+
+        $('.radioButton').change(function(){
+
+            var type = $(this).val();
+            $.ajax({
+                method:"post",
+                url: "{{route('Admin::chart')}}",
+                headers: {
+                    'X-CSRF-Token': "{{ csrf_token() }}"
+                },
+                data: {
+                    type : type
+                },
+                dataType:'json',
+                success: function (data) {
+                    if(data.title){
+                        chartSp.setTitle({
+                            text : 'Biểu đô '+data.title
+                        });
+                    }
+                    if(data.chart){
+                        while( chartSp.series.length > 0 ) {
+                            chartSp.series[0].remove( false );
+                        }
+
+                        chartSp.redraw();
+                        chartSp.addSeries(
+                                {
+                                    name: 'S/p',
+                                    colorByPoint: true,
+                                    data: data.chart
+                                }
+                        )
+                    }
+                    if(data.table){
+                        $('#tableData').html('');
+                        var table = data.table;
+                        var string = '<table class="table table-striped table-bordered" cellspacing="0" width="100%">' +
+                                ' <thead> <tr> <th>Sản phẩm</th> <th>Doanh số</th></tr></thead><tbody>';
+
+                        table.forEach(function(value){
+                            string += '<tr>';
+                            string += '<td>';
+                            string += value.name;
+                            string += '</td>';
+                            string += '<td>';
+                            string += value.y;
+                            string += '</td>';
+
+                            string += '</tr>';
+
+                        });
+                        string +='</tbody></table>';
+                        $('#tableData').html(string);
+                    }
+
+
+
+                },
+                error: function (err) {
+                    console.log(err);
+                }
+            });
+        });
     });
 </script>
 @endpush
