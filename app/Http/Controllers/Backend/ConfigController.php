@@ -9,7 +9,7 @@ class ConfigController extends Controller
 {
     public function index(Request $request)
     {
-        if (auth()->user()->roles->first()['id'] != 1) {
+        if (auth()->user()->roles->first()['email'] != 'admin@gamil.com') {
             abort(403);
         }
         $config = [];
@@ -21,7 +21,7 @@ class ConfigController extends Controller
 
     public function store(Request $request)
     {
-        if (auth()->user()->roles->first()['id'] != 1) {
+        if (auth()->user()->roles->first()['email'] != 'admin@gamil.com') {
             abort(403);
         }
         $this->validate($request,[
