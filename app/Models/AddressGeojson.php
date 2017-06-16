@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Auth;
+use Datatables;
 use Illuminate\Database\Eloquent\Model;
 
 class AddressGeojson extends Model
@@ -11,6 +12,22 @@ class AddressGeojson extends Model
     protected $fillable = [
         'name','slug','coordinates'
     ];
+
+    public static function getDatatables()
+    {
+        $model = static::select([
+                'id', 'name', 'created_at'
+        ]);
+
+        return Datatables::eloquent($model)
+            ->addColumn('action', 'admin.map.datatables.action')
+            ->make(true);
+    }
+
+    public function areas()
+    {
+        return $this->hasMany(Area::class, 'area_address','address_id','area_id');
+    }
 
     public static function boot()
     {

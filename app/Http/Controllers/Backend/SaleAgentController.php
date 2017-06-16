@@ -42,7 +42,7 @@ class SaleAgentController extends Controller
         $sales_real = request('sales_real');
 
         foreach ($product_ids as $key => $product_id) {
-            SaleAgent::create([
+            SaleAgent::firstOrCreate([
                 'agent_id' => request('agent_id'),
                 'product_id' => $product_id,
                 'month' => request('month'),
@@ -86,7 +86,7 @@ class SaleAgentController extends Controller
                         'sales_real' => $sales_real[$key] ? $sales_real[$key] : 0,
                     ]);
                 } else {
-                    SaleAgent::create([
+                    SaleAgent::firstOrCreate([
                         'agent_id' => $agentId,
                         'product_id' => $product_id,
                         'month' => request('month'),
@@ -97,7 +97,7 @@ class SaleAgentController extends Controller
             }
         } else {
             foreach ($product_ids as $key => $product_id) {
-                SaleAgent::create([
+                SaleAgent::firstOrCreate([
                     'agent_id' => $agentId,
                     'product_id' => $product_id,
                     'month' => request('month'),

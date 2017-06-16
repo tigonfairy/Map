@@ -36,9 +36,9 @@
                     {{--</li>--}}
 
                     <li class="nav-item  ">
-                        <a href="{{route('Admin::map@addMap')}}" class="nav-link nav-toggle">
+                        <a href="{{route('Admin::map@listLocation')}}" class="nav-link nav-toggle">
                             <i class="icon-settings"></i>
-                            <span class="title">{{ trans('home.addLocation') }}</span>
+                            <span class="title">{{ trans('home.managerMap') }}</span>
                             <span class="arrow"></span>
                         </a>
                     </li>
