@@ -14,18 +14,12 @@ class SaleAgentController extends Controller
 
     public function index(Request $request)
     {
-        if (auth()->user()->cannot('list-saleAgent')) {
-            abort(403);
-        }
+
         return view('admin.saleAgent.index');
     }
 
     public function add()
     {
-
-        if (auth()->user()->cannot('add-saleAgent')) {
-            abort(403);
-        }
 
         $agents = Agent::all();
         $products = Product::all();
@@ -62,10 +56,6 @@ class SaleAgentController extends Controller
 
     public function edit($agentId, $month)
     {
-        if (auth()->user()->cannot('edit-saleAgent')) {
-            abort(403);
-        }
-
         $saleAgent = SaleAgent::where('agent_id',$agentId)->where('month',$month)->get();
         $products = Product::all();
         $agents = Agent::all();
@@ -75,10 +65,6 @@ class SaleAgentController extends Controller
 
     public function update($agentId)
     {
-        if (auth()->user()->cannot('edit-saleAgent')) {
-            abort(403);
-        }
-
         $this->validate(request(),[
             'month' => 'required',
         ],[
@@ -127,10 +113,6 @@ class SaleAgentController extends Controller
 
     public function delete($agentId,$month)
     {
-        if (auth()->user()->cannot('delete-saleAgent')) {
-            abort(403);
-        }
-
         SaleAgent::where('agent_id',$agentId)->where('month',$month)->delete();
         return redirect()->route('Admin::saleAgent@index')->with('success', 'Đã xoá thành công');
     }
