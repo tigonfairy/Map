@@ -24,6 +24,15 @@ Route::group(['middleware' => ['auth','language'],
         });
 
         Route::group([
+            'prefix' => 'sale',
+            'as' => 'sale@',
+        ], function () {
+            Route::get('/get-list-admin', ['as' => 'getListAdmins', 'uses' => 'ApiController@getListSaleAdmins']);
+            Route::get('/get-list-mans', ['as' => 'getListmans', 'uses' => 'ApiController@getListSaleMans']);
+            Route::get('/get-list-agents', ['as' => 'getListAgents', 'uses' => 'ApiController@getListAgents']);
+        });
+
+        Route::group([
             'prefix' => 'saleAdmin',
             'as' => 'saleAdmin@',
         ], function () {

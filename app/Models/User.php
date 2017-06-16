@@ -44,6 +44,11 @@ class User extends Authenticatable
         return $this->belongsToMany(Permission::class, 'user_permissions')->withPivot('value');
     }
 
+    public function manager()
+    {
+        return $this->hasMany(User::class, 'manager_id');
+    }
+
     public static function getDatatables()
     {
         $model = static::select([
