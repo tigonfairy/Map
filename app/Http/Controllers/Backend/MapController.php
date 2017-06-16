@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers\Backend;
 
-use App\User;
+use App\Models\User;
 use App\Models\Area;
 use App\Models\Agent;
 use App\Models\Product;
 use App\Models\SaleAgent;
 use Carbon\Carbon;
+use function foo\func;
 use Illuminate\Http\Request;
 use App\Models\AddressGeojson;
 use App\Http\Controllers\Controller;
@@ -256,6 +257,7 @@ class MapController extends Controller
             $area->address()->sync([]);
             $area->delete();
             return redirect()->back()->with('success','Xóa thành công!!');
+            return redirect()->back()->with('success','Xóa thành công!!');
         }else{
             return redirect()->back()->with('error','Không tồn tại !!');
         }
@@ -271,7 +273,6 @@ class MapController extends Controller
         }else{
             return redirect()->back()->with('error','Không tồn tại !!');
         }
-
     }
 
     public function search() {
@@ -283,12 +284,79 @@ class MapController extends Controller
     }
 
     public function dataSearch(Request $request) {
+        $typeSearch = $request->input('type_search');
+        $dataSearch = $request->input('data_search');
 
-        if(request()->has('area_id')) {
-            $area_id = $request->input('area_id');
-            $area_polygon = Area::find($area_id)->address()->pluck('coordinates');
-            $agent_area = Area::find($area_id)->address()->pluck('coordinates');
+        if($typeSearch == 'areas') {
+            $area = Area::findOrFail($dataSearch);
+            $listIds=[];
+            $listIds = $area->subArea()->get()->pluck('id')->toArray();
+            $listIds[] = $dataSearch;
+            $locations = $area->address;
+            $agents = Agent::whereIn('area_id',$listIds)->get();
+
+            if($agents){
+                $idAgent = clone $agents;
+                $idAgent = $idAgent->pluck('id')->toArray();
+            }
+
+            return response()->json([
+                'area' =>  $area,
+                'locations' =>  $locations,
+                'agents' =>  $agents,
+            ]);
         }
 
+        if($typeSearch == 'sale_admins') {
+            $user = User::findOrFail($dataSearch);
+            $userOwns = $user->manager()->get();
+            $userOwns->push($user);
+            $areas = $userOwns->map(function ($user) {
+                return $user->area()->get();
+            });
+
+            $locations=[];
+            $listIds=[];
+            foreach ($areas as $key => $areaIds) {
+                foreach ($areaIds as $k => $area) {
+                    array_push($listIds, $area->id);
+                    array_push($locations, $area->address);
+                }
+            }
+            $agents = Agent::whereIn('area_id',$listIds)->get();
+            return response()->json([
+                'locations' =>  $locations,
+                'agents' =>  $agents,
+            ]);
+        }
+
+        if($typeSearch == 'sale_mans') {
+            $agents = Agent::where('manager_id',$dataSearch)->get();
+            $areas=[];
+            foreach ($agents as $key => $agent) {
+                array_push($areas, $agent->area);
+            }
+            $locations=[];
+            foreach ($areas as $key => $area) {
+                array_push($locations, $area->address);
+            }
+
+            return response()->json([
+                'locations' =>  $locations,
+                'agents' =>  $agents,
+            ]);
+        }
+
+        if($typeSearch == 'agents') {
+            $agent = Agent::findOrFail($dataSearch);
+            $area=$agent->area;
+            $locations=$area->address;
+
+            return response()->json([
+                'area' =>  $area,
+                'locations' =>  $locations,
+                'agents' =>  $agent,
+            ]);
+        }
     }
 }
