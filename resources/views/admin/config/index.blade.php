@@ -5,7 +5,7 @@
     <div class="page-header">
         <div class="page-header-content">
             <div class="page-title">
-                <h2>Cấu hình hệ thống</h2>
+                <h2>{{ trans('home.config') }}</h2>
             </div>
 
             <div class="heading-elements">
@@ -58,7 +58,7 @@
                             </div>
 
                             <div class="text-right">
-                                <button type="submit" class="btn btn-primary">Cập nhật</button>
+                                <button type="submit" class="btn btn-primary">{{ trans('home.update') }}</button>
                             </div>
                         </form>
                     </div>

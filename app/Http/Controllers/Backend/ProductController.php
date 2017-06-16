@@ -10,15 +10,16 @@ class ProductController extends Controller
 {
     public function index(Request $request)
     {
-        if (auth()->user()->cannot('list-product')) {
+        if (auth()->user()->roles->first()['id'] != 1) {
             abort(403);
         }
+
         return view('admin.product.index');
     }
 
     public function add()
     {
-        if (auth()->user()->cannot('add-product')) {
+        if (auth()->user()->roles->first()['id'] != 1) {
             abort(403);
         }
         return view('admin.product.form');
@@ -26,8 +27,7 @@ class ProductController extends Controller
 
     public function store(Request $request)
     {
-
-        if (auth()->user()->cannot('add-product')) {
+        if (auth()->user()->roles->first()['id'] != 1) {
             abort(403);
         }
 
@@ -44,7 +44,7 @@ class ProductController extends Controller
 
     public function edit($id)
     {
-        if (auth()->user()->cannot('edit-product')) {
+        if (auth()->user()->roles->first()['id'] != 1) {
             abort(403);
         }
 
@@ -54,7 +54,7 @@ class ProductController extends Controller
 
     public function update($id, Request $request)
     {
-        if (auth()->user()->cannot('edit-product')) {
+        if (auth()->user()->roles->first()['id'] != 1) {
             abort(403);
         }
 
@@ -74,7 +74,7 @@ class ProductController extends Controller
 
     public function delete($id)
     {
-        if (auth()->user()->cannot('delete-product')) {
+        if (auth()->user()->roles->first()['id'] != 1) {
             abort(403);
         }
 
@@ -85,6 +85,9 @@ class ProductController extends Controller
 
     public function getDatatables()
     {
+        if (auth()->user()->roles->first()['id'] != 1) {
+            abort(403);
+        }
         return Product::getDatatables();
     }
 }

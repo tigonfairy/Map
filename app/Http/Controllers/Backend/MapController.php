@@ -8,17 +8,17 @@ use App\Models\Agent;
 use App\Models\Product;
 use App\Models\SaleAgent;
 use Carbon\Carbon;
-use function foo\func;
+
 use Illuminate\Http\Request;
 use App\Models\AddressGeojson;
-use App\Http\Controllers\Controller;
 use DB;
-class MapController extends Controller
+use Illuminate\Support\Facades\Auth;
+
+class MapController extends AdminController
 {
     public function index()
     {
-
-        if (auth()->user()->cannot('map')) {
+        if (auth()->user()->roles->first['id'] == 3) {
             abort(403);
         }
         $locations = AddressGeojson::all();
@@ -26,11 +26,16 @@ class MapController extends Controller
     }
 
     public function addMap(){
-
+        if (auth()->user()->roles->first()['id'] == 3) {
+            abort(403);
+        }
         return view('admin.map.addMap');
     }
 
     public function addMapPost(Request $request){
+        if (auth()->user()->roles->first()['id'] == 3) {
+            abort(403);
+        }
         $this->validate($request,[
            'name' => 'required',
             'coordinates' => 'required'
@@ -57,6 +62,10 @@ class MapController extends Controller
     }
 
     public function editMapUser(Request $request,$id){
+        if (auth()->user()->roles->first()['id'] == 3) {
+            abort(403);
+        }
+
         $area = Area::findOrFail($id);
         $users = User::all();
         $areaAddress =  $area->address;
@@ -65,6 +74,10 @@ class MapController extends Controller
     }
 
     public function editMapUserPost(Request $request,$id){
+        if (auth()->user()->roles->first()['id'] == 3) {
+            abort(403);
+        }
+
         $area = Area::findOrFail($id);
         $this->validate($request,[
             'manager_id' => 'required',
@@ -83,6 +96,10 @@ class MapController extends Controller
     }
 
     public function listMapUser(Request $request){
+        if (auth()->user()->roles->first()['id'] == 3) {
+            abort(403);
+        }
+
         $areas = Area::select('*');
         if($request->input('q')){
             $key = $request->input('q');
@@ -93,6 +110,10 @@ class MapController extends Controller
     }
 
     public function mapUserDetail(Request $request,$id){
+        if (auth()->user()->roles->first()['id'] == 3) {
+            abort(403);
+        }
+
         $area = Area::findOrFail($id);
         $month = Carbon::now()->format('m-Y');
         if($request->input('month')){
@@ -118,11 +139,19 @@ class MapController extends Controller
     }
 
     public function addMapUser(){
+        if (auth()->user()->roles->first()['id'] == 3) {
+            abort(403);
+        }
+
         $users = User::all();
         return view('admin.map.addMapUser',compact('users'));
     }
 
     public function addMapUserPost(Request $request){
+        if (auth()->user()->roles->first()['id'] == 3) {
+            abort(403);
+        }
+
         $this->validate($request,[
             'manager_id' => 'required',
             'place' => 'required'
@@ -153,6 +182,9 @@ class MapController extends Controller
     }
 
     public function addAgency(Request $request){
+        if (auth()->user()->roles->first()['id'] == 3) {
+            abort(403);
+        }
         $users = User::all();
         $areas = Area::all();
 
@@ -160,6 +192,9 @@ class MapController extends Controller
     }
 
     public function addMapAgencyPost(Request $request){
+        if (auth()->user()->roles->first()['id'] == 3) {
+            abort(403);
+        }
         $this->validate($request,[
             'manager_id' => 'required',
             'area_id' => 'required',
@@ -251,7 +286,9 @@ class MapController extends Controller
     }
 
     public function mapUserDelete(Request $request,$id){
-
+        if (auth()->user()->roles->first()['id'] == 3) {
+            abort(403);
+        }
         $area = Area::find($id);
         if($area){
             $area->address()->sync([]);
@@ -265,6 +302,9 @@ class MapController extends Controller
     }
 
     public function agentDelete(Request $request,$id){
+        if (auth()->user()->roles->first()['id'] == 3) {
+            abort(403);
+        }
         $agent = Agent::find($id);
         if($agent){
             $saleAgent = SaleAgent::where('agent_id',$id)->delete();
