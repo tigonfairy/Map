@@ -98,7 +98,6 @@ class MapController extends Controller
             $month = $request->input('month');
         }
 
-        $listIds=[];
         $listIds = $area->subArea()->get()->pluck('id')->toArray();
         $listIds[] = $id;
         $locations = $area->address;
