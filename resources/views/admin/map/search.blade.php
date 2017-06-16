@@ -72,10 +72,13 @@
     var markers = [];
 
     $(document).ready(function () {
-        $(".data_search").select2();
+        $(".data_search").select2({
+            allowClear: true,
+        });
 
         $( ".search_type" ).change(function() {
             var search_type = $(this).val();
+            $(".data_search").empty();
             if (search_type == 1) {
                 getListAreas();
             } else if (search_type == 2) {
