@@ -11,14 +11,18 @@ use App\Models\Product;
 use App\Models\SaleAgent;
 use Illuminate\Http\Request;
 use App\Models\AddressGeojson;
-
+use Auth;
+use Illuminate\Support\Facades\Cache;
 class MapController extends AdminController
 {
+    private $agentId;
+    private $user;
+    public function __construct()
+    {
+    }
+
     public function listLocation()
     {
-        if (auth()->user()->roles->first()['id'] == 3) {
-            abort(403);
-        }
         return view('admin.map.index');
     }
 
@@ -144,23 +148,24 @@ class MapController extends AdminController
     }
 
     public function listMapUser(Request $request){
-        if (auth()->user()->roles->first()['id'] == 3) {
-            abort(403);
-        }
+        $user = auth()->user();
+        $role = $user->roles()->first();
 
         $areas = Area::select('*');
         if($request->input('q')){
             $key = $request->input('q');
             $areas = $areas->where('name','like','%'.$key.'%');
         }
-        $areas = $areas->paginate(10);
+        if($role->id == 1){ // tong vung
+            $areas = $areas->paginate(10);
+        }else{
+            $areas = $areas->where('manager_id',$user->id)->paginate(10);
+        }
+
         return view('admin.map.listMapUser',compact('areas'));
     }
 
     public function mapUserDetail(Request $request,$id){
-        if (auth()->user()->roles->first()['id'] == 3) {
-            abort(403);
-        }
 
         $area = Area::findOrFail($id);
         $month = Carbon::now()->format('m-Y');
@@ -219,20 +224,33 @@ class MapController extends AdminController
     }
 
     public function listAgency(Request $request){
+
+        $user = auth()->user();
+        $role = $user->roles()->first();
+
         $agents = Agent::select('*');
         if($request->input('q')){
             $key = $request->input('q');
             $agents = $agents->where('name','like','%'.$key.'%');
         }
-        $agents = $agents->paginate(10);
+        if($role->id == 1){
+            $agents = $agents->paginate(10);
+        }else{
+            if(Cache::has('agentId')){
+                $agentID = Cache::get('agentId');
+            }else{
+                $agentID = User::getListAgencyByRole();
+            }
+
+            $agents = $agents->whereIn('id',$agentID)->paginate(10);
+        }
+
 
         return view('admin.map.listAgency',compact('agents'));
     }
 
     public function addAgency(Request $request){
-        if (auth()->user()->roles->first()['id'] == 3) {
-            abort(403);
-        }
+
         $users = User::all();
         $areas = Area::all();
 
@@ -240,9 +258,7 @@ class MapController extends AdminController
     }
 
     public function addMapAgencyPost(Request $request){
-        if (auth()->user()->roles->first()['id'] == 3) {
-            abort(403);
-        }
+
         $this->validate($request,[
             'manager_id' => 'required',
             'area_id' => 'required',

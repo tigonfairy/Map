@@ -34,7 +34,7 @@
                             {{--<span class="arrow"></span>--}}
                         {{--</a>--}}
                     {{--</li>--}}
-
+                    @if(auth()->user()->roles()->first()->id == 1)
                     <li class="nav-item  ">
                         <a href="{{route('Admin::map@listLocation')}}" class="nav-link nav-toggle">
                             <i class="icon-settings"></i>
@@ -42,6 +42,7 @@
                             <span class="arrow"></span>
                         </a>
                     </li>
+                    @endif
 
                     <li class="nav-item  ">
                         <a href="{{route('Admin::map@listAgency')}}" class="nav-link nav-toggle">
@@ -50,7 +51,7 @@
                             <span class="arrow"></span>
                         </a>
                     </li>
-
+                    @if(auth()->user()->roles()->first()->id != 3)
                     <li class="nav-item  ">
                         <a href="{{route('Admin::map@listMapUser')}}" class="nav-link nav-toggle">
                             <i class="icon-settings"></i>
@@ -66,6 +67,7 @@
                             <span class="arrow"></span>
                         </a>
                     </li>
+                    @endif
                 </ul>
             </li>
 
@@ -143,12 +145,12 @@
                         </a>
                     </li>
 
-                    {{--<li class="nav-item  ">--}}
-                        {{--<a href="{{route('Admin::permission@index')}}" class="nav-link" >--}}
-                            {{--<i class="icon-lock"></i>--}}
-                            {{--<span class="title">{{ trans('home.permission') }}</span>--}}
-                        {{--</a>--}}
-                    {{--</li>--}}
+                    <li class="nav-item  ">
+                        <a href="{{route('Admin::permission@index')}}" class="nav-link" >
+                            <i class="icon-lock"></i>
+                            <span class="title">{{ trans('home.permission') }}</span>
+                        </a>
+                    </li>
                 </ul>
             </li>
 

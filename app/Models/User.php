@@ -5,7 +5,9 @@ namespace App\Models;
 use Auth;
 use Datatables;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-
+use App\Models\Agent;
+use App\Models\Area;
+use Cache;
 class User extends Authenticatable
 {
 //    use Authenticatable;
@@ -49,26 +51,27 @@ class User extends Authenticatable
         return $this->hasMany(User::class, 'manager_id');
     }
 
+
     public static function getDatatables()
     {
         $user = auth()->user();
-        if($user->email == 'admin@gmail.com') {
+//        if($user->email == 'admin@gmail.com') {
             $model = static::select([
                 'id', 'email', 'created_at'
             ])->with('roles');
-        } else {
-            $users = $user->manager()->get();
-            $userIds = $user->manager()->get()->pluck('id')->toArray();
-            foreach ($users as $key => $value) {
-                $userId = $value->manager()->get()->pluck('id')->toArray();
-                foreach ($userId as $k => $v) {
-                    $userIds[] = $v;
-                }
-            }
-            $model = static::select([
-                'id', 'email', 'created_at'
-            ])->with('roles')->whereIn('id', $userIds);
-        }
+//        } else {
+//            $users = $user->manager()->get();
+//            $userIds = $user->manager()->get()->pluck('id')->toArray();
+//            foreach ($users as $key => $value) {
+//                $userId = $value->manager()->get()->pluck('id')->toArray();
+//                foreach ($userId as $k => $v) {
+//                    $userIds[] = $v;
+//                }
+//            }
+//            $model = static::select([
+//                'id', 'email', 'created_at'
+//            ])->with('roles')->whereIn('id', $userIds);
+//        }
 
 
         return Datatables::eloquent($model)
@@ -115,6 +118,23 @@ class User extends Authenticatable
                 'current_data'      => json_encode($user->getOriginal()),
             ]);
         });
+    }
+
+    public static function getListAgencyByRole(){
+        $user = auth()->user();
+        $role = $user->roles()->first();
+        if($role->id != 2 ){
+            return null;
+        }
+        $area = $user->area()->get()->pluck('id')->toArray();
+        $subArea = Area::whereIn('parent_id',$area)->get()->pluck('id')->toArray();
+        $areaIds = array_unique(array_merge($area,$subArea));
+        $agents = Agent::whereIn('area_id',$areaIds)->get()->pluck('id')->toArray();
+        //agent Id of user
+        $agentId = $user->agent()->get()->pluck('id')->toArray();
+        $agentId= array_unique(array_merge($agentId,$agents));
+
+        return $agentId;
     }
 
 }

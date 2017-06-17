@@ -14,9 +14,7 @@ class RoleController extends Controller
 {
     public function index(Request $request)
     {
-        if (auth()->user()->roles->first()['email'] != 'admin@gamil.com') {
-            abort(403);
-        }
+
 
         $roles = Role::orderBy('id')->get();
         return view('admin.role.index',compact('roles'));
@@ -24,9 +22,6 @@ class RoleController extends Controller
 
     public function add()
     {
-        if (auth()->user()->roles->first()['email'] != 'admin@gamil.com') {
-            abort(403);
-        }
 
         $permission = Permission::all();
         return view('admin.role.form', compact('permission'));
@@ -34,9 +29,6 @@ class RoleController extends Controller
 
     public function store(Request $request)
     {
-        if (auth()->user()->roles->first()['email'] != 'admin@gamil.com') {
-            abort(403);
-        }
 
         $this->validate($request,[
             'name' =>'required',
@@ -57,9 +49,6 @@ class RoleController extends Controller
 
     public function edit($id)
     {
-        if (auth()->user()->roles->first()['email'] != 'admin@gamil.com') {
-            abort(403);
-        }
 
         $role = Role::findOrFail($id);
         $permission = Permission::all();
@@ -69,10 +58,6 @@ class RoleController extends Controller
 
     public function update($id,Request $request)
     {
-        if (auth()->user()->roles->first()['email'] != 'admin@gamil.com') {
-            abort(403);
-        }
-
         $this->validate($request,[
             'name' => 'required',
         ]);
@@ -97,9 +82,6 @@ class RoleController extends Controller
 
     public function delete($id)
     {
-        if (auth()->user()->roles->first()['email'] != 'admin@gamil.com') {
-            abort(403);
-        }
 
         $role = Role::findOrFail($id);
         $role->delete();

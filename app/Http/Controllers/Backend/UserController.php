@@ -12,17 +12,12 @@ class UserController extends Controller
 
     public function index(Request $request)
     {
-        if (auth()->user()->roles->first()['id'] == 3) {
-            abort(403);
-        }
         return view('admin.user.index');
     }
 
     public function add()
     {
-        if (auth()->user()->roles->first()['id'] == 3) {
-            abort(403);
-        }
+
 
         $roles = Role::all();
         $permission = Permission::all();
@@ -33,9 +28,7 @@ class UserController extends Controller
 
     public function store(Request $request)
     {
-        if (auth()->user()->roles->first()['id'] == 3) {
-            abort(403);
-        }
+
 
         $this->validate($request,[
             'name' =>'required',
@@ -71,9 +64,6 @@ class UserController extends Controller
 
     public function edit($id)
     {
-        if (auth()->user()->roles->first()['id'] == 3) {
-            abort(403);
-        }
 
         $user = User::findOrFail($id);
         $roles = Role::all();
@@ -86,9 +76,7 @@ class UserController extends Controller
 
     public function update($id, Request $request)
     {
-        if (auth()->user()->roles->first()['id'] == 3) {
-            abort(403);
-        }
+
 
         $user = User::findOrFail($id);
 
@@ -127,10 +115,6 @@ class UserController extends Controller
 
     public function delete($id)
     {
-        if (auth()->user()->roles->first()['id'] == 3) {
-            abort(403);
-        }
-
         $user = User::findOrFail($id);
         $user->delete();
         return redirect()->route('Admin::user@index')->with('success', 'Đã xoá thành công');
@@ -138,9 +122,6 @@ class UserController extends Controller
 
     public function getDatatables()
     {
-        if (auth()->user()->roles->first()['id'] == 3) {
-            abort(403);
-        }
         return User::getDatatables();
     }
 }

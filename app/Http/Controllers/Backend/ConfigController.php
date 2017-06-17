@@ -9,9 +9,7 @@ class ConfigController extends Controller
 {
     public function index(Request $request)
     {
-        if (auth()->user()->roles->first()['email'] != 'admin@gamil.com') {
-            abort(403);
-        }
+
         $config = [];
         if (file_exists(public_path().'/config/config.json')) {
             $config = json_decode(file_get_contents(public_path().'/config/config.json'),true);
@@ -21,9 +19,7 @@ class ConfigController extends Controller
 
     public function store(Request $request)
     {
-        if (auth()->user()->roles->first()['email'] != 'admin@gamil.com') {
-            abort(403);
-        }
+
         $this->validate($request,[
             'repassword' =>'required',
             'recaptcha' =>'required',
