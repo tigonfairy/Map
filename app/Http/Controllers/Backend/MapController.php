@@ -2,27 +2,24 @@
 
 namespace App\Http\Controllers\Backend;
 
+use DB;
+use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Area;
 use App\Models\Agent;
 use App\Models\Product;
 use App\Models\SaleAgent;
-use Carbon\Carbon;
-
 use Illuminate\Http\Request;
 use App\Models\AddressGeojson;
-use DB;
-use Illuminate\Support\Facades\Auth;
 
 class MapController extends AdminController
 {
-    public function index()
+    public function listLocation()
     {
-        if (auth()->user()->roles->first['id'] == 3) {
+        if (auth()->user()->roles->first()['id'] == 3) {
             abort(403);
         }
-        $locations = AddressGeojson::all();
-        return view('admin.map.index',compact('locations'));
+        return view('admin.map.index');
     }
 
     public function addMap(){
@@ -59,6 +56,57 @@ class MapController extends AdminController
         $address = AddressGeojson::create(['name' => $data['name'],'slug' => $slug, 'coordinates' => $coordinates]);
 
         return redirect()->back()->with('success','Tạo vùng địa lý thành công');
+    }
+
+    public function editMap(Request $request,$id){
+        if (auth()->user()->roles->first()['id'] == 3) {
+            abort(403);
+        }
+
+        $addressGeojson = AddressGeojson::findOrFail($id);
+
+        return view('admin.map.editMap',compact('addressGeojson'));
+    }
+
+    public function editMapPost(Request $request, $id){
+        if (auth()->user()->roles->first()['id'] == 3) {
+            abort(403);
+        }
+        $this->validate($request,[
+            'name' => 'required',
+            'coordinates' => 'required'
+        ],[
+            'name.required' => 'Vui lòng nhập tên',
+            'coordinates.required' => 'Chưa vẽ vùng địa lý'
+        ]);
+        $address = AddressGeojson::find($id);
+        $data=$request->all();
+        $slug = str_slug($data['name']);
+        $coordinates = json_decode($data['coordinates'],true);
+        $newCoordinates = [];
+        foreach ($coordinates as $coor){
+            $c = explode(",", $coor);
+            array_push($newCoordinates, $c);
+        }
+        $coordinates = json_encode($newCoordinates);
+        $address->update(['name' => $data['name'],'slug' => $slug, 'coordinates' => $coordinates]);
+
+        return edirect()->route('Admin::map@listLocation')->with('success','Cập nhật vùng địa lý thành công');
+    }
+
+    public function deleteMap(Request $request,$id){
+        if (auth()->user()->roles->first()['id'] == 3) {
+            abort(403);
+        }
+        $address = AddressGeojson::find($id);
+        if($address){
+            $address->delete();
+            DB::table('area_address')->where('address_id', $id)->delete();
+            return redirect()->back()->with('success','Xóa thành công!!');
+        }else{
+            return redirect()->back()->with('error','Không tồn tại !!');
+        }
+
     }
 
     public function editMapUser(Request $request,$id){
@@ -294,7 +342,6 @@ class MapController extends AdminController
             $area->address()->sync([]);
             $area->delete();
             return redirect()->back()->with('success','Xóa thành công!!');
-            return redirect()->back()->with('success','Xóa thành công!!');
         }else{
             return redirect()->back()->with('error','Không tồn tại !!');
         }
@@ -398,5 +445,9 @@ class MapController extends AdminController
                 'agents' =>  $agent,
             ]);
         }
+    }
+
+    public function getDatatables() {
+        return AddressGeojson::getDatatables();
     }
 }

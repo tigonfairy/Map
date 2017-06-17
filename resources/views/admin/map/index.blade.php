@@ -1,12 +1,19 @@
 @extends('admin')
+
 @section('content')
     <!-- Page header -->
     <div class="page-header">
         <div class="page-header-content">
             <div class="page-title">
-                <h2>{{ trans('home.Map') }}</h2>
+                <h2>{{ trans('home.managerMap') }}</h2>
             </div>
 
+            <div class="heading-elements">
+                <div class="heading-btn-group">
+                    <a href="{{route('Admin::map@addMap')}}" class="btn btn-primary"><i class="icon-add"></i>{{ trans('home.addLocation')}}</a>
+
+                </div>
+            </div>
         </div>
     </div>
     <!-- /page header -->
@@ -14,94 +21,64 @@
     <div class="page-container">
         <!-- Page content -->
 
-        <!-- Main content -->
         <div class="content-wrapper">
-            <div class="row">
-                <div class="col-md-7">
-                    <div class="row">
-                        <select id="locations">
-                            <option value=""> {{ trans('home.Select_Place') }}</option>
-                            @foreach($locations as $location)
-                                <option value="{{$location->coordinates}}">{{ $location->name }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="row">
-                        <div class="panel panel-flat">
-                            <div class="table-responsive">
-                                <div id="map"></div>
-                            </div>
-
-                        </div>
-                    </div>
-
+            @if (session('success'))
+                <div class="alert bg-success alert-styled-left">
+                    <button type="button" class="close" data-dismiss="alert"><span>×</span><span class="sr-only">Close</span></button>
+                    {{ session('success') }}
                 </div>
-                <div class="col-md-5">
-
-                </div>
-            </div>
+            @endif
+            <table class="table table-striped table-bordered" cellspacing="0" width="100%" id="maps-table">
+                <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>{{ trans('home.name') }}</th>
+                    <th>Created_At</th>
+                    <th>Action</th>
+                </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
         </div>
         <!-- /main content -->
     </div>
 
+    <!-- /page content -->
+
     <!-- /page container -->
+
+
 @endsection
-@push('scripts_foot')
-<script type="text/javascript" src="https://maps.google.com/maps/api/js?key=AIzaSyDUMRn1pnBk97Zay94WiBbMgdVlBh_vwYs&libraries=drawing"></script>
-<script type="text/javascript" src="/js/gmaps.js"></script>
-<script type="text/javascript" src="/js/prettify.js"></script>
-@endpush
 
 @push('scripts')
+<script>
+    function xoaCat(){
+        var conf = confirm("Bạn chắc chắn muốn xoá?");
+        return conf;
+    }
 
-<script type="text/javascript">
-    var map;
-    var drawingManager;
-    var shapes = [];
-    var patch = [];
-    $(document).ready(function () {
-        $('#locations').select2();
-
-        $('#locations').on('change', '', function (e) {
-            var coordinates = $(this).val();
-
-            var coordinate = JSON.parse(coordinates);
-            var bounds = new google.maps.LatLngBounds();
-            for (i = 0; i < coordinate.length; i++) {
-                var c = coordinate[i];
-                bounds.extend(new google.maps.LatLng(c[0], c[1]));
-            }
-            map = new GMaps({
-                div: '#map',
-                lat: bounds.getCenter().lat(),
-                lng:bounds.getCenter().lng(),
-                width: "100%",
-                height: '500px',
-                zoom: 8,
-                fullscreenControl:true
-            });
-            var path = coordinate;
-            var infoWindow = new google.maps.InfoWindow({
-                content: 'you clicked a polyline'
-            });
-            polygon = map.drawPolygon({
-                paths: path,
-                strokeColor: '#333',
-                strokeOpacity: 0.5,
-                strokeWeight: 1,
-                fillColor: '#333',
-                fillOpacity: 0.6,
-                mouseover: function (clickEvent) {
-                    var position = clickEvent.latLng;
-
-                    infoWindow.setPosition(position);
-                    infoWindow.open(map.map);
+    $(document).ready(function() {
+        var datatable = $("#maps-table").DataTable({
+            autoWidth: false,
+            processing: true,
+            serverSide: true,
+            "pageLength": 10,
+            ajax: {
+                url: '{!! route('Admin::map@datatables') !!}',
+                data: function (d) {
+                    //
                 }
-            });
-
+            },
+            columns: [
+                {data: 'id', name: 'id'},
+                {data: 'name', name: 'name', searchable: true},
+                {data: 'created_at', name: 'created_at'},
+                {data: 'action', name: 'action', orderable: false, searchable: false}
+            ]
         });
 
-    });
-</script>
+    } );
 
+</script>
 @endpush
