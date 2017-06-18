@@ -27,7 +27,6 @@
             <table class="table table-striped table-bordered" cellspacing="0" width="100%" id="listData-table">
                 <thead>
                 <tr>
-                    <th>Id</th>
                     <th>Đại lý</th>
                     <th>Thời gian</th>
                     <th>Action</th>
@@ -78,7 +77,6 @@
                 }
             },
             columns: [
-                {data: 'id', name: 'id'},
                 {data: 'agent', name: 'agent'},
                 {data: 'month', name: 'month'},
                 {data: 'action', name: 'action', orderable: false, searchable: false}

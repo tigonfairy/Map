@@ -17,11 +17,11 @@ class UserController extends AdminController
 
     public function add()
     {
-
-
         $roles = Role::all();
         $permission = Permission::all();
-        $users = User::pluck('name', 'id')->all();
+        $users = User::whereHas('roles', function ($query) {
+            $query->whereIn('roles.id', [1,2]);
+        })->pluck('name', 'id')->all();
 
         return view('admin.user.form',compact('roles','permission', 'users'));
     }
