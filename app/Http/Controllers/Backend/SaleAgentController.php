@@ -14,14 +14,22 @@ class SaleAgentController extends Controller
 
     public function index(Request $request)
     {
-
         return view('admin.saleAgent.index');
     }
 
     public function add()
     {
+        $user = auth()->user();
+        $role = $user->roles()->first();
+        if($role->id == 1) {
+            $agents = Agent::all();
 
-        $agents = Agent::all();
+        } else {
+            $userOwns = $user->manager()->get();
+            $userOwns->push($user);
+            $managerIds = $userOwns->pluck('id')->toArray();
+            $agents = Agent::whereIn('manager_id', $managerIds)->get();
+        }
         $products = Product::all();
 
         return view('admin.saleAgent.form',compact('agents', 'products'));

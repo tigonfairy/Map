@@ -55,23 +55,25 @@ class User extends Authenticatable
     public static function getDatatables()
     {
         $user = auth()->user();
-//        if($user->email == 'admin@gmail.com') {
+        $role = $user->roles()->first();
+        if($role->id == 1) {
             $model = static::select([
                 'id', 'email', 'created_at'
             ])->with('roles');
-//        } else {
-//            $users = $user->manager()->get();
-//            $userIds = $user->manager()->get()->pluck('id')->toArray();
-//            foreach ($users as $key => $value) {
-//                $userId = $value->manager()->get()->pluck('id')->toArray();
-//                foreach ($userId as $k => $v) {
-//                    $userIds[] = $v;
-//                }
-//            }
-//            $model = static::select([
-//                'id', 'email', 'created_at'
-//            ])->with('roles')->whereIn('id', $userIds);
-//        }
+        } else {
+            $users = $user->manager()->get();
+            $users->push($user);
+            $userIds = $users->pluck('id')->toArray();
+            foreach ($users as $key => $value) {
+                $userId = $value->manager()->get()->pluck('id')->toArray();
+                foreach ($userId as $k => $v) {
+                    $userIds[] = $v;
+                }
+            }
+            $model = static::select([
+                'id', 'email', 'created_at'
+            ])->with('roles')->whereIn('id', $userIds);
+        }
 
 
         return Datatables::eloquent($model)
@@ -123,9 +125,9 @@ class User extends Authenticatable
     public static function getListAgencyByRole(){
         $user = auth()->user();
         $role = $user->roles()->first();
-        if($role->id != 2 ){
-            return null;
-        }
+//        if($role->id != 2 ){
+//            return null;
+//        }
         $area = $user->area()->get()->pluck('id')->toArray();
         $subArea = Area::whereIn('parent_id',$area)->get()->pluck('id')->toArray();
         $areaIds = array_unique(array_merge($area,$subArea));

@@ -27,14 +27,14 @@ class MapController extends AdminController
     }
 
     public function addMap(){
-        if (auth()->user()->roles->first()['id'] == 3) {
+        if (auth()->user()->roles->first()['id'] != 1) {
             abort(403);
         }
         return view('admin.map.addMap');
     }
 
     public function addMapPost(Request $request){
-        if (auth()->user()->roles->first()['id'] == 3) {
+        if (auth()->user()->roles->first()['id'] != 1) {
             abort(403);
         }
         $this->validate($request,[
@@ -63,7 +63,7 @@ class MapController extends AdminController
     }
 
     public function editMap(Request $request,$id){
-        if (auth()->user()->roles->first()['id'] == 3) {
+        if (auth()->user()->roles->first()['id'] != 1) {
             abort(403);
         }
 
@@ -73,7 +73,7 @@ class MapController extends AdminController
     }
 
     public function editMapPost(Request $request, $id){
-        if (auth()->user()->roles->first()['id'] == 3) {
+        if (auth()->user()->roles->first()['id'] != 1) {
             abort(403);
         }
         $this->validate($request,[
@@ -99,7 +99,7 @@ class MapController extends AdminController
     }
 
     public function deleteMap(Request $request,$id){
-        if (auth()->user()->roles->first()['id'] == 3) {
+        if (auth()->user()->roles->first()['id'] != 1) {
             abort(403);
         }
         $address = AddressGeojson::find($id);
@@ -114,7 +114,7 @@ class MapController extends AdminController
     }
 
     public function editMapUser(Request $request,$id){
-        if (auth()->user()->roles->first()['id'] == 3) {
+        if (auth()->user()->roles->first()['id'] != 1) {
             abort(403);
         }
 
@@ -126,7 +126,7 @@ class MapController extends AdminController
     }
 
     public function editMapUserPost(Request $request,$id){
-        if (auth()->user()->roles->first()['id'] == 3) {
+        if (auth()->user()->roles->first()['id'] != 1) {
             abort(403);
         }
 
@@ -192,7 +192,7 @@ class MapController extends AdminController
     }
 
     public function addMapUser(){
-        if (auth()->user()->roles->first()['id'] == 3) {
+        if (auth()->user()->roles->first()['id'] != 1) {
             abort(403);
         }
 
@@ -201,7 +201,7 @@ class MapController extends AdminController
     }
 
     public function addMapUserPost(Request $request){
-        if (auth()->user()->roles->first()['id'] == 3) {
+        if (auth()->user()->roles->first()['id'] != 1) {
             abort(403);
         }
 
@@ -251,8 +251,18 @@ class MapController extends AdminController
 
     public function addAgency(Request $request){
 
-        $users = User::all();
-        $areas = Area::all();
+        $user = auth()->user();
+        $role = $user->roles()->first();
+
+        if($role->id == 1){
+            $users = User::all();
+            $areas = Area::all();
+        }else{
+            $users = $user->manager()->get();
+            $users->push($user);
+            $managerIds = $users->pluck('id')->toArray();
+            $areas = Area::all()->whereIn('manager_id', $managerIds);
+        }
 
         return view('admin.map.addAgency',compact('users','areas'));
     }
@@ -322,10 +332,21 @@ class MapController extends AdminController
 
     public function editAgent(Request $request,$id){
         $agent = Agent::findOrFail($id);
-        $users = User::all();
-        $areas = Area::all();
-        return view('admin.map.addAgency',compact('users','agent','areas'));
 
+        $user = auth()->user();
+        $role = $user->roles()->first();
+
+        if($role->id == 1){
+            $users = User::all();
+            $areas = Area::all();
+        }else{
+            $users = $user->manager()->get();
+            $users->push($user);
+            $managerIds = $users->pluck('id')->toArray();
+            $areas = Area::all()->whereIn('manager_id', $managerIds);
+        }
+
+        return view('admin.map.addAgency',compact('users','agent','areas'));
     }
 
     public function editAgentPost(Request $request,$id){
