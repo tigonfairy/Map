@@ -400,6 +400,9 @@ class MapController extends AdminController
     }
 
     public function search() {
+        if (auth()->user()->roles->first()['id'] != 1) {
+            abort(403);
+        }
         $areas = Area::all();
         $agents = Agent::all();
         $users = User::all();
@@ -408,6 +411,9 @@ class MapController extends AdminController
     }
 
     public function dataSearch(Request $request) {
+        if (auth()->user()->roles->first()['id'] != 1) {
+            abort(403);
+        }
         $typeSearch = $request->input('type_search');
         $dataSearch = $request->input('data_search');
 

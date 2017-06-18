@@ -14,22 +14,27 @@ class RoleController extends Controller
 {
     public function index(Request $request)
     {
-
-
+        if (auth()->user()->roles->first()['id'] != 1) {
+            abort(403);
+        }
         $roles = Role::orderBy('id')->get();
         return view('admin.role.index',compact('roles'));
     }
 
     public function add()
     {
-
+        if (auth()->user()->roles->first()['id'] != 1) {
+            abort(403);
+        }
         $permission = Permission::all();
         return view('admin.role.form', compact('permission'));
     }
 
     public function store(Request $request)
     {
-
+        if (auth()->user()->roles->first()['id'] != 1) {
+            abort(403);
+        }
         $this->validate($request,[
             'name' =>'required',
         ]);
@@ -49,7 +54,9 @@ class RoleController extends Controller
 
     public function edit($id)
     {
-
+        if (auth()->user()->roles->first()['id'] != 1) {
+            abort(403);
+        }
         $role = Role::findOrFail($id);
         $permission = Permission::all();
         $rolePermissions = $role->permissions->keyBy('id');
@@ -58,6 +65,9 @@ class RoleController extends Controller
 
     public function update($id,Request $request)
     {
+        if (auth()->user()->roles->first()['id'] != 1) {
+            abort(403);
+        }
         $this->validate($request,[
             'name' => 'required',
         ]);
@@ -82,7 +92,9 @@ class RoleController extends Controller
 
     public function delete($id)
     {
-
+        if (auth()->user()->roles->first()['id'] != 1) {
+            abort(403);
+        }
         $role = Role::findOrFail($id);
         $role->delete();
         return redirect()->route('Admin::role@index')->with('success', 'Đã xoá thành công');
