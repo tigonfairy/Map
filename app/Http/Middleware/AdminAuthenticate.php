@@ -3,7 +3,7 @@
 namespace App\Http\Middleware;
 
 use Closure;
-
+use Auth;
 class AdminAuthenticate
 {
 
@@ -18,7 +18,10 @@ class AdminAuthenticate
                 return redirect()->guest('/login');
             }
         }
-
+        if(Auth::user()->lang){
+            $locale = Auth::user()->lang;
+            \App::setLocale($locale);
+        }
 
         return $next($request);
     }

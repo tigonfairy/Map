@@ -9,7 +9,7 @@ use App\Models\SaleAgent;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
-class SaleAgentController extends Controller
+class SaleAgentController extends AdminController
 {
 
     public function index(Request $request)

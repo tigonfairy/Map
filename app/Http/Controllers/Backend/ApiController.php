@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\AddressGeojson;
 
-class ApiController extends Controller
+class ApiController extends AdminController
 {
     public function getListAddress(Request $request){
 

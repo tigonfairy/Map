@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Backend;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
-class ConfigController extends Controller
+class ConfigController extends AdminController
 {
     public function index(Request $request)
     {
