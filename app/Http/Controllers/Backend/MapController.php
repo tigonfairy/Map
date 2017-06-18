@@ -400,6 +400,7 @@ class MapController extends AdminController
     }
 
     public function search() {
+
         $areas = Area::all();
         $agents = Agent::all();
         $users = User::all();
@@ -408,6 +409,7 @@ class MapController extends AdminController
     }
 
     public function dataSearch(Request $request) {
+
         $typeSearch = $request->input('type_search');
         $dataSearch = $request->input('data_search');
 
