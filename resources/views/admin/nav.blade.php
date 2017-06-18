@@ -51,7 +51,7 @@
                             <span class="arrow"></span>
                         </a>
                     </li>
-                    @if(auth()->user()->roles()->first()->id == 1)
+                    @if(auth()->user()->roles()->first()->id != 3)
                     <li class="nav-item  ">
                         <a href="{{route('Admin::map@listMapUser')}}" class="nav-link nav-toggle">
                             <i class="icon-settings"></i>
