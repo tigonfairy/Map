@@ -369,7 +369,8 @@
                     },
                     processResults: function(data, page) {
                         return {
-                            results: $.map(data, function (item) {
+                            results: $.map(data.data, function (item) {
+
                                 return {
                                     text: item.name,
                                     id: item.id,

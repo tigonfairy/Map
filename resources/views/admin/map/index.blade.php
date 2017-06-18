@@ -11,7 +11,6 @@
             <div class="heading-elements">
                 <div class="heading-btn-group">
                     <a href="{{route('Admin::map@addMap')}}" class="btn btn-primary"><i class="icon-add"></i>{{ trans('home.addLocation')}}</a>
-
                 </div>
             </div>
         </div>
