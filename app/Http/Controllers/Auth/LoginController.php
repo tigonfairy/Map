@@ -82,9 +82,9 @@ class LoginController extends Controller
                 $data['times'] += 1;
                 Session::put('repassword', $data);
                 if ($data['times'] >= $repassword) {
-                    $email_db = \App\User::where('email', $email)->get();
+                    $email_db = \App\User::where('email', $email)->first();
                     if(count($email_db) > 0) {
-                        $email_db->forefill(['status' => false])->save();
+                        $email_db->forceFill(['status' => false])->save();
                     }
                     Session::forget('repassword');
 
