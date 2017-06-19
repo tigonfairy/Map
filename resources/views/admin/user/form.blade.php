@@ -134,6 +134,22 @@
                       @endif
                     </div>
 
+                <!---------- Status ------------>
+                <div class="form-group {{ $errors->has('status') ? 'has-error has-feedback' : '' }}">
+                  <label for="name" class="control-label text-semibold">Trạng thái</label>
+                  <i class="icon-question4 text-muted text-size-mini cursor-pointer js-help-icon" data-content="Người Quản Lý"></i>
+                  <select name="status" class="form-control">
+                      <option value="{{ 1 }}" {{ 1 == @$user->status ? "selected=selected" : ""}}>{{ trans('home.active') }}</option>
+                      <option value="{{ 0 }}" {{ 2 == @$user->status ? "selected=selected" : ""}}>{{ trans('home.inactive') }}</option>
+                  </select>
+                  @if ($errors->has('status'))
+                    <div class="form-control-feedback">
+                      <i class="icon-notification2"></i>
+                    </div>
+                    <div class="help-block">{{ $errors->first('manager_id') }}</div>
+                  @endif
+                </div>
+
                     <div class="panel panel-flat">
                       <div class="table-responsive">
                         <table class="table table-hover">

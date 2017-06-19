@@ -12,11 +12,17 @@ class UserController extends AdminController
 
     public function index(Request $request)
     {
+        if (auth()->user()->roles->first()['id'] == 3) {
+            abort(403);
+        }
         return view('admin.user.index');
     }
 
     public function add()
     {
+        if (auth()->user()->roles->first()['id'] == 3) {
+            abort(403);
+        }
         $roles = Role::all();
         $permission = Permission::all();
         $users = User::whereHas('roles', function ($query) {
@@ -28,13 +34,15 @@ class UserController extends AdminController
 
     public function store(Request $request)
     {
-
-
+        if (auth()->user()->roles->first()['id'] == 3) {
+            abort(403);
+        }
         $this->validate($request,[
             'name' =>'required',
             'code' =>'required',
             'position' =>'required',
             'email' =>'required|email',
+            'status' =>'required',
             'password' => 'required',
             'password_confirmation' => 'required|same:password'
 
@@ -64,7 +72,9 @@ class UserController extends AdminController
 
     public function edit($id)
     {
-
+        if (auth()->user()->roles->first()['id'] == 3) {
+            abort(403);
+        }
         $user = User::findOrFail($id);
         $roles = Role::all();
         $userRoles = $user->roles->keyBy('id');
@@ -76,13 +86,15 @@ class UserController extends AdminController
 
     public function update($id, Request $request)
     {
-
-
+        if (auth()->user()->roles->first()['id'] == 3) {
+            abort(403);
+        }
         $user = User::findOrFail($id);
 
         $this->validate($request,[
             'name' =>'required',
             'code' =>'required',
+            'status' =>'required',
             'position' =>'required'
         ]);
 
@@ -105,7 +117,6 @@ class UserController extends AdminController
 //
 //        $user->permissions()->sync($permissions);
 
-
         $user->update($data);
 
         return redirect()->route('Admin::user@index', $user->id)
@@ -115,6 +126,9 @@ class UserController extends AdminController
 
     public function delete($id)
     {
+        if (auth()->user()->roles->first()['id'] == 3) {
+            abort(403);
+        }
         $user = User::findOrFail($id);
         $user->delete();
         return redirect()->route('Admin::user@index')->with('success', 'Đã xoá thành công');
@@ -122,6 +136,9 @@ class UserController extends AdminController
 
     public function getDatatables()
     {
+        if (auth()->user()->roles->first()['id'] == 3) {
+            abort(403);
+        }
         return User::getDatatables();
     }
 }

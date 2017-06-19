@@ -84,7 +84,7 @@ class LoginController extends Controller
                 if ($data['times'] >= $repassword) {
                     $email_db = \App\User::where('email', $email)->get();
                     if(count($email_db) > 0) {
-                        $email_db->forefill(['is_lock' => 1])->save();
+                        $email_db->forefill(['status' => false])->save();
                     }
                     Session::forget('repassword');
 
@@ -107,6 +107,23 @@ class LoginController extends Controller
             ->withErrors([
                 $this->username() => Lang::get('auth.failed'),
             ]);
+    }
+
+    protected function authenticated(Request $request, $user)
+    {
+        if ($user->status != 1 ) {
+
+            // Log the user out.
+            $this->logout($request);
+
+            // Return them to the log in form.
+            return redirect()->back()
+                ->withInput($request->only($this->username(), 'remember'))
+                ->withErrors([
+                    // This is where we are providing the error message.
+                    $this->username() => Lang::get('auth.blocked'),
+                ]);
+        }
     }
 
     public function logout(Request $request)

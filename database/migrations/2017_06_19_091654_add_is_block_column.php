@@ -14,7 +14,7 @@ class AddIsBlockColumn extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            //
+           $table->boolean('status')->default(true);
         });
     }
 

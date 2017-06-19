@@ -59,4 +59,6 @@ return [
     'managerArea' => 'Manager Area',
     'placeholderSearchName' => 'Enter name to search',
     'config' => 'Config',
+    'active' => 'Active',
+    'inactive' => 'Inactive',
 ];
