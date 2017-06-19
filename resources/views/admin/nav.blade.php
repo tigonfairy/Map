@@ -1,7 +1,5 @@
 <div class="page-sidebar-wrapper">
-
     <div class="page-sidebar navbar-collapse collapse">
-
         <ul class="page-sidebar-menu  page-header-fixed " data-keep-expanded="false" data-auto-scroll="true"
             data-slide-speed="200" style="padding-top: 20px">
 
@@ -36,14 +34,15 @@
                             {{--<span class="arrow"></span>--}}
                         {{--</a>--}}
                     {{--</li>--}}
-
+                    @if(auth()->user()->roles()->first()->id == 1)
                     <li class="nav-item  ">
-                        <a href="{{route('Admin::map@addMap')}}" class="nav-link nav-toggle">
+                        <a href="{{route('Admin::map@listLocation')}}" class="nav-link nav-toggle">
                             <i class="icon-settings"></i>
-                            <span class="title">{{ trans('home.addLocation') }}</span>
+                            <span class="title">{{ trans('home.managerMap') }}</span>
                             <span class="arrow"></span>
                         </a>
                     </li>
+                    @endif
 
                     <li class="nav-item  ">
                         <a href="{{route('Admin::map@listAgency')}}" class="nav-link nav-toggle">
@@ -52,7 +51,7 @@
                             <span class="arrow"></span>
                         </a>
                     </li>
-
+                    @if(auth()->user()->roles()->first()->id != 3)
                     <li class="nav-item  ">
                         <a href="{{route('Admin::map@listMapUser')}}" class="nav-link nav-toggle">
                             <i class="icon-settings"></i>
@@ -60,7 +59,8 @@
                             <span class="arrow"></span>
                         </a>
                     </li>
-
+                    @endif
+                    @if(auth()->user()->roles()->first()->id !=3)
                     <li class="nav-item  ">
                         <a href="{{route('Admin::map@search')}}" class="nav-link nav-toggle">
                             <i class="icon-settings"></i>
@@ -68,9 +68,10 @@
                             <span class="arrow"></span>
                         </a>
                     </li>
+                    @endif
                 </ul>
             </li>
-
+            @if(auth()->user()->roles()->first()->id == 1)
             <li class="nav-item">
                 <a href="javascript:;" class="nav-link nav-toggle">
                     <i class="icon-user"></i>
@@ -96,7 +97,7 @@
                     </li>
                 </ul>
             </li>
-
+            @endif
             <li class="nav-item">
                 <a href="javascript:;" class="nav-link nav-toggle">
                     <i class="icon-user"></i>
@@ -123,7 +124,7 @@
                     </li>
                 </ul>
             </li>
-
+            @if(auth()->user()->roles()->first()->id != 3)
             <li class="nav-item">
                 <a href="javascript:;" class="nav-link nav-toggle">
                     <i class="icon-user"></i>
@@ -138,6 +139,7 @@
                             <span class="title">{{ trans('home.listAccount') }}</span>
                         </a>
                     </li>
+                    @if(auth()->user()->roles()->first()->id == 1)
                     <li class="nav-item  ">
                         <a href="{{route('Admin::role@index')}}" class="nav-link" >
                             <i class="icon-lock"></i>
@@ -151,10 +153,19 @@
                             <span class="title">{{ trans('home.permission') }}</span>
                         </a>
                     </li>
-
+                    @endif
                 </ul>
             </li>
-
+            @endif
+            @if(auth()->user()->roles()->first()->id == 1)
+            <li class="nav-item">
+                <a href="{{route('Admin::config@index')}}" class="nav-link nav-toggle">
+                    <i class="icon-settings"></i>
+                    <span class="title">{{ trans('home.config') }}</span>
+                    <span class="arrow"></span>
+                </a>
+            </li>
+            @endif
         </ul>
         <!-- END SIDEBAR MENU -->
         <!-- END SIDEBAR MENU -->

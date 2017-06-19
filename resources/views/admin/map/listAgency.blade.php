@@ -10,8 +10,9 @@
 
             <div class="heading-elements">
                 <div class="heading-btn-group">
+                    @if(auth()->user()->roles()->first()->id != 3)
                     <a href="{{route('Admin::map@addAgency')}}" class="btn btn-primary"><i class="icon-add"></i> {{ trans('home.create_agency') }}</a>
-
+                    @endif
                 </div>
             </div>
         </div>
@@ -20,7 +21,6 @@
     <div class="row">
         <form action="">
             <div class="col-xs-6 col-xs-offset-3">
-
                 <input type="text" name="q" class="form-control" value="{{Request::input('q')}}"
                        placeholder="Nhập tên để tìm kiếm"/>
 
@@ -52,11 +52,14 @@
                             <td>{{$agent->name}}</td>
                             <td>{!! $agent->user ? $agent->user->email : '' !!}</td>
                             <td>{!! $agent->area ? $agent->area->name : '' !!}</td>
-                            <td><a href="{{route('Admin::map@agentDetail',[$agent->id])}}">
+                            <td>
+                                <a href="{{route('Admin::map@agentDetail',[$agent->id])}}">
                                     <button type="button" class="btn btn-info btn-xs">{{ trans('home.show') }}</button></a>
+                                @if(auth()->user()->roles()->first()->id != 3)
                                 <a href="{{route('Admin::map@editAgent',[$agent->id])}}">
                                     <button type="button" class="btn btn-warning btn-xs">{{ trans('home.edit') }}</button></a>
                                 <a onclick="return xoaCat();" href="{{route('Admin::map@agentDelete',[$agent->id])}}" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-remove"></span> Del</a>
+                                    @endif
                             </td>
                         </tr>
                     @endforeach

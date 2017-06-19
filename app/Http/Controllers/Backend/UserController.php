@@ -12,32 +12,23 @@ class UserController extends Controller
 
     public function index(Request $request)
     {
-
-        if (auth()->user()->cannot('list-user')) {
-            abort(403);
-        }
         return view('admin.user.index');
     }
 
     public function add()
     {
-
-        if (auth()->user()->cannot('add-user')) {
-            abort(403);
-        }
-
         $roles = Role::all();
         $permission = Permission::all();
-        $users = User::pluck('name', 'id')->all();
+        $users = User::whereHas('roles', function ($query) {
+            $query->whereIn('roles.id', [1,2]);
+        })->pluck('name', 'id')->all();
 
         return view('admin.user.form',compact('roles','permission', 'users'));
     }
 
     public function store(Request $request)
     {
-        if (auth()->user()->cannot('add-user')) {
-            abort(403);
-        }
+
 
         $this->validate($request,[
             'name' =>'required',
@@ -56,16 +47,14 @@ class UserController extends Controller
         $data['password'] = bcrypt($password);
         $user = User::create($data);
         $user->roles()->sync($request->input('role',[]));
-        $permissions = [];
+//        $permissions = [];
 
 
-        foreach($request->input('status',[]) as $permissionId => $value) {
-
-            $permissions[$permissionId] = ['value' => $value];
-
-        }
-
-        $user->permissions()->sync($permissions);
+//        foreach($request->input('status',[]) as $permissionId => $value) {
+//            $permissions[$permissionId] = ['value' => $value];
+//        }
+//
+//        $user->permissions()->sync($permissions);
 
 
         $user->save();
@@ -75,9 +64,6 @@ class UserController extends Controller
 
     public function edit($id)
     {
-        if (auth()->user()->cannot('edit-user')) {
-            abort(403);
-        }
 
         $user = User::findOrFail($id);
         $roles = Role::all();
@@ -90,9 +76,7 @@ class UserController extends Controller
 
     public function update($id, Request $request)
     {
-        if (auth()->user()->cannot('edit-user')) {
-            abort(403);
-        }
+
 
         $user = User::findOrFail($id);
 
@@ -110,16 +94,16 @@ class UserController extends Controller
         }
 
         $user->roles()->sync($request->input('role',[]));
-        $permissions = [];
-
-
-        foreach($request->input('status',[]) as $permissionId => $value) {
-
-            $permissions[$permissionId] = ['value' => $value];
-
-        }
-
-        $user->permissions()->sync($permissions);
+//        $permissions = [];
+//
+//
+//        foreach($request->input('status',[]) as $permissionId => $value) {
+//
+//            $permissions[$permissionId] = ['value' => $value];
+//
+//        }
+//
+//        $user->permissions()->sync($permissions);
 
 
         $user->update($data);
@@ -131,10 +115,6 @@ class UserController extends Controller
 
     public function delete($id)
     {
-        if (auth()->user()->cannot('delete-user')) {
-            abort(403);
-        }
-
         $user = User::findOrFail($id);
         $user->delete();
         return redirect()->route('Admin::user@index')->with('success', 'Đã xoá thành công');

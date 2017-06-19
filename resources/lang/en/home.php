@@ -16,8 +16,9 @@ return [
     'Map' => 'Map',
     'Dashboard' => 'Dashboard',
     'Product' => 'Product',
-    'managerMap' => 'Manager Map',
+    'managerMap' => 'Manager Location',
     'addLocation' => 'Add Location',
+    'editLocation' => 'Edit Location',
     'managerAgency' => 'Manager Agency',
     'listBusinessArea' => 'List Business Area',
     'createBusinessArea' => 'Create Business Area',
@@ -56,5 +57,6 @@ return [
     'total_sale_real' => 'Total of sale real',
     'total_sale_plan' => 'Total of sale plan',
     'managerArea' => 'Manager Area',
-    'placeholderSearchName' => 'Enter name to search'
+    'placeholderSearchName' => 'Enter name to search',
+    'config' => 'Config',
 ];

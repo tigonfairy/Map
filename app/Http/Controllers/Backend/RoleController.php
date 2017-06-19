@@ -14,7 +14,7 @@ class RoleController extends Controller
 {
     public function index(Request $request)
     {
-        if (auth()->user()->cannot('list-role')) {
+        if (auth()->user()->roles->first()['id'] != 1) {
             abort(403);
         }
         $roles = Role::orderBy('id')->get();
@@ -23,20 +23,18 @@ class RoleController extends Controller
 
     public function add()
     {
-        if (auth()->user()->cannot('add-role')) {
+        if (auth()->user()->roles->first()['id'] != 1) {
             abort(403);
         }
-
         $permission = Permission::all();
         return view('admin.role.form', compact('permission'));
     }
 
     public function store(Request $request)
     {
-        if (auth()->user()->cannot('add-role')) {
+        if (auth()->user()->roles->first()['id'] != 1) {
             abort(403);
         }
-
         $this->validate($request,[
             'name' =>'required',
         ]);
@@ -56,10 +54,9 @@ class RoleController extends Controller
 
     public function edit($id)
     {
-        if (auth()->user()->cannot('edit-role')) {
+        if (auth()->user()->roles->first()['id'] != 1) {
             abort(403);
         }
-
         $role = Role::findOrFail($id);
         $permission = Permission::all();
         $rolePermissions = $role->permissions->keyBy('id');
@@ -68,10 +65,9 @@ class RoleController extends Controller
 
     public function update($id,Request $request)
     {
-        if (auth()->user()->cannot('edit-role')) {
+        if (auth()->user()->roles->first()['id'] != 1) {
             abort(403);
         }
-
         $this->validate($request,[
             'name' => 'required',
         ]);
@@ -96,10 +92,9 @@ class RoleController extends Controller
 
     public function delete($id)
     {
-        if (auth()->user()->cannot('delete-role')) {
+        if (auth()->user()->roles->first()['id'] != 1) {
             abort(403);
         }
-
         $role = Role::findOrFail($id);
         $role->delete();
         return redirect()->route('Admin::role@index')->with('success', 'Đã xoá thành công');

@@ -2,35 +2,41 @@
 
 namespace App\Http\Controllers\Backend;
 
+use DB;
+use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Area;
 use App\Models\Agent;
 use App\Models\Product;
 use App\Models\SaleAgent;
-use Carbon\Carbon;
-use function foo\func;
 use Illuminate\Http\Request;
 use App\Models\AddressGeojson;
-use App\Http\Controllers\Controller;
-use DB;
-class MapController extends Controller
+use Auth;
+use Illuminate\Support\Facades\Cache;
+class MapController extends AdminController
 {
-    public function index()
+    private $agentId;
+    private $user;
+    public function __construct()
     {
+    }
 
-        if (auth()->user()->cannot('map')) {
-            abort(403);
-        }
-        $locations = AddressGeojson::all();
-        return view('admin.map.index',compact('locations'));
+    public function listLocation()
+    {
+        return view('admin.map.index');
     }
 
     public function addMap(){
-
+        if (auth()->user()->roles->first()['id'] != 1) {
+            abort(403);
+        }
         return view('admin.map.addMap');
     }
 
     public function addMapPost(Request $request){
+        if (auth()->user()->roles->first()['id'] != 1) {
+            abort(403);
+        }
         $this->validate($request,[
            'name' => 'required',
             'coordinates' => 'required'
@@ -56,7 +62,62 @@ class MapController extends Controller
         return redirect()->back()->with('success','Tạo vùng địa lý thành công');
     }
 
+    public function editMap(Request $request,$id){
+        if (auth()->user()->roles->first()['id'] != 1) {
+            abort(403);
+        }
+
+        $addressGeojson = AddressGeojson::findOrFail($id);
+
+        return view('admin.map.editMap',compact('addressGeojson'));
+    }
+
+    public function editMapPost(Request $request, $id){
+        if (auth()->user()->roles->first()['id'] != 1) {
+            abort(403);
+        }
+        $this->validate($request,[
+            'name' => 'required',
+            'coordinates' => 'required'
+        ],[
+            'name.required' => 'Vui lòng nhập tên',
+            'coordinates.required' => 'Chưa vẽ vùng địa lý'
+        ]);
+        $address = AddressGeojson::find($id);
+        $data=$request->all();
+        $slug = str_slug($data['name']);
+        $coordinates = json_decode($data['coordinates'],true);
+        $newCoordinates = [];
+        foreach ($coordinates as $coor){
+            $c = explode(",", $coor);
+            array_push($newCoordinates, $c);
+        }
+        $coordinates = json_encode($newCoordinates);
+        $address->update(['name' => $data['name'],'slug' => $slug, 'coordinates' => $coordinates]);
+
+        return edirect()->route('Admin::map@listLocation')->with('success','Cập nhật vùng địa lý thành công');
+    }
+
+    public function deleteMap(Request $request,$id){
+        if (auth()->user()->roles->first()['id'] != 1) {
+            abort(403);
+        }
+        $address = AddressGeojson::find($id);
+        if($address){
+            $address->delete();
+            DB::table('area_address')->where('address_id', $id)->delete();
+            return redirect()->back()->with('success','Xóa thành công!!');
+        }else{
+            return redirect()->back()->with('error','Không tồn tại !!');
+        }
+
+    }
+
     public function editMapUser(Request $request,$id){
+        if (auth()->user()->roles->first()['id'] != 1) {
+            abort(403);
+        }
+
         $area = Area::findOrFail($id);
         $users = User::all();
         $areaAddress =  $area->address;
@@ -65,6 +126,10 @@ class MapController extends Controller
     }
 
     public function editMapUserPost(Request $request,$id){
+        if (auth()->user()->roles->first()['id'] != 1) {
+            abort(403);
+        }
+
         $area = Area::findOrFail($id);
         $this->validate($request,[
             'manager_id' => 'required',
@@ -83,16 +148,25 @@ class MapController extends Controller
     }
 
     public function listMapUser(Request $request){
+        $user = auth()->user();
+        $role = $user->roles()->first();
+
         $areas = Area::select('*');
         if($request->input('q')){
             $key = $request->input('q');
             $areas = $areas->where('name','like','%'.$key.'%');
         }
-        $areas = $areas->paginate(10);
+        if($role->id == 1){ // tong vung
+            $areas = $areas->paginate(10);
+        }else{
+            $areas = $areas->where('manager_id',$user->id)->paginate(10);
+        }
+
         return view('admin.map.listMapUser',compact('areas'));
     }
 
     public function mapUserDetail(Request $request,$id){
+
         $area = Area::findOrFail($id);
         $month = Carbon::now()->format('m-Y');
         if($request->input('month')){
@@ -118,11 +192,19 @@ class MapController extends Controller
     }
 
     public function addMapUser(){
+        if (auth()->user()->roles->first()['id'] != 1) {
+            abort(403);
+        }
+
         $users = User::all();
         return view('admin.map.addMapUser',compact('users'));
     }
 
     public function addMapUserPost(Request $request){
+        if (auth()->user()->roles->first()['id'] != 1) {
+            abort(403);
+        }
+
         $this->validate($request,[
             'manager_id' => 'required',
             'place' => 'required'
@@ -142,24 +224,51 @@ class MapController extends Controller
     }
 
     public function listAgency(Request $request){
+
+        $user = auth()->user();
+        $role = $user->roles()->first();
+
         $agents = Agent::select('*');
         if($request->input('q')){
             $key = $request->input('q');
             $agents = $agents->where('name','like','%'.$key.'%');
         }
-        $agents = $agents->paginate(10);
+        if($role->id == 1){
+            $agents = $agents->paginate(10);
+        }else{
+            if(Cache::has('agentId')){
+                $agentID = Cache::get('agentId');
+            }else{
+                $agentID = User::getListAgencyByRole();
+            }
+
+            $agents = $agents->whereIn('id',$agentID)->paginate(10);
+        }
+
 
         return view('admin.map.listAgency',compact('agents'));
     }
 
     public function addAgency(Request $request){
-        $users = User::all();
-        $areas = Area::all();
+
+        $user = auth()->user();
+        $role = $user->roles()->first();
+
+        if($role->id == 1){
+            $users = User::all();
+            $areas = Area::all();
+        }else{
+            $users = $user->manager()->get();
+            $users->push($user);
+            $managerIds = $users->pluck('id')->toArray();
+            $areas = Area::all()->whereIn('manager_id', $managerIds);
+        }
 
         return view('admin.map.addAgency',compact('users','areas'));
     }
 
     public function addMapAgencyPost(Request $request){
+
         $this->validate($request,[
             'manager_id' => 'required',
             'area_id' => 'required',
@@ -223,10 +332,21 @@ class MapController extends Controller
 
     public function editAgent(Request $request,$id){
         $agent = Agent::findOrFail($id);
-        $users = User::all();
-        $areas = Area::all();
-        return view('admin.map.addAgency',compact('users','agent','areas'));
 
+        $user = auth()->user();
+        $role = $user->roles()->first();
+
+        if($role->id == 1){
+            $users = User::all();
+            $areas = Area::all();
+        }else{
+            $users = $user->manager()->get();
+            $users->push($user);
+            $managerIds = $users->pluck('id')->toArray();
+            $areas = Area::all()->whereIn('manager_id', $managerIds);
+        }
+
+        return view('admin.map.addAgency',compact('users','agent','areas'));
     }
 
     public function editAgentPost(Request $request,$id){
@@ -251,12 +371,13 @@ class MapController extends Controller
     }
 
     public function mapUserDelete(Request $request,$id){
-
+        if (auth()->user()->roles->first()['id'] == 3) {
+            abort(403);
+        }
         $area = Area::find($id);
         if($area){
             $area->address()->sync([]);
             $area->delete();
-            return redirect()->back()->with('success','Xóa thành công!!');
             return redirect()->back()->with('success','Xóa thành công!!');
         }else{
             return redirect()->back()->with('error','Không tồn tại !!');
@@ -265,6 +386,9 @@ class MapController extends Controller
     }
 
     public function agentDelete(Request $request,$id){
+        if (auth()->user()->roles->first()['id'] == 3) {
+            abort(403);
+        }
         $agent = Agent::find($id);
         if($agent){
             $saleAgent = SaleAgent::where('agent_id',$id)->delete();
@@ -276,6 +400,7 @@ class MapController extends Controller
     }
 
     public function search() {
+
         $areas = Area::all();
         $agents = Agent::all();
         $users = User::all();
@@ -284,6 +409,7 @@ class MapController extends Controller
     }
 
     public function dataSearch(Request $request) {
+
         $typeSearch = $request->input('type_search');
         $dataSearch = $request->input('data_search');
 
@@ -358,5 +484,9 @@ class MapController extends Controller
                 'agents' =>  $agent,
             ]);
         }
+    }
+
+    public function getDatatables() {
+        return AddressGeojson::getDatatables();
     }
 }

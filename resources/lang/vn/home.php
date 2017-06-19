@@ -16,8 +16,9 @@ return array(
     'Map' => 'Bản Đồ',
     'Dashboard' => 'Quản trị',
     'Product' => 'Sản phẩm',
-    'managerMap' => 'Quản lý map',
+    'managerMap' => 'Quản lý bản đồ',
     'addLocation' => 'Thêm vùng địa lý',
+    'editLocation' => 'Sửa vùng địa lý',
     'managerAgency' => 'Quản lý đại lý',
     'listBusinessArea' => 'Danh sách vùng kinh doanh',
     'createBusinessArea' => 'Tạo vùng kinh doanh',
@@ -56,6 +57,6 @@ return array(
     'total_sale_real' => 'Tổng doanh số thực tế',
     'total_sale_plan' => 'Tổng doanh số kế hoạch',
     'managerArea' => "Trực thuộc vùng kinh doanh",
-    'placeholderSearchName' => 'Nhập tên để tìm kiếm'
-
+    'placeholderSearchName' => 'Nhập tên để tìm kiếm',
+    'config' => 'Cấu hình',
 );

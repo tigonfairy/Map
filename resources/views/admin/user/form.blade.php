@@ -150,7 +150,7 @@
                             <td>
                                 <div class="checkbox">
                                   <label>
-                                    <input type="checkbox" id="" name="role[]" value="{{$row->id}}" {{ isset($userRoles[$row->id]) ? ' checked="checked"' : ''  }}  class="js-checkbox">
+                                    <input type="radio" id="" name="role[]" value="{{$row->id}}" {{ isset($userRoles[$row->id]) ? ' checked="checked"' : ''  }}  class="js-checkbox">
                                   </label>
                                 </div>
                             </td>
@@ -165,53 +165,53 @@
                     </div>
 
 
-                    <div class="panel panel-flat">
-                      <div class="table-responsive">
-                        <table class="table table-hover">
-                          <thead>
-                          <tr>
-                            <th>Permission</th>
-                            <th>True</th>
-                            <th>False</th>
-                            <th>Null</th>
-                          </tr>
-                          </thead>
-                          <tbody>
-                          @foreach($permission as $row)
-                            <tr role="row" id="">
-                              <td>{{$row->id}}</td>
-                              <td>
-                                <div class="radio">
-                                  <label class="radio-inline">
-                                    <input type="radio" name="status[{{$row->id}}]" {{ (isset($userPermissions[$row->id]) and $userPermissions[$row->id]->pivot->value == 0) ? ' checked="checked"' : ''  }} class="js-radio" value="0">
-                                  </label>
-                                </div>
-                              </td>
+                    {{--<div class="panel panel-flat">--}}
+                      {{--<div class="table-responsive">--}}
+                        {{--<table class="table table-hover">--}}
+                          {{--<thead>--}}
+                          {{--<tr>--}}
+                            {{--<th>Permission</th>--}}
+                            {{--<th>True</th>--}}
+                            {{--<th>False</th>--}}
+                            {{--<th>Null</th>--}}
+                          {{--</tr>--}}
+                          {{--</thead>--}}
+                          {{--<tbody>--}}
+                          {{--@foreach($permission as $row)--}}
+                            {{--<tr role="row" id="">--}}
+                              {{--<td>{{$row->id}}</td>--}}
+                              {{--<td>--}}
+                                {{--<div class="radio">--}}
+                                  {{--<label class="radio-inline">--}}
+                                    {{--<input type="radio" name="status[{{$row->id}}]" {{ (isset($userPermissions[$row->id]) and $userPermissions[$row->id]->pivot->value == 0) ? ' checked="checked"' : ''  }} class="js-radio" value="0">--}}
+                                  {{--</label>--}}
+                                {{--</div>--}}
+                              {{--</td>--}}
 
-                              <td>
-                                <div class="radio">
-                                  <label class="radio-inline">
-                                    <input type="radio" name="status[{{$row->id}}]" {{ (isset($userPermissions[$row->id]) and $userPermissions[$row->id]->pivot->value == 1) ? ' checked="checked"' : ''  }} class="js-radio" value="1">
-                                  </label>
-                                </div>
-                              </td>
+                              {{--<td>--}}
+                                {{--<div class="radio">--}}
+                                  {{--<label class="radio-inline">--}}
+                                    {{--<input type="radio" name="status[{{$row->id}}]" {{ (isset($userPermissions[$row->id]) and $userPermissions[$row->id]->pivot->value == 1) ? ' checked="checked"' : ''  }} class="js-radio" value="1">--}}
+                                  {{--</label>--}}
+                                {{--</div>--}}
+                              {{--</td>--}}
 
-                              <td>
-                                <div class="radio">
-                                  <label class="radio-inline">
-                                    <input type="radio" name="status[{{$row->id}}]" {{ (isset($userPermissions[$row->id]) and $userPermissions[$row->id]->pivot->value == 2) ? ' checked="checked"' : ''  }} class="js-radio" value="2">
-                                  </label>
-                                </div>
-                              </td>
-                            </tr>
-                            @endforeach
-                          </tbody>
-                        </table>
+                              {{--<td>--}}
+                                {{--<div class="radio">--}}
+                                  {{--<label class="radio-inline">--}}
+                                    {{--<input type="radio" name="status[{{$row->id}}]" {{ (isset($userPermissions[$row->id]) and $userPermissions[$row->id]->pivot->value == 2) ? ' checked="checked"' : ''  }} class="js-radio" value="2">--}}
+                                  {{--</label>--}}
+                                {{--</div>--}}
+                              {{--</td>--}}
+                            {{--</tr>--}}
+                            {{--@endforeach--}}
+                          {{--</tbody>--}}
+                        {{--</table>--}}
 
 
-                      </div>
+                      {{--</div>--}}
 
-                    </div>
+                    {{--</div>--}}
                   <div class="text-right">
                     <button type="submit" class="btn btn-primary">{{ isset($user) ? 'Cập nhật' : 'Thêm mới' }}</button>
                   </div>

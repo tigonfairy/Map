@@ -28,9 +28,24 @@ class SaleAgent extends Model
 
     public static function getDatatables()
     {
-        $model = static::groupBy('agent_id', 'month')->select([
-            '*'
-        ])->with('agent');
+        $user = auth()->user();
+        $role = $user->roles()->first();
+        if($role->id == 1) {
+            $model = static::groupBy('agent_id', 'month')->select([
+                '*'
+            ])->with('agent');
+        } else {
+            $userOwns = $user->manager()->get();
+            $userOwns->push($user);
+            $managerIds = $userOwns->pluck('id')->toArray();
+
+            $model = static::whereHas('agent', function ($query) use ($managerIds){
+                $query->whereIn('agents.manager_id', $managerIds);
+            })->groupBy('agent_id', 'month')->select([
+                '*'
+            ])->with('agent');
+        }
+
 
         return Datatables::eloquent($model)
             ->filter(function ($query) {

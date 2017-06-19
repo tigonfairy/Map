@@ -16,6 +16,7 @@ class HomeController extends AdminController
     {
        return view('admin.index');
     }
+
     public function dashboard(Request $request){
         $user = auth()->user();
         $year = Carbon::now()->year;

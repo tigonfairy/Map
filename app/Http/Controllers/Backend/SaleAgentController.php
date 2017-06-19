@@ -14,20 +14,22 @@ class SaleAgentController extends Controller
 
     public function index(Request $request)
     {
-        if (auth()->user()->cannot('list-saleAgent')) {
-            abort(403);
-        }
         return view('admin.saleAgent.index');
     }
 
     public function add()
     {
+        $user = auth()->user();
+        $role = $user->roles()->first();
+        if($role->id == 1) {
+            $agents = Agent::all();
 
-        if (auth()->user()->cannot('add-saleAgent')) {
-            abort(403);
+        } else {
+            $userOwns = $user->manager()->get();
+            $userOwns->push($user);
+            $managerIds = $userOwns->pluck('id')->toArray();
+            $agents = Agent::whereIn('manager_id', $managerIds)->get();
         }
-
-        $agents = Agent::all();
         $products = Product::all();
 
         return view('admin.saleAgent.form',compact('agents', 'products'));
@@ -48,7 +50,7 @@ class SaleAgentController extends Controller
         $sales_real = request('sales_real');
 
         foreach ($product_ids as $key => $product_id) {
-            SaleAgent::create([
+            SaleAgent::firstOrCreate([
                 'agent_id' => request('agent_id'),
                 'product_id' => $product_id,
                 'month' => request('month'),
@@ -62,10 +64,6 @@ class SaleAgentController extends Controller
 
     public function edit($agentId, $month)
     {
-        if (auth()->user()->cannot('edit-saleAgent')) {
-            abort(403);
-        }
-
         $saleAgent = SaleAgent::where('agent_id',$agentId)->where('month',$month)->get();
         $products = Product::all();
         $agents = Agent::all();
@@ -75,10 +73,6 @@ class SaleAgentController extends Controller
 
     public function update($agentId)
     {
-        if (auth()->user()->cannot('edit-saleAgent')) {
-            abort(403);
-        }
-
         $this->validate(request(),[
             'month' => 'required',
         ],[
@@ -100,7 +94,7 @@ class SaleAgentController extends Controller
                         'sales_real' => $sales_real[$key] ? $sales_real[$key] : 0,
                     ]);
                 } else {
-                    SaleAgent::create([
+                    SaleAgent::firstOrCreate([
                         'agent_id' => $agentId,
                         'product_id' => $product_id,
                         'month' => request('month'),
@@ -111,7 +105,7 @@ class SaleAgentController extends Controller
             }
         } else {
             foreach ($product_ids as $key => $product_id) {
-                SaleAgent::create([
+                SaleAgent::firstOrCreate([
                     'agent_id' => $agentId,
                     'product_id' => $product_id,
                     'month' => request('month'),
@@ -127,10 +121,6 @@ class SaleAgentController extends Controller
 
     public function delete($agentId,$month)
     {
-        if (auth()->user()->cannot('delete-saleAgent')) {
-            abort(403);
-        }
-
         SaleAgent::where('agent_id',$agentId)->where('month',$month)->delete();
         return redirect()->route('Admin::saleAgent@index')->with('success', 'Đã xoá thành công');
     }
