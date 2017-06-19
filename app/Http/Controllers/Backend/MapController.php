@@ -15,14 +15,11 @@ use Auth;
 use Illuminate\Support\Facades\Cache;
 class MapController extends AdminController
 {
-    private $agentId;
-    private $user;
-    public function __construct()
-    {
-    }
-
     public function listLocation()
     {
+        if (auth()->user()->roles->first()['id'] != 1) {
+            abort(403);
+        }
         return view('admin.map.index');
     }
 
@@ -150,7 +147,9 @@ class MapController extends AdminController
     public function listMapUser(Request $request){
         $user = auth()->user();
         $role = $user->roles()->first();
-
+        if ($role->id == 3) {
+            abort(403);
+        }
         $areas = Area::select('*');
         if($request->input('q')){
             $key = $request->input('q');
@@ -166,7 +165,9 @@ class MapController extends AdminController
     }
 
     public function mapUserDetail(Request $request,$id){
-
+        if (auth()->user()->roles->first()['id'] == 3) {
+            abort(403);
+        }
         $area = Area::findOrFail($id);
         $month = Carbon::now()->format('m-Y');
         if($request->input('month')){
@@ -487,6 +488,9 @@ class MapController extends AdminController
     }
 
     public function getDatatables() {
+        if (auth()->user()->roles->first()['id'] != 1) {
+            abort(403);
+        }
         return AddressGeojson::getDatatables();
     }
 }

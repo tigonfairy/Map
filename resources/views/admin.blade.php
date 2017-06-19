@@ -22,6 +22,8 @@
     <link href="/assets/global/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
     <link href="/assets/global/plugins/simple-line-icons/simple-line-icons.min.css" rel="stylesheet" type="text/css"/>
     <link href="/assets/global/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.6.2/css/bootstrap-select.min.css" rel="stylesheet" type="text/css"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/0.8.2/css/flag-icon.min.css" rel="stylesheet" type="text/css"/>
     <link href="/assets/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css" rel="stylesheet" type="text/css"/>
     <!-- END GLOBAL MANDATORY STYLES -->
     <!-- BEGIN PAGE LEVEL PLUGINS -->
@@ -90,6 +92,10 @@
         tfoot {
             display: table-header-group;
         }
+        .caret{
+            padding-top: 10px !important;
+        }
+
     </style>
 @stack('style_head')
 </head>
@@ -118,26 +124,18 @@
             <!-- BEGIN TOP NAVIGATION MENU -->
             <div class="top-menu">
                 <ul class="nav navbar-nav pull-right">
-
-                    <li class="dropdown dropdown-user">
-                        <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown"
-                           data-close-others="true">
-                            <img alt="" class="img-circle" src="" style="height: 29px; width: 29px"/>
-                            <span class="username username-hide-on-mobile"></span>
-                            <i class="fa fa-angle-down"></i>
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-default">
-
-                            <li><a href="{{URL::asset('')}}language/vn">Tiếng Việt</a></li>
-                            <li><a href="{{URL::asset('')}}language/en">Tiếng Anh</a></li>
-                        </ul>
+                    <li style="margin-top: 9px;">
+                        <select class="selectpicker" data-width="fit">
+                            <option value="{{URL::asset('')}}language/en" data-content='<span class="flag-icon flag-icon-us" ></span> English' {{ Auth::user()->lang == 'en' ? "selected=selected" : ""}}></option>
+                            <option  value="{{URL::asset('')}}language/vn" data-content='<span class="flag-icon flag-icon-vn" ></span> Việt Nam' {{ Auth::user()->lang == 'vn' ? "selected=selected" : ""}}></option>
+                        </select>
                     </li>
 
                     <li class="dropdown dropdown-user">
                         <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown"
                            data-close-others="true">
-                            <img alt="" class="img-circle" src="" style="height: 29px; width: 29px"/>
-                            <span class="username username-hide-on-mobile"></span>
+                            <img alt="" class="img-circle" src="{{ url('images/avatar.jpg') }}" style="height: 29px; width: 29px"/>
+                            <span class="username username-hide-on-mobile">{{ Auth::user()->email }}</span>
                             <i class="fa fa-angle-down"></i>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-default">
@@ -208,6 +206,7 @@
 <![endif]-->
 <!-- BEGIN CORE PLUGINS -->
 <script src="/assets/global/plugins/jquery.min.js" type="text/javascript"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.6.2/js/bootstrap-select.min.js"></script>
 <script src="/assets/global/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
 <script src="/assets/global/plugins/js.cookie.min.js" type="text/javascript"></script>
 <script src="/assets/global/plugins/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript"></script>
@@ -293,6 +292,7 @@
 
 </script>
 <script src="/assets/pages/scripts/ui-modals.min.js" type="text/javascript"></script>
+
 <!-- App scripts -->
 
 <script>
@@ -324,6 +324,13 @@
     };
 
     $(document).ready(function () {
+        $(function(){
+            $('.selectpicker').selectpicker();
+        });
+
+        jQuery(".selectpicker").change(function () {
+            location.href = jQuery(this).val();
+        })
 
         $('#time_range').change(function () {
 

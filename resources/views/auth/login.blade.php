@@ -84,7 +84,7 @@
                 <span class="help-block">
                   <strong>{{ $errors->first('g-recaptcha-response') }}</strong>
                 </span>
-              @endif</div>
+              @endif
             </div>
             @endif
           </div>

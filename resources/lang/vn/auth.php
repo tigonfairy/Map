@@ -13,7 +13,8 @@ return [
     |
     */
 
-    'failed' => 'Tai khoan va mat khau khong dung.',
+    'failed' => 'Tài khoản và mật khẩu không đúng.',
+    'blocked' => 'Tài khoản của bạn đã bị khóa.',
     'throttle' => 'Too many login attempts. Please try again in :seconds seconds.',
 
 ];

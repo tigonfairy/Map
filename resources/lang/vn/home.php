@@ -59,4 +59,6 @@ return array(
     'managerArea' => "Trực thuộc vùng kinh doanh",
     'placeholderSearchName' => 'Nhập tên để tìm kiếm',
     'config' => 'Cấu hình',
+    'active' => 'Kích hoạt',
+    'inactive' => 'Khóa',
 );
