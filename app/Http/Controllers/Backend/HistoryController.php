@@ -6,7 +6,7 @@ use App\Models\Log;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
-class HistoryController extends Controller
+class HistoryController extends AdminController
 {
     public function index(Request $request)
     {

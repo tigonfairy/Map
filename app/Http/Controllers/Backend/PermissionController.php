@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 use Auth;
 
 
-class PermissionController extends Controller
+class PermissionController extends AdminController
 {
     public function index(Request $request)
     {

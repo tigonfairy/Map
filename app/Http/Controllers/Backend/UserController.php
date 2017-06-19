@@ -7,7 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Models\Role;
 use App\Models\Permission;
-class UserController extends Controller
+class UserController extends AdminController
 {
 
     public function index(Request $request)
