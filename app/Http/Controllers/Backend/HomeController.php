@@ -19,18 +19,73 @@ class HomeController extends AdminController
 
     public function dashboard(Request $request){
         $user = auth()->user();
+        $role = $user->roles()->first();
         $year = Carbon::now()->year;
+        $locations=[];
         if($user->email == 'admin@gmail.com'){
             $area = Area::select('*')->get()->pluck('id')->toArray();
             $agentId = Agent::whereIn('area_id',$area)->get()->pluck('id')->toArray();
+
+            //map for super admin
+            $subArea = Area::whereIn('id',$area)->get()->pluck('id')->toArray();
+            $areaIds = array_unique(array_merge($area,$subArea));
+            $agents = Agent::whereIn('area_id',$areaIds)->get();
+            $areas = Area::whereIn('id',$area)->get();
+            foreach ($areas as $k => $area) {
+                $addresses =  $area->address;
+                foreach ($addresses as $address){
+                    $locations[] = [
+                        'address' => $address,
+                        'border_color' => $area->border_color,
+                        'background_color' => $area->background_color,
+                    ];
+                }
+            }
         }else{
             $area = $user->area()->get()->pluck('id')->toArray();
             $subArea = Area::whereIn('parent_id',$area)->get()->pluck('id')->toArray();
             $areaIds = array_unique(array_merge($area,$subArea));
-            $agents = Agent::whereIn('area_id',$areaIds)->get()->pluck('id')->toArray();
+            $agentIds = Agent::whereIn('area_id',$areaIds)->get()->pluck('id')->toArray();
+
             //agent Id of user
             $agentId = $user->agent()->get()->pluck('id')->toArray();
-            $agentId= array_unique(array_merge($agentId,$agents));
+            $agentId= array_unique(array_merge($agentId,$agentIds));
+
+            //map for sale admin
+            $areas = Area::whereIn('parent_id',$area)->get();
+            $user->area()->get()->map( function ($item) use ($areas) {
+                $areas->push($item);
+            });
+            foreach ($areas as $k => $area) {
+                $addresses =  $area->address;
+                foreach ($addresses as $address){
+                    $locations[] = [
+                        'address' => $address,
+                        'border_color' => $area->border_color,
+                        'background_color' => $area->background_color,
+                    ];
+                }
+            }
+            $agents = Agent::whereIn('area_id',$areaIds)->get();
+        }
+
+        //map for sale man
+        if($role->id == 3) {
+            $agents = Agent::where('manager_id',$user->id)->get();
+            $areas=[];
+            foreach ($agents as $key => $agent) {
+                array_push($areas, $agent->area);
+            }
+            foreach ($areas as $key => $area) {
+                $addresses =  $area->address;
+                foreach ($addresses as $address){
+                    $locations[] = [
+                        'address' => $address,
+                        'border_color' => $area->border_color,
+                        'background_color' => $area->background_color,
+                    ];
+                }
+            }
         }
 
         //chart cot
@@ -57,7 +112,7 @@ class HomeController extends AdminController
         //end chart cot
 
 
-        return view('admin.dashboard', compact('month','sales_plan','sales_plan','sales_real'));
+        return view('admin.dashboard', compact('month','sales_plan', 'sales_plan', 'sales_real', 'locations', 'agents'));
     }
 
     public function chartDashboard(Request $request){

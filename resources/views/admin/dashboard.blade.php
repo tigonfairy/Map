@@ -26,41 +26,44 @@
         <!-- Page content -->
         <div class="content-wrapper">
             <div class="row">
+                <div class="col-lg-6 col-xs-12 col-sm-12">
+                    <div id="container" class="row" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+                </div>
+                <div class="col-lg-6" id="chartSp" style="min-width: 310px; height: 400px; margin: 0 auto">
 
+                </div>
 
-                <div id="container" class="row" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
                 <div class="col-xs-12">
-                    <div class="col-xs-6">
-                        <div class="col-xs-12">
-                        <div class="col-xs-6">
+
+
+                        <div class="col-xs-3">
                             <label><input type="radio" name="radio2" checked class="icheck radioButton"  value="1">Tháng
                                 gần nhất </label>
                         </div>
-                        <div class="col-xs-6">
+                        <div class="col-xs-3">
                             <label><input type="radio" name="radio2" class="icheck radioButton"
                                           value="2">Tháng có doanh số cao nhất</label>
                         </div>
 
-
-                        <div class="col-xs-6">
+                        <div class="col-xs-3">
                             <label>
                                 <input type="radio" name="radio2" class="icheck radioButton"
                                        value="3">Trung bình tháng</label>
                         </div>
-                        <div class="col-xs-6">
+
+                        <div class="col-xs-3">
                             <label>
                                 <input type="radio" name="radio2"  class="icheck radioButton"
                                        value="4">Tổng sản lượng</label>
                         </div>
-                        </div>
-                        <div class="col-xs-12" id="tableData">
 
-                        </div>
+                        <div class="col-xs-12" id="tableData"></div>
 
-                </div>
-                <div class="col-xs-6" id="chartSp" style="min-width: 310px; height: 400px; margin: 0 auto">
+                    <div class="col-xs-12" id="map"></div>
 
-                </div>
+                {{--<div class="col-xs-6"  style="min-width: 310px; height: 400px; margin: 0 auto">--}}
+
+                {{--</div>--}}
             </div>
 
         </div>
@@ -74,6 +77,9 @@
 @endsection
 @push('scripts_foot')
 <script src="/js/highcharts.js"></script>
+<script type="text/javascript" src="https://maps.google.com/maps/api/js?key=AIzaSyDUMRn1pnBk97Zay94WiBbMgdVlBh_vwYs&libraries=drawing"></script>
+<script type="text/javascript" src="/js/gmaps.js"></script>
+<script type="text/javascript" src="/js/prettify.js"></script>
 
 <script type="text/javascript">
     $(document).ready(function () {
@@ -180,7 +186,6 @@
             },
             series: []
         });
-
 
         $.ajax({
             method:"post",
@@ -309,6 +314,87 @@
                 }
             });
         });
+        var polygonArray = [];
+        map = new GMaps({
+            div: '#map',
+            lat: 21.0277644,
+            lng: 105.83415979999995,
+            width: "100%",
+            height: '500px',
+            zoom: 11
+        });
+        @if($locations)
+                @foreach($locations as $key => $location)
+
+                @php
+                    $locat = $location['address'];
+
+                    $border_color = '#333';
+                    $background_color = '#333';
+                    if($location['border_color']){
+                         $border_color = $location['border_color'];
+                    }
+                    if($location['background_color']){
+                         $background_color = $location['background_color'];
+                    }
+                @endphp
+        var c = "{{$locat->coordinates}}";
+        var coordinate = JSON.parse(c);
+
+        if (coordinate) {
+            var bounds = new google.maps.LatLngBounds();
+            for (i = 0; i < coordinate.length; i++) {
+                var c = coordinate[i];
+                bounds.extend(new google.maps.LatLng(c[0], c[1]));
+            }
+            var path = coordinate;
+            map.setCenter(bounds.getCenter().lat(), bounds.getCenter().lng());
+            var infoWindow{{$locat->id}} = new google.maps.InfoWindow({
+                content: "<p>{{$locat->name}}</p>"
+            });
+            polygon = map.drawPolygon({
+                paths: path,
+                strokeColor: "{{$border_color}}",
+                strokeOpacity: 1,
+                strokeWeight: 1,
+                fillColor: "{{$background_color}}",
+                fillOpacity: 0.4,
+                mouseover: function (clickEvent) {
+                    var position = clickEvent.latLng;
+                    infoWindow{{$locat->id}}.setPosition(position);
+                    infoWindow{{$locat->id}}.open(map.map);
+                },
+                mouseout: function (clickEvent) {
+                    if (infoWindow{{$locat->id}}) {
+                        infoWindow{{$locat->id}}.close();
+                    }
+                }
+            });
+            polygonArray["{{$key}}"] = polygon;
+        }
+        @endforeach
+        @endif
+
+                @foreach($agents as $agent)
+        var contentString = '<div id="content">' +
+                '<p id="name">' + "{{$agent->name}}" + '</p>' +
+                '<p id="manager">' + '{{$agent->user->email}}' + '</p>' +
+
+                '</div>';
+        var infoWindow = new google.maps.InfoWindow({
+            content: contentString
+        });
+
+        map.addMarker({
+            lat: "{{$agent->lat}}",
+            lng: "{{$agent->lng}}",
+            title:  "{{$agent->name}}",
+            click: function (e) {
+                infoWindow.setPosition({lat: e.position.lat(), lng: e.position.lng()});
+                infoWindow.open(map.map);
+            }
+        });
+        @endforeach
     });
 </script>
 @endpush
