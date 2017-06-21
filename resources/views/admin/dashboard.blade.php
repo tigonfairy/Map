@@ -44,18 +44,39 @@
                         </div>
                     </div>
                 <div class="col-lg-6 col-xs-12 col-sm-12">
-                    <div class="col-xs-12" id="tableData"></div>
-
+                    <div class="portlet light ">
+                        <div class="portlet-title"></div>
+                        <div class="portlet-body"><div id="tableData"></div></div>
+                    </div>
                 </div>
-                <div class="col-lg-6" id="chartSp" style="min-width: 310px; height: 400px; margin: 0 auto">
-
+                <div class="col-lg-6">
+                    <div class="portlet light ">
+                        <div class="portlet-title"></div>
+                        <div class="portlet-body">
+                            <div id="chartSp"></div>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="col-xs-12">
 
-                    <div id="container" class="row" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+                    <div class="col-lg-6">
+                        <div class="portlet light ">
+                            <div class="portlet-title"></div>
+                            <div class="portlet-body">
+                                <div id="container" class="row"></div>
+                            </div>
+                        </div>
+                    </div>
 
-                    <div class="col-xs-12" id="map"></div>
+                    <div class="col-lg-6">
+                        <div class="portlet light ">
+                            <div class="portlet-title"><h3>Bản đồ tổng quan</h3></div>
+                            <div class="portlet-body">
+                                <div id="map" style=" width: 100% ;height: 400px"></div>
+                            </div>
+                        </div>
+                    </div>
 
                 </div>
 
@@ -315,13 +336,13 @@
                 }
             });
         });
+
+        //map
         var polygonArray = [];
         map = new GMaps({
             div: '#map',
             lat: 21.0277644,
             lng: 105.83415979999995,
-            width: "100%",
-            height: '500px',
             zoom: 11
         });
                 @if($locations)
@@ -389,6 +410,8 @@
         map.addMarker({
             lat: "{{$agent->lat}}",
             lng: "{{$agent->lng}}",
+            visible: true,
+            zIndex: 10,
             title: "{{$agent->name}}",
             click: function (e) {
                 infoWindow.setPosition({lat: e.position.lat(), lng: e.position.lng()});
@@ -396,6 +419,17 @@
             }
         });
         @endforeach
+
+        /* Change markers on zoom */
+        google.maps.event.addListener(map, 'zoom_changed', function() {
+            var zoom = map.getZoom();
+
+            if (zoom <= 15) {
+                marker.setMap(null);
+            } else {
+                marker.setMap(map);
+            }
+        });
     });
 </script>
 @endpush
