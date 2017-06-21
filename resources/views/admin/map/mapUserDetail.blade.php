@@ -87,7 +87,6 @@
         src="https://maps.google.com/maps/api/js?key=AIzaSyDUMRn1pnBk97Zay94WiBbMgdVlBh_vwYs&libraries=drawing"></script>
 <script type="text/javascript" src="/js/gmaps.js"></script>
 <script type="text/javascript" src="/js/prettify.js"></script>
-<script type="text/javascript" src="/js/prettify.js"></script>
 @endpush
 
 @push('scripts')
@@ -118,10 +117,10 @@
             lng: 105.83415979999995,
             width: "100%",
             height: '100%',
-            zoom: 15,
+            zoom: 11,
             fullscreenControl: true
         });
-        var bounds = new google.maps.LatLngBounds();
+
                 @foreach($locations as $location)
         var c = "{{$location->coordinates}}";
         var coordinate = JSON.parse(c);
@@ -136,13 +135,13 @@
                 }
         @endphp
         if (coordinate) {
-
+            var bounds = new google.maps.LatLngBounds();
             for (i = 0; i < coordinate.length; i++) {
                 var c = coordinate[i];
                 bounds.extend(new google.maps.LatLng(c[0], c[1]));
             }
             var path = coordinate;
-
+            map.setCenter(bounds.getCenter().lat(), bounds.getCenter().lng());
             var infoWindow{{$location->id}} = new google.maps.InfoWindow({
                 content: "<p>{{$location->name}}</p>"
             });
@@ -153,8 +152,7 @@
                 strokeWeight: 1,
                 fillColor: "{{$background_color}}",
                 fillOpacity: 0.4,
-                title:'hehe',
-                click: function (clickEvent) {
+                mouseover: function (clickEvent) {
                     var position = clickEvent.latLng;
                     infoWindow{{$location->id}}.setPosition(position);
                     infoWindow{{$location->id}}.open(map.map);
@@ -168,13 +166,7 @@
             polygonArray["{{$location->id}}"] = polygon;
         }
         @endforeach
-//                  map.setCenter(bounds.getCenter().lat(), bounds.getCenter().lng());
-        map.fitBounds(bounds);
-        map.panToBounds(bounds);
-
-
-
-        @foreach($agents as $agent)
+       @foreach($agents as $agent)
         var contentString = '<div id="content">' +
                 '<p id="name">' + "{{$agent->name}}" + '</p>' +
                 '<p id="manager">' + '{{$agent->user->email}}' + '</p>' +
