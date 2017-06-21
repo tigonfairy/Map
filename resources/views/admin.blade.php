@@ -95,6 +95,9 @@
         .caret{
             padding-top: 10px !important;
         }
+        .overlay {
+            font-size: 25px;
+        }
 
     </style>
 @stack('style_head')

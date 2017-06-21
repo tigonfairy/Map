@@ -108,6 +108,8 @@
         src="https://maps.google.com/maps/api/js?key=AIzaSyDUMRn1pnBk97Zay94WiBbMgdVlBh_vwYs&libraries=drawing"></script>
 <script type="text/javascript" src="/js/gmaps.js"></script>
 <script type="text/javascript" src="/js/prettify.js"></script>
+<script type="text/javascript" src="/js/gmaps.overlays.min.js"></script>
+
 
 <script type="text/javascript">
     $(document).ready(function () {
@@ -407,6 +409,11 @@
             });
             polygonArray["{{$key}}"] = polygon;
         }
+        map.drawOverlay({
+            lat: bounds.getCenter().lat(),
+            lng: bounds.getCenter().lng(),
+            content: '<div class="overlay">{{$locat->name}}</div>'
+        });
                 @endforeach
                 @endif
 
@@ -424,25 +431,15 @@
             lat: "{{$agent->lat}}",
             lng: "{{$agent->lng}}",
             visible: true,
-            zIndex: 10,
             title: "{{$agent->name}}",
             click: function (e) {
                 infoWindow.setPosition({lat: e.position.lat(), lng: e.position.lng()});
                 infoWindow.open(map.map);
             }
         });
+
         @endforeach
 
-        /* Change markers on zoom */
-        google.maps.event.addListener(map, 'zoom_changed', function() {
-            var zoom = map.getZoom();
-
-            if (zoom <= 15) {
-                marker.setMap(null);
-            } else {
-                marker.setMap(map);
-            }
-        });
     });
 </script>
 @endpush
