@@ -95,6 +95,9 @@
         .caret{
             padding-top: 10px !important;
         }
+        .overlay {
+            font-size: 25px;
+        }
 
     </style>
 @stack('style_head')
@@ -174,7 +177,7 @@
         <!-- BEGIN CONTENT -->
         <div class="page-content-wrapper">
             <!-- BEGIN CONTENT BODY -->
-            <div class="page-content">
+            <div class="page-content" style="background: #eef1f5 !important;">
 
                 @yield('content')
 
