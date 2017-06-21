@@ -1,93 +1,106 @@
 @extends('admin')
-
 @section('content')
-    <style>
-        #map {
-            width: 800px;
-            height: 300px;
-        }
-    </style>
-    <!-- Page header -->
-    <div class="page-header">
-        <div class="page-header-content">
-            <div class="page-title">
-                <h2>Dashboard</h2>
-            </div>
+    <!-- BEGIN PAGE HEADER-->
+    <!-- BEGIN PAGE TITLE-->
+    <h1 class="page-title"> Admin Dashboard</h1>
+    <!-- END PAGE TITLE-->
+    <!-- END PAGE HEADER-->
+    <div class="clearfix" style="margin-bottom: 20px">
+        <div class="btn-group col-xs-12" data-toggle="buttons">
+            <label class="btn btn-default active col-xs-6 col-md-3">
+                <input type="radio" name="radio" class="toggle radioButton" value="1"> Tháng
+                gần nhất
+            </label>
+            <label class="btn btn-default col-xs-6 col-md-3">
+                <input type="radio" name="radio" class="toggle radioButton" value="2">Tháng có doanh số cao nhất
+            </label>
+            <label class="btn  btn-default col-xs-6 col-md-3">
+                <input type="radio" name="radio" class="toggle radioButton" value="3"> Trung bình tháng
+            </label>
+            <label class="btn  btn-default col-xs-6 col-md-3">
+                <input type="radio"  name="radio" class="toggle radioButton" value="4">Tổng sản lượng
+            </label>
+        </div>
+    </div>
 
-            <div class="heading-elements">
-                <div class="heading-btn-group">
+
+    <div class="row">
+        <div class="col-lg-6 col-xs-12 col-sm-12">
+            <div class="portlet light ">
+                <div class="portlet-title">
+                    <div class="caption">
+                        <span class="caption-subject bold uppercase font-dark">Bảng doanh số</span>
+                    </div>
+                </div>
+                <div class="portlet-body">
+                    <div class="portlet-body"><div id="tableData"></div></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6 col-xs-12 col-sm-12">
+            <div class="portlet light ">
+                <div class="portlet-title">
+                    <div class="caption ">
+                        <span class="caption-subject font-dark bold uppercase">Biểu đồ</span>
+                    </div>
+                </div>
+                <div class="portlet-body">
+                    <div id="chartSp"></div>
                 </div>
             </div>
         </div>
     </div>
-    <!-- /page header -->
-    <!-- Page container -->
-    <div class="page-container">
-        <!-- Page content -->
-        <div class="content-wrapper">
-            <div class="row">
-                    <div class="clearfix" style="margin-bottom: 10px">
-                        <div class="btn-group col-xs-12" data-toggle="buttons">
-                            <label class="btn btn-default active col-xs-6 col-md-3">
-                                <input type="radio" name="radio" class="toggle radioButton" value="1"> Tháng
-                                gần nhất
-                            </label>
-                            <label class="btn btn-default col-xs-6 col-md-3">
-                                <input type="radio" name="radio" class="toggle radioButton" value="2">Tháng có doanh số cao nhất
-                            </label>
-                            <label class="btn  btn-default col-xs-6 col-md-3">
-                                <input type="radio" name="radio" class="toggle radioButton" value="3"> Trung bình tháng
-                            </label>
-                            <label class="btn  btn-default col-xs-6 col-md-3">
-                                <input type="radio"  name="radio" class="toggle radioButton" value="4">Tổng sản lượng
-                            </label>
-                        </div>
-                    </div>
-                <div class="col-lg-6 col-xs-12 col-sm-12">
-                    <div class="portlet light ">
-                        <div class="portlet-title"></div>
-                        <div class="portlet-body"><div id="tableData"></div></div>
+    <div class="row">
+        <div class="col-lg-6 col-xs-12 col-sm-12">
+            <div class="portlet light portlet-fit ">
+                <div class="portlet-title">
+                    <div class="caption">
+                        <i class="icon-directions font-green hide"></i>
+                        <span class="caption-subject bold font-dark uppercase "> Tiến độ doanh số</span>
                     </div>
                 </div>
-                <div class="col-lg-6">
-                    <div class="portlet light ">
-                        <div class="portlet-title"></div>
-                        <div class="portlet-body">
-                            <div id="chartSp"></div>
-                        </div>
-                    </div>
+                <div class="portlet-body">
+                    <div id="container" class="row"></div>
                 </div>
-
-                <div class="col-xs-12">
-
-                    <div class="col-lg-6">
-                        <div class="portlet light ">
-                            <div class="portlet-title"></div>
-                            <div class="portlet-body">
-                                <div id="container" class="row"></div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-lg-6">
-                        <div class="portlet light ">
-                            <div class="portlet-title"><h3>Bản đồ tổng quan</h3></div>
-                            <div class="portlet-body">
-                                <div id="map" style=" width: 100% ;height: 400px"></div>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-
             </div>
         </div>
-
+        <div class="col-lg-6 col-xs-12 col-sm-12">
+            <div class="portlet light portlet-fit ">
+                <div class="portlet-title">
+                    <div class="caption">
+                        <i class="icon-directions font-green hide"></i>
+                        <span class="caption-subject bold font-dark uppercase"> Bản đồ tổng quan</span>
+                    </div>
+                    <div class="actions">
+                        <div class="btn-group">
+                            <a class="btn blue btn-outline btn-circle btn-sm" href="javascript:;" data-toggle="dropdown" data-hover="dropdown" data-close-others="true"> Actions
+                                <i class="fa fa-angle-down"></i>
+                            </a>
+                            <ul class="dropdown-menu pull-right">
+                                <li>
+                                    <a href="javascript:;"> Action 1</a>
+                                </li>
+                                <li class="divider"> </li>
+                                <li>
+                                    <a href="javascript:;">Action 2</a>
+                                </li>
+                                <li>
+                                    <a href="javascript:;">Action 3</a>
+                                </li>
+                                <li>
+                                    <a href="javascript:;">Action 4</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="portlet-body">
+                    <div id="map" style=" width: 100% ;height: 400px"></div>
+                </div>
+            </div>
+        </div>
     </div>
-
-
-
-    <!-- /main content -->
 @endsection
 @push('scripts_foot')
 <script src="/js/highcharts.js"></script>
@@ -238,17 +251,17 @@
                     }
 
                     chartSp.addSeries(
-                            {
-                                name: 'S/p',
-                                colorByPoint: true,
-                                data: data.chart
-                            }
+                        {
+                            name: 'S/p',
+                            colorByPoint: true,
+                            data: data.chart
+                        }
                     )
                 }
                 if (data.table) {
                     var table = data.table;
                     var string = '<table class="table table-striped table-bordered" cellspacing="0" width="100%">' +
-                            ' <thead> <tr> <th>Sản phẩm</th> <th>Doanh số</th></tr></thead><tbody>';
+                        ' <thead> <tr> <th>Sản phẩm</th> <th>Doanh số</th></tr></thead><tbody>';
 
                     table.forEach(function (value) {
                         string += '<tr>';
@@ -300,18 +313,18 @@
 
                         chartSp.redraw();
                         chartSp.addSeries(
-                                {
-                                    name: 'S/p',
-                                    colorByPoint: true,
-                                    data: data.chart
-                                }
+                            {
+                                name: 'S/p',
+                                colorByPoint: true,
+                                data: data.chart
+                            }
                         )
                     }
                     if (data.table) {
                         $('#tableData').html('');
                         var table = data.table;
                         var string = '<table class="table table-striped table-bordered" cellspacing="0" width="100%">' +
-                                ' <thead> <tr> <th>Sản phẩm</th> <th>Doanh số</th></tr></thead><tbody>';
+                            ' <thead> <tr> <th>Sản phẩm</th> <th>Doanh số</th></tr></thead><tbody>';
 
                         table.forEach(function (value) {
                             string += '<tr>';
@@ -399,10 +412,10 @@
 
                 @foreach($agents as $agent)
         var contentString = '<div id="content">' +
-                        '<p id="name">' + "{{$agent->name}}" + '</p>' +
-                        '<p id="manager">' + '{{$agent->user->email}}' + '</p>' +
+                '<p id="name">' + "{{$agent->name}}" + '</p>' +
+                '<p id="manager">' + '{{$agent->user->email}}' + '</p>' +
 
-                        '</div>';
+                '</div>';
         var infoWindow = new google.maps.InfoWindow({
             content: contentString
         });
