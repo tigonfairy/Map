@@ -18,6 +18,7 @@ class HomeController extends AdminController
     }
 
     public function dashboard(Request $request){
+
         $user = auth()->user();
         $role = $user->roles()->first();
         $year = Carbon::now()->year;
@@ -111,7 +112,6 @@ class HomeController extends AdminController
         }
 
         //end chart cot
-
 
         return view('admin.dashboard', compact('month','sales_plan', 'sales_plan', 'sales_real', 'locations', 'agents'));
     }

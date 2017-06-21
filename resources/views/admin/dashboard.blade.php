@@ -26,8 +26,26 @@
         <!-- Page content -->
         <div class="content-wrapper">
             <div class="row">
+                    <div class="clearfix" style="margin-bottom: 10px">
+                        <div class="btn-group col-xs-12" data-toggle="buttons">
+                            <label class="btn btn-default active col-xs-6 col-md-3">
+                                <input type="radio" name="radio" class="toggle radioButton" value="1"> Tháng
+                                gần nhất
+                            </label>
+                            <label class="btn btn-default col-xs-6 col-md-3">
+                                <input type="radio" name="radio" class="toggle radioButton" value="2">Tháng có doanh số cao nhất
+                            </label>
+                            <label class="btn  btn-default col-xs-6 col-md-3">
+                                <input type="radio" name="radio" class="toggle radioButton" value="3"> Trung bình tháng
+                            </label>
+                            <label class="btn  btn-default col-xs-6 col-md-3">
+                                <input type="radio"  name="radio" class="toggle radioButton" value="4">Tổng sản lượng
+                            </label>
+                        </div>
+                    </div>
                 <div class="col-lg-6 col-xs-12 col-sm-12">
-                    <div id="container" class="row" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+                    <div class="col-xs-12" id="tableData"></div>
+
                 </div>
                 <div class="col-lg-6" id="chartSp" style="min-width: 310px; height: 400px; margin: 0 auto">
 
@@ -35,39 +53,14 @@
 
                 <div class="col-xs-12">
 
-
-                        <div class="col-xs-3">
-                            <label><input type="radio" name="radio2" checked class="icheck radioButton"  value="1">Tháng
-                                gần nhất </label>
-                        </div>
-                        <div class="col-xs-3">
-                            <label><input type="radio" name="radio2" class="icheck radioButton"
-                                          value="2">Tháng có doanh số cao nhất</label>
-                        </div>
-
-                        <div class="col-xs-3">
-                            <label>
-                                <input type="radio" name="radio2" class="icheck radioButton"
-                                       value="3">Trung bình tháng</label>
-                        </div>
-
-                        <div class="col-xs-3">
-                            <label>
-                                <input type="radio" name="radio2"  class="icheck radioButton"
-                                       value="4">Tổng sản lượng</label>
-                        </div>
-
-                        <div class="col-xs-12" id="tableData"></div>
+                    <div id="container" class="row" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
 
                     <div class="col-xs-12" id="map"></div>
 
-                {{--<div class="col-xs-6"  style="min-width: 310px; height: 400px; margin: 0 auto">--}}
+                </div>
 
-                {{--</div>--}}
             </div>
-
         </div>
-    </div>
 
     </div>
 
@@ -77,7 +70,8 @@
 @endsection
 @push('scripts_foot')
 <script src="/js/highcharts.js"></script>
-<script type="text/javascript" src="https://maps.google.com/maps/api/js?key=AIzaSyDUMRn1pnBk97Zay94WiBbMgdVlBh_vwYs&libraries=drawing"></script>
+<script type="text/javascript"
+        src="https://maps.google.com/maps/api/js?key=AIzaSyDUMRn1pnBk97Zay94WiBbMgdVlBh_vwYs&libraries=drawing"></script>
 <script type="text/javascript" src="/js/gmaps.js"></script>
 <script type="text/javascript" src="/js/prettify.js"></script>
 
@@ -144,6 +138,16 @@
                 column: {
                     pointPadding: 0.2,
                     borderWidth: 0
+                },
+                series: {
+                    dataLabels: {
+                        enabled: true,
+                        crop: false,
+                        overflow: 'none',
+                        formatter:function() {
+                            return this.point.y;
+                        }
+                    }
                 }
             },
             series: [{
@@ -188,28 +192,27 @@
         });
 
         $.ajax({
-            method:"post",
+            method: "post",
             url: "{{route('Admin::chart')}}",
             headers: {
                 'X-CSRF-Token': "{{ csrf_token() }}"
             },
             data: {
-                type : 1
+                type: 1
             },
-            dataType:'json',
+            dataType: 'json',
             success: function (data) {
-                if(data.title){
+                if (data.title) {
                     chartSp.setTitle({
-                        text : 'Biểu đô tháng '+data.title
+                        text: 'Biểu đô tháng ' + data.title
                     });
                 }
 
-                if(data.chart){
+                if (data.chart) {
                     var seriesLength = chartSp.series.length;
-                    for(var i = seriesLength - 1; i > -1; i--)
-                    {
+                    for (var i = seriesLength - 1; i > -1; i--) {
                         //chart.series[i].remove();
-                        if(chartSp.series[i].name ==document.getElementById("series_name").value)
+                        if (chartSp.series[i].name == document.getElementById("series_name").value)
                             chartSp.series[i].remove();
                     }
 
@@ -221,12 +224,12 @@
                             }
                     )
                 }
-                if(data.table){
+                if (data.table) {
                     var table = data.table;
                     var string = '<table class="table table-striped table-bordered" cellspacing="0" width="100%">' +
                             ' <thead> <tr> <th>Sản phẩm</th> <th>Doanh số</th></tr></thead><tbody>';
 
-                    table.forEach(function(value){
+                    table.forEach(function (value) {
                         string += '<tr>';
                         string += '<td>';
                         string += value.name;
@@ -238,10 +241,9 @@
                         string += '</tr>';
 
                     });
-                    string +='</tbody></table>';
+                    string += '</tbody></table>';
                     $('#tableData').html(string);
                 }
-
 
 
             },
@@ -251,28 +253,28 @@
             }
         });
 
-        $('.radioButton').change(function(){
-
+        $('.radioButton').change(function () {
             var type = $(this).val();
+
             $.ajax({
-                method:"post",
+                method: "post",
                 url: "{{route('Admin::chart')}}",
                 headers: {
                     'X-CSRF-Token': "{{ csrf_token() }}"
                 },
                 data: {
-                    type : type
+                    type: type
                 },
-                dataType:'json',
+                dataType: 'json',
                 success: function (data) {
-                    if(data.title){
+                    if (data.title) {
                         chartSp.setTitle({
-                            text : 'Biểu đô '+data.title
+                            text: 'Biểu đô ' + data.title
                         });
                     }
-                    if(data.chart){
-                        while( chartSp.series.length > 0 ) {
-                            chartSp.series[0].remove( false );
+                    if (data.chart) {
+                        while (chartSp.series.length > 0) {
+                            chartSp.series[0].remove(false);
                         }
 
                         chartSp.redraw();
@@ -284,13 +286,13 @@
                                 }
                         )
                     }
-                    if(data.table){
+                    if (data.table) {
                         $('#tableData').html('');
                         var table = data.table;
                         var string = '<table class="table table-striped table-bordered" cellspacing="0" width="100%">' +
                                 ' <thead> <tr> <th>Sản phẩm</th> <th>Doanh số</th></tr></thead><tbody>';
 
-                        table.forEach(function(value){
+                        table.forEach(function (value) {
                             string += '<tr>';
                             string += '<td>';
                             string += value.name;
@@ -302,10 +304,9 @@
                             string += '</tr>';
 
                         });
-                        string +='</tbody></table>';
+                        string += '</tbody></table>';
                         $('#tableData').html(string);
                     }
-
 
 
                 },
@@ -323,7 +324,7 @@
             height: '500px',
             zoom: 11
         });
-        @if($locations)
+                @if($locations)
                 @foreach($locations as $key => $location)
 
                 @php
@@ -372,15 +373,15 @@
             });
             polygonArray["{{$key}}"] = polygon;
         }
-        @endforeach
-        @endif
+                @endforeach
+                @endif
 
                 @foreach($agents as $agent)
         var contentString = '<div id="content">' +
-                '<p id="name">' + "{{$agent->name}}" + '</p>' +
-                '<p id="manager">' + '{{$agent->user->email}}' + '</p>' +
+                        '<p id="name">' + "{{$agent->name}}" + '</p>' +
+                        '<p id="manager">' + '{{$agent->user->email}}' + '</p>' +
 
-                '</div>';
+                        '</div>';
         var infoWindow = new google.maps.InfoWindow({
             content: contentString
         });
@@ -388,7 +389,7 @@
         map.addMarker({
             lat: "{{$agent->lat}}",
             lng: "{{$agent->lng}}",
-            title:  "{{$agent->name}}",
+            title: "{{$agent->name}}",
             click: function (e) {
                 infoWindow.setPosition({lat: e.position.lat(), lng: e.position.lng()});
                 infoWindow.open(map.map);
