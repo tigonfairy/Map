@@ -408,13 +408,11 @@
         var coordinate = JSON.parse(c);
 
         if (coordinate) {
-
             var bounds = new google.maps.LatLngBounds();
             for (i = 0; i < coordinate.length; i++) {
                 var c = coordinate[i];
                 bounds.extend(new google.maps.LatLng(c[0], c[1]));
             }
-//            map.fitBounds(bounds);
             var path = coordinate;
             map.setCenter(bounds.getCenter().lat(), bounds.getCenter().lng());
             {{--var infoWindow{{$locat->id}} = new google.maps.InfoWindow({--}}
@@ -447,7 +445,6 @@
         });
                 @endforeach
                 @endif
-        console.log(coordinates);
 
                 @foreach($agents as $agent)
         var contentString = '<div id="content">' +
@@ -474,16 +471,6 @@
             lat: "{{$agent->lat}}",
             lng: "{{$agent->lng}}",
             content: '<div class="overlay_agents">{{$agent->name}}</div>'
-        });
-        /* Change markers on zoom */
-        google.maps.event.addListener(map, 'zoom_changed', function() {
-            var zoom = map.getZoom();
-
-            if (zoom <= 15) {
-                marker.setMap(null);
-            } else {
-                marker.setMap(map);
-            }
         });
         @endforeach
 
