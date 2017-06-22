@@ -49,6 +49,7 @@
 
                 <div class="baomap col-xs-12">
                     <div id="map"></div>
+
                 </div>
             </div>
         </div>
@@ -82,7 +83,6 @@
             }
         });
 
-
         var heightPageContent = $('.page-content').height();
         var heightPageHeader = $('.page-header-content').height();
         $('.baomap').height(heightPageContent - heightPageHeader);
@@ -96,40 +96,136 @@
             zoom: 12,
             fullscreenControl: true
         });
-        @if(count($products))
-             var contentString = '<table class="table table-striped table-bordered" cellspacing="0" width="100%" id="users-table">' +
-                '<thead><tr>' +
-                '<th>{{ trans('home.Product') }}</th>' +
-                '<th>{{ trans('home.sale_plan') }}</th>' +
-                '<th>{{ trans('home.sale_real') }}</th>'+
-                '</tr> </thead>'+
-                        @foreach($products as $p)
-                '<tr role="row" id="">' +
-            '<td>{{$p->product->name}}</td>' +
-            '<td>{{$p->sales_plan}}</td>' +
-            '<td>{{$p->sales_real}}</td>' +
-           '</tr>' +
+
+        //use the buttons-div as map-control
+       // map.addControl(ctrl[0]);
+
+
+
+        // a  div where we will place the buttons
+        var ctrl = '<ul id="checkbox" style="background:#fff;border:1px solid black;list-style-type: none;">' +
+            '<li><input type="checkbox" name="" value="0" id="select_all">Tất cả</li>' +
+                @foreach($products as $product)
+            '<li><input type="checkbox" class="checkbox" name="{{ $product->product->name }}" value="{{ $product->product->id }}">{{ $product->product->name }}</li>' +
                 @endforeach
+            '</ul>';
 
-                + '</table>';
-
-        var infoWindow = new google.maps.InfoWindow({
-            content: contentString
+        map.addControl({
+            position: 'bottom_right',
+            content: ctrl,
         });
-                @endif
 
         map.addMarker({
             lat: "{{$agent->lat}}",
             lng: "{{$agent->lng}}",
-            click: function (e) {
-                infoWindow.setPosition({lat: e.position.lat(), lng: e.position.lng()});
-                infoWindow.open(map.map);
-            }
+//            click: function (e) {
+//                infoWindow.setPosition({lat: e.position.lat(), lng: e.position.lng()});
+//                infoWindow.open(map.map);
+//            }
         });
         map.setCenter("{{$agent->lat}}","{{$agent->lng}}");
 
+        @if(count($products))
+            var contentString = '<table class="table table-striped table-bordered" cellspacing="0" width="100%" style="float:right" id="data-table">' +
+                    '<thead><tr>' +
+                    '<th>{{ trans('home.Product') }}</th>' +
+                    '<th>{{ trans('home.sale_plan') }}</th>' +
+                    '<th>{{ trans('home.sale_real') }}</th>'+
+                    '</tr> </thead>'+
+                            @foreach($products as $p)
+                                '<tr role="row" class="tr_{{ $p->product->id }}" id="tr_{{ $p->product->id }}">' +
+                    '<td>{{$p->product->name}}</td>' +
+                    '<td>{{$p->sales_plan}}</td>' +
+                    '<td>{{$p->sales_real}}</td>' +
+                    '</tr>' +
+                            @endforeach
+
+                                + '</table>';
+
+            var infoWindow = new google.maps.InfoWindow({
+                content: contentString
+            });
+
+            // khoi tao mang productIds
+            var productIds = [];
+        @foreach($products as $product)
+            productIds.push('{{$product->product->id}}');
+        @endforeach
+            console.log(productIds);
+
+            $(document).on('click', '#select_all', function() {
+                if(this.checked) {
+                    // Iterate each checkbox
+                    $('#checkbox :checkbox').each(function() {
+                        this.checked = true;
+                        infoWindow.open(map.map);
+                    });
+                } else {
+                    $('#checkbox :checkbox').each(function() {
+                        this.checked = false;
+                        infoWindow.close(map.map);
+                    });
+                }
+
+            });
+            // khoi tao mang checked
+            var checked = [];
+            $(document).on('change', '.checkbox', function() {
+                if(this.checked) {
+                    checked.push($(this).val());
+                } else {
+                    removeA(checked, $(this).val());
+                }
+                console.log(checked);
+                rows = arr_diff(productIds, checked);
+                console.log(rows);
+                $.each(rows, function( index, value ) {
+                    $('#tr_' + value).hide();
+                });
+                infoWindow.open(map.map);
+            });
+        @endif
+
+
 
     });
+
+    function removeA(arr) {
+        var what, a = arguments, L = a.length, ax;
+        while (L > 1 && arr.length) {
+            what = a[--L];
+            while ((ax= arr.indexOf(what)) !== -1) {
+                arr.splice(ax, 1);
+            }
+        }
+        return arr;
+    }
+
+    function arr_diff (a1, a2) {
+
+        var a = [], diff = [];
+
+        for (var i = 0; i < a1.length; i++) {
+            a[a1[i]] = true;
+        }
+
+        for (var i = 0; i < a2.length; i++) {
+            if (a[a2[i]]) {
+                delete a[a2[i]];
+            } else {
+                a[a2[i]] = true;
+            }
+        }
+
+        for (var k in a) {
+            diff.push(k);
+        }
+
+        return diff;
+    };
+
+
+
 
 </script>
 
