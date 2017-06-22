@@ -438,6 +438,11 @@
             }
         });
 
+        map.drawOverlay({
+            lat: "{{$agent->lat}}",
+            lng: "{{$agent->lng}}",
+            content: '<div class="overlay_agents">{{$agent->name}}</div>'
+        });
         @endforeach
 
     });

@@ -98,6 +98,9 @@
         .overlay {
             font-size: 25px;
         }
+        .overlay_agents{
+            font-size: 10px;
+        }
 
     </style>
 @stack('style_head')
