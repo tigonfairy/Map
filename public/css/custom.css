@@ -16,3 +16,16 @@
 #users-table{
     background-color: white;
 }
+.overlay {
+    font-size: 15px;
+    z-index: 99999;
+    color:red;
+}
+.overlay_agents{
+    z-index: 99999;
+    padding-top: 10px;
+    font-size: 10px;
+    display: none;
+    color:white;
+
+}

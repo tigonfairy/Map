@@ -5,7 +5,7 @@
     <div class="page-header">
         <div class="page-header-content">
             <div class="page-title">
-                <h2> {{(isset($agent) ? trans('home.edit'). "  ". trans('home.agency') . " : ".$agent->name : trans('home.create'). trans('home.agency') )}}</h2>
+                <h2> {{(isset($agent) ? trans('home.edit'). "  ". trans('home.agency') . " : ".$agent->name : trans('home.create').' '. trans('home.agency') )}}</h2>
             </div>
 
         </div>
@@ -76,7 +76,6 @@
                             <i class="icon-question4 text-muted text-size-mini cursor-pointer js-help-icon"
                                data-content="Nhân viên quản Lý"></i>
                             <div class="col-md-9">
-
                             <select name="manager_id" class="users form-control">
                                 <option value="">{{ '--'. trans('home.select'). ' '. trans('home.manager') .'--' }}</option>
                                 @foreach($users as $key => $value)
@@ -95,7 +94,7 @@
                         <div class="form-group {{ $errors->has('area_id') ? 'has-error has-feedback' : '' }}">
                             <label for="name" class="control-label text-semibold col-md-3">{{ trans('home.place') }}</label>
                             <div class="col-md-9">
-                            <select name="area_id" class="places" id ="locations" style="width:100%">
+                            <select name="area_id" class="places form-control" id ="locations" style="width:100%">
                                 @if(isset($areas))
                                     @foreach($areas as $key => $value)
                                         <option value="{{$value->id}}" @if(isset($agent) and $agent->area_id == $value->id) selected @elseif(old('area_id') == $value->id) selected @endif>{{ $value->name }}</option>
@@ -110,9 +109,33 @@
                                 <div class="help-block">{{ $errors->first('area_id') }}</div>
                             @endif
 
-                            <div class="clearfix"></div>
                             </div>
+                            <div class="clearfix"></div>
                         </div>
+
+
+                        <div class="form-group {{ $errors->has('area_id') ? 'has-error has-feedback' : '' }}">
+                            <label for="name" class="control-label text-semibold col-md-3">Icon</label>
+                            <div class="col-md-9">
+
+                                <input type="text" style='display:none' name="image" id="Image" />
+                                <div  value="Duyệt ảnh" class='button_chooseImage ' onclick="BrowseServer();">Chọn ảnh</div>
+                                <img src="" alt="" style="display:none" width="150px" class='col-md-4' id='imageAvatar'>
+
+
+                                @if ($errors->has('area_id'))
+                                    <div class="form-control-feedback">
+                                        <i class="icon-notification2"></i>
+                                    </div>
+                                    <div class="help-block">{{ $errors->first('area_id') }}</div>
+                                @endif
+
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+
+
+
                         <div class="col-md-9 col-md-offset-3 btn-submit-add-map">
                             <button type="submit" class="btn btn-info">{{isset($agent) ? trans('home.update') : trans('home.create')}}</button>
                         </div>
@@ -134,6 +157,7 @@
 <script type="text/javascript" src="https://maps.google.com/maps/api/js?key=AIzaSyDUMRn1pnBk97Zay94WiBbMgdVlBh_vwYs&libraries=drawing"></script>
 <script type="text/javascript" src="/js/gmaps.js"></script>
 <script type="text/javascript" src="/js/prettify.js"></script>
+<script src="{{asset('/ckfinder/ckfinder.js')}}"></script>
 @endpush
 
 @push('scripts')
@@ -142,7 +166,21 @@
     var map;
     var markers = [];
     var polygonArray = [];
+    function BrowseServer() {
+        var finder = new CKFinder();
+        //finder.basePath = '../';
+
+        finder.selectActionFunction = SetFileField;
+        finder.popup();
+    }
+    function SetFileField(fileUrl) {
+        document.getElementById('Image').value = fileUrl;
+        document.getElementById('imageAvatar').style.display = 'block';
+        document.getElementById('imageAvatar').src = fileUrl;
+    }
+
     $(document).ready(function () {
+
         $('.users').select2();
         $(".places").select2({
             'placeholder' : "{{'-- '. trans('home.select'). ' '. trans('home.manager') .' --'}}",

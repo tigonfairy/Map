@@ -30,12 +30,12 @@
 
             <div class="row">
 
-                <div class="baomap col-xs-6" >
+                <div class="baomap col-xs-12" >
                     <div id="map"></div>
                 </div>
 
                 {{--số liệu--}}
-                <div class="col-xs-6">
+                <div class="col-xs-12" style="margin-top: 20px">
                     <div class="form-group {{ $errors->has('month') ? 'has-error has-feedback' : '' }}">
                         <label for="name" class="control-label text-semibold col-md-3">{{ trans('home.time') }}</label>
                         <i class="icon-question4 text-muted text-size-mini cursor-pointer js-help-icon"
@@ -146,7 +146,7 @@
             map.drawOverlay({
                 lat: bounds.getCenter().lat(),
                 lng: bounds.getCenter().lng(),
-                content: '<div class="overlay">{{$locat->name}}</div>'
+                content: '<div class="overlay">{{$location->name}}</div>'
             });
             var infoWindow{{$location->id}} = new google.maps.InfoWindow({
                 content: "<p>{{$location->name}}</p>"
@@ -173,6 +173,7 @@
             polygonArray["{{$location->id}}"] = polygon;
         }
         @endforeach
+
        @foreach($agents as $agent)
         var contentString = '<div id="content">' +
                 '<p id="name">' + "{{$agent->name}}" + '</p>' +
