@@ -120,7 +120,7 @@
             zoom: 11,
             fullscreenControl: true
         });
-
+        var Totalbounds = new google.maps.LatLngBounds();
                 @foreach($locations as $location)
         var c = "{{$location->coordinates}}";
         var coordinate = JSON.parse(c);
@@ -139,9 +139,15 @@
             for (i = 0; i < coordinate.length; i++) {
                 var c = coordinate[i];
                 bounds.extend(new google.maps.LatLng(c[0], c[1]));
+                Totalbounds.extend(new google.maps.LatLng(c[0], c[1]));
             }
             var path = coordinate;
-            map.setCenter(bounds.getCenter().lat(), bounds.getCenter().lng());
+//            map.setCenter(bounds.getCenter().lat(), bounds.getCenter().lng());
+            map.drawOverlay({
+                lat: bounds.getCenter().lat(),
+                lng: bounds.getCenter().lng(),
+                content: '<div class="overlay">{{$locat->name}}</div>'
+            });
             var infoWindow{{$location->id}} = new google.maps.InfoWindow({
                 content: "<p>{{$location->name}}</p>"
             });
@@ -163,6 +169,7 @@
                     }
                 }
             });
+
             polygonArray["{{$location->id}}"] = polygon;
         }
         @endforeach
@@ -186,6 +193,8 @@
             }
         });
         @endforeach
+       map.fitBounds(Totalbounds);
+        map.panToBounds(Totalbounds);
     });
     //    $('#change-button-size-map').on('change.bootstrapSwitch', function(e, state) {
     //        if(e.target.checked){
