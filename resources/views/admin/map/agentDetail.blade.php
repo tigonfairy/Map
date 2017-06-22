@@ -103,10 +103,10 @@
 
 
         // a  div where we will place the buttons
-        var ctrl = '<ul id="checkbox" style="background:#fff;border:1px solid black;list-style-type: none;">' +
-            '<li><input type="checkbox" name="" value="0" id="select_all">Tất cả</li>' +
+        var ctrl = '<ul id="checkbox" class="list-group">' +
+            '<li><input type="checkbox" name="" class = "list-group-item" value="0" id="select_all">Tất cả</li>' +
                 @foreach($products as $product)
-            '<li><input type="checkbox" class="checkbox" name="{{ $product->product->name }}" value="{{ $product->product->id }}">{{ $product->product->name }}</li>' +
+            '<li><input type="checkbox list-group-item" class="checkbox" name="{{ $product->product->name }}" value="{{ $product->product->id }}">{{ $product->product->name }}</li>' +
                 @endforeach
             '</ul>';
 
