@@ -96,7 +96,7 @@
             padding-top: 10px !important;
         }
         .overlay {
-            font-size: 25px;
+            font-size: 23px;
             z-index: 99999;
             color:red;
         }
