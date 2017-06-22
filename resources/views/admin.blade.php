@@ -100,6 +100,9 @@
             z-index: 99999;
             color:red;
         }
+        .overlay_agents{
+            font-size: 10px;
+        }
 
     </style>
 @stack('style_head')
