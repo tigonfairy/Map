@@ -131,11 +131,13 @@
         var infoWindow = new google.maps.InfoWindow({
             content: contentString
         });
-
         map.addMarker({
             lat: "{{$agent->lat}}",
-            lng: "{{$agent->lng}}",
-            click: function (e) {
+            lng: "{{$agent->lng}}"
+            @if(isset($agent->icon))
+            ,icon:"{{$agent->icon}}"
+            @endif
+            ,click: function (e) {
                 infoWindow.setPosition({lat: e.position.lat(), lng: e.position.lng()});
                 infoWindow.open(map.map);
             }

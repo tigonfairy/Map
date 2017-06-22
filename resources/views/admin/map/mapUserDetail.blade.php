@@ -173,6 +173,7 @@
             polygonArray["{{$location->id}}"] = polygon;
         }
         @endforeach
+
        @foreach($agents as $agent)
         var contentString = '<div id="content">' +
                 '<p id="name">' + "{{$agent->name}}" + '</p>' +

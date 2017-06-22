@@ -6,6 +6,7 @@
             -moz-column-count: 2; /* Firefox */
             column-count: 2;
         }
+
         @media (max-width: 768px) {
             .ct {
                 -webkit-column-count: 1; /* Chrome, Safari, Opera */
@@ -13,6 +14,7 @@
                 column-count: 1;
             }
         }
+
         @media (min-width: 992px) {
             .ct {
                 -webkit-column-count: 2; /* Chrome, Safari, Opera */
@@ -31,34 +33,31 @@
     <div class="row ct">
 
 
-            <div class="portlet light">
-                <div class="portlet-title">
-                    <div class="caption">
-                        <span class="caption-subject bold uppercase font-dark">Bảng doanh số</span>
-                    </div>
-                </div>
-                <div class="portlet-body">
-                    <div class="portlet-body">
-                        <div id="tableData"></div>
-                    </div>
+        <div class="portlet light">
+            <div class="portlet-title">
+                <div class="caption">
+                    <span class="caption-subject bold uppercase font-dark">Bảng doanh số</span>
                 </div>
             </div>
-
-
-
-
-            <div class="portlet light">
-                <div class="portlet-title">
-                    <div class="caption">
-                        <i class="icon-directions font-green hide"></i>
-                        <span class="caption-subject bold font-dark uppercase "> Tiến độ doanh số</span>
-                    </div>
-                </div>
+            <div class="portlet-body">
                 <div class="portlet-body">
-                    <div id="container" class="row"></div>
+                    <div id="tableData"></div>
                 </div>
             </div>
+        </div>
 
+
+        <div class="portlet light">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="icon-directions font-green hide"></i>
+                    <span class="caption-subject bold font-dark uppercase "> Tiến độ doanh số</span>
+                </div>
+            </div>
+            <div class="portlet-body">
+                <div id="container" class="row"></div>
+            </div>
+        </div>
 
 
         <div class="portlet light">
@@ -73,7 +72,8 @@
                             gần nhất
                         </label>
                         <label class="btn btn-default col-xs-6 col-md-3">
-                            <input type="radio" name="radio" class="toggle radioButton" value="2">Tháng có doanh số cao nhất
+                            <input type="radio" name="radio" class="toggle radioButton" value="2">Tháng có doanh số
+                            cao nhất
                         </label>
                         <label class="btn  btn-default col-xs-6 col-md-3">
                             <input type="radio" name="radio" class="toggle radioButton" value="3"> Trung bình tháng
@@ -92,41 +92,41 @@
         </div>
 
         <div class="portlet light ">
-                <div class="portlet-title">
-                    <div class="caption">
-                        <i class="icon-directions font-green hide"></i>
-                        <span class="caption-subject bold font-dark uppercase"> Bản đồ tổng quan</span>
-                    </div>
-                    <div class="actions">
-                        <div class="btn-group">
-                            <a class="btn blue btn-outline btn-circle btn-sm" href="javascript:;" data-toggle="dropdown"
-                               data-hover="dropdown" data-close-others="true"> Actions
-                                <i class="fa fa-angle-down"></i>
-                            </a>
-                            <ul class="dropdown-menu pull-right">
-                                <li>
-                                    <a href="javascript:;"> Action 1</a>
-                                </li>
-                                <li class="divider"></li>
-                                <li>
-                                    <a href="javascript:;">Action 2</a>
-                                </li>
-                                <li>
-                                    <a href="javascript:;">Action 3</a>
-                                </li>
-                                <li>
-                                    <a href="javascript:;">Action 4</a>
-                                </li>
-                            </ul>
-                        </div>
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="icon-directions font-green hide"></i>
+                    <span class="caption-subject bold font-dark uppercase"> Bản đồ tổng quan</span>
+                </div>
+                <div class="actions">
+                    <div class="btn-group">
+                        <a class="btn blue btn-outline btn-circle btn-sm" href="javascript:;" data-toggle="dropdown"
+                           data-hover="dropdown" data-close-others="true"> Actions
+                            <i class="fa fa-angle-down"></i>
+                        </a>
+                        <ul class="dropdown-menu pull-right">
+                            <li>
+                                <a href="javascript:;"> Action 1</a>
+                            </li>
+                            <li class="divider"></li>
+                            <li>
+                                <a href="javascript:;">Action 2</a>
+                            </li>
+                            <li>
+                                <a href="javascript:;">Action 3</a>
+                            </li>
+                            <li>
+                                <a href="javascript:;">Action 4</a>
+                            </li>
+                        </ul>
                     </div>
                 </div>
-
-                <div class="portlet-body">
-                    <div id="map" style=" width: 100% ;height: 400px"></div>
-                </div>
-
             </div>
+
+            <div class="portlet-body">
+                <div id="map" style=" width: 100% ;height: 400px"></div>
+            </div>
+
+        </div>
 
     </div>
 
@@ -387,8 +387,12 @@
             div: '#map',
             lat: 21.0277644,
             lng: 105.83415979999995,
-            zoom: 11
+            zoom: 11,
+            fullscreenControl: true
         });
+
+
+        var TotalBounds = new google.maps.LatLngBounds();
                 @if($locations)
                 @foreach($locations as $key => $location)
 
@@ -413,29 +417,30 @@
             for (i = 0; i < coordinate.length; i++) {
                 var c = coordinate[i];
                 bounds.extend(new google.maps.LatLng(c[0], c[1]));
+                TotalBounds.extend(new google.maps.LatLng(c[0], c[1]));
             }
 //            map.fitBounds(bounds);
             var path = coordinate;
             map.setCenter(bounds.getCenter().lat(), bounds.getCenter().lng());
             {{--var infoWindow{{$locat->id}} = new google.maps.InfoWindow({--}}
-                {{--content: "<p>{{$locat->name}}</p>"--}}
-            {{--});--}}
-            polygon = map.drawPolygon({
+                    {{--content: "<p>{{$locat->name}}</p>"--}}
+                    {{--});--}}
+                    polygon = map.drawPolygon({
                 paths: path,
                 strokeColor: "{{$border_color}}",
                 strokeOpacity: 1,
                 strokeWeight: 1,
                 fillColor: "{{$background_color}}",
-                fillOpacity: 0.4,
+                fillOpacity: 0.2,
                 {{--mouseover: function (clickEvent) {--}}
-                    {{--var position = clickEvent.latLng;--}}
-                    {{--infoWindow{{$locat->id}}.setPosition(position);--}}
-                    {{--infoWindow{{$locat->id}}.open(map.map);--}}
+                {{--var position = clickEvent.latLng;--}}
+                {{--infoWindow{{$locat->id}}.setPosition(position);--}}
+                {{--infoWindow{{$locat->id}}.open(map.map);--}}
                 {{--},--}}
                 {{--mouseout: function (clickEvent) {--}}
-                    {{--if (infoWindow{{$locat->id}}) {--}}
-                        {{--infoWindow{{$locat->id}}.close();--}}
-                    {{--}--}}
+                {{--if (infoWindow{{$locat->id}}) {--}}
+                {{--infoWindow{{$locat->id}}.close();--}}
+                {{--}--}}
                 {{--}--}}
             });
             polygonArray["{{$key}}"] = polygon;
@@ -447,9 +452,8 @@
         });
                 @endforeach
                 @endif
-        console.log(coordinates);
-
                 @foreach($agents as $agent)
+
         var contentString = '<div id="content">' +
                         '<p id="name">' + "{{$agent->name}}" + '</p>' +
                         '<p id="manager">' + '{{$agent->user->email}}' + '</p>' +
@@ -458,6 +462,9 @@
         var infoWindow = new google.maps.InfoWindow({
             content: contentString
         });
+        map.fitBounds(TotalBounds);
+        map.panToBounds(TotalBounds);
+
 
         map.addMarker({
             lat: "{{$agent->lat}}",
@@ -469,23 +476,24 @@
 //                infoWindow.open(map.map);
 //            }
         });
-
         map.drawOverlay({
             lat: "{{$agent->lat}}",
             lng: "{{$agent->lng}}",
             content: '<div class="overlay_agents">{{$agent->name}}</div>'
         });
         /* Change markers on zoom */
-        google.maps.event.addListener(map, 'zoom_changed', function() {
+        @endforeach
+      $('.overlay_agents').css({"display":"none"});
+           map.addListener('zoom_changed', function () {
             var zoom = map.getZoom();
-
-            if (zoom <= 15) {
-                marker.setMap(null);
+            if (zoom < 10) {
+                $('.overlay_agents').css({"display":"none"});
+//                marker.setMap(null);
             } else {
-                marker.setMap(map);
+                $('.overlay_agents').css({"display":"block"});
+//                marker.setMap(map);
             }
         });
-        @endforeach
 
     });
 </script>
