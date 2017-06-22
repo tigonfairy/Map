@@ -408,16 +408,18 @@
         var coordinate = JSON.parse(c);
 
         if (coordinate) {
+
             var bounds = new google.maps.LatLngBounds();
             for (i = 0; i < coordinate.length; i++) {
                 var c = coordinate[i];
                 bounds.extend(new google.maps.LatLng(c[0], c[1]));
             }
+//            map.fitBounds(bounds);
             var path = coordinate;
             map.setCenter(bounds.getCenter().lat(), bounds.getCenter().lng());
-            var infoWindow{{$locat->id}} = new google.maps.InfoWindow({
-                content: "<p>{{$locat->name}}</p>"
-            });
+            {{--var infoWindow{{$locat->id}} = new google.maps.InfoWindow({--}}
+                {{--content: "<p>{{$locat->name}}</p>"--}}
+            {{--});--}}
             polygon = map.drawPolygon({
                 paths: path,
                 strokeColor: "{{$border_color}}",
@@ -425,16 +427,16 @@
                 strokeWeight: 1,
                 fillColor: "{{$background_color}}",
                 fillOpacity: 0.4,
-                mouseover: function (clickEvent) {
-                    var position = clickEvent.latLng;
-                    infoWindow{{$locat->id}}.setPosition(position);
-                    infoWindow{{$locat->id}}.open(map.map);
-                },
-                mouseout: function (clickEvent) {
-                    if (infoWindow{{$locat->id}}) {
-                        infoWindow{{$locat->id}}.close();
-                    }
-                }
+                {{--mouseover: function (clickEvent) {--}}
+                    {{--var position = clickEvent.latLng;--}}
+                    {{--infoWindow{{$locat->id}}.setPosition(position);--}}
+                    {{--infoWindow{{$locat->id}}.open(map.map);--}}
+                {{--},--}}
+                {{--mouseout: function (clickEvent) {--}}
+                    {{--if (infoWindow{{$locat->id}}) {--}}
+                        {{--infoWindow{{$locat->id}}.close();--}}
+                    {{--}--}}
+                {{--}--}}
             });
             polygonArray["{{$key}}"] = polygon;
         }
@@ -445,6 +447,7 @@
         });
                 @endforeach
                 @endif
+        console.log(coordinates);
 
                 @foreach($agents as $agent)
         var contentString = '<div id="content">' +
@@ -461,16 +464,26 @@
             lng: "{{$agent->lng}}",
             visible: true,
             title: "{{$agent->name}}",
-            click: function (e) {
-                infoWindow.setPosition({lat: e.position.lat(), lng: e.position.lng()});
-                infoWindow.open(map.map);
-            }
+//            click: function (e) {
+//                infoWindow.setPosition({lat: e.position.lat(), lng: e.position.lng()});
+//                infoWindow.open(map.map);
+//            }
         });
 
         map.drawOverlay({
             lat: "{{$agent->lat}}",
             lng: "{{$agent->lng}}",
             content: '<div class="overlay_agents">{{$agent->name}}</div>'
+        });
+        /* Change markers on zoom */
+        google.maps.event.addListener(map, 'zoom_changed', function() {
+            var zoom = map.getZoom();
+
+            if (zoom <= 15) {
+                marker.setMap(null);
+            } else {
+                marker.setMap(map);
+            }
         });
         @endforeach
 
