@@ -29,10 +29,10 @@
             @include('admin.flash')
             <div class="row">
                 <div class="form-group {{ $errors->has('month') ? 'has-error has-feedback' : '' }}">
-                    <label for="name" class="control-label text-semibold col-md-3">{{ trans('home.time') }}</label>
+                    <label for="name" class="control-label text-semibold col-md-1">{{ trans('home.time') }}</label>
                     <i class="icon-question4 text-muted text-size-mini cursor-pointer js-help-icon"
                        data-content="Thời gian"></i>
-                    <div class="col-md-9">
+                    <div class="col-md-3">
                         <input type="text" id="month" name="month" class="form-control monthPicker col-md-9"
                                value="{{ old('month') ?: $month }}"/>
                     </div>
@@ -119,6 +119,7 @@
 //            }
         });
 
+<<<<<<< HEAD
         var lat = marker.getPosition().lat();
         var lng = marker.getPosition().lng();
 
@@ -199,10 +200,25 @@
                 });
 
                 infoWindow.setPosition({lat:lat, lng: lng});
-                infoWindow.open(map.map);
-            });
-        @endif
+                @endif
+        var image = {
+                    url: "{{$agent->icon}}", // image is 512 x 512
+                    size: new google.maps.Size(22, 32)
+                };
 
+        map.addMarker({
+            lat: "{{$agent->lat}}",
+            lng: "{{$agent->lng}}"
+            @if(isset($agent->icon))
+            , icon: image
+            @endif
+            , click: function (e) {
+                infoWindow.setPosition({lat: e.position.lat(), lng: e.position.lng()});
+                infoWindow.open(map.map);
+            }
+        });
+        @endif
+            });
     });
 
     function removeA(arr) {
