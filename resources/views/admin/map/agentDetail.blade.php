@@ -49,6 +49,7 @@
 
                 <div class="baomap col-xs-12">
                     <div id="map"></div>
+
                 </div>
             </div>
         </div>
@@ -82,7 +83,6 @@
             }
         });
 
-
         var heightPageContent = $('.page-content').height();
         var heightPageHeader = $('.page-header-content').height();
         $('.baomap').height(heightPageContent - heightPageHeader);
@@ -96,27 +96,110 @@
             zoom: 12,
             fullscreenControl: true
         });
-        @if(count($products))
-             var contentString = '<table class="table table-striped table-bordered" cellspacing="0" width="100%" id="users-table">' +
-                '<thead><tr>' +
-                '<th>{{ trans('home.Product') }}</th>' +
-                '<th>{{ trans('home.sale_plan') }}</th>' +
-                '<th>{{ trans('home.sale_real') }}</th>'+
-                '</tr> </thead>'+
-                        @foreach($products as $p)
-                '<tr role="row" id="">' +
-            '<td>{{$p->product->name}}</td>' +
-            '<td>{{$p->sales_plan}}</td>' +
-            '<td>{{$p->sales_real}}</td>' +
-           '</tr>' +
+
+        // a  div where we will place the buttons
+        var ctrl = '<ul id="checkbox" class="checkboxList">' +
+            '<li><label><input type="checkbox" name="select_all" value="0" id="select_all">Tất cả</label></li>' +
+                @foreach($products as $product)
+            '<li><label><input type="checkbox" class="checkbox" name="{{ $product->product->name }}" value="{{ $product->product->id }}">{{ $product->product->name }}</label></li>' +
                 @endforeach
+            '</ul>';
 
-                + '</table>';
-
-        var infoWindow = new google.maps.InfoWindow({
-            content: contentString
+        map.addControl({
+            position: 'bottom_right',
+            content: ctrl,
         });
 
+        var marker = map.addMarker({
+            lat: "{{$agent->lat}}",
+            lng: "{{$agent->lng}}",
+//            click: function (e) {
+//                infoWindow.setPosition({lat: e.position.lat(), lng: e.position.lng()});
+//                infoWindow.open(map.map);
+//            }
+        });
+
+<<<<<<< HEAD
+        var lat = marker.getPosition().lat();
+        var lng = marker.getPosition().lng();
+
+        map.setCenter("{{$agent->lat}}","{{$agent->lng}}");
+
+        @if(count($products))
+            var contentString = '<table class="table table-striped table-bordered" cellspacing="0" width="100%" id="data-table">' +
+                                '<thead><tr>' +
+                                '<th>{{ trans('home.Product') }}</th>' +
+                                '<th>{{ trans('home.sale_plan') }}</th>' +
+                                '<th>{{ trans('home.sale_real') }}</th>'+
+                                '</tr> </thead>'+
+                            @foreach($products as $p)
+                                '<tr role="row" class="tr_{{ $p->product->id }}" id="tr_{{ $p->product->id }}">' +
+                                '<td>{{$p->product->name}}</td>' +
+                                '<td>{{$p->sales_plan}}</td>' +
+                                '<td>{{$p->sales_real}}</td>' +
+                                '</tr>' +
+                            @endforeach
+                                '</table>';
+
+            var infoWindow = new google.maps.InfoWindow({
+                content: contentString
+            });
+
+            // khoi tao mang productIds
+            var productIds = [];
+                @foreach($products as $product)
+                    productIds.push('{{$product->product->id}}');
+                @endforeach
+
+        // khoi tao mang checked
+        var checked = [];
+        var unchecked = [];
+
+            $(document).on('click', '#select_all', function() {
+                if(this.checked) {
+                    $.each(productIds, function( index, value ) {
+                        checked.push(value);
+                    });
+                    // Iterate each checkbox
+                    $('#checkbox :checkbox').each(function() {
+                        this.checked = true;
+                    });
+
+                    var unique = Array.from(new Set(checked));
+                    $.each(unique, function( index, value ) {
+                        $('#tr_' + value).show();
+                    });
+                    infoWindow.setPosition({lat:lat, lng: lng});
+                    infoWindow.open(map.map);
+                } else {
+                    checked=[];
+                    $('#checkbox :checkbox').each(function() {
+                        this.checked = false;
+                    });
+                    infoWindow.setPosition({lat: "{{$agent->lat}}", lng:"{{$agent->lng}}"});
+                    infoWindow.close(map.map);
+                }
+
+            });
+
+            $(document).on('change', '.checkbox', function() {
+                $('#select_all').attr('checked', false);
+                if(this.checked) {
+                    checked.push($(this).val());
+                } else {
+                    removeA(checked, $(this).val());
+                }
+
+                unchecked = arr_diff(productIds, checked);
+                $.each(checked, function( index, value ) {
+                    $('#tr_' + value).show();
+                });
+
+                $.each(unchecked, function( index, value ) {
+                    $('#tr_' + value).hide();
+                });
+
+                infoWindow.setPosition({lat:lat, lng: lng});
                 @endif
         var image = {
                     url: "{{$agent->icon}}", // image is 512 x 512
@@ -127,18 +210,50 @@
             lat: "{{$agent->lat}}",
             lng: "{{$agent->lng}}"
             @if(isset($agent->icon))
-            ,icon:image
+            , icon: image
             @endif
-            ,click: function (e) {
+            , click: function (e) {
                 infoWindow.setPosition({lat: e.position.lat(), lng: e.position.lng()});
                 infoWindow.open(map.map);
             }
         });
-        map.setCenter("{{$agent->lat}}","{{$agent->lng}}");
-
-
+        @endif
+            });
     });
 
+    function removeA(arr) {
+        var what, a = arguments, L = a.length, ax;
+        while (L > 1 && arr.length) {
+            what = a[--L];
+            while ((ax= arr.indexOf(what)) !== -1) {
+                arr.splice(ax, 1);
+            }
+        }
+        return arr;
+    }
+
+    function arr_diff (a1, a2) {
+
+        var a = [], diff = [];
+
+        for (var i = 0; i < a1.length; i++) {
+            a[a1[i]] = true;
+        }
+
+        for (var i = 0; i < a2.length; i++) {
+            if (a[a2[i]]) {
+                delete a[a2[i]];
+            } else {
+                a[a2[i]] = true;
+            }
+        }
+
+        for (var k in a) {
+            diff.push(k);
+        }
+
+        return diff;
+    };
 </script>
 
 @endpush
