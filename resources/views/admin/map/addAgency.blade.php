@@ -118,10 +118,13 @@
                             <label for="name" class="control-label text-semibold col-md-3">Icon</label>
                             <div class="col-md-9">
 
-                                <input type="text" style='display:none' name="image" id="Image" />
-                                <div  value="Duyệt ảnh" class='button_chooseImage ' onclick="BrowseServer();">Chọn ảnh</div>
-                                <img src="" alt="" style="display:none" width="150px" class='col-md-4' id='imageAvatar'>
-
+                                <input type="text" style='display:none'  @if(isset($agent) and $agent->icon) value="{{$agent->icon}}" @endif name="icon" id="Image" />
+                                <div  value="Duyệt ảnh" class='button_chooseImage btn btn-info' onclick="BrowseServer();">Chọn ảnh</div>
+                                @if(isset($agent) and $agent->icon)
+                                <img src="{{asset($agent->icon)}}" alt=""   class='col-md-4' id='imageAvatar'>
+                                @else
+                                    <img src="" alt="" style="display:none"  class='col-md-4' id='imageAvatar'>
+                                    @endif
 
                                 @if ($errors->has('area_id'))
                                     <div class="form-control-feedback">
@@ -236,12 +239,20 @@
 
         });
         @if(isset($agent))
+
         map.removeMarkers();
+        var image = {
+            url: "{{$agent->icon}}", // image is 512 x 512
+            size: new google.maps.Size(22, 32)
+        };
         map.addMarker({
             lat: "{{$agent->lat}}",
             lng: "{{$agent->lng}}",
-            title: 'Lima'
+            @if($agent->icon)
+                icon:image
+            @endif
         });
+        map.setCenter("{{$agent->lat}}", "{{$agent->lng}}");
         @endif
         $('#geocoding_form').submit(function(e){
             e.preventDefault();

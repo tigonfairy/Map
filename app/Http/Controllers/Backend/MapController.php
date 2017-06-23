@@ -13,6 +13,7 @@ use Illuminate\Http\Request;
 use App\Models\AddressGeojson;
 use Auth;
 use Illuminate\Support\Facades\Cache;
+use Image;
 class MapController extends AdminController
 {
     public function listLocation()
@@ -269,21 +270,24 @@ class MapController extends AdminController
     }
 
     public function addMapAgencyPost(Request $request){
-
         $this->validate($request,[
             'manager_id' => 'required',
             'area_id' => 'required',
             'name' => 'required',
             'lat' => 'required',
-            'lng' => 'required'
+            'lng' => 'required',
         ],[
             'manager_id.required' => 'Vui lòng chọn nhân viên quản lý',
             'area_id.required' => 'Vui lòng chọn vùng trực thuộc',
             'name.required' => 'Vui lòng nhập tên cho đại lý',
             'lat.required' => 'Vui lòng chọn đại lý',
-            'lng.required' => 'Vui lòng chọn đại lý'
+            'lng.required' => 'Vui lòng chọn đại lý',
         ]);
         $data = $request->all();
+        if(isset($data['icon'])){
+            $icon = $data['icon'];
+            Image::make(public_path($icon))->resize(22, 32)->save(public_path($icon));
+        }
         Agent::create($data);
         return redirect()->route('Admin::map@listAgency')->with('success','Tạo đại lý thành công');
     }
@@ -332,8 +336,8 @@ class MapController extends AdminController
     }
 
     public function editAgent(Request $request,$id){
-        $agent = Agent::findOrFail($id);
 
+        $agent = Agent::findOrFail($id);
         $user = auth()->user();
         $role = $user->roles()->first();
 
@@ -365,6 +369,11 @@ class MapController extends AdminController
             'lat.required' => 'Vui lòng chọn đại lý',
             'lng.required' => 'Vui lòng chọn đại lý'
         ]);
+        if(isset($data['icon'])){
+            $icon = $data['icon'];
+            Image::make(public_path($icon))->resize(22, 32)->save(public_path($icon));
+        }
+
         $agent = Agent::findOrFail($id);
 
         $agent->update($data);
