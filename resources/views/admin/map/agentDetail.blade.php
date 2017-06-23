@@ -110,16 +110,23 @@
             content: ctrl,
         });
 
+        var image = {
+            url: "{{$agent->icon}}", // image is 512 x 512
+            size: new google.maps.Size(22, 32)
+        };
+
         var marker = map.addMarker({
             lat: "{{$agent->lat}}",
-            lng: "{{$agent->lng}}",
-//            click: function (e) {
+            lng: "{{$agent->lng}}"
+            @if(isset($agent->icon))
+            , icon: image
+            @endif
+            , click: function (e) {
 //                infoWindow.setPosition({lat: e.position.lat(), lng: e.position.lng()});
 //                infoWindow.open(map.map);
-//            }
+            }
         });
 
-<<<<<<< HEAD
         var lat = marker.getPosition().lat();
         var lng = marker.getPosition().lng();
 
@@ -176,7 +183,6 @@
                     $('#checkbox :checkbox').each(function() {
                         this.checked = false;
                     });
-                    infoWindow.setPosition({lat: "{{$agent->lat}}", lng:"{{$agent->lng}}"});
                     infoWindow.close(map.map);
                 }
 
@@ -200,25 +206,9 @@
                 });
 
                 infoWindow.setPosition({lat:lat, lng: lng});
-                @endif
-        var image = {
-                    url: "{{$agent->icon}}", // image is 512 x 512
-                    size: new google.maps.Size(22, 32)
-                };
-
-        map.addMarker({
-            lat: "{{$agent->lat}}",
-            lng: "{{$agent->lng}}"
-            @if(isset($agent->icon))
-            , icon: image
-            @endif
-            , click: function (e) {
-                infoWindow.setPosition({lat: e.position.lat(), lng: e.position.lng()});
                 infoWindow.open(map.map);
-            }
         });
         @endif
-            });
     });
 
     function removeA(arr) {
