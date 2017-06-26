@@ -28,6 +28,7 @@ class SaleAgent extends Model
 
     public static function getDatatables()
     {
+
         $user = auth()->user();
         $role = $user->roles()->first();
         if($role->id == 1) {
@@ -46,7 +47,6 @@ class SaleAgent extends Model
             ])->with('agent');
         }
 
-
         return Datatables::eloquent($model)
             ->filter(function ($query) {
                 if (request()->has('agent')) {
@@ -59,7 +59,9 @@ class SaleAgent extends Model
                 if (request()->has('month')) {
                     $query->where('month', request('month') );
                 }
-
+            })
+            ->editColumn('id', function ($model) {
+                return $model->id;
             })
             ->editColumn('agent', function ($model) {
                 return $model->agent ? $model->agent->name : '';

@@ -450,7 +450,7 @@
         });
                 @endforeach
                 @endif
-
+        var markers = [];
                 @foreach($agents as $agent)
 
         var contentString = '<div id="content">' +
@@ -465,10 +465,9 @@
         map.panToBounds(TotalBounds);
 
 
-        map.addMarker({
+        var marker = map.addMarker({
             lat: "{{$agent->lat}}",
             lng: "{{$agent->lng}}",
-            visible: true,
             title: "{{$agent->name}}",
 //            click: function (e) {
 //                infoWindow.setPosition({lat: e.position.lat(), lng: e.position.lng()});
@@ -481,18 +480,34 @@
             content: '<div class="overlay_agents">{{$agent->name}}</div>'
         });
 
+        markers.push(marker);
+
         /* Change markers on zoom */
         @endforeach
+
+        console.log(markers);
       $('.overlay_agents').css({"display":"none"});
            map.addListener('zoom_changed', function () {
             var zoom = map.getZoom();
             if (zoom < 10) {
                 $('.overlay_agents').css({"display":"none"});
-//                marker.setMap(null);
+                $.each(map.markers,function(){this.setMap(null)});
             } else {
                 $('.overlay_agents').css({"display":"block"});
-//                marker.setMap(map);
+            $.each(map.markers,function(){this.setMap(map.map)});
             }
+
+//               for (i = 0; i < markers.length; i++) {
+//                   markers[i].setVisible(zoom <= 10);
+//               }
+
+//               for (i = 0; i < markers.length; i++) {
+//                   if (zoom < 10) {
+//                       markers[i].setMap(null);
+//                   } else {
+//                       markers[i].setMap(map);
+//                   }
+//               }
         });
 
 
