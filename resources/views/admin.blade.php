@@ -278,11 +278,7 @@
 
 <script src="/assets/global/plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.js" type="text/javascript"></script>
 <script src="/assets/global/plugins/jquery-minicolors/jquery.minicolors.min.js" type="text/javascript"></script>
-<!-- END PAGE LEVEL PLUGINS -->
-<!-- BEGIN THEME GLOBAL SCRIPTS -->
 
-<!-- END THEME GLOBAL SCRIPTS -->
-<!-- BEGIN PAGE LEVEL SCRIPTS -->
 <script src="/assets/pages/scripts/components-color-pickers.min.js" type="text/javascript"></script>
 
 <script>
@@ -324,62 +320,62 @@
         return ((parseInt(x.split('.').join("")) < parseInt(y.split('.').join(""))) ? 1 : ((parseInt(x.split('.').join("")) > parseInt(y.split('.').join(""))) ? -1 : 0));
     };
 
-    $(document).ready(function () {
-        $(function(){
-            $('.selectpicker').selectpicker();
-        });
+    {{--$(document).ready(function () {--}}
+        {{--$(function(){--}}
+            {{--$('.selectpicker').selectpicker();--}}
+        {{--});--}}
 
-        jQuery(".selectpicker").change(function () {
-            location.href = jQuery(this).val();
-        })
+        {{--jQuery(".selectpicker").change(function () {--}}
+            {{--location.href = jQuery(this).val();--}}
+        {{--})--}}
 
-        $('#time_range').change(function () {
+        {{--$('#time_range').change(function () {--}}
 
-            var data = $(this).val();
+            {{--var data = $(this).val();--}}
 
-            $.ajax({
+            {{--$.ajax({--}}
 
-                url: '{{ url('time-range') }}',
-                type: 'get',
-                data: {time_range: data},
-                dataType: 'json',
-                success: function (response) {
-                    $('#start_time').val(response.start_time);
-                    $('#end_time').val(response.end_time);
-                }
+                {{--url: '{{ url('time-range') }}',--}}
+                {{--type: 'get',--}}
+                {{--data: {time_range: data},--}}
+                {{--dataType: 'json',--}}
+                {{--success: function (response) {--}}
+                    {{--$('#start_time').val(response.start_time);--}}
+                    {{--$('#end_time').val(response.end_time);--}}
+                {{--}--}}
 
-            });
-        });
+            {{--});--}}
+        {{--});--}}
 
-        $('.select2').select2();
-    });
+        {{--$('.select2').select2();--}}
+    {{--});--}}
 
-    $(document).on('click', '.delete-btn', function (e) {
-        e.preventDefault();
+    {{--$(document).on('click', '.delete-btn', function (e) {--}}
+        {{--e.preventDefault();--}}
 
-        var url = $(this).attr('href');
+        {{--var url = $(this).attr('href');--}}
 
-        bootbox.confirm({
-            message: "Bạn có chắc chắn muốn xóa",
-            buttons: {
-                confirm: {
-                    label: 'Có',
-                    className: 'btn-success'
-                },
-                cancel: {
-                    label: 'Không',
-                    className: 'btn-danger'
-                }
-            },
+        {{--bootbox.confirm({--}}
+            {{--message: "Bạn có chắc chắn muốn xóa",--}}
+            {{--buttons: {--}}
+                {{--confirm: {--}}
+                    {{--label: 'Có',--}}
+                    {{--className: 'btn-success'--}}
+                {{--},--}}
+                {{--cancel: {--}}
+                    {{--label: 'Không',--}}
+                    {{--className: 'btn-danger'--}}
+                {{--}--}}
+            {{--},--}}
 
 
-            callback: function (result) {
-                if (result == true) {
-                    window.location.href = url;
-                }
-            }
-        });
-    });
+            {{--callback: function (result) {--}}
+                {{--if (result == true) {--}}
+                    {{--window.location.href = url;--}}
+                {{--}--}}
+            {{--}--}}
+        {{--});--}}
+    {{--});--}}
 
 
 </script>
