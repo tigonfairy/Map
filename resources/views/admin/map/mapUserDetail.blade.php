@@ -30,10 +30,6 @@
 
             <div class="row">
 
-                <div class="baomap col-xs-12" >
-                    <div id="map"></div>
-                </div>
-
                 {{--số liệu--}}
                 <div class="col-xs-12" style="margin-top: 20px">
                     <div class="form-group {{ $errors->has('month') ? 'has-error has-feedback' : '' }}">
@@ -52,30 +48,33 @@
                         @endif
                     </div>
 
-                    @if(count($products))
-                        <table class="table table-striped table-bordered" cellspacing="0" width="100%" id="users-table">
-                            <thead>
-                            <tr>
-                                <th>{{ trans('home.Product') }}</th>
-                                <th>{{ trans('home.sale_plan') }}</th>
-                                <th>{{ trans('home.sale_real') }}</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            @foreach($products as $p)
-                                <tr role="row" id="">
-                                    <td>{{$p->name}}</td>
-                                    <td>{{$p->sales_plan}}</td>
-                                    <td>{{$p->sales_real}}</td>
+                    {{--@if(count($products))--}}
+                        {{--<table class="table table-striped table-bordered" cellspacing="0" width="100%" id="users-table">--}}
+                            {{--<thead>--}}
+                            {{--<tr>--}}
+                                {{--<th>{{ trans('home.Product') }}</th>--}}
+                                {{--<th>{{ trans('home.sale_plan') }}</th>--}}
+                                {{--<th>{{ trans('home.sale_real') }}</th>--}}
+                            {{--</tr>--}}
+                            {{--</thead>--}}
+                            {{--<tbody>--}}
+                            {{--@foreach($products as $p)--}}
+                                {{--<tr role="row" id="">--}}
+                                    {{--<td>{{$p->name}}</td>--}}
+                                    {{--<td>{{$p->sales_plan}}</td>--}}
+                                    {{--<td>{{$p->sales_real}}</td>--}}
 
-                                </tr>
-                            @endforeach
-                            </tbody>
-                        </table>
-                    @endif
-
-
+                                {{--</tr>--}}
+                            {{--@endforeach--}}
+                            {{--</tbody>--}}
+                        {{--</table>--}}
+                    {{--@endif--}}
                 </div>
+                <br>
+                <div class="baomap col-xs-12" >
+                    <div id="map"></div>
+                </div>
+
             </div>
         </div>
     </div>
@@ -120,6 +119,7 @@
             zoom: 11,
             fullscreenControl: true
         });
+
         var Totalbounds = new google.maps.LatLngBounds();
                 @foreach($locations as $location)
         var c = "{{$location->coordinates}}";
@@ -196,7 +196,139 @@
         @endforeach
        map.fitBounds(Totalbounds);
         map.panToBounds(Totalbounds);
+
+        var contentString = '<table class="table table-striped table-bordered" cellspacing="0" width="100%" id="data-table">' +
+            '<thead><tr>' +
+            '<th>{{ trans('home.Product') }}</th>' +
+            '<th>{{ trans('home.sale_plan') }}</th>' +
+            '<th>{{ trans('home.sale_real') }}</th>'+
+            '</tr> </thead>'+
+                @if(count($products))
+                        @foreach($products as $p)
+                    '<tr role="row" class="tr_{{ $p->product_id }}" id="tr_{{ $p->product_id }}">' +
+            '<td>{{$p->name}}</td>' +
+            '<td>{{$p->sales_plan}}</td>' +
+            '<td>{{$p->sales_real}}</td>' +
+            '</tr>' +
+                @endforeach
+                        @endif
+                    '</table>';
+
+        var infoWindow = new google.maps.InfoWindow({
+            content: contentString
+        });
+
+        @if(count($products))
+
+        // a  div where we will place the buttons
+        var ctrl = '<ul id="checkbox" class="checkboxList">' +
+            '<li><label><input type="checkbox" name="select_all" value="0" id="select_all">Tất cả</label></li>' +
+                @foreach($products as $product)
+                    '<li><label><input type="checkbox" class="checkbox" name="{{ $product->name }}" value="{{ $product->product_id }}">{{ $product->name }}</label></li>' +
+                @endforeach
+                    '</ul>';
+
+        map.addControl({
+            position: 'bottom_right',
+            content: ctrl,
+        });
+
+
+        // khoi tao mang productIds
+        var productIds = [];
+        @foreach($products as $product)
+            productIds.push('{{$product->product_id}}');
+        @endforeach
+
+        // khoi tao mang checked
+        var checked = [];
+        var unchecked = [];
+
+        $(document).on('click', '#select_all', function() {
+            checked=[];
+            if(this.checked) {
+                $.each(productIds, function( index, value ) {
+                    checked.push(value);
+                });
+                // Iterate each checkbox
+                $('#checkbox :checkbox').each(function() {
+                    this.checked = true;
+                });
+
+                var unique = Array.from(new Set(checked));
+                $.each(unique, function( index, value ) {
+                    $('#tr_' + value).show();
+                });
+                infoWindow.setPosition({lat: Totalbounds.getCenter().lat(), lng: Totalbounds.getCenter().lng(),});
+                infoWindow.open(map.map);
+            } else {
+                checked=[];
+                $('#checkbox :checkbox').each(function() {
+                    this.checked = false;
+                });
+                infoWindow.close(map.map);
+            }
+
+        });
+
+        $(document).on('change', '.checkbox', function() {
+            $('#select_all').attr('checked', false);
+            if(this.checked) {
+                checked.push($(this).val());
+            } else {
+                removeA(checked, $(this).val());
+            }
+
+            unchecked = arr_diff(productIds, checked);
+            $.each(checked, function( index, value ) {
+                $('#tr_' + value).show();
+            });
+
+            $.each(unchecked, function( index, value ) {
+                $('#tr_' + value).hide();
+            });
+
+            infoWindow.setPosition({lat: Totalbounds.getCenter().lat(), lng: Totalbounds.getCenter().lng(),});
+            infoWindow.open(map.map);
+        });
+
+        @endif
+
+
     });
+    function removeA(arr) {
+        var what, a = arguments, L = a.length, ax;
+        while (L > 1 && arr.length) {
+            what = a[--L];
+            while ((ax= arr.indexOf(what)) !== -1) {
+                arr.splice(ax, 1);
+            }
+        }
+        return arr;
+    }
+
+    function arr_diff (a1, a2) {
+
+        var a = [], diff = [];
+
+        for (var i = 0; i < a1.length; i++) {
+            a[a1[i]] = true;
+        }
+
+        for (var i = 0; i < a2.length; i++) {
+            if (a[a2[i]]) {
+                delete a[a2[i]];
+            } else {
+                a[a2[i]] = true;
+            }
+        }
+
+        for (var k in a) {
+            diff.push(k);
+        }
+
+        return diff;
+    };
     //    $('#change-button-size-map').on('change.bootstrapSwitch', function(e, state) {
     //        if(e.target.checked){
     //            var url  = window.location.origin + window.location.pathname;
@@ -209,6 +341,8 @@
     //            window.location.href = url;
     //        }
     //    });
+
+
 </script>
 
 @endpush
