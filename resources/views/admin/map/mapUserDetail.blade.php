@@ -189,15 +189,57 @@
             lng: "{{$agent->lng}}",
             title:  "{{$agent->name}}",
             click: function (e) {
-                infoWindow.setPosition({lat: e.position.lat(), lng: e.position.lng()});
-                infoWindow.open(map.map);
+//                infoWindow.setPosition({lat: e.position.lat(), lng: e.position.lng()});
+//                infoWindow.open(map.map);
             }
+        });
+
+        map.drawOverlay({
+            lat: "{{$agent->lat}}",
+            lng: "{{$agent->lng}}",
+            content: '<div class="">{{$agent->name}}</div>'
         });
         @endforeach
        map.fitBounds(Totalbounds);
         map.panToBounds(Totalbounds);
 
-        var contentString = '<table class="table table-striped table-bordered" cellspacing="0" width="100%" id="data-table">' +
+        {{--var contentString = '<table class="table table-striped table-bordered" cellspacing="0" width="100%" id="data-table">' +--}}
+            {{--'<thead><tr>' +--}}
+            {{--'<th>{{ trans('home.Product') }}</th>' +--}}
+            {{--'<th>{{ trans('home.sale_plan') }}</th>' +--}}
+            {{--'<th>{{ trans('home.sale_real') }}</th>'+--}}
+            {{--'</tr> </thead>'+--}}
+                {{--@if(count($products))--}}
+                        {{--@foreach($products as $p)--}}
+                    {{--'<tr role="row" class="tr_{{ $p->product_id }}" id="tr_{{ $p->product_id }}">' +--}}
+            {{--'<td>{{$p->name}}</td>' +--}}
+            {{--'<td>{{$p->sales_plan}}</td>' +--}}
+            {{--'<td>{{$p->sales_real}}</td>' +--}}
+            {{--'</tr>' +--}}
+                {{--@endforeach--}}
+                        {{--@endif--}}
+                    {{--'</table>';--}}
+
+        {{--var infoWindow = new google.maps.InfoWindow({--}}
+            {{--content: contentString--}}
+        {{--});--}}
+
+        @if(count($products))
+
+        // a  div where we will place the buttons
+        var ctrl = '<ul id="checkbox" class="checkboxList">' +
+            '<li><label><input type="checkbox" name="select_all" value="0" id="select_all">Tất cả</label></li>' +
+                @foreach($products as $product)
+                    '<li><label><input type="checkbox" class="checkbox" name="{{ $product->name }}" value="{{ $product->product_id }}">{{ $product->name }}</label></li>' +
+                @endforeach
+                    '</ul>';
+
+        map.addControl({
+            position: 'bottom_right',
+            content: ctrl,
+        });
+
+        var tableSales = '<table class="table table-striped table-bordered table-products" cellspacing="0" width="100%" id="data-table">' +
             '<thead><tr>' +
             '<th>{{ trans('home.Product') }}</th>' +
             '<th>{{ trans('home.sale_plan') }}</th>' +
@@ -214,23 +256,9 @@
                         @endif
                     '</table>';
 
-        var infoWindow = new google.maps.InfoWindow({
-            content: contentString
-        });
-
-        @if(count($products))
-
-        // a  div where we will place the buttons
-        var ctrl = '<ul id="checkbox" class="checkboxList">' +
-            '<li><label><input type="checkbox" name="select_all" value="0" id="select_all">Tất cả</label></li>' +
-                @foreach($products as $product)
-                    '<li><label><input type="checkbox" class="checkbox" name="{{ $product->name }}" value="{{ $product->product_id }}">{{ $product->name }}</label></li>' +
-                @endforeach
-                    '</ul>';
-
         map.addControl({
-            position: 'bottom_right',
-            content: ctrl,
+            position: 'bottom_left',
+            content: tableSales,
         });
 
 
@@ -259,14 +287,11 @@
                 $.each(unique, function( index, value ) {
                     $('#tr_' + value).show();
                 });
-                infoWindow.setPosition({lat: Totalbounds.getCenter().lat(), lng: Totalbounds.getCenter().lng(),});
-                infoWindow.open(map.map);
             } else {
                 checked=[];
                 $('#checkbox :checkbox').each(function() {
                     this.checked = false;
                 });
-                infoWindow.close(map.map);
             }
 
         });
@@ -280,16 +305,22 @@
             }
 
             unchecked = arr_diff(productIds, checked);
+
             $.each(checked, function( index, value ) {
                 $('#tr_' + value).show();
             });
 
-            $.each(unchecked, function( index, value ) {
-                $('#tr_' + value).hide();
-            });
+            if(unchecked.length != productIds.length) {
+                $.each(unchecked, function( index, value ) {
+                    $('#tr_' + value).hide();
+                });
+            } else {
+                $.each(productIds, function( index, value ) {
+                    $('#tr_' + value).show();
+                });
+            }
 
-            infoWindow.setPosition({lat: Totalbounds.getCenter().lat(), lng: Totalbounds.getCenter().lng(),});
-            infoWindow.open(map.map);
+
         });
 
         @endif

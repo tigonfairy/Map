@@ -135,6 +135,12 @@
             }
         });
 
+        map.drawOverlay({
+            lat: "{{$agent->lat}}",
+            lng: "{{$agent->lng}}",
+            content: '<div class="">{{$agent->name}}</div>'
+        });
+
         var lat = marker.getPosition().lat();
         var lng = marker.getPosition().lng();
 
@@ -153,6 +159,28 @@
         map.addControl({
             position: 'bottom_right',
             content: ctrl,
+        });
+
+        var tableSales = '<table class="table table-striped table-bordered table-products" cellspacing="0" width="100%" id="data-table">' +
+            '<thead><tr>' +
+            '<th>{{ trans('home.Product') }}</th>' +
+            '<th>{{ trans('home.sale_plan') }}</th>' +
+            '<th>{{ trans('home.sale_real') }}</th>'+
+            '</tr> </thead>'+
+                @if(count($products))
+                        @foreach($products as $p)
+                    '<tr role="row" class="tr_{{ $p->product->id }}" id="tr_{{ $p->product->id }}">' +
+            '<td>{{$p->product->name}}</td>' +
+            '<td>{{$p->sales_plan}}</td>' +
+            '<td>{{$p->sales_real}}</td>' +
+            '</tr>' +
+                @endforeach
+                        @endif
+                    '</table>';
+
+        map.addControl({
+            position: 'bottom_left',
+            content: tableSales,
         });
 
             // khoi tao mang productIds
@@ -180,14 +208,12 @@
                     $.each(unique, function( index, value ) {
                         $('#tr_' + value).show();
                     });
-                    infoWindow.setPosition({lat:lat, lng: lng});
-                    infoWindow.open(map.map);
                 } else {
                     checked=[];
                     $('#checkbox :checkbox').each(function() {
                         this.checked = false;
                     });
-                    infoWindow.close(map.map);
+
                 }
 
             });
@@ -205,12 +231,15 @@
                     $('#tr_' + value).show();
                 });
 
-                $.each(unchecked, function( index, value ) {
-                    $('#tr_' + value).hide();
-                });
-
-                infoWindow.setPosition({lat:lat, lng: lng});
-                infoWindow.open(map.map);
+                if(unchecked.length != productIds.length) {
+                    $.each(unchecked, function( index, value ) {
+                        $('#tr_' + value).hide();
+                    });
+                } else {
+                    $.each(productIds, function( index, value ) {
+                        $('#tr_' + value).show();
+                    });
+                }
         });
         @endif
     });
