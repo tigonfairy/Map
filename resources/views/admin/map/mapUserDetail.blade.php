@@ -48,27 +48,27 @@
                         @endif
                     </div>
 
-                    @if(count($products))
-                        <table class="table table-striped table-bordered" cellspacing="0" width="100%" id="users-table">
-                            <thead>
-                            <tr>
-                                <th>{{ trans('home.Product') }}</th>
-                                <th>{{ trans('home.sale_plan') }}</th>
-                                <th>{{ trans('home.sale_real') }}</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            @foreach($products as $p)
-                                <tr role="row" id="">
-                                    <td>{{$p->name}}</td>
-                                    <td>{{$p->sales_plan}}</td>
-                                    <td>{{$p->sales_real}}</td>
+                    {{--@if(count($products))--}}
+                        {{--<table class="table table-striped table-bordered" cellspacing="0" width="100%" id="users-table">--}}
+                            {{--<thead>--}}
+                            {{--<tr>--}}
+                                {{--<th>{{ trans('home.Product') }}</th>--}}
+                                {{--<th>{{ trans('home.sale_plan') }}</th>--}}
+                                {{--<th>{{ trans('home.sale_real') }}</th>--}}
+                            {{--</tr>--}}
+                            {{--</thead>--}}
+                            {{--<tbody>--}}
+                            {{--@foreach($products as $p)--}}
+                                {{--<tr role="row" id="">--}}
+                                    {{--<td>{{$p->name}}</td>--}}
+                                    {{--<td>{{$p->sales_plan}}</td>--}}
+                                    {{--<td>{{$p->sales_real}}</td>--}}
 
-                                </tr>
-                            @endforeach
-                            </tbody>
-                        </table>
-                    @endif
+                                {{--</tr>--}}
+                            {{--@endforeach--}}
+                            {{--</tbody>--}}
+                        {{--</table>--}}
+                    {{--@endif--}}
                 </div>
                 <br>
                 <div class="baomap col-xs-12" >
