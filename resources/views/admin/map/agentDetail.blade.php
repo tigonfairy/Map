@@ -85,6 +85,7 @@
 
         var heightPageContent = $('.page-content').height();
         var heightPageHeader = $('.page-header-content').height();
+
         $('.baomap').height(heightPageContent - heightPageHeader);
         var polygonArray = [];
         map = new GMaps({
@@ -126,12 +127,19 @@
         var marker = map.addMarker({
             lat: "{{$agent->lat}}",
             lng: "{{$agent->lng}}"
-            {{--@if(isset($agent->icon))--}}
-            {{--, icon: image--}}
-            {{--@endif--}}
+            @if($agent->icon)
+            , icon: image
+            @endif
             , click: function (e) {
                 infoWindow.setPosition({lat: e.position.lat(), lng: e.position.lng()});
                 infoWindow.open(map.map);
+            }
+            ,mouseover: function (e) {
+
+                this.setAnimation(google.maps.Animation.BOUNCE);
+                var that = this;
+                setTimeout(function(){ that.setAnimation(null); }, 2000);
+//
             }
         });
 
@@ -248,6 +256,7 @@
 
         return diff;
     };
+
 </script>
 
 @endpush
