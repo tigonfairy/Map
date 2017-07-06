@@ -2,11 +2,11 @@
 
 namespace App\Models;
 
-use Auth;
-use Datatables;
 use Illuminate\Database\Eloquent\Model;
+use Datatables;
+use Auth;
 
-class Product extends Model
+class GroupProduct extends Model
 {
     public static function getDatatables()
     {
@@ -18,7 +18,7 @@ class Product extends Model
             ->editColumn('name', function ($model) {
                 return Auth::user()->lang == 'en' ? $model->nameEng : $model->name ;
             })
-            ->addColumn('action', 'admin.product.datatables.action')
+            ->addColumn('action', 'admin.group_products.datatables.action')
             ->make(true);
     }
 }

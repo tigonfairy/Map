@@ -79,19 +79,17 @@
                     <span class="arrow"></span>
                 </a>
                 <ul class="sub-menu" >
-
                     <li class="nav-item  ">
-                        <a href="{{route('Admin::product@add')}}" class="nav-link nav-toggle">
+                        <a href="{{route('Admin::group_product@index')}}" class="nav-link nav-toggle">
                             <i class="icon-settings"></i>
-                            <span class="title">{{ trans('home.addProduct') }}</span>
+                            <span class="title">{{ trans('home.parent_product') }}</span>
                             <span class="arrow"></span>
                         </a>
                     </li>
-
                     <li class="nav-item  ">
                         <a href="{{route('Admin::product@index')}}" class="nav-link nav-toggle">
                             <i class="icon-settings"></i>
-                            <span class="title">{{ trans('home.listProduct') }}</span>
+                            <span class="title">{{ trans('home.Product') }}</span>
                             <span class="arrow"></span>
                         </a>
                     </li>

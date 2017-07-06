@@ -86,6 +86,8 @@
         src="https://maps.google.com/maps/api/js?key=AIzaSyDUMRn1pnBk97Zay94WiBbMgdVlBh_vwYs&libraries=drawing"></script>
 <script type="text/javascript" src="/js/gmaps.js"></script>
 <script type="text/javascript" src="/js/prettify.js"></script>
+<script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js">
+</script>
 @endpush
 
 @push('scripts')
@@ -116,8 +118,21 @@
             lng: 105.83415979999995,
             width: "100%",
             height: '100%',
-            zoom: 11,
-            fullscreenControl: true
+            zoom: 15,
+            fullscreenControl: true,
+            markerClusterer: function(map) {
+                markerCluster = new MarkerClusterer(map, [], {
+                    maxZoom: 15,
+                    imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'
+                });
+
+                // onClick OVERRIDE
+//                markerCluster.onClick = function(clickedClusterIcon) {
+//                    return multiChoice(clickedClusterIcon.cluster_);
+//                }
+
+                return markerCluster;
+            }
         });
 
         var Totalbounds = new google.maps.LatLngBounds();
@@ -324,6 +339,17 @@
         });
 
         @endif
+
+//        map.addListener('zoom_changed', function () {
+//            var zoom = map.getZoom();
+//            if (zoom < 10) {
+//                $('.overlay_agents').css({"display":"none"});
+//                $.each(map.markers,function(){this.setMap(null)});
+//            } else {
+//                $('.overlay_agents').css({"display":"block"});
+//                $.each(map.markers,function(){this.setMap(map.map)});
+//            }
+//        });
 
 
     });

@@ -61,4 +61,9 @@ return [
     'config' => 'Config',
     'active' => 'Active',
     'inactive' => 'Inactive',
+    'nameVN' => 'Name By Vietnamese',
+    'nameEng' => 'Name By English',
+    'code' => 'Code',
+    'parent_product' => 'Group Product',
+    'note_product' => '(\'Not choose If is Group Product\')',
 ];

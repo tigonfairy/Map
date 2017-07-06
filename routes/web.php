@@ -147,13 +147,28 @@ Route::group(['middleware' => ['auth','language'],
             'as' => 'product@',
         ], function () {
             Route::get('/datatables', ['as' => 'datatables', 'uses' => 'ProductController@getDatatables']);
+            Route::post('/importExcel', ['as' => 'importExcel', 'uses' => 'ProductController@importExcel']);
             Route::get('/', ['as' => 'index', 'uses' => 'ProductController@index']);
             Route::get('/add', ['as' => 'add', 'uses' => 'ProductController@add']);
             Route::post('/store', ['as' => 'store', 'uses' => 'ProductController@store']);
             Route::get('/{id}/edit', ['as' => 'edit', 'uses' => 'ProductController@edit']);
             Route::match(['put', 'patch'], '/{id}', ['as' => 'update', 'uses' => 'ProductController@update']);
             Route::get('/{id}/delete', ['as' => 'delete', 'uses' => 'ProductController@delete']);
+
         });
+
+    Route::group([
+        'prefix' => 'group_products',
+        'as' => 'group_product@',
+    ], function () {
+        Route::get('/datatables', ['as' => 'datatables', 'uses' => 'GroupProductController@getDatatables']);
+        Route::get('/', ['as' => 'index', 'uses' => 'GroupProductController@index']);
+        Route::get('/add', ['as' => 'add', 'uses' => 'GroupProductController@add']);
+        Route::post('/store', ['as' => 'store', 'uses' => 'GroupProductController@store']);
+        Route::get('/{id}/edit', ['as' => 'edit', 'uses' => 'GroupProductController@edit']);
+        Route::match(['put', 'patch'], '/{id}', ['as' => 'update', 'uses' => 'GroupProductController@update']);
+        Route::get('/{id}/delete', ['as' => 'delete', 'uses' => 'GroupProductController@delete']);
+    });
 
         Route::group([
             'prefix' => 'logs',

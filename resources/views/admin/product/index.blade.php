@@ -5,14 +5,53 @@
     <div class="page-header">
         <div class="page-header-content">
             <div class="page-title">
-                <h2>Thành viên</h2>
+                <h2>{!! trans('home.Product') !!}</h2>
             </div>
 
             <div class="heading-elements">
                 <div class="heading-btn-group">
-                    <a href="{{route('Admin::product@add')}}" class="btn btn-primary"><i class="icon-add"></i> Thêm sản phẩm</a>
+                    <a href="{{route('Admin::product@add')}}" class="btn btn-primary"><i class="icon-add"></i> {!! trans('home.create') . ' ' . trans('home.Product') !!}</a>
 
+                    <a href="#import-product" class="btn btn-success" data-toggle="modal" id="btn-system-product">Thêm sản
+                        phẩm từ Excel</a>
                 </div>
+            </div>
+
+            <div class="modal fade bs-modal-lg" id="import-product" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                            <h4 class="modal-title">Thêm sản phẩm bằng Excel</h4>
+                        </div>
+                        <form method="POST" action="{{ route('Admin::product@importExcel') }}"
+                              enctype="multipart/form-data" id="import_form">
+                            {{ csrf_field() }}
+                            <div class="modal-body">
+                                <div class="row">
+                                    <div class="col-md-10">
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3">File</label>
+                                            <div class="col-md-8">
+                                                <input type="file" class="file-excel form-control" name="file">
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <p id="file" style="color:red;"></p>
+                                </div>
+
+
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn dark btn-outline" data-dismiss="modal">Đóng</button>
+                                <button type="button" class="btn green" id = "import">Import</button>
+                            </div>
+                        </form>
+                    </div>
+                    <!-- /.modal-content -->
+                </div>
+                <!-- /.modal-dialog -->
             </div>
         </div>
     </div>
@@ -76,6 +115,31 @@
                 {data: 'created_at', name: 'created_at'},
                 {data: 'action', name: 'action', orderable: false, searchable: false}
             ]
+        });
+
+        $("#import").on("click", function () {
+            var form = $('#import_form');
+            var data = new FormData(form[0]);
+            $.ajax({
+                headers: { 'X-CSRF-Token': $('input[name="_token"]').val() },
+                url: $('#import_form').attr('action'),
+                type: $('#import_form').attr('method'),
+                data: data,
+                processData: false,
+                cache:false,
+                contentType:false,
+                dataType: 'JSON',
+                success: function (res){
+                    $("#file").text('');
+                    if (res.status == 'success'){
+                        window.location.reload();
+                    } else {
+                        $.each(res.errors,function(index, value) {
+                            $("#"+index).text(value);
+                        });
+                    }
+                }
+            });
         });
 
     } );
