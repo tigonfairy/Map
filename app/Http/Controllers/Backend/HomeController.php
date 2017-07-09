@@ -134,10 +134,15 @@ class HomeController extends AdminController
             $agentId= array_unique(array_merge($agentId,$agents));
         }
         if($type == 1){ // thang gần nhất
-            $month = Carbon::now()->format('m-Y');
+//            $month = Carbon::now()->format('m-Y');
+            $lastMonth = DB::table('sale_agents')
+                ->select(\DB::raw('SUM(sales_real) as sales_real,month'))
+                ->whereIn('agent_id',$agentId)->where('month','like','%'.$year.'%')->groupBy('month')->orderBy('month','desc')
+                ->first()->month;
+
             $products = DB::table('sale_agents')
                 ->select(\DB::raw('SUM(sales_plan) as sales_plan,SUM(sales_real) as sales_real,product_id,products.name,month'))
-                ->whereIn('agent_id',$agentId)->where('month','like',$month)->orderBy('month')->groupBy('product_id')
+                ->whereIn('agent_id',$agentId)->where('month','like',$lastMonth)->orderBy('month')->groupBy('product_id')
                 ->join('products','sale_agents.product_id','=','products.id')
                 ->get()->toArray();
 
@@ -147,7 +152,7 @@ class HomeController extends AdminController
                 $chartData[] = ['name' => $p->name,'y' => intval($p->sales_real)];
             }
 
-            return Response::json(['chart' =>$chartData,'table' => $chartData ,'title' =>'tháng '.$month ],200);
+            return Response::json(['chart' =>$chartData,'table' => $chartData ,'title' =>'tháng '.$lastMonth ],200);
         } elseif($type == 2){ // tháng có doanh số cao nhất
 
             $monthHighest = DB::table('sale_agents')
