@@ -340,16 +340,16 @@
 
         @endif
 
-        map.addListener('zoom_changed', function () {
-            var zoom = map.getZoom();
-            if (zoom < 15) {
-                $('.overlay_agents').css({"display":"none"});
-             //   $.each(map.markers,function(){this.setMap(null)});
-            } else {
-                $('.overlay_agents').css({"display":"block"});
-             //   $.each(map.markers,function(){this.setMap(map.map)});
-            }
-        });
+//        map.addListener('zoom_changed', function () {
+//            var zoom = map.getZoom();
+//            if (zoom < 15) {
+//                $('.overlay_agents').css({"display":"none"});
+//                $.each(map.markers,function(){this.setMap(null)});
+//            } else {
+//                $('.overlay_agents').css({"display":"block"});
+//                $.each(map.markers,function(){this.setMap(map.map)});
+//            }
+//        });
 
 
     });

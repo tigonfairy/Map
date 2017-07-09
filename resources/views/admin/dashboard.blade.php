@@ -6,7 +6,6 @@
             -moz-column-count: 2; /* Firefox */
             column-count: 2;
         }
-
         @media (max-width: 768px) {
             .ct {
                 -webkit-column-count: 1; /* Chrome, Safari, Opera */
@@ -14,7 +13,6 @@
                 column-count: 1;
             }
         }
-
         @media (min-width: 992px) {
             .ct {
                 -webkit-column-count: 2; /* Chrome, Safari, Opera */
@@ -22,8 +20,6 @@
                 column-count: 2;
             }
         }
-
-
     </style>
     <!-- BEGIN PAGE HEADER-->
     <!-- BEGIN PAGE TITLE-->
@@ -144,7 +140,6 @@
 
 <script type="text/javascript">
     $(document).ready(function () {
-
         $('.monthPicker').datepicker({
             changeMonth: true,
             changeYear: true,
@@ -220,15 +215,11 @@
             series: [{
                 name: 'DTKH',
                 data: {{json_encode($sales_plan)}}
-
             }, {
                 name: 'DTTT',
                 data: {{json_encode($sales_real)}}
-
             }]
         });
-
-
         var chartSp = Highcharts.chart('chartSp', {
             chart: {
                 plotBackgroundColor: null,
@@ -257,7 +248,6 @@
             },
             series: []
         });
-
         $.ajax({
             method: "post",
             url: "{{route('Admin::chart')}}",
@@ -274,7 +264,6 @@
                         text: 'Biểu đô tháng ' + data.title
                     });
                 }
-
                 if (data.chart) {
                     var seriesLength = chartSp.series.length;
                     for (var i = seriesLength - 1; i > -1; i--) {
@@ -282,20 +271,18 @@
                         if (chartSp.series[i].name == document.getElementById("series_name").value)
                             chartSp.series[i].remove();
                     }
-
                     chartSp.addSeries(
-                            {
-                                name: 'S/p',
-                                colorByPoint: true,
-                                data: data.chart
-                            }
+                        {
+                            name: 'S/p',
+                            colorByPoint: true,
+                            data: data.chart
+                        }
                     )
                 }
                 if (data.table) {
                     var table = data.table;
                     var string = '<table class="table table-striped table-bordered" cellspacing="0" width="100%">' +
-                            ' <thead> <tr> <th>Sản phẩm</th> <th>Doanh số</th></tr></thead><tbody>';
-
+                        ' <thead> <tr> <th>Sản phẩm</th> <th>Doanh số</th></tr></thead><tbody>';
                     table.forEach(function (value) {
                         string += '<tr>';
                         string += '<td>';
@@ -304,25 +291,19 @@
                         string += '<td>';
                         string += value.y;
                         string += '</td>';
-
                         string += '</tr>';
-
                     });
                     string += '</tbody></table>';
                     $('#tableData').html(string);
                 }
-
-
             },
             error: function (err) {
                 console.log(err);
                 alert('Lỗi, hãy thử lại sau');
             }
         });
-
         $('.radioButton').change(function () {
             var type = $(this).val();
-
             $.ajax({
                 method: "post",
                 url: "{{route('Admin::chart')}}",
@@ -343,22 +324,20 @@
                         while (chartSp.series.length > 0) {
                             chartSp.series[0].remove(false);
                         }
-
                         chartSp.redraw();
                         chartSp.addSeries(
-                                {
-                                    name: 'S/p',
-                                    colorByPoint: true,
-                                    data: data.chart
-                                }
+                            {
+                                name: 'S/p',
+                                colorByPoint: true,
+                                data: data.chart
+                            }
                         )
                     }
                     if (data.table) {
                         $('#tableData').html('');
                         var table = data.table;
                         var string = '<table class="table table-striped table-bordered" cellspacing="0" width="100%">' +
-                                ' <thead> <tr> <th>Sản phẩm</th> <th>Doanh số</th></tr></thead><tbody>';
-
+                            ' <thead> <tr> <th>Sản phẩm</th> <th>Doanh số</th></tr></thead><tbody>';
                         table.forEach(function (value) {
                             string += '<tr>';
                             string += '<td>';
@@ -367,22 +346,17 @@
                             string += '<td>';
                             string += value.y;
                             string += '</td>';
-
                             string += '</tr>';
-
                         });
                         string += '</tbody></table>';
                         $('#tableData').html(string);
                     }
-
-
                 },
                 error: function (err) {
                     console.log(err);
                 }
             });
         });
-
         //map
         var polygonArray = [];
         map = new GMaps({
@@ -396,24 +370,18 @@
                     maxZoom: 11,
                     imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'
                 });
-
                 // onClick OVERRIDE
 //                markerCluster.onClick = function(clickedClusterIcon) {
 //                    return multiChoice(clickedClusterIcon.cluster_);
 //                }
-
                 return markerCluster;
             }
         });
-
-
         var TotalBounds = new google.maps.LatLngBounds();
                 @if($locations)
                 @foreach($locations as $key => $location)
-
                 @php
                     $locat = $location['address'];
-
                     $border_color = '#333';
                     $background_color = '#333';
                     if($location['border_color']){
@@ -425,7 +393,6 @@
                 @endphp
         var c = "{{$locat->coordinates}}";
         var coordinate = JSON.parse(c);
-
         if (coordinate) {
             var bounds = new google.maps.LatLngBounds();
             for (i = 0; i < coordinate.length; i++) {
@@ -438,7 +405,7 @@
             {{--var infoWindow{{$locat->id}} = new google.maps.InfoWindow({--}}
                     {{--content: "<p>{{$locat->name}}</p>"--}}
                     {{--});--}}
-                    polygon = map.drawPolygon({
+                polygon = map.drawPolygon({
                 paths: path,
                 strokeColor: "{{$border_color}}",
                 strokeOpacity: 1,
@@ -467,19 +434,13 @@
                 @endif
         var markers = [];
                 @foreach($agents as $agent)
-
         var contentString = '<div id="content">' +
-                        '<p id="name">' + "{{$agent->name}}" + '</p>' +
-                        '<p id="manager">' + '{{$agent->user->email}}' + '</p>' +
-
-                        '</div>';
+                '<p id="name">' + "{{$agent->name}}" + '</p>' +
+                '<p id="manager">' + '{{$agent->user->email}}' + '</p>' +
+                '</div>';
         var infoWindow = new google.maps.InfoWindow({
             content: contentString
         });
-        map.fitBounds(TotalBounds);
-        map.panToBounds(TotalBounds);
-
-
         var marker = map.addMarker({
             lat: "{{$agent->lat}}",
             lng: "{{$agent->lng}}",
@@ -494,28 +455,24 @@
             lng: "{{$agent->lng}}",
             content: '<div class="overlay_agents">{{$agent->name}}</div>'
         });
-
         markers.push(marker);
-
         /* Change markers on zoom */
         @endforeach
-
-        console.log(markers);
-      $('.overlay_agents').css({"display":"none"});
-           map.addListener('zoom_changed', function () {
+     map.fitBounds(TotalBounds);
+        map.panToBounds(TotalBounds);
+        $('.overlay_agents').css({"display":"none"});
+        map.addListener('zoom_changed', function () {
             var zoom = map.getZoom();
             if (zoom < 10) {
                 $('.overlay_agents').css({"display":"none"});
-//                $.each(map.markers,function(){this.setMap(null)});
+                $.each(map.markers,function(){this.setMap(null)});
             } else {
                 $('.overlay_agents').css({"display":"block"});
-//            $.each(map.markers,function(){this.setMap(map.map)});
+                $.each(map.markers,function(){this.setMap(map.map)});
             }
-
 //               for (i = 0; i < markers.length; i++) {
 //                   markers[i].setVisible(zoom <= 10);
 //               }
-
 //               for (i = 0; i < markers.length; i++) {
 //                   if (zoom < 10) {
 //                       markers[i].setMap(null);
@@ -524,10 +481,6 @@
 //                   }
 //               }
         });
-
-
     });
 </script>
 @endpush
-
-
