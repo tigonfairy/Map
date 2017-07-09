@@ -118,7 +118,7 @@
             lng: 105.83415979999995,
             width: "100%",
             height: '100%',
-            zoom: 15,
+            zoom: 11,
             fullscreenControl: true,
             markerClusterer: function(map) {
                 markerCluster = new MarkerClusterer(map, [], {
@@ -212,11 +212,10 @@
         map.drawOverlay({
             lat: "{{$agent->lat}}",
             lng: "{{$agent->lng}}",
-            content: '<div class="">{{$agent->name}}</div>'
+            content: '<div class="overlay_agent">{{$agent->name}}</div>'
         });
+
         @endforeach
-       map.fitBounds(Totalbounds);
-        map.panToBounds(Totalbounds);
 
         {{--var contentString = '<table class="table table-striped table-bordered" cellspacing="0" width="100%" id="data-table">' +--}}
             {{--'<thead><tr>' +--}}
@@ -273,7 +272,7 @@
 
         map.addControl({
             position: 'bottom_left',
-            content: tableSales,
+            content: tableSales
         });
 
 
@@ -340,16 +339,21 @@
 
         @endif
 
-//        map.addListener('zoom_changed', function () {
-//            var zoom = map.getZoom();
-//            if (zoom < 10) {
-//                $('.overlay_agents').css({"display":"none"});
-//                $.each(map.markers,function(){this.setMap(null)});
-//            } else {
-//                $('.overlay_agents').css({"display":"block"});
-//                $.each(map.markers,function(){this.setMap(map.map)});
-//            }
-//        });
+        map.fitBounds(Totalbounds);
+        map.panToBounds(Totalbounds);
+//        $('.overlay_agent').css({"display":"none"});
+//        console.log(map.getZoom());
+        map.addListener('zoom_changed', function () {
+            var zoom = map.getZoom();
+            console.log(zoom);
+            if (zoom < 10) {
+                $('.overlay_agent').css({"display":"none"});
+                $.each(map.markers,function(){this.setMap(null)});
+            } else {
+                $('.overlay_agent').css({"display":"block"});
+                $.each(map.markers,function(){this.setMap(map.map)});
+            }
+        });
 
 
     });

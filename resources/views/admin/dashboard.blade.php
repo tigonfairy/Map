@@ -476,8 +476,7 @@
         var infoWindow = new google.maps.InfoWindow({
             content: contentString
         });
-        map.fitBounds(TotalBounds);
-        map.panToBounds(TotalBounds);
+
 
 
         var marker = map.addMarker({
@@ -500,7 +499,8 @@
         /* Change markers on zoom */
         @endforeach
 
-        console.log(markers);
+     map.fitBounds(TotalBounds);
+        map.panToBounds(TotalBounds);
       $('.overlay_agents').css({"display":"none"});
            map.addListener('zoom_changed', function () {
             var zoom = map.getZoom();

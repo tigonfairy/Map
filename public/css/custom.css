@@ -28,6 +28,9 @@
     display: none;
     color:white;
 }
+.overlay_agent{
+    display: none;
+}
 
 .checkboxList {
     padding:5px;
