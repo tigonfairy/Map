@@ -161,7 +161,7 @@
             map.drawOverlay({
                 lat: bounds.getCenter().lat(),
                 lng: bounds.getCenter().lng(),
-                content: '<div class="overlay">{{$location->name}}</div>'
+                content: '<div class="overlay_agents">{{$location->name}}</div>'
             });
             var infoWindow{{$location->id}} = new google.maps.InfoWindow({
                 content: "<p>{{$location->name}}</p>"
@@ -340,16 +340,16 @@
 
         @endif
 
-//        map.addListener('zoom_changed', function () {
-//            var zoom = map.getZoom();
-//            if (zoom < 10) {
-//                $('.overlay_agents').css({"display":"none"});
-//                $.each(map.markers,function(){this.setMap(null)});
-//            } else {
-//                $('.overlay_agents').css({"display":"block"});
-//                $.each(map.markers,function(){this.setMap(map.map)});
-//            }
-//        });
+        map.addListener('zoom_changed', function () {
+            var zoom = map.getZoom();
+            if (zoom < 15) {
+                $('.overlay_agents').css({"display":"none"});
+             //   $.each(map.markers,function(){this.setMap(null)});
+            } else {
+                $('.overlay_agents').css({"display":"block"});
+             //   $.each(map.markers,function(){this.setMap(map.map)});
+            }
+        });
 
 
     });

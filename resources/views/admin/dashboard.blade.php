@@ -506,10 +506,10 @@
             var zoom = map.getZoom();
             if (zoom < 10) {
                 $('.overlay_agents').css({"display":"none"});
-                $.each(map.markers,function(){this.setMap(null)});
+//                $.each(map.markers,function(){this.setMap(null)});
             } else {
                 $('.overlay_agents').css({"display":"block"});
-            $.each(map.markers,function(){this.setMap(map.map)});
+//            $.each(map.markers,function(){this.setMap(map.map)});
             }
 
 //               for (i = 0; i < markers.length; i++) {
