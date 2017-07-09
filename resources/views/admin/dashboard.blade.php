@@ -138,6 +138,8 @@
 <script type="text/javascript" src="/js/gmaps.js"></script>
 <script type="text/javascript" src="/js/prettify.js"></script>
 <script type="text/javascript" src="/js/gmaps.overlays.min.js"></script>
+<script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js">
+</script>
 
 
 <script type="text/javascript">
@@ -388,7 +390,20 @@
             lat: 21.0277644,
             lng: 105.83415979999995,
             zoom: 11,
-            fullscreenControl: true
+            fullscreenControl: true,
+            markerClusterer: function(map) {
+                markerCluster = new MarkerClusterer(map, [], {
+                    maxZoom: 11,
+                    imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'
+                });
+
+                // onClick OVERRIDE
+//                markerCluster.onClick = function(clickedClusterIcon) {
+//                    return multiChoice(clickedClusterIcon.cluster_);
+//                }
+
+                return markerCluster;
+            }
         });
 
 

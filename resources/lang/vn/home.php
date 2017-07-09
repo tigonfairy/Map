@@ -61,4 +61,9 @@ return array(
     'config' => 'Cấu hình',
     'active' => 'Kích hoạt',
     'inactive' => 'Khóa',
+    'nameVN' => 'Tên sản phẩm bằng tiếng việt',
+    'nameEng' => 'Tên sản phẩm bằng tiếng anh',
+    'code' => 'Mã số',
+    'parent_product' => 'Nhóm sản phẩm',
+    'note_product' => '(\'Không cần chọn mục này nếu là nhóm sản phẩm\')',
 );

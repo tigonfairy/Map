@@ -26,7 +26,7 @@
           @include('admin.flash')
           <div class="panel panel-flat">
             <div class="panel-body">
-              <form method="POST" action="{{ isset($product) ? route('Admin::product@update', [$product->id] ): route('Admin::product@store') }}">
+              <form method="POST" action="{{ isset($product) ? route('Admin::group_product@update', [$product->id] ): route('Admin::group_product@store') }}">
                 {{ csrf_field() }}
                 @if (isset($product))
                   <input type="hidden" name="_method" value="PUT">
@@ -69,25 +69,6 @@
                           <div class="help-block">{{ $errors->first('code') }}</div>
                       @endif
                   </div>
-
-                  <!---------- parent_product ------------>
-                  <div class="form-group {{ $errors->has('parent_id') ? 'has-error has-feedback' : '' }}">
-                      <label for="parent_id" class="control-label text-semibold">{!! trans('home.parent_product') !!}</label>
-                      <i class="icon-question4 text-muted text-size-mini cursor-pointer js-help-icon" data-content="Tên sản phẩm"></i>
-                      <select class="form-control" name="parent_id">
-                          <option value="0"> Chọn nhóm sản phẩm </option>
-                          @foreach($group_products as $group_product)
-                          <option value="{{ $group_product->id }}" {!! @$product->id == $group_product->id ? 'selected=selected' : '' !!}>{{ $group_product->name }}</option>
-                          @endforeach
-                      </select>
-                      @if ($errors->has('parent_id'))
-                          <div class="form-control-feedback">
-                              <i class="icon-notification2"></i>
-                          </div>
-                          <div class="help-block">{{ $errors->first('parent_id') }}</div>
-                      @endif
-                  </div>
-
 
                   <div class="text-right">
                     <button type="submit" class="btn btn-primary">{!! isset($product) ? trans('home.update') : trans('home.create')  !!}</button>
