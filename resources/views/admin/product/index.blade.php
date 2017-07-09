@@ -16,7 +16,7 @@
                         phẩm từ Excel</a>
                 </div>
             </div>
-
+            <div id="divLoading"></div>
             <div class="modal fade bs-modal-lg" id="import-product" tabindex="-1" role="dialog" aria-hidden="true">
                 <div class="modal-dialog modal-lg">
                     <div class="modal-content">
@@ -118,6 +118,7 @@
         });
 
         $("#import").on("click", function () {
+            $("div#divLoading").addClass('show');
             var form = $('#import_form');
             var data = new FormData(form[0]);
             $.ajax({
@@ -132,9 +133,11 @@
                 success: function (res){
                     $("#file").text('');
                     if (res.status == 'success'){
+                        $("div#divLoading").removeClass('show');
                         window.location.reload();
                     } else {
                         $.each(res.errors,function(index, value) {
+                            $("div#divLoading").removeClass('show');
                             $("#"+index).text(value);
                         });
                     }
