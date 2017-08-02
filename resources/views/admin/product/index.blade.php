@@ -70,8 +70,12 @@
                         <table class="table table-striped table-bordered" cellspacing="0" width="100%" id="products-table">
                             <thead>
                             <tr>
-                                <th>Code</th>
+
                                 <th>Name</th>
+                                <th>CBD</th>
+                                <th>Maxgreen</th>
+                                <th>Maxgro</th>
+                                <th>Group</th>
                                 <th>Created_At</th>
                                 <th>Action</th>
                             </tr>
@@ -102,6 +106,8 @@
             autoWidth: false,
             processing: true,
             serverSide: true,
+            bSort:false,
+
             "pageLength": 10,
             ajax: {
                 url: '{!! route('Admin::product@datatables') !!}',
@@ -110,8 +116,17 @@
                 }
             },
             columns: [
-                {data: 'code', name: 'code'},
-                {data: 'name', name: 'name'},
+                    @php  $raw_locale = \Session::get('locale'); @endphp
+                    @if($raw_locale != null and $raw_locale == 'en')
+                        {data: 'name_en', name: 'name_en'},
+                    @else
+                    {data: 'name_vn', name: 'name_vn'},
+                    @endif
+                {data: 'cbd', name: 'cbd'},
+                {data: 'maxgreen', name: 'maxgreen'},
+                {data: 'maxgro', name: 'maxgro'},
+                {data: 'group', name: 'group'},
+
                 {data: 'created_at', name: 'created_at'},
                 {data: 'action', name: 'action', orderable: false, searchable: false}
             ]
