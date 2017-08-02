@@ -32,43 +32,43 @@
                   <input type="hidden" name="_method" value="PUT">
                   @endif
                           <!---------- Name------------>
-                  <div class="form-group {{ $errors->has('name') ? 'has-error has-feedback' : '' }}">
+                  <div class="form-group {{ $errors->has('name_vn') ? 'has-error has-feedback' : '' }}">
                     <label for="name" class="control-label text-semibold">{!! trans('home.nameVN') !!}</label>
                     <i class="icon-question4 text-muted text-size-mini cursor-pointer js-help-icon" data-content="Tên sản phẩm"></i>
-                    <input type="text" id="name" name="name" class="form-control" value="{{ old('name') ?: @$product->name }}" />
-                    @if ($errors->has('name'))
+                    <input type="text" id="name" name="name_vn" class="form-control" value="{{ old('name_vn') ?: @$product->name_vn }}"  />
+                    @if ($errors->has('name_vn'))
                       <div class="form-control-feedback">
                         <i class="icon-notification2"></i>
                       </div>
-                      <div class="help-block">{{ $errors->first('name') }}</div>
+                      <div class="help-block">{{ $errors->first('name_vn') }}</div>
                     @endif
                   </div>
 
                   <!---------- Name English ------------>
-                  <div class="form-group {{ $errors->has('nameEng') ? 'has-error has-feedback' : '' }}">
+                  <div class="form-group {{ $errors->has('name_en') ? 'has-error has-feedback' : '' }}">
                       <label for="name" class="control-label text-semibold">{!! trans('home.nameEng') !!}</label>
                       <i class="icon-question4 text-muted text-size-mini cursor-pointer js-help-icon" data-content="Tên sản phẩm"></i>
-                      <input type="text" id="name" name="nameEng" class="form-control" value="{{ old('nameEng') ?: @$product->nameEng }}" />
-                      @if ($errors->has('nameEng'))
+                      <input type="text" id="name" name="name_en" class="form-control" value="{{ old('name_en') ?: @$product->name_en }}" />
+                      @if ($errors->has('name_en'))
                           <div class="form-control-feedback">
                               <i class="icon-notification2"></i>
                           </div>
-                          <div class="help-block">{{ $errors->first('nameEng') }}</div>
+                          <div class="help-block">{{ $errors->first('name_en') }}</div>
                       @endif
                   </div>
 
-                  <!---------- Code ------------>
-                  <div class="form-group {{ $errors->has('code') ? 'has-error has-feedback' : '' }}">
-                      <label for="name" class="control-label text-semibold">{!! trans('home.code') !!}</label>
-                      <i class="icon-question4 text-muted text-size-mini cursor-pointer js-help-icon" data-content="Tên sản phẩm"></i>
-                      <input type="text" id="name" name="code" class="form-control" value="{{ old('code') ?: @$product->code }}" />
-                      @if ($errors->has('code'))
-                          <div class="form-control-feedback">
-                              <i class="icon-notification2"></i>
-                          </div>
-                          <div class="help-block">{{ $errors->first('code') }}</div>
-                      @endif
-                  </div>
+                  {{--<!---------- Code ------------>--}}
+                  {{--<div class="form-group {{ $errors->has('code') ? 'has-error has-feedback' : '' }}">--}}
+                      {{--<label for="name" class="control-label text-semibold">{!! trans('home.code') !!}</label>--}}
+                      {{--<i class="icon-question4 text-muted text-size-mini cursor-pointer js-help-icon" data-content="Tên sản phẩm"></i>--}}
+                      {{--<input type="text" id="name" name="code" class="form-control" value="{{ old('code') ?: @$product->code }}" />--}}
+                      {{--@if ($errors->has('code'))--}}
+                          {{--<div class="form-control-feedback">--}}
+                              {{--<i class="icon-notification2"></i>--}}
+                          {{--</div>--}}
+                          {{--<div class="help-block">{{ $errors->first('code') }}</div>--}}
+                      {{--@endif--}}
+                  {{--</div>--}}
 
                   <!---------- parent_product ------------>
                   <div class="form-group {{ $errors->has('parent_id') ? 'has-error has-feedback' : '' }}">
@@ -87,6 +87,45 @@
                           <div class="help-block">{{ $errors->first('parent_id') }}</div>
                       @endif
                   </div>
+
+
+                  <div class="form-group {{ $errors->has('cbd') ? 'has-error has-feedback' : '' }}">
+                      <label for="parent_id" class="control-label text-semibold">CBD</label>
+                      <i class="icon-question4 text-muted text-size-mini cursor-pointer js-help-icon" data-content='Mã sản phẩm CBD'></i>
+                      <input type="text" id="cbd" name="cbd" class="form-control" value="{{ old('cbd') ?: @$product->code }}" />
+                      @if ($errors->has('cbd'))
+                          <div class="form-control-feedback">
+                              <i class="icon-notification2"></i>
+                          </div>
+                          <div class="help-block">{{ $errors->first('cbd') }}</div>
+                      @endif
+                  </div>
+                  <div class="form-group {{ $errors->has('maxgreen') ? 'has-error has-feedback' : '' }}">
+                      <label for="parent_id" class="control-label text-semibold">Maxgreen</label>
+                      <i class="icon-question4 text-muted text-size-mini cursor-pointer js-help-icon" data-content='Mã sản phẩm CBD'></i>
+                      <input type="text" id="cbd" name="maxgreen" class="form-control" value="{{ old('maxgreen') ?: @$product->code }}" />
+                      @if ($errors->has('maxgreen'))
+                          <div class="form-control-feedback">
+                              <i class="icon-notification2"></i>
+                          </div>
+                          <div class="help-block">{{ $errors->first('maxgreen') }}</div>
+                      @endif
+                  </div>
+                  <div class="form-group {{ $errors->has('maxgro') ? 'has-error has-feedback' : '' }}">
+                      <label for="parent_id" class="control-label text-semibold">Maxgr0</label>
+                      <i class="icon-question4 text-muted text-size-mini cursor-pointer js-help-icon" data-content='Mã sản phẩm CBD'></i>
+                      <input type="text" id="maxgro" name="maxgro" class="form-control" value="{{ old('maxgro') ?: @$product->code }}" />
+                      @if ($errors->has('maxgro'))
+                          <div class="form-control-feedback">
+                              <i class="icon-notification2"></i>
+                          </div>
+                          <div class="help-block">{{ $errors->first('maxgro') }}</div>
+                      @endif
+                  </div>
+
+
+
+
 
 
                   <div class="text-right">

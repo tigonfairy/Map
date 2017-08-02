@@ -10,18 +10,14 @@ class GroupProductController extends AdminController
 {
     public function index(Request $request)
     {
-        if (auth()->user()->roles->first()['id'] != 1) {
-            abort(403);
-        }
+
 
         return view('admin.group_products.index');
     }
 
     public function add()
     {
-        if (auth()->user()->roles->first()['id'] != 1) {
-            abort(403);
-        }
+
 
 
         return view('admin.group_products.form');
@@ -29,9 +25,6 @@ class GroupProductController extends AdminController
 
     public function store(Request $request)
     {
-        if (auth()->user()->roles->first()['id'] != 1) {
-            abort(403);
-        }
 
         $this->validate($request,[
             'name' =>'required',
@@ -44,14 +37,11 @@ class GroupProductController extends AdminController
                 'code' => $request->input('code'),
         ]);
         return redirect()->route('Admin::group_product@index')
-            ->with('success', 'Đã thêm sản phẩm');
+            ->with('success', 'Đã thêm nhóm sản phẩm');
     }
 
     public function edit($id)
     {
-        if (auth()->user()->roles->first()['id'] != 1) {
-            abort(403);
-        }
 
         $product = GroupProduct::findOrFail($id);
         return view('admin.group_products.form', compact('product'));
@@ -59,9 +49,7 @@ class GroupProductController extends AdminController
 
     public function update($id, Request $request)
     {
-        if (auth()->user()->roles->first()['id'] != 1) {
-            abort(403);
-        }
+
 
         $product = GroupProduct::findOrFail($id);
 
@@ -77,7 +65,7 @@ class GroupProductController extends AdminController
         ])->save();
 
         return redirect()->route('Admin::group_product@index')
-            ->with('success', 'Đã cập nhật thông tin Sản phẩm');
+            ->with('success', 'Đã cập nhật thông tin nhóm Sản phẩm');
 
     }
 
@@ -89,14 +77,12 @@ class GroupProductController extends AdminController
 
         $product = GroupProduct::findOrFail($id);
         $product->delete();
-        return redirect()->route('Admin::group_product@index')->with('success', 'Đã xoá thành công sản phẩm');
+        return redirect()->route('Admin::group_product@index')->with('success', 'Đã xoá thành công nhóm  sản phẩm');
     }
 
     public function getDatatables()
     {
-        if (auth()->user()->roles->first()['id'] != 1) {
-            abort(403);
-        }
+
         return GroupProduct::getDatatables();
     }
 }

@@ -13,18 +13,13 @@ class ProductController extends AdminController
 {
     public function index(Request $request)
     {
-        if (auth()->user()->roles->first()['id'] != 1) {
-            abort(403);
-        }
 
         return view('admin.product.index');
     }
 
     public function add()
     {
-        if (auth()->user()->roles->first()['id'] != 1) {
-            abort(403);
-        }
+
         $group_products = GroupProduct::all();
 
         return view('admin.product.form', compact('group_products'));
@@ -32,29 +27,64 @@ class ProductController extends AdminController
 
     public function store(Request $request)
     {
-        if (auth()->user()->roles->first()['id'] != 1) {
-            abort(403);
-        }
+
 
         $this->validate($request,[
-            'name' =>'required',
+            'name_vn' =>'required',
         ]);
+        $data = $request->all();
 
-        Product::forceCreate([
-                'name' => $request->input('name'),
-                'nameEng' => $request->input('nameEng'),
+        if(isset($data['cbd']) and isset($data['maxgreen']) and isset($data['maxgro']) and empty($data['cbd']) and empty($data['maxgreen']) and empty($data['maxgro']) ) {
+            return redirect()->back()->with('error','Vui lòng nhập mã CBD hoặc Maxgreen ,Maxgr0');
+        }
+        $product = Product::forceCreate([
+                'name_vn' => $request->input('name_vn'),
+                'name_en' => $request->input('name_en'),
                 'parent_id' => $request->input('parent_id'),
-                'code' => $request->input('code'),
+                'level' => 0,
+            'product_id' => 0
         ]);
+        if(isset($data['cbd']) and $data['cbd']) {
+            Product::forceCreate([
+                'name_vn' => $request->input('name_vn'),
+                'name_en' => $request->input('name_en'),
+                'parent_id' => $request->input('parent_id'),
+                'level' => 1,
+                'product_id' => $product->id,
+                'code' => $data['cbd'],
+                'name_code' => 'cbd'
+            ]);
+        }
+        if(isset($data['maxgreen']) and $data['maxgreen']) {
+            Product::forceCreate([
+                'name_vn' => $request->input('name_vn'),
+                'name_en' => $request->input('name_en'),
+                'parent_id' => $request->input('parent_id'),
+                'level' => 1,
+                'product_id' => $product->id,
+                'code' => $data['maxgreen'],
+                'name_code' => 'maxgreen'
+            ]);
+        }
+        if(isset($data['maxgro']) and $data['maxgro']) {
+            Product::forceCreate([
+                'name_vn' => $request->input('name_vn'),
+                'name_en' => $request->input('name_en'),
+                'parent_id' => $request->input('parent_id'),
+                'level' => 1,
+                'product_id' => $product->id,
+                'code' => $data['maxgro'],
+                'name_code' => 'maxgro'
+            ]);
+        }
+
         return redirect()->route('Admin::product@index')
             ->with('success', 'Đã thêm sản phẩm');
     }
 
     public function edit($id)
     {
-        if (auth()->user()->roles->first()['id'] != 1) {
-            abort(403);
-        }
+
         $group_products = GroupProduct::all();
 
         $product = Product::findOrFail($id);
@@ -63,9 +93,7 @@ class ProductController extends AdminController
 
     public function update($id, Request $request)
     {
-        if (auth()->user()->roles->first()['id'] != 1) {
-            abort(403);
-        }
+
 
         $product = Product::findOrFail($id);
 
@@ -87,9 +115,7 @@ class ProductController extends AdminController
 
     public function delete($id)
     {
-        if (auth()->user()->roles->first()['id'] != 1) {
-            abort(403);
-        }
+
 
         $product = Product::findOrFail($id);
         $product->delete();
@@ -98,9 +124,7 @@ class ProductController extends AdminController
 
     public function getDatatables()
     {
-        if (auth()->user()->roles->first()['id'] != 1) {
-            abort(403);
-        }
+
         return Product::getDatatables();
     }
 

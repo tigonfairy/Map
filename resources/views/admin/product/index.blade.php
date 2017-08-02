@@ -70,7 +70,7 @@
                         <table class="table table-striped table-bordered" cellspacing="0" width="100%" id="products-table">
                             <thead>
                             <tr>
-                                <th>Id</th>
+                                <th>Code</th>
                                 <th>Name</th>
                                 <th>Created_At</th>
                                 <th>Action</th>
@@ -110,7 +110,7 @@
                 }
             },
             columns: [
-                {data: 'id', name: 'id'},
+                {data: 'code', name: 'code'},
                 {data: 'name', name: 'name'},
                 {data: 'created_at', name: 'created_at'},
                 {data: 'action', name: 'action', orderable: false, searchable: false}

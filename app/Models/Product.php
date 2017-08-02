@@ -12,11 +12,14 @@ class Product extends Model
     {
         $model = static::select([
             '*'
-        ]);
+        ])->where('level',1);
 
         return Datatables::eloquent($model)
+            ->editColumn('code', function ($model) {
+                return $model->name_code.':'.$model->code;
+            })
             ->editColumn('name', function ($model) {
-                return Auth::user()->lang == 'en' ? $model->nameEng : $model->name ;
+                return Auth::user()->lang == 'en' ? $model->name_vn : $model->name_en ;
             })
             ->addColumn('action', 'admin.product.datatables.action')
             ->make(true);
