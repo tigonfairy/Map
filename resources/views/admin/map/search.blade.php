@@ -49,10 +49,7 @@
 
                     </div>
                 </div>
-                {{--<button id="search" class="btn green">Tìm kiếm</button>--}}
             </div>
-
-
         </div>
         <!-- /main content -->
     </div>
