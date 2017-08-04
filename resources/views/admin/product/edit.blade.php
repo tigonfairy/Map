@@ -9,7 +9,7 @@
         <a href="" class="btn btn-link">
           <i class="icon-arrow-left8"></i>
         </a>
-        {{ isset($product) ? 'Sửa Sản Phẩm ' : 'Thêm Sản Phẩm' }}
+       Sửa Sản Phẩm
       </h2>
     </div>
   </div>
@@ -26,7 +26,7 @@
           @include('admin.flash')
           <div class="panel panel-flat">
             <div class="panel-body">
-              <form method="POST" action="{{ isset($product) ? route('Admin::product@update', [$product->id] ): route('Admin::product@store') }}">
+              <form method="POST" action="{{  route('Admin::product@update', [$product->id])}}">
                 {{ csrf_field() }}
                 @if (isset($product))
                   <input type="hidden" name="_method" value="PUT">
@@ -58,18 +58,6 @@
                   </div>
 
                   {{--<!---------- Code ------------>--}}
-                  {{--<div class="form-group {{ $errors->has('code') ? 'has-error has-feedback' : '' }}">--}}
-                      {{--<label for="name" class="control-label text-semibold">{!! trans('home.code') !!}</label>--}}
-                      {{--<i class="icon-question4 text-muted text-size-mini cursor-pointer js-help-icon" data-content="Tên sản phẩm"></i>--}}
-                      {{--<input type="text" id="name" name="code" class="form-control" value="{{ old('code') ?: @$product->code }}" />--}}
-                      {{--@if ($errors->has('code'))--}}
-                          {{--<div class="form-control-feedback">--}}
-                              {{--<i class="icon-notification2"></i>--}}
-                          {{--</div>--}}
-                          {{--<div class="help-block">{{ $errors->first('code') }}</div>--}}
-                      {{--@endif--}}
-                  {{--</div>--}}
-
                   <!---------- parent_product ------------>
                   <div class="form-group {{ $errors->has('parent_id') ? 'has-error has-feedback' : '' }}">
                       <label for="parent_id" class="control-label text-semibold">{!! trans('home.parent_product') !!}</label>
@@ -77,7 +65,7 @@
                       <select class="form-control" name="parent_id">
                           <option value="0"> Chọn nhóm sản phẩm </option>
                           @foreach($group_products as $group_product)
-                          <option value="{{ $group_product->id }}" {!! @$product->id == $group_product->id ? 'selected=selected' : '' !!}>{{ $group_product->name }}</option>
+                          <option value="{{ $group_product->id }}" {!! @$product->parent_id == $group_product->id ? 'selected=selected' : '' !!}>{{ $group_product->name }}</option>
                           @endforeach
                       </select>
                       @if ($errors->has('parent_id'))
@@ -92,7 +80,7 @@
                   <div class="form-group {{ $errors->has('cbd') ? 'has-error has-feedback' : '' }}">
                       <label for="parent_id" class="control-label text-semibold">CBD</label>
                       <i class="icon-question4 text-muted text-size-mini cursor-pointer js-help-icon" data-content='Mã sản phẩm CBD'></i>
-                      <input type="text" id="cbd" name="cbd" class="form-control" value="{{ old('cbd') }}" />
+                      <input type="text" id="cbd" name="cbd" class="form-control" value="{{ old('cbd') ? : $product->cbd()->code }}" />
                       @if ($errors->has('cbd'))
                           <div class="form-control-feedback">
                               <i class="icon-notification2"></i>
@@ -103,7 +91,7 @@
                   <div class="form-group {{ $errors->has('maxgreen') ? 'has-error has-feedback' : '' }}">
                       <label for="parent_id" class="control-label text-semibold">Maxgreen</label>
                       <i class="icon-question4 text-muted text-size-mini cursor-pointer js-help-icon" data-content='Mã sản phẩm CBD'></i>
-                      <input type="text" id="cbd" name="maxgreen" class="form-control" value="{{ old('maxgreen') }}" />
+                      <input type="text" id="cbd" name="maxgreen" class="form-control" value="{{ old('maxgreen') ? : $product->maxgreen()->code}}" />
                       @if ($errors->has('maxgreen'))
                           <div class="form-control-feedback">
                               <i class="icon-notification2"></i>
@@ -114,7 +102,7 @@
                   <div class="form-group {{ $errors->has('maxgro') ? 'has-error has-feedback' : '' }}">
                       <label for="parent_id" class="control-label text-semibold">Maxgr0</label>
                       <i class="icon-question4 text-muted text-size-mini cursor-pointer js-help-icon" data-content='Mã sản phẩm CBD'></i>
-                      <input type="text" id="maxgro" name="maxgro" class="form-control" value="{{ old('maxgro') }}" />
+                      <input type="text" id="maxgro" name="maxgro" class="form-control" value="{{ old('maxgro') ? : $product->maxgro()->code }}" />
                       @if ($errors->has('maxgro'))
                           <div class="form-control-feedback">
                               <i class="icon-notification2"></i>

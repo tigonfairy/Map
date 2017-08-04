@@ -13,7 +13,8 @@ return [
     |
     */
 
-    'accepted'             => 'The :attribute must be accepted.',
+
+    'accepted'             => ':attribute phải chấp nhận.',
     'active_url'           => 'The :attribute is not a valid URL.',
     'after'                => 'The :attribute must be a date after :date.',
     'alpha'                => 'The :attribute may only contain letters.',
@@ -36,7 +37,7 @@ return [
     'digits_between'       => 'The :attribute must be between :min and :max digits.',
     'dimensions'           => 'The :attribute has invalid image dimensions.',
     'distinct'             => 'The :attribute field has a duplicate value.',
-    'email'                => 'The :attribute must be a valid email address.',
+    'email'                => ' :attribute phải đúng định dạng email',
     'exists'               => 'The selected :attribute is invalid.',
     'file'                 => 'The :attribute must be a file.',
     'filled'               => 'The :attribute field is required.',
@@ -63,14 +64,14 @@ return [
     'numeric'              => 'The :attribute must be a number.',
     'present'              => 'The :attribute field must be present.',
     'regex'                => 'The :attribute format is invalid.',
-    'required'             => 'The :attribute field is required.',
+    'required'             => 'Vui lòng nhập :attribute ',
     'required_if'          => 'The :attribute field is required when :other is :value.',
     'required_unless'      => 'The :attribute field is required unless :other is in :values.',
     'required_with'        => 'The :attribute field is required when :values is present.',
     'required_with_all'    => 'The :attribute field is required when :values is present.',
     'required_without'     => 'The :attribute field is required when :values is not present.',
     'required_without_all' => 'The :attribute field is required when none of :values are present.',
-    'same'                 => 'The :attribute and :other must match.',
+    'same'                 => ':attribute phải trùng với :other ',
     'size'                 => [
         'numeric' => 'The :attribute must be :size.',
         'file'    => 'The :attribute must be :size kilobytes.',
@@ -79,7 +80,7 @@ return [
     ],
     'string'               => 'The :attribute must be a string.',
     'timezone'             => 'The :attribute must be a valid zone.',
-    'unique'               => 'The :attribute has already been taken.',
+    'unique'               => ':attribute đã tồn tạo',
     'url'                  => 'The :attribute format is invalid.',
 
     /*
@@ -110,6 +111,13 @@ return [
     |
     */
 
-    'attributes' => [],
+    'attributes' => [
+        'position' => 'Chức vụ',
+        'code' => 'Mã số',
+        'password' => 'Mật khẩu',
+        'password_confirmation' => 'Xác nhận mật khẩu',
+        'name' => 'Tên',
+        'phone' => 'Số điện thoại',
+    ],
 
 ];

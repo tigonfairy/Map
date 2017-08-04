@@ -459,7 +459,8 @@ class MapController extends AdminController
                     array_push($locations, $area->address);
                 }
             }
-            $agents = Agent::whereIn('area_id',$listIds)->get();
+            $agents = Agent::whereIn('area_id',$listIds)->with('area')->with('user')->get();
+
             return response()->json([
                 'locations' =>  $locations,
                 'agents' =>  $agents,

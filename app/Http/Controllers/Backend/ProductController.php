@@ -13,18 +13,13 @@ class ProductController extends AdminController
 {
     public function index(Request $request)
     {
-        if (auth()->user()->roles->first()['id'] != 1) {
-            abort(403);
-        }
 
         return view('admin.product.index');
     }
 
     public function add()
     {
-        if (auth()->user()->roles->first()['id'] != 1) {
-            abort(403);
-        }
+
         $group_products = GroupProduct::all();
 
         return view('admin.product.form', compact('group_products'));
@@ -32,54 +27,136 @@ class ProductController extends AdminController
 
     public function store(Request $request)
     {
-        if (auth()->user()->roles->first()['id'] != 1) {
-            abort(403);
-        }
+
 
         $this->validate($request,[
-            'name' =>'required',
+            'name_vn' =>'required',
+        ],[
+           'name_vn.required' => 'Vui lòng nhập tên sản phẩm'
         ]);
+        $data = $request->all();
 
-        Product::forceCreate([
-                'name' => $request->input('name'),
-                'nameEng' => $request->input('nameEng'),
+        if(isset($data['cbd']) and isset($data['maxgreen']) and isset($data['maxgro']) and empty($data['cbd']) and empty($data['maxgreen']) and empty($data['maxgro']) ) {
+            return redirect()->back()->with('error','Vui lòng nhập mã CBD hoặc Maxgreen ,Maxgr0');
+        }
+        $product = Product::forceCreate([
+                'name_vn' => $request->input('name_vn'),
+                'name_en' => $request->input('name_en'),
                 'parent_id' => $request->input('parent_id'),
-                'code' => $request->input('code'),
+                'level' => 0,
+            'product_id' => 0
         ]);
+        if(isset($data['cbd']) and $data['cbd']) {
+            $count = Product::where('code',$data['cbd'])->where('name_code','cbd')->count();
+            if($count) {
+                return redirect()->back()->with('error','Mã CBD bị trùng');
+            }
+            Product::forceCreate([
+                'name_vn' => $request->input('name_vn'),
+                'name_en' => $request->input('name_en'),
+                'parent_id' => $request->input('parent_id'),
+                'level' => 1,
+                'product_id' => $product->id,
+                'code' => $data['cbd'],
+                'name_code' => 'cbd'
+            ]);
+        }
+        if(isset($data['maxgreen']) and $data['maxgreen']) {
+            $count = Product::where('code',$data['maxgreen'])->where('name_code','maxgreen')->count();
+            if($count) {
+                return redirect()->back()->with('error','Mã maxgreen bị trùng');
+            }
+            Product::forceCreate([
+                'name_vn' => $request->input('name_vn'),
+                'name_en' => $request->input('name_en'),
+                'parent_id' => $request->input('parent_id'),
+                'level' => 1,
+                'product_id' => $product->id,
+                'code' => $data['maxgreen'],
+                'name_code' => 'maxgreen'
+            ]);
+        }
+        if(isset($data['maxgro']) and $data['maxgro']) {
+            $count = Product::where('code',$data['maxgro'])->where('name_code','maxgro')->count();
+            if($count) {
+                return redirect()->back()->with('error','Mã maxgro bị trùng');
+            }
+            Product::forceCreate([
+                'name_vn' => $request->input('name_vn'),
+                'name_en' => $request->input('name_en'),
+                'parent_id' => $request->input('parent_id'),
+                'level' => 1,
+                'product_id' => $product->id,
+                'code' => $data['maxgro'],
+                'name_code' => 'maxgro'
+            ]);
+        }
+
         return redirect()->route('Admin::product@index')
             ->with('success', 'Đã thêm sản phẩm');
     }
 
     public function edit($id)
     {
-        if (auth()->user()->roles->first()['id'] != 1) {
-            abort(403);
-        }
+
         $group_products = GroupProduct::all();
 
         $product = Product::findOrFail($id);
-        return view('admin.product.form', compact('product', 'group_products'));
+
+        return view('admin.product.edit', compact('product', 'group_products'));
     }
 
     public function update($id, Request $request)
     {
-        if (auth()->user()->roles->first()['id'] != 1) {
-            abort(403);
-        }
 
         $product = Product::findOrFail($id);
 
         $this->validate($request,[
-            'name' =>'required',
+            'name_vn' =>'required',
         ]);
+        $data = $request->all();
+        if(isset($data['cbd']) and isset($data['maxgreen']) and isset($data['maxgro']) and empty($data['cbd']) and empty($data['maxgreen']) and empty($data['maxgro']) ) {
+            return redirect()->back()->with('error','Vui lòng nhập mã CBD hoặc Maxgreen ,Maxgr0');
+        }
+
 
         $product->forceFill([
-            'name' => $request->input('name'),
-            'nameEng' => $request->input('nameEng'),
+            'name_vn' => $request->input('name_vn'),
+            'name_en' => $request->input('name_en'),
             'parent_id' => $request->input('parent_id'),
-            'code' => $request->input('code'),
+            'level' => 0,
+            'product_id' => 0
         ])->save();
-
+        if($product->cbd()) {
+            $product->cbd()->forceFill([
+                'name_vn' => $request->input('name_vn'),
+                'name_en' => $request->input('name_en'),
+                'parent_id' => $request->input('parent_id'),
+                'level' => 1,
+                'product_id' => $product->id,
+                'code' => $data['cbd'],
+            ])->save();
+        }
+        if($product->maxgro()) {
+            $product->maxgro()->forceFill([
+                'name_vn' => $request->input('name_vn'),
+                'name_en' => $request->input('name_en'),
+                'parent_id' => $request->input('parent_id'),
+                'level' => 1,
+                'product_id' => $product->id,
+                'code' => $data['maxgro'],
+            ])->save();
+        }
+        if($product->maxgreen()) {
+            $product->maxgreen()->forceFill([
+                'name_vn' => $request->input('name_vn'),
+                'name_en' => $request->input('name_en'),
+                'parent_id' => $request->input('parent_id'),
+                'level' => 1,
+                'product_id' => $product->id,
+                'code' => $data['maxgreen'],
+            ])->save();
+        }
         return redirect()->route('Admin::product@index')
             ->with('success', 'Đã cập nhật thông tin Sản phẩm');
 
@@ -87,20 +164,16 @@ class ProductController extends AdminController
 
     public function delete($id)
     {
-        if (auth()->user()->roles->first()['id'] != 1) {
-            abort(403);
-        }
 
         $product = Product::findOrFail($id);
+        Product::where('product_id',$product->id)->delete();
         $product->delete();
         return redirect()->route('Admin::product@index')->with('success', 'Đã xoá thành công sản phẩm');
     }
 
     public function getDatatables()
     {
-        if (auth()->user()->roles->first()['id'] != 1) {
-            abort(403);
-        }
+
         return Product::getDatatables();
     }
 

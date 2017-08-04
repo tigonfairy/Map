@@ -135,223 +135,245 @@
 
 <script type="text/javascript">
     $(document).ready(function () {
+
         {{--$('.monthPicker').datepicker({--}}
-        {{--changeMonth: true,--}}
-        {{--changeYear: true,--}}
-        {{--showButtonPanel: true,--}}
-        {{--dateFormat: 'mm-yy',--}}
-        {{--onClose: function (dateText, inst) {--}}
-        {{--var month = $("#ui-datepicker-div .ui-datepicker-month :selected").val();--}}
-        {{--var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val();--}}
-        {{--$(this).datepicker('setDate', new Date(year, month, 1));--}}
-        {{--}--}}
+            {{--changeMonth: true,--}}
+            {{--changeYear: true,--}}
+            {{--showButtonPanel: true,--}}
+            {{--dateFormat: 'mm-yy',--}}
+            {{--onClose: function (dateText, inst) {--}}
+                {{--var month = $("#ui-datepicker-div .ui-datepicker-month :selected").val();--}}
+                {{--var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val();--}}
+                {{--$(this).datepicker('setDate', new Date(year, month, 1));--}}
+            {{--}--}}
         {{--});--}}
         {{--//chart cot--}}
         {{--Highcharts.chart('container', {--}}
-        {{--chart: {--}}
-        {{--type: 'column',--}}
-        {{--style: {--}}
-        {{--fontFamily: 'serif'--}}
-        {{--}--}}
-        {{--},--}}
-        {{--title: {--}}
-        {{--text: 'Tiến độ doanh số'--}}
-        {{--},--}}
-        {{--subtitle: {--}}
-        {{--//                text: 'Source: WorldClimate.com'--}}
-        {{--},--}}
-        {{--xAxis: {--}}
-        {{--categories: [--}}
-        {{--'Jan',--}}
-        {{--'Feb',--}}
-        {{--'Mar',--}}
-        {{--'Apr',--}}
-        {{--'May',--}}
-        {{--'Jun',--}}
-        {{--'Jul',--}}
-        {{--'Aug',--}}
-        {{--'Sep',--}}
-        {{--'Oct',--}}
-        {{--'Nov',--}}
-        {{--'Dec'--}}
-        {{--],--}}
-        {{--crosshair: true--}}
-        {{--},--}}
-        {{--yAxis: {--}}
-        {{--min: 0,--}}
-        {{--title: {--}}
-        {{--text: 'Doanh số '--}}
-        {{--}--}}
-        {{--},--}}
-        {{--tooltip: {--}}
-        {{--headerFormat: '<span style="font-size:10px">{point.key}</span><table>',--}}
-        {{--pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +--}}
-        {{--'<td style="padding:0"><b>{point.y} </b></td></tr>',--}}
-        {{--footerFormat: '</table>',--}}
-        {{--shared: true,--}}
-        {{--useHTML: true--}}
-        {{--},--}}
-        {{--plotOptions: {--}}
-        {{--column: {--}}
-        {{--pointPadding: 0.2,--}}
-        {{--borderWidth: 0--}}
-        {{--},--}}
-        {{--series: {--}}
-        {{--dataLabels: {--}}
-        {{--enabled: true,--}}
-        {{--crop: false,--}}
-        {{--overflow: 'none',--}}
-        {{--formatter: function () {--}}
-        {{--return this.point.y;--}}
-        {{--}--}}
-        {{--}--}}
-        {{--}--}}
-        {{--},--}}
-        {{--series: [{--}}
-        {{--name: 'DTKH',--}}
-        {{--data: {{json_encode($sales_plan)}}--}}
-        {{--}, {--}}
-        {{--name: 'DTTT',--}}
-        {{--data: {{json_encode($sales_real)}}--}}
-        {{--}]--}}
+            {{--chart: {--}}
+                {{--type: 'column',--}}
+                {{--style: {--}}
+                    {{--fontFamily: 'serif'--}}
+                {{--}--}}
+            {{--},--}}
+            {{--title: {--}}
+                {{--text: 'Tiến độ doanh số'--}}
+            {{--},--}}
+            {{--subtitle: {--}}
+{{--//                text: 'Source: WorldClimate.com'--}}
+            {{--},--}}
+            {{--xAxis: {--}}
+                {{--categories: [--}}
+                    {{--'Jan',--}}
+                    {{--'Feb',--}}
+                    {{--'Mar',--}}
+                    {{--'Apr',--}}
+                    {{--'May',--}}
+                    {{--'Jun',--}}
+                    {{--'Jul',--}}
+                    {{--'Aug',--}}
+                    {{--'Sep',--}}
+                    {{--'Oct',--}}
+                    {{--'Nov',--}}
+                    {{--'Dec'--}}
+                {{--],--}}
+                {{--crosshair: true--}}
+            {{--},--}}
+            {{--yAxis: {--}}
+                {{--min: 0,--}}
+                {{--title: {--}}
+                    {{--text: 'Doanh số '--}}
+                {{--}--}}
+            {{--},--}}
+            {{--tooltip: {--}}
+                {{--headerFormat: '<span style="font-size:10px">{point.key}</span><table>',--}}
+                {{--pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +--}}
+                {{--'<td style="padding:0"><b>{point.y} </b></td></tr>',--}}
+                {{--footerFormat: '</table>',--}}
+                {{--shared: true,--}}
+                {{--useHTML: true--}}
+            {{--},--}}
+            {{--plotOptions: {--}}
+                {{--column: {--}}
+                    {{--pointPadding: 0.2,--}}
+                    {{--borderWidth: 0--}}
+                {{--},--}}
+                {{--series: {--}}
+                    {{--dataLabels: {--}}
+                        {{--enabled: true,--}}
+                        {{--crop: false,--}}
+                        {{--overflow: 'none',--}}
+                        {{--formatter: function () {--}}
+                            {{--return this.point.y;--}}
+                        {{--}--}}
+                    {{--}--}}
+                {{--}--}}
+            {{--},--}}
+            {{--series: [{--}}
+                {{--name: 'DTKH',--}}
+                {{--data: {{json_encode($sales_plan)}}--}}
+
+            {{--}, {--}}
+                {{--name: 'DTTT',--}}
+                {{--data: {{json_encode($sales_real)}}--}}
+
+            {{--}]--}}
         {{--});--}}
+
+
         {{--var chartSp = Highcharts.chart('chartSp', {--}}
-        {{--chart: {--}}
-        {{--plotBackgroundColor: null,--}}
-        {{--plotBorderWidth: null,--}}
-        {{--plotShadow: false,--}}
-        {{--type: 'pie',--}}
-        {{--style: {--}}
-        {{--fontFamily: 'serif'--}}
-        {{--}--}}
-        {{--},--}}
-        {{--title: {--}}
-        {{--text: 'Biểu đổ'--}}
-        {{--},--}}
-        {{--tooltip: {--}}
-        {{--pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'--}}
-        {{--},--}}
-        {{--plotOptions: {--}}
-        {{--pie: {--}}
-        {{--allowPointSelect: true,--}}
-        {{--cursor: 'pointer',--}}
-        {{--dataLabels: {--}}
-        {{--enabled: true--}}
-        {{--},--}}
-        {{--showInLegend: true--}}
-        {{--}--}}
-        {{--},--}}
-        {{--series: []--}}
+            {{--chart: {--}}
+                {{--plotBackgroundColor: null,--}}
+                {{--plotBorderWidth: null,--}}
+                {{--plotShadow: false,--}}
+                {{--type: 'pie',--}}
+                {{--style: {--}}
+                    {{--fontFamily: 'serif'--}}
+                {{--}--}}
+            {{--},--}}
+            {{--title: {--}}
+                {{--text: 'Biểu đổ'--}}
+            {{--},--}}
+            {{--tooltip: {--}}
+                {{--pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'--}}
+            {{--},--}}
+            {{--plotOptions: {--}}
+                {{--pie: {--}}
+                    {{--allowPointSelect: true,--}}
+                    {{--cursor: 'pointer',--}}
+                    {{--dataLabels: {--}}
+                        {{--enabled: true--}}
+                    {{--},--}}
+                    {{--showInLegend: true--}}
+                {{--}--}}
+            {{--},--}}
+            {{--series: []--}}
         {{--});--}}
+
         {{--$.ajax({--}}
-        {{--method: "post",--}}
-        {{--url: "{{route('Admin::chart')}}",--}}
-        {{--headers: {--}}
-        {{--'X-CSRF-Token': "{{ csrf_token() }}"--}}
-        {{--},--}}
-        {{--data: {--}}
-        {{--type: 1--}}
-        {{--},--}}
-        {{--dataType: 'json',--}}
-        {{--success: function (data) {--}}
-        {{--if (data.title) {--}}
-        {{--chartSp.setTitle({--}}
-        {{--text: 'Biểu đô tháng ' + data.title--}}
+            {{--method: "post",--}}
+            {{--url: "{{route('Admin::chart')}}",--}}
+            {{--headers: {--}}
+                {{--'X-CSRF-Token': "{{ csrf_token() }}"--}}
+            {{--},--}}
+            {{--data: {--}}
+                {{--type: 1--}}
+            {{--},--}}
+            {{--dataType: 'json',--}}
+            {{--success: function (data) {--}}
+                {{--if (data.title) {--}}
+                    {{--chartSp.setTitle({--}}
+                        {{--text: 'Biểu đô tháng ' + data.title--}}
+                    {{--});--}}
+                {{--}--}}
+
+                {{--if (data.chart) {--}}
+                    {{--var seriesLength = chartSp.series.length;--}}
+                    {{--for (var i = seriesLength - 1; i > -1; i--) {--}}
+                        {{--//chart.series[i].remove();--}}
+                        {{--if (chartSp.series[i].name == document.getElementById("series_name").value)--}}
+                            {{--chartSp.series[i].remove();--}}
+                    {{--}--}}
+
+                    {{--chartSp.addSeries(--}}
+                            {{--{--}}
+                                {{--name: 'S/p',--}}
+                                {{--colorByPoint: true,--}}
+                                {{--data: data.chart--}}
+                            {{--}--}}
+                    {{--)--}}
+                {{--}--}}
+                {{--if (data.table) {--}}
+                    {{--var table = data.table;--}}
+                    {{--var string = '<table class="table table-striped table-bordered" cellspacing="0" width="100%">' +--}}
+                            {{--' <thead> <tr> <th>Sản phẩm</th> <th>Doanh số</th></tr></thead><tbody>';--}}
+
+                    {{--table.forEach(function (value) {--}}
+                        {{--string += '<tr>';--}}
+                        {{--string += '<td>';--}}
+                        {{--string += value.name;--}}
+                        {{--string += '</td>';--}}
+                        {{--string += '<td>';--}}
+                        {{--string += value.y;--}}
+                        {{--string += '</td>';--}}
+
+                        {{--string += '</tr>';--}}
+
+                    {{--});--}}
+                    {{--string += '</tbody></table>';--}}
+                    {{--$('#tableData').html(string);--}}
+                {{--}--}}
+
+
+            {{--},--}}
+            {{--error: function (err) {--}}
+                {{--console.log(err);--}}
+                {{--alert('Lỗi, hãy thử lại sau');--}}
+            {{--}--}}
         {{--});--}}
-        {{--}--}}
-        {{--if (data.chart) {--}}
-        {{--var seriesLength = chartSp.series.length;--}}
-        {{--for (var i = seriesLength - 1; i > -1; i--) {--}}
-        {{--//chart.series[i].remove();--}}
-        {{--if (chartSp.series[i].name == document.getElementById("series_name").value)--}}
-        {{--chartSp.series[i].remove();--}}
-        {{--}--}}
-        {{--chartSp.addSeries(--}}
-        {{--{--}}
-        {{--name: 'S/p',--}}
-        {{--colorByPoint: true,--}}
-        {{--data: data.chart--}}
-        {{--}--}}
-        {{--)--}}
-        {{--}--}}
-        {{--if (data.table) {--}}
-        {{--var table = data.table;--}}
-        {{--var string = '<table class="table table-striped table-bordered" cellspacing="0" width="100%">' +--}}
-        {{--' <thead> <tr> <th>Sản phẩm</th> <th>Doanh số</th></tr></thead><tbody>';--}}
-        {{--table.forEach(function (value) {--}}
-        {{--string += '<tr>';--}}
-        {{--string += '<td>';--}}
-        {{--string += value.name;--}}
-        {{--string += '</td>';--}}
-        {{--string += '<td>';--}}
-        {{--string += value.y;--}}
-        {{--string += '</td>';--}}
-        {{--string += '</tr>';--}}
-        {{--});--}}
-        {{--string += '</tbody></table>';--}}
-        {{--$('#tableData').html(string);--}}
-        {{--}--}}
-        {{--},--}}
-        {{--error: function (err) {--}}
-        {{--console.log(err);--}}
-        {{--alert('Lỗi, hãy thử lại sau');--}}
-        {{--}--}}
-        {{--});--}}
+
         {{--$('.radioButton').change(function () {--}}
-        {{--var type = $(this).val();--}}
-        {{--$.ajax({--}}
-        {{--method: "post",--}}
-        {{--url: "{{route('Admin::chart')}}",--}}
-        {{--headers: {--}}
-        {{--'X-CSRF-Token': "{{ csrf_token() }}"--}}
-        {{--},--}}
-        {{--data: {--}}
-        {{--type: type--}}
-        {{--},--}}
-        {{--dataType: 'json',--}}
-        {{--success: function (data) {--}}
-        {{--if (data.title) {--}}
-        {{--chartSp.setTitle({--}}
-        {{--text: 'Biểu đô ' + data.title--}}
+            {{--var type = $(this).val();--}}
+
+            {{--$.ajax({--}}
+                {{--method: "post",--}}
+                {{--url: "{{route('Admin::chart')}}",--}}
+                {{--headers: {--}}
+                    {{--'X-CSRF-Token': "{{ csrf_token() }}"--}}
+                {{--},--}}
+                {{--data: {--}}
+                    {{--type: type--}}
+                {{--},--}}
+                {{--dataType: 'json',--}}
+                {{--success: function (data) {--}}
+                    {{--if (data.title) {--}}
+                        {{--chartSp.setTitle({--}}
+                            {{--text: 'Biểu đô ' + data.title--}}
+                        {{--});--}}
+                    {{--}--}}
+                    {{--if (data.chart) {--}}
+                        {{--while (chartSp.series.length > 0) {--}}
+                            {{--chartSp.series[0].remove(false);--}}
+                        {{--}--}}
+
+                        {{--chartSp.redraw();--}}
+                        {{--chartSp.addSeries(--}}
+                                {{--{--}}
+                                    {{--name: 'S/p',--}}
+                                    {{--colorByPoint: true,--}}
+                                    {{--data: data.chart--}}
+                                {{--}--}}
+                        {{--)--}}
+                    {{--}--}}
+                    {{--if (data.table) {--}}
+                        {{--$('#tableData').html('');--}}
+                        {{--var table = data.table;--}}
+                        {{--var string = '<table class="table table-striped table-bordered" cellspacing="0" width="100%">' +--}}
+                                {{--' <thead> <tr> <th>Sản phẩm</th> <th>Doanh số</th></tr></thead><tbody>';--}}
+
+                        {{--table.forEach(function (value) {--}}
+                            {{--string += '<tr>';--}}
+                            {{--string += '<td>';--}}
+                            {{--string += value.name;--}}
+                            {{--string += '</td>';--}}
+                            {{--string += '<td>';--}}
+                            {{--string += value.y;--}}
+                            {{--string += '</td>';--}}
+
+                            {{--string += '</tr>';--}}
+
+                        {{--});--}}
+                        {{--string += '</tbody></table>';--}}
+                        {{--$('#tableData').html(string);--}}
+                    {{--}--}}
+
+
+                {{--},--}}
+                {{--error: function (err) {--}}
+                    {{--console.log(err);--}}
+                {{--}--}}
+            {{--});--}}
         {{--});--}}
-        {{--}--}}
-        {{--if (data.chart) {--}}
-        {{--while (chartSp.series.length > 0) {--}}
-        {{--chartSp.series[0].remove(false);--}}
-        {{--}--}}
-        {{--chartSp.redraw();--}}
-        {{--chartSp.addSeries(--}}
-        {{--{--}}
-        {{--name: 'S/p',--}}
-        {{--colorByPoint: true,--}}
-        {{--data: data.chart--}}
-        {{--}--}}
-        {{--)--}}
-        {{--}--}}
-        {{--if (data.table) {--}}
-        {{--$('#tableData').html('');--}}
-        {{--var table = data.table;--}}
-        {{--var string = '<table class="table table-striped table-bordered" cellspacing="0" width="100%">' +--}}
-        {{--' <thead> <tr> <th>Sản phẩm</th> <th>Doanh số</th></tr></thead><tbody>';--}}
-        {{--table.forEach(function (value) {--}}
-        {{--string += '<tr>';--}}
-        {{--string += '<td>';--}}
-        {{--string += value.name;--}}
-        {{--string += '</td>';--}}
-        {{--string += '<td>';--}}
-        {{--string += value.y;--}}
-        {{--string += '</td>';--}}
-        {{--string += '</tr>';--}}
-        {{--});--}}
-        {{--string += '</tbody></table>';--}}
-        {{--$('#tableData').html(string);--}}
-        {{--}--}}
-        {{--},--}}
-        {{--error: function (err) {--}}
-        {{--console.log(err);--}}
-        {{--}--}}
-        {{--});--}}
-        {{--});--}}
+
         //map
         var polygonArray = [];
         map = new GMaps({
@@ -365,11 +387,11 @@
                     maxZoom: 11,
                     imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'
                 });
-                //  onClick OVERRIDE
                 markerCluster.onClick = function(clickedClusterIcon) {
                     alert(1);
                     return multiChoice(clickedClusterIcon.cluster_);
                 }
+
                 return markerCluster;
             }
         });
@@ -433,15 +455,17 @@
         var contentString = '<div id="content">' +
                 '<p id="name">' + "{{$agent->name}}" + '</p>' +
                 '<p id="manager">' + '{{$agent->user->email}}' + '</p>' +
-                '</div>';
+                        '</div>';
         var infoWindow = new google.maps.InfoWindow({
             content: contentString
         });
+
         var marker = map.addMarker({
             lat: "{{$agent->lat}}",
             lng: "{{$agent->lng}}",
             title: "{{$agent->name}}",
         });
+
         map.drawOverlay({
             lat: "{{$agent->lat}}",
             lng: "{{$agent->lng}}",
@@ -462,7 +486,6 @@
                 $('.overlay_agents').css({"display":"block"});
                 $.each(map.markers,function(){this.setMap(map.map)});
             }
-        });
         //cluster function to do stuff
         function multiChoice(clickedCluster)
         {
@@ -480,15 +503,20 @@
                     '<p>testing blah blah</p>',
                     position: clickedCluster.center_
                 });
+
                 //show the window
                 infowindow.open(clickedCluster.map_);
+
                 return false;
             }
             return true;
         };
+
         // search
+
         $( ".search_type" ).change(function() {
             var search_type = $(this).val();
+
             if (search_type == 1) {
                 getListAreas();
             } else if (search_type == 2) {
@@ -607,13 +635,16 @@
                     polygonArray[item.id] = polygon;
                 }
             });
+
             $.map(data.agents, function (item) {
                 var contentString = '<div id="content">' +
                     '<p id="name">' + item.name + '</p>' +
                     '</div>';
+
                 var infoWindow = new google.maps.InfoWindow({
                     content: contentString
                 });
+
                 map.addMarker({
                     lat: item.lat,
                     lng: item.lng,
@@ -625,6 +656,7 @@
                 });
             });
         }
+
         function getListSaleAdmins() {
             $("#type_search").val('sale_admins');
             $(".data_search").select2({
@@ -656,6 +688,7 @@
                 }
             });
         }
+
         function getListSaleMans() {
             $("#type_search").val('sale_mans');
             $(".data_search").select2({
@@ -687,6 +720,7 @@
                 }
             });
         }
+
         function showDataSales(data) {
             var polygonArray = [];
             console.log(data);
@@ -696,6 +730,7 @@
                     var coordinate = JSON.parse(c);
                     var border_color = '#333';
                     var background_color = '#333';
+
                     if (coordinate) {
                         var bounds = new google.maps.LatLngBounds();
                         for (i = 0; i < coordinate.length; i++) {
@@ -704,6 +739,7 @@
                         }
                         var path = coordinate;
                         map.setCenter(bounds.getCenter().lat(), bounds.getCenter().lng());
+
                         polygon = map.drawPolygon({
                             paths: path,
                             strokeColor: border_color,
@@ -716,13 +752,17 @@
                     }
                 });
             });
+
             $.map(data.agents, function (item) {
+
                 var contentString = '<div id="content">' +
                     '<p id="name">' + item.name + '</p>' +
                     '</div>';
+
                 var infoWindow = new google.maps.InfoWindow({
                     content: contentString
                 });
+
                 map.addMarker({
                     lat: item.lat,
                     lng: item.lng,
@@ -744,6 +784,7 @@
                 });
             });
         }
+
         function getListAgents() {
             $("#type_search").val('agents');
             $(".data_search").select2({
@@ -775,6 +816,7 @@
                 }
             });
         }
+
         function showDataAgents(data) {
             var polygonArray = [];
             $.map(data.locations, function (item) {
@@ -823,9 +865,11 @@
             var contentString = '<div id="content">' +
                 '<p id="name">' + data.agents.name + '</p>' +
                 '</div>';
+
             var infoWindow = new google.maps.InfoWindow({
                 content: contentString
             });
+
             map.addMarker({
                 lat:  data.agents.lat,
                 lng:  data.agents.lng,
@@ -837,5 +881,6 @@
             });
         }
     });
+
 </script>
 @endpush

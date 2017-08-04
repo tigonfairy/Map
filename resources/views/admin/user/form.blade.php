@@ -56,33 +56,25 @@
                     <div class="help-block">{{ $errors->first('code') }}</div>
                   @endif
                 </div>
-
-                <!---------- Manager ID------------>
-                <div class="form-group {{ $errors->has('manager_id') ? 'has-error has-feedback' : '' }}">
-                  <label for="name" class="control-label text-semibold">Người Quản Lý</label>
-                  <i class="icon-question4 text-muted text-size-mini cursor-pointer js-help-icon" data-content="Người Quản Lý"></i>
-                  <select name="manager_id" class="form-control">
-                    <option value="">-- Chọn quản lý --</option>
-                    @foreach($users as $id => $name)
-                      <option value="{{ $id }}" {{ $id == @$user->manager_id ? "selected=selected" : ""}}>{{ $name }}</option>
-                    @endforeach
-                  </select>
-                  @if ($errors->has('manager_id'))
+                <div class="form-group {{ $errors->has('phone') ? 'has-error has-feedback' : '' }}">
+                  <label for="name" class="control-label text-semibold">Số điện thoại</label>
+                  <i class="icon-question4 text-muted text-size-mini cursor-pointer js-help-icon" data-content="Mã nhân viên"></i>
+                  <input type="text" id="code" name="phone" class="form-control" value="{{ old('phone') ?: @$user->phone }}" />
+                  @if ($errors->has('code'))
                     <div class="form-control-feedback">
                       <i class="icon-notification2"></i>
                     </div>
-                    <div class="help-block">{{ $errors->first('manager_id') }}</div>
+                    <div class="help-block">{{ $errors->first('phone') }}</div>
                   @endif
                 </div>
-
                 <!---------- Position ------------>
                 <div class="form-group {{ $errors->has('code') ? 'has-error has-feedback' : '' }}">
-                  <label for="name" class="control-label text-semibold">Vị trí</label>
+                  <label for="name" class="control-label text-semibold">Chức vụ</label>
                   <i class="icon-question4 text-muted text-size-mini cursor-pointer js-help-icon" data-content="Vị trí"></i>
                   {{--<input type="text" id="position" name="position" class="form-control" value="{{ old('code') ?: @$user->position }}" />--}}
-                    <?php  $positions = config('map.positions')  ?>
-                  <select name="position" class="form-control">
-                    <option value="">-- Chọn vị trí --</option>
+                    <?php  $positions = \App\Models\User::$positionTexts;  ?>
+                  <select name="position" id="position" class="form-control">
+                    <option value="">-- Chọn chức vụ --</option>
                     @foreach($positions as $key => $value)
                       <option value="{{ $key }}" {{ $key == @$user->position ? "selected=selected" : ""}}>{{ $value }}</option>
                     @endforeach
@@ -95,6 +87,23 @@
                     <div class="help-block">{{ $errors->first('position') }}</div>
                   @endif
                 </div>
+                <!---------- Manager ID------------>
+                <div class="form-group {{ $errors->has('manager_id') ? 'has-error has-feedback' : '' }}">
+                  <label for="name" class="control-label text-semibold">Người Quản Lý</label>
+                  <i class="icon-question4 text-muted text-size-mini cursor-pointer js-help-icon" data-content="Người Quản Lý"></i>
+                  <select name="manager_id" id="manager" class="form-control">
+
+
+                  </select>
+                  @if ($errors->has('manager_id'))
+                    <div class="form-control-feedback">
+                      <i class="icon-notification2"></i>
+                    </div>
+                    <div class="help-block">{{ $errors->first('manager_id') }}</div>
+                  @endif
+                </div>
+
+
 
                   <!------------------ Email--------------->
                   <div class="form-group {{ $errors->has('email') ? 'has-error has-feedback' : '' }}">
@@ -137,7 +146,7 @@
                 <!---------- Status ------------>
                 <div class="form-group {{ $errors->has('status') ? 'has-error has-feedback' : '' }}">
                   <label for="name" class="control-label text-semibold">Trạng thái</label>
-                  <i class="icon-question4 text-muted text-size-mini cursor-pointer js-help-icon" data-content="Người Quản Lý"></i>
+                  <i class="icon-question4 text-muted text-size-mini cursor-pointer js-help-icon" data-content="Trạng thái"></i>
                   <select name="status" class="form-control">
                       <option value="{{ 1 }}" {{ 1 == @$user->status ? "selected=selected" : ""}}>{{ trans('home.active') }}</option>
                       <option value="{{ 0 }}" {{ 2 == @$user->status ? "selected=selected" : ""}}>{{ trans('home.inactive') }}</option>
@@ -146,39 +155,39 @@
                     <div class="form-control-feedback">
                       <i class="icon-notification2"></i>
                     </div>
-                    <div class="help-block">{{ $errors->first('manager_id') }}</div>
+                    <div class="help-block">{{ $errors->first('status') }}</div>
                   @endif
                 </div>
 
-                    <div class="panel panel-flat">
-                      <div class="table-responsive">
-                        <table class="table table-hover">
-                          <thead>
-                          <tr>
-                            <th>Group</th>
-                            <th>Action</th>
-                          </tr>
-                          </thead>
-                          <tbody>
-                          @foreach($roles as $row)
-                          <tr role="row" id="">
-                            <td>{{$row->name}}</td>
-                            <td>
-                                <div class="checkbox">
-                                  <label>
-                                    <input type="radio" id="" name="role[]" value="{{$row->id}}" {{ isset($userRoles[$row->id]) ? ' checked="checked"' : ''  }}  class="js-checkbox">
-                                  </label>
-                                </div>
-                            </td>
-                          </tr>
-                            @endforeach
-                          </tbody>
-                        </table>
+                    {{--<div class="panel panel-flat">--}}
+                      {{--<div class="table-responsive">--}}
+                        {{--<table class="table table-hover">--}}
+                          {{--<thead>--}}
+                          {{--<tr>--}}
+                            {{--<th>Group</th>--}}
+                            {{--<th>Action</th>--}}
+                          {{--</tr>--}}
+                          {{--</thead>--}}
+                          {{--<tbody>--}}
+                          {{--@foreach($roles as $row)--}}
+                          {{--<tr role="row" id="">--}}
+                            {{--<td>{{$row->name}}</td>--}}
+                            {{--<td>--}}
+                                {{--<div class="checkbox">--}}
+                                  {{--<label>--}}
+                                    {{--<input type="radio" id="" name="role[]" value="{{$row->id}}" {{ isset($userRoles[$row->id]) ? ' checked="checked"' : ''  }}  class="js-checkbox">--}}
+                                  {{--</label>--}}
+                                {{--</div>--}}
+                            {{--</td>--}}
+                          {{--</tr>--}}
+                            {{--@endforeach--}}
+                          {{--</tbody>--}}
+                        {{--</table>--}}
 
 
-                      </div>
+                      {{--</div>--}}
 
-                    </div>
+                    {{--</div>--}}
 
 
                     {{--<div class="panel panel-flat">--}}
@@ -252,12 +261,31 @@
 <script>
   $(document).ready(function () {
     // Basic
-    $(".js-select").select2();
+//    $("#position").select2();
 
     //
     // Select with icons
     //
+  $('#position').change(function(){
+     var value = $(this).val();
+      $.ajax({
+          method: "post",
+          url: "{{ route('Admin::user@getAccountPosition') }}",
+          headers: {
+              'X-CSRF-Token': "{{ csrf_token() }}"
+          },
+          data: {
+              position: value
+          },
+          dataType: 'html',
+          success: function(html){
+              $('#manager').html('');
+              $('#manager').append(html);
+              $('#manager').select2();
 
+          }
+      });
+  });
     // Format icon
     function iconFormat(icon) {
       var originalOption = icon.element;
@@ -281,12 +309,12 @@
     // ------------------------------
 
     // Checkboxes, radios
-    $(".js-radio, .js-checkbox").uniform({ radioClass: "choice" });
-
-    // File input
-    $(".js-file").uniform({
-      fileButtonClass: "action btn btn-default"
-    });
+//    $(".js-radio, .js-checkbox").uniform({ radioClass: "choice" });
+//
+//    // File input
+//    $(".js-file").uniform({
+//      fileButtonClass: "action btn btn-default"
+//    });
 
     $(".js-tooltip, .js-help-icon").popover({
       container: "body",

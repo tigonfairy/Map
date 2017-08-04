@@ -17,9 +17,30 @@ class User extends Authenticatable
      *
      * @var array
      */
+
+    const NVKD = 1;
+    const GSV = 2;
+    const TV = 3;
+    const GĐV = 4;
+    const SALE_ADMIN = 5;
+    const ADMIN = 6;
+
+    public static $positionTexts = [
+        self::NVKD => 'Nhân viên kinh doanh',
+        self::GSV => 'Giám sát vùng',
+        self::TV =>  ' Trưởng vùng',
+        self::GĐV =>  'Giám đốc vùng',
+        self::SALE_ADMIN =>  ' Phó GĐ kinh doanh',
+        self::ADMIN =>  'Admin',
+
+
+
+    ];
+
+
     protected $fillable = [
         'email', 'permission_id', 'remember_token', 'password', 'code', 'name', 'manager_id', 'position',
-        'lang', 'status'
+        'lang', 'status','phone'
     ];
 
     /**

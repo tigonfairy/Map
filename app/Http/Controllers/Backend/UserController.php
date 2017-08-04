@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers\Backend;
 
+use App\Account;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Models\Role;
 use App\Models\Permission;
+use Validator;
 class UserController extends AdminController
 {
 
@@ -37,16 +39,17 @@ class UserController extends AdminController
         if (auth()->user()->roles->first()['id'] == 3) {
             abort(403);
         }
-        $this->validate($request,[
-            'name' =>'required',
+        Validator::make($request->all(), [
+            'name' => 'required',
             'code' =>'required',
+            'phone' =>'required',
             'position' =>'required',
-            'email' =>'required|email',
+            'email' =>'required|email|unique:users',
             'status' =>'required',
             'password' => 'required',
             'password_confirmation' => 'required|same:password'
+        ])->validate();
 
-        ]);
         $data = $request->all();
         if (!($password = $request->input('password'))) {
             $password = str_random(12);
@@ -76,10 +79,10 @@ class UserController extends AdminController
             abort(403);
         }
         $user = User::findOrFail($id);
-        $roles = Role::all();
-        $userRoles = $user->roles->keyBy('id');
-        $userPermissions = $user->permissions->keyBy('id');
-        $permission = Permission::all();
+//        $roles = Role::all();
+//        $userRoles = $user->roles->keyBy('id');
+//        $userPermissions = $user->permissions->keyBy('id');
+//        $permission = Permission::all();
         $users = User::pluck('name', 'id')->all();
         return view('admin.user.form', compact('user','roles', 'userRoles', 'permission', 'userPermissions', 'users'));
     }
@@ -95,7 +98,8 @@ class UserController extends AdminController
             'name' =>'required',
             'code' =>'required',
             'status' =>'required',
-            'position' =>'required'
+            'position' =>'required',
+            'phone' =>'required',
         ]);
 
         $data = $request->all();
@@ -106,16 +110,7 @@ class UserController extends AdminController
         }
 
         $user->roles()->sync($request->input('role',[]));
-//        $permissions = [];
-//
-//
-//        foreach($request->input('status',[]) as $permissionId => $value) {
-//
-//            $permissions[$permissionId] = ['value' => $value];
-//
-//        }
-//
-//        $user->permissions()->sync($permissions);
+
 
         $user->update($data);
 
@@ -140,5 +135,17 @@ class UserController extends AdminController
             abort(403);
         }
         return User::getDatatables();
+    }
+    public function getAccountPosition(Request $request) {
+        $position = $request->input('position');
+        if(empty($position)) {
+            return '';
+        }
+        if($position == User::NVKD) {
+            $users = User::whereIn('position',[User::GSV,User::TV])->get();
+        }else {
+            $users = User::where('position',$position+1)->get();
+        }
+        return view('admin.user.get_position',compact('users'));
     }
 }
