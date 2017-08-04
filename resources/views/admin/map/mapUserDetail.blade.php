@@ -49,25 +49,25 @@
                     </div>
 
                     {{--@if(count($products))--}}
-                        {{--<table class="table table-striped table-bordered" cellspacing="0" width="100%" id="users-table">--}}
-                            {{--<thead>--}}
-                            {{--<tr>--}}
-                                {{--<th>{{ trans('home.Product') }}</th>--}}
-                                {{--<th>{{ trans('home.sale_plan') }}</th>--}}
-                                {{--<th>{{ trans('home.sale_real') }}</th>--}}
-                            {{--</tr>--}}
-                            {{--</thead>--}}
-                            {{--<tbody>--}}
-                            {{--@foreach($products as $p)--}}
-                                {{--<tr role="row" id="">--}}
-                                    {{--<td>{{$p->name}}</td>--}}
-                                    {{--<td>{{$p->sales_plan}}</td>--}}
-                                    {{--<td>{{$p->sales_real}}</td>--}}
+                    {{--<table class="table table-striped table-bordered" cellspacing="0" width="100%" id="users-table">--}}
+                    {{--<thead>--}}
+                    {{--<tr>--}}
+                    {{--<th>{{ trans('home.Product') }}</th>--}}
+                    {{--<th>{{ trans('home.sale_plan') }}</th>--}}
+                    {{--<th>{{ trans('home.sale_real') }}</th>--}}
+                    {{--</tr>--}}
+                    {{--</thead>--}}
+                    {{--<tbody>--}}
+                    {{--@foreach($products as $p)--}}
+                    {{--<tr role="row" id="">--}}
+                    {{--<td>{{$p->name}}</td>--}}
+                    {{--<td>{{$p->sales_plan}}</td>--}}
+                    {{--<td>{{$p->sales_real}}</td>--}}
 
-                                {{--</tr>--}}
-                            {{--@endforeach--}}
-                            {{--</tbody>--}}
-                        {{--</table>--}}
+                    {{--</tr>--}}
+                    {{--@endforeach--}}
+                    {{--</tbody>--}}
+                    {{--</table>--}}
                     {{--@endif--}}
                 </div>
                 <br>
@@ -107,7 +107,6 @@
                 window.location.href = url;
             }
         });
-
         var heightPageContent = $('.page-content').height();
         var heightPageHeader = $('.page-header-content').height();
         $('.baomap').height(heightPageContent - heightPageHeader);
@@ -118,23 +117,20 @@
             lng: 105.83415979999995,
             width: "100%",
             height: '100%',
-            zoom: 15,
+            zoom: 11,
             fullscreenControl: true,
             markerClusterer: function(map) {
                 markerCluster = new MarkerClusterer(map, [], {
                     maxZoom: 15,
                     imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'
                 });
-
                 // onClick OVERRIDE
 //                markerCluster.onClick = function(clickedClusterIcon) {
 //                    return multiChoice(clickedClusterIcon.cluster_);
 //                }
-
                 return markerCluster;
             }
         });
-
         var Totalbounds = new google.maps.LatLngBounds();
                 @foreach($locations as $location)
         var c = "{{$location->coordinates}}";
@@ -161,7 +157,7 @@
             map.drawOverlay({
                 lat: bounds.getCenter().lat(),
                 lng: bounds.getCenter().lng(),
-                content: '<div class="overlay_agents">{{$location->name}}</div>'
+                content: '<div class="overlay">{{$location->name}}</div>'
             });
             var infoWindow{{$location->id}} = new google.maps.InfoWindow({
                 content: "<p>{{$location->name}}</p>"
@@ -184,22 +180,18 @@
                     }
                 }
             });
-
             polygonArray["{{$location->id}}"] = polygon;
         }
-        @endforeach
-
-       @foreach($agents as $agent)
+                @endforeach
+                @foreach($agents as $agent)
         var contentString = '<div id="content">' +
                 '<p id="name">' + "{{$agent->name}}" + '</p>' +
                 '<p id="manager">' + '{{$agent->user->email}}' + '</p>' +
-
                 '</div>';
-            var infoWindow = new google.maps.InfoWindow({
-                content: contentString
-            });
-
-          map.addMarker({
+        var infoWindow = new google.maps.InfoWindow({
+            content: contentString
+        });
+        map.addMarker({
             lat: "{{$agent->lat}}",
             lng: "{{$agent->lng}}",
             title:  "{{$agent->name}}",
@@ -208,39 +200,32 @@
 //                infoWindow.open(map.map);
             }
         });
-
         map.drawOverlay({
             lat: "{{$agent->lat}}",
             lng: "{{$agent->lng}}",
-            content: '<div class="">{{$agent->name}}</div>'
+            content: '<div class="overlay_agent">{{$agent->name}}</div>'
         });
         @endforeach
-       map.fitBounds(Totalbounds);
-        map.panToBounds(Totalbounds);
-
         {{--var contentString = '<table class="table table-striped table-bordered" cellspacing="0" width="100%" id="data-table">' +--}}
-            {{--'<thead><tr>' +--}}
-            {{--'<th>{{ trans('home.Product') }}</th>' +--}}
-            {{--'<th>{{ trans('home.sale_plan') }}</th>' +--}}
-            {{--'<th>{{ trans('home.sale_real') }}</th>'+--}}
-            {{--'</tr> </thead>'+--}}
-                {{--@if(count($products))--}}
-                        {{--@foreach($products as $p)--}}
-                    {{--'<tr role="row" class="tr_{{ $p->product_id }}" id="tr_{{ $p->product_id }}">' +--}}
-            {{--'<td>{{$p->name}}</td>' +--}}
-            {{--'<td>{{$p->sales_plan}}</td>' +--}}
-            {{--'<td>{{$p->sales_real}}</td>' +--}}
-            {{--'</tr>' +--}}
-                {{--@endforeach--}}
-                        {{--@endif--}}
-                    {{--'</table>';--}}
-
+        {{--'<thead><tr>' +--}}
+        {{--'<th>{{ trans('home.Product') }}</th>' +--}}
+        {{--'<th>{{ trans('home.sale_plan') }}</th>' +--}}
+        {{--'<th>{{ trans('home.sale_real') }}</th>'+--}}
+        {{--'</tr> </thead>'+--}}
+        {{--@if(count($products))--}}
+        {{--@foreach($products as $p)--}}
+        {{--'<tr role="row" class="tr_{{ $p->product_id }}" id="tr_{{ $p->product_id }}">' +--}}
+        {{--'<td>{{$p->name}}</td>' +--}}
+        {{--'<td>{{$p->sales_plan}}</td>' +--}}
+        {{--'<td>{{$p->sales_real}}</td>' +--}}
+        {{--'</tr>' +--}}
+        {{--@endforeach--}}
+        {{--@endif--}}
+        {{--'</table>';--}}
         {{--var infoWindow = new google.maps.InfoWindow({--}}
-            {{--content: contentString--}}
+        {{--content: contentString--}}
         {{--});--}}
-
         @if(count($products))
-
         // a  div where we will place the buttons
         var ctrl = '<ul id="checkbox" class="checkboxList">' +
             '<li><label><input type="checkbox" name="select_all" value="0" id="select_all">Tất cả</label></li>' +
@@ -248,12 +233,10 @@
                     '<li><label><input type="checkbox" class="checkbox" name="{{ $product->name }}" value="{{ $product->product_id }}">{{ $product->name }}</label></li>' +
                 @endforeach
                     '</ul>';
-
         map.addControl({
             position: 'bottom_right',
             content: ctrl,
         });
-
         var tableSales = '<table class="table table-striped table-bordered table-products" cellspacing="0" width="100%" id="data-table">' +
             '<thead><tr>' +
             '<th>{{ trans('home.Product') }}</th>' +
@@ -270,23 +253,18 @@
                 @endforeach
                         @endif
                     '</table>';
-
         map.addControl({
             position: 'bottom_left',
-            content: tableSales,
+            content: tableSales
         });
-
-
         // khoi tao mang productIds
         var productIds = [];
         @foreach($products as $product)
             productIds.push('{{$product->product_id}}');
         @endforeach
-
         // khoi tao mang checked
         var checked = [];
         var unchecked = [];
-
         $(document).on('click', '#select_all', function() {
             checked=[];
             if(this.checked) {
@@ -297,7 +275,6 @@
                 $('#checkbox :checkbox').each(function() {
                     this.checked = true;
                 });
-
                 var unique = Array.from(new Set(checked));
                 $.each(unique, function( index, value ) {
                     $('#tr_' + value).show();
@@ -308,9 +285,7 @@
                     this.checked = false;
                 });
             }
-
         });
-
         $(document).on('change', '.checkbox', function() {
             $('#select_all').attr('checked', false);
             if(this.checked) {
@@ -318,13 +293,10 @@
             } else {
                 removeA(checked, $(this).val());
             }
-
             unchecked = arr_diff(productIds, checked);
-
             $.each(checked, function( index, value ) {
                 $('#tr_' + value).show();
             });
-
             if(unchecked.length != productIds.length) {
                 $.each(unchecked, function( index, value ) {
                     $('#tr_' + value).hide();
@@ -334,24 +306,23 @@
                     $('#tr_' + value).show();
                 });
             }
-
-
         });
-
         @endif
-
-//        map.addListener('zoom_changed', function () {
-//            var zoom = map.getZoom();
-//            if (zoom < 15) {
-//                $('.overlay_agents').css({"display":"none"});
-//                $.each(map.markers,function(){this.setMap(null)});
-//            } else {
-//                $('.overlay_agents').css({"display":"block"});
-//                $.each(map.markers,function(){this.setMap(map.map)});
-//            }
-//        });
-
-
+        map.fitBounds(Totalbounds);
+        map.panToBounds(Totalbounds);
+//        $('.overlay_agent').css({"display":"none"});
+//        console.log(map.getZoom());
+        map.addListener('zoom_changed', function () {
+            var zoom = map.getZoom();
+            console.log(zoom);
+            if (zoom < 10) {
+                $('.overlay_agent').css({"display":"none"});
+                $.each(map.markers,function(){this.setMap(null)});
+            } else {
+                $('.overlay_agent').css({"display":"block"});
+                $.each(map.markers,function(){this.setMap(map.map)});
+            }
+        });
     });
     function removeA(arr) {
         var what, a = arguments, L = a.length, ax;
@@ -363,15 +334,11 @@
         }
         return arr;
     }
-
     function arr_diff (a1, a2) {
-
         var a = [], diff = [];
-
         for (var i = 0; i < a1.length; i++) {
             a[a1[i]] = true;
         }
-
         for (var i = 0; i < a2.length; i++) {
             if (a[a2[i]]) {
                 delete a[a2[i]];
@@ -379,11 +346,9 @@
                 a[a2[i]] = true;
             }
         }
-
         for (var k in a) {
             diff.push(k);
         }
-
         return diff;
     };
     //    $('#change-button-size-map').on('change.bootstrapSwitch', function(e, state) {
@@ -398,8 +363,5 @@
     //            window.location.href = url;
     //        }
     //    });
-
-
 </script>
-
 @endpush
