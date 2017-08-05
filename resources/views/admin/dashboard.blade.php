@@ -20,6 +20,23 @@
                 column-count: 2;
             }
         }
+        .info {
+            z-index: 99999;
+
+        }
+        .data {
+            border: 1px solid yellow;
+            background-color: yellow;
+            color: red;
+            font-size: 12px;
+            float: left;
+        }
+        .info_user {
+            list-style: none;
+            font-size: 12px;
+            margin-left: 10px;
+            float: left;
+        }
     </style>
     <!-- BEGIN PAGE HEADER-->
     <!-- BEGIN PAGE TITLE-->
@@ -725,7 +742,7 @@
 
             function showDataSales(data) {
                 var polygonArray = [];
-                console.log(data);
+
                 $.map(data.locations, function (location) {
                     $.map(location, function (item) {
                         var c = item.coordinates;
@@ -840,9 +857,7 @@
                         }
                         var path = coordinate;
                         map.setCenter(bounds.getCenter().lat(), bounds.getCenter().lng());
-                        var infoWindow = new google.maps.InfoWindow({
-                            content: "<p>" + item.name + "</p>"
-                        });
+
                         polygon = map.drawPolygon({
                             paths: path,
                             strokeColor: border_color,
@@ -850,16 +865,7 @@
                             strokeWeight: 1,
                             fillColor: background_color,
                             fillOpacity: 0.4,
-                            mouseover: function (clickEvent) {
-                                var position = clickEvent.latLng;
-                                infoWindow.setPosition(position);
-                                infoWindow.open(map.map);
-                            },
-                            mouseout: function (clickEvent) {
-                                if (infoWindow) {
-                                    infoWindow.close();
-                                }
-                            }
+
                         });
                         polygonArray[item.id] = polygon;
                     }
@@ -876,10 +882,24 @@
                     lat:  data.agents.lat,
                     lng:  data.agents.lng,
                     title:   data.agents.name,
-                    click: function (e) {
-                        infoWindow.setPosition({lat: e.position.lat(), lng: e.position.lng()});
-                        infoWindow.open(map.map);
-                    }
+                });
+
+                var area = data.area;
+                var user = data.user;
+
+                map.drawOverlay({
+                    lat: data.agents.lat,
+                    lng: data.agents.lng,
+                    content: '<div class="info">' +
+                                '<h5>' + data.agents.name + '</h5>' +
+                                '<div class="user_data">' +
+                                    '<p class="data">%TT 100/10000 = 18%</p>' +
+                                    '<ul class="info_user">' +
+                                    '<li>'  + user.name + '</li>' +
+                                    '<li>'  + area.name + '</li>' +
+                                    '</ul>' +
+                                '</div>' +
+                            '</div>'
                 });
             }
 

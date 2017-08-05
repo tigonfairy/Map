@@ -487,10 +487,12 @@ class MapController extends AdminController
         if($typeSearch == 'agents') {
             $agent = Agent::findOrFail($dataSearch);
             $area=$agent->area;
+            $user=$agent->user;
             $locations=$area->address;
 
             return response()->json([
                 'area' =>  $area,
+                'user' => $user,
                 'locations' =>  $locations,
                 'agents' =>  $agent,
             ]);
