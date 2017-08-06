@@ -8,7 +8,7 @@ use App\Models\Product;
 use Illuminate\Http\Request;
 use App\Models\GroupProduct;
 use App\Http\Controllers\Controller;
-
+use App\Jobs\ImportProduct;
 class ProductController extends AdminController
 {
     public function index(Request $request)
@@ -188,29 +188,12 @@ class ProductController extends AdminController
             $response['status'] = 'fails';
             $response['errors'] = $validator->errors();
         } else {
-            $groupProductIds = GroupProduct::pluck('code', 'id')->toArray();
 
             $file = request()->file('file');
-            Excel::load($file,function($reader) use($groupProductIds) {
-                $reader->each(function ($sheet) use($groupProductIds) {
-                    $product = Product::where('code', $sheet->code)->first();
-                    if(count($product) > 0) {
-                        $product->forceFill([
-                            'name' => $sheet->name_vn ? $sheet->name_vn : '',
-                            'nameEng' => $sheet->name_eng ? $sheet->name_eng : '',
-                            'code' => $sheet->code ? $sheet->code : '',
-                            'parent_id' => '',
-                        ])->save();
-                    } else {
-                        Product::forceCreate([
-                            'name' => $sheet->name_vn ? $sheet->name_vn : '',
-                            'nameEng' => $sheet->name_eng ? $sheet->name_eng : '',
-                            'code' => $sheet->code ? $sheet->code : '',
-                            'parent_id' => array_search($sheet->parent_id, $groupProductIds,true) ? array_search($sheet->parent_id, $groupProductIds,true) : 0,
-                        ]);
-                    }
-                });
-            });
+            $filename = time() . '_' . mt_rand(1111, 9999) . '_' . $request->file('file')->getClientOriginalName();
+            $request->file('file')->move(storage_path('app/import/products'), $filename);
+            $this->dispatch(new ImportProduct( storage_path('app/import/products/' . $filename)));
+
             flash()->success('Success!', 'Product Supplier successfully updated.');
             $response['status'] = 'success';
         }

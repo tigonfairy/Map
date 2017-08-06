@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Product extends Model
 {
+    protected $fillable = ['name_vn','name_en','code','name_code','product_id','parent_id','level'
+    ];
     public static function getDatatables()
     {
         $model = static::select([
@@ -38,7 +40,11 @@ class Product extends Model
             ->editColumn('group', function ($model) {
                 $group = $model->group;
                 if($group) {
-                    return $group->name;
+                   $raw_locale = \Session::get('locale');
+                    if($raw_locale != null and $raw_locale == 'en') {
+                        return ($group->name_en) ? $group->name_en : $group->name_vn;
+                    }
+                    return $group->name_vn;
                 }
                 return '';
             })

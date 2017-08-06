@@ -27,13 +27,13 @@ class GroupProductController extends AdminController
     {
 
         $this->validate($request,[
-            'name' =>'required',
+            'name_vn' =>'required',
             'code' =>'required',
         ]);
 
         GroupProduct::forceCreate([
-                'name' => $request->input('name'),
-                'nameEng' => $request->input('nameEng'),
+                'name_vn' => $request->input('name_vn'),
+                'name_en' => $request->input('name_en'),
                 'code' => $request->input('code'),
         ]);
         return redirect()->route('Admin::group_product@index')
@@ -54,13 +54,13 @@ class GroupProductController extends AdminController
         $product = GroupProduct::findOrFail($id);
 
         $this->validate($request,[
-            'name' =>'required',
+            'name_vn' =>'required',
             'code' =>'required',
         ]);
 
         $product->forceFill([
-            'name' => $request->input('name'),
-            'nameEng' => $request->input('nameEng'),
+            'name_vn' => $request->input('name_vn'),
+            'name_en' => $request->input('name_en'),
             'code' => $request->input('code'),
         ])->save();
 
