@@ -6,7 +6,6 @@
             -moz-column-count: 2; /* Firefox */
             column-count: 2;
         }
-
         @media (max-width: 768px) {
             .ct {
                 -webkit-column-count: 1; /* Chrome, Safari, Opera */
@@ -14,7 +13,6 @@
                 column-count: 1;
             }
         }
-
         @media (min-width: 992px) {
             .ct {
                 -webkit-column-count: 2; /* Chrome, Safari, Opera */
@@ -22,8 +20,23 @@
                 column-count: 2;
             }
         }
+        .info {
+            z-index: 99999;
 
-
+        }
+        .data {
+            border: 1px solid yellow;
+            background-color: yellow;
+            color: red;
+            font-size: 12px;
+            float: left;
+        }
+        .info_user {
+            list-style: none;
+            font-size: 12px;
+            margin-left: 10px;
+            float: left;
+        }
     </style>
     <!-- BEGIN PAGE HEADER-->
     <!-- BEGIN PAGE TITLE-->
@@ -391,25 +404,19 @@
                     maxZoom: 11,
                     imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'
                 });
-
-               //  onClick OVERRIDE
-                markerCluster.onClick = function(clickedClusterIcon) {
-                    alert(1);
-                    return multiChoice(clickedClusterIcon.cluster_);
-                }
+//                markerCluster.onClick = function(clickedClusterIcon) {
+//                    alert(1);
+//                    return multiChoice(clickedClusterIcon.cluster_);
+//                }
 
                 return markerCluster;
             }
         });
-
-
         var TotalBounds = new google.maps.LatLngBounds();
                 @if($locations)
                 @foreach($locations as $key => $location)
-
                 @php
                     $locat = $location['address'];
-
                     $border_color = '#333';
                     $background_color = '#333';
                     if($location['border_color']){
@@ -421,7 +428,6 @@
                 @endphp
         var c = "{{$locat->coordinates}}";
         var coordinate = JSON.parse(c);
-
         if (coordinate) {
             var bounds = new google.maps.LatLngBounds();
             for (i = 0; i < coordinate.length; i++) {
@@ -434,7 +440,7 @@
             {{--var infoWindow{{$locat->id}} = new google.maps.InfoWindow({--}}
                     {{--content: "<p>{{$locat->name}}</p>"--}}
                     {{--});--}}
-                    polygon = map.drawPolygon({
+                polygon = map.drawPolygon({
                 paths: path,
                 strokeColor: "{{$border_color}}",
                 strokeOpacity: 1,
@@ -463,10 +469,9 @@
                 @endif
         var markers = [];
                 @foreach($agents as $agent)
-
         var contentString = '<div id="content">' +
-                        '<p id="name">' + "{{$agent->name}}" + '</p>' +
-                        '<p id="manager">' + '{{$agent->user->email}}' + '</p>' +
+                '<p id="name">' + "{{$agent->name}}" + '</p>' +
+                '<p id="manager">' + '{{$agent->user->email}}' + '</p>' +
                         '</div>';
         var infoWindow = new google.maps.InfoWindow({
             content: contentString
@@ -483,55 +488,47 @@
             lng: "{{$agent->lng}}",
             content: '<div class="overlay_agents">{{$agent->name}}</div>'
         });
-
         markers.push(marker);
-
         /* Change markers on zoom */
         @endforeach
-
-     map.fitBounds(TotalBounds);
+        map.fitBounds(TotalBounds);
         map.panToBounds(TotalBounds);
-      $('.overlay_agents').css({"display":"none"});
-           map.addListener('zoom_changed', function () {
+        $('.overlay_agents').css({"display":"none"});
+        map.addListener('zoom_changed', function () {
             var zoom = map.getZoom();
             if (zoom < 10) {
                 $('.overlay_agents').css({"display":"none"});
                 $.each(map.markers,function(){this.setMap(null)});
             } else {
                 $('.overlay_agents').css({"display":"block"});
-            $.each(map.markers,function(){this.setMap(map.map)});
+                $.each(map.markers,function(){this.setMap(map.map)});
             }
-
         });
-
-        //cluster function to do stuff
-        function multiChoice(clickedCluster)
-        {
-            //clusters markers
-            var markers = clickedCluster.getMarkers();
-
-            //console check
-            console.log(clickedCluster);
-            console.log(markers);
-
-            if (markers.length > 1)
-            {
-                //content of info window
-                var infowindow = new google.maps.InfoWindow({
-                    content: ''+
-                    '<p>'+markers.length+' = length</p>'+
-                    '<p>testing blah blah</p>',
-                    position: clickedCluster.center_
-                });
-
-                //show the window
-                infowindow.open(clickedCluster.map_);
-
-                return false;
-            }
-            return true;
-        };
-
+//        //cluster function to do stuff
+//        function multiChoice(clickedCluster)
+//        {
+//            //clusters markers
+//            var markers = clickedCluster.getMarkers();
+//            //console check
+//            console.log(clickedCluster);
+//            console.log(markers);
+//            if (markers.length > 1)
+//            {
+//                //content of info window
+//                var infowindow = new google.maps.InfoWindow({
+//                    content: ''+
+//                    '<p>'+markers.length+' = length</p>'+
+//                    '<p>testing blah blah</p>',
+//                    position: clickedCluster.center_
+//                });
+//
+//                //show the window
+//                infowindow.open(clickedCluster.map_);
+//
+//                return false;
+//            }
+//            return true;
+//        }
 
         // search
 
@@ -548,7 +545,6 @@
                 getListAgents();
             }
         });
-
         $('#geocoding_form').submit(function(e){
             e.preventDefault();
             var type_search = $("#type_search").val();
@@ -558,7 +554,6 @@
                 data: $('#geocoding_form').serialize(),
                 cache: false,
                 success: function(data){
-
                     map = new GMaps({
                         div: '#map',
                         lat: 21.0277644,
@@ -568,12 +563,10 @@
                         zoom: 11,
                         fullscreenControl: true,
                     });
-
                     if (type_search == 'areas' ) {
                         showDataAreas(data);
                     }
                     if (type_search == 'sale_admins' || type_search == 'sale_mans') {
-
                         showDataSales(data);
                     }
                     if (type_search == 'agents') {
@@ -583,181 +576,279 @@
             });
         });
 
-        function getListAreas() {
-            $("#type_search").val('areas');
-            $(".data_search").select2({
-                'placeholder' : "{{'-- '. trans('home.select'). ' '. trans('home.place') .' --'}}",
-                ajax : {
-                    url : "{{route('Admin::Api::area@getListAreas')}}",
-                    dataType:'json',
-                    delay:500,
-                    data: function (params) {
-                        var queryParameters = {
-                            q: params.term
-                        }
-                        return queryParameters;
-                    },
-                    processResults: function(data, page) {
-                        return {
-                            results: $.map(data, function (item) {
-                                return {
-                                    text: item.name,
-                                    slug: item.slug,
-                                    id: item.id,
-                                    coordinates:item.coordinates
-                                }
-                            })
-                        };
-                    },
-                    dropdownCssClass: "bigdrop", // apply css that makes the dropdown taller
-                    escapeMarkup: function(m) {
-                        return m;
-                    }
-                }
-            });
-        }
-
-        function showDataAreas(data) {
-            var polygonArray = [];
-            $.map(data.locations, function (item) {
-                var c = item.coordinates;
-                var coordinate = JSON.parse(c);
-                var border_color = '#333';
-                var background_color = '#333';
-                if(data.area.border_color){
-                    border_color = data.area.border_color;
-                }
-                if(data.area.background_color){
-                    background_color = data.area.background_color;
-                }
-                if (coordinate) {
-                    var bounds = new google.maps.LatLngBounds();
-                    for (i = 0; i < coordinate.length; i++) {
-                        var c = coordinate[i];
-                        bounds.extend(new google.maps.LatLng(c[0], c[1]));
-                    }
-                    var path = coordinate;
-                    map.setCenter(bounds.getCenter().lat(), bounds.getCenter().lng());
-                    var infoWindow = new google.maps.InfoWindow({
-                        content: "<p>" + item.name + "</p>"
-                    });
-                    polygon = map.drawPolygon({
-                        paths: path,
-                        strokeColor: border_color,
-                        strokeOpacity: 1,
-                        strokeWeight: 1,
-                        fillColor: background_color,
-                        fillOpacity: 0.4,
-                        mouseover: function (clickEvent) {
-                            var position = clickEvent.latLng;
-                            infoWindow.setPosition(position);
-                            infoWindow.open(map.map);
-                        },
-                        mouseout: function (clickEvent) {
-                            if (infoWindow) {
-                                infoWindow.close();
+            function getListAreas() {
+                $("#type_search").val('areas');
+                $(".data_search").select2({
+                    'placeholder' : "{{'-- '. trans('home.select'). ' '. trans('home.place') .' --'}}",
+                    ajax : {
+                        url : "{{route('Admin::Api::area@getListAreas')}}",
+                        dataType:'json',
+                        delay:500,
+                        data: function (params) {
+                            var queryParameters = {
+                                q: params.term
                             }
+                            return queryParameters;
+                        },
+                        processResults: function(data, page) {
+                            return {
+                                results: $.map(data, function (item) {
+                                    return {
+                                        text: item.name,
+                                        slug: item.slug,
+                                        id: item.id,
+                                        coordinates:item.coordinates
+                                    }
+                                })
+                            };
+                        },
+                        dropdownCssClass: "bigdrop", // apply css that makes the dropdown taller
+                        escapeMarkup: function(m) {
+                            return m;
                         }
-                    });
-                    polygonArray[item.id] = polygon;
-                }
-            });
-
-            $.map(data.agents, function (item) {
-                var contentString = '<div id="content">' +
-                    '<p id="name">' + item.name + '</p>' +
-                    '</div>';
-
-                var infoWindow = new google.maps.InfoWindow({
-                    content: contentString
-                });
-
-                map.addMarker({
-                    lat: item.lat,
-                    lng: item.lng,
-                    title:  item.name,
-                    click: function (e) {
-                        infoWindow.setPosition({lat: e.position.lat(), lng: e.position.lng()});
-                        infoWindow.open(map.map);
                     }
                 });
-            });
-        }
-
-        function getListSaleAdmins() {
-            $("#type_search").val('sale_admins');
-            $(".data_search").select2({
-                'placeholder' : "{{'-- '. trans('home.select'). ' '. trans('home.manager') .' --'}}",
-                ajax : {
-                    url : "{{route('Admin::Api::sale@getListAdmins')}}",
-                    dataType:'json',
-                    delay:500,
-                    data: function (params) {
-                        var queryParameters = {
-                            q: params.term
-                        }
-                        return queryParameters;
-                    },
-                    processResults: function(data, page) {
-                        return {
-                            results: $.map(data, function (item) {
-                                return {
-                                    text: item.name,
-                                    id: item.id,
-                                }
-                            })
-                        };
-                    },
-                    dropdownCssClass: "bigdrop", // apply css that makes the dropdown taller
-                    escapeMarkup: function(m) {
-                        return m;
-                    }
-                }
-            });
-        }
-
-        function getListSaleMans() {
-            $("#type_search").val('sale_mans');
-            $(".data_search").select2({
-                'placeholder' : "{{'-- '. trans('home.select'). ' '. trans('home.manager') .' --'}}",
-                ajax : {
-                    url : "{{route('Admin::Api::sale@getListmans')}}",
-                    dataType:'json',
-                    delay:500,
-                    data: function (params) {
-                        var queryParameters = {
-                            q: params.term
-                        }
-                        return queryParameters;
-                    },
-                    processResults: function(data, page) {
-                        return {
-                            results: $.map(data, function (item) {
-                                return {
-                                    text: item.name,
-                                    id: item.id,
-                                }
-                            })
-                        };
-                    },
-                    dropdownCssClass: "bigdrop", // apply css that makes the dropdown taller
-                    escapeMarkup: function(m) {
-                        return m;
-                    }
-                }
-            });
-        }
-
-        function showDataSales(data) {
-            var polygonArray = [];
-            console.log(data);
-            $.map(data.locations, function (location) {
-                $.map(location, function (item) {
+            }
+            function showDataAreas(data) {
+                var polygonArray = [];
+                $.map(data.locations, function (item) {
                     var c = item.coordinates;
                     var coordinate = JSON.parse(c);
                     var border_color = '#333';
                     var background_color = '#333';
+                    if(data.area.border_color){
+                        border_color = data.area.border_color;
+                    }
+                    if(data.area.background_color){
+                        background_color = data.area.background_color;
+                    }
+                    if (coordinate) {
+                        var bounds = new google.maps.LatLngBounds();
+                        for (i = 0; i < coordinate.length; i++) {
+                            var c = coordinate[i];
+                            bounds.extend(new google.maps.LatLng(c[0], c[1]));
+                        }
+                        var path = coordinate;
+                        map.setCenter(bounds.getCenter().lat(), bounds.getCenter().lng());
+                        var infoWindow = new google.maps.InfoWindow({
+                            content: "<p>" + item.name + "</p>"
+                        });
+                        polygon = map.drawPolygon({
+                            paths: path,
+                            strokeColor: border_color,
+                            strokeOpacity: 1,
+                            strokeWeight: 1,
+                            fillColor: background_color,
+                            fillOpacity: 0.4,
+                            mouseover: function (clickEvent) {
+                                var position = clickEvent.latLng;
+                                infoWindow.setPosition(position);
+                                infoWindow.open(map.map);
+                            },
+                            mouseout: function (clickEvent) {
+                                if (infoWindow) {
+                                    infoWindow.close();
+                                }
+                            }
+                        });
+                        polygonArray[item.id] = polygon;
+                    }
+                });
 
+                $.map(data.agents, function (item) {
+                    var contentString = '<div id="content">' +
+                        '<p id="name">' + item.name + '</p>' +
+                        '</div>';
+
+                    var infoWindow = new google.maps.InfoWindow({
+                        content: contentString
+                    });
+
+                    map.addMarker({
+                        lat: item.lat,
+                        lng: item.lng,
+                        title:  item.name,
+                        click: function (e) {
+                            infoWindow.setPosition({lat: e.position.lat(), lng: e.position.lng()});
+                            infoWindow.open(map.map);
+                        }
+                    });
+                });
+            }
+
+            function getListSaleAdmins() {
+                $("#type_search").val('sale_admins');
+                $(".data_search").select2({
+                    'placeholder' : "{{'-- '. trans('home.select'). ' '. trans('home.manager') .' --'}}",
+                    ajax : {
+                        url : "{{route('Admin::Api::sale@getListAdmins')}}",
+                        dataType:'json',
+                        delay:500,
+                        data: function (params) {
+                            var queryParameters = {
+                                q: params.term
+                            }
+                            return queryParameters;
+                        },
+                        processResults: function(data, page) {
+                            return {
+                                results: $.map(data, function (item) {
+                                    return {
+                                        text: item.name,
+                                        id: item.id,
+                                    }
+                                })
+                            };
+                        },
+                        dropdownCssClass: "bigdrop", // apply css that makes the dropdown taller
+                        escapeMarkup: function(m) {
+                            return m;
+                        }
+                    }
+                });
+            }
+
+            function getListSaleMans() {
+                $("#type_search").val('sale_mans');
+                $(".data_search").select2({
+                    'placeholder' : "{{'-- '. trans('home.select'). ' '. trans('home.manager') .' --'}}",
+                    ajax : {
+                        url : "{{route('Admin::Api::sale@getListmans')}}",
+                        dataType:'json',
+                        delay:500,
+                        data: function (params) {
+                            var queryParameters = {
+                                q: params.term
+                            }
+                            return queryParameters;
+                        },
+                        processResults: function(data, page) {
+                            return {
+                                results: $.map(data, function (item) {
+                                    return {
+                                        text: item.name,
+                                        id: item.id,
+                                    }
+                                })
+                            };
+                        },
+                        dropdownCssClass: "bigdrop", // apply css that makes the dropdown taller
+                        escapeMarkup: function(m) {
+                            return m;
+                        }
+                    }
+                });
+            }
+
+            function showDataSales(data) {
+                var polygonArray = [];
+
+                $.map(data.locations, function (location) {
+                    $.map(location, function (item) {
+                        var c = item.coordinates;
+                        var coordinate = JSON.parse(c);
+                        var border_color = '#333';
+                        var background_color = '#333';
+
+                        if (coordinate) {
+                            var bounds = new google.maps.LatLngBounds();
+                            for (i = 0; i < coordinate.length; i++) {
+                                var c = coordinate[i];
+                                bounds.extend(new google.maps.LatLng(c[0], c[1]));
+                            }
+                            var path = coordinate;
+                            map.setCenter(bounds.getCenter().lat(), bounds.getCenter().lng());
+
+                            polygon = map.drawPolygon({
+                                paths: path,
+                                strokeColor: border_color,
+                                strokeOpacity: 1,
+                                strokeWeight: 1,
+                                fillColor: background_color,
+                                fillOpacity: 0.4,
+                            });
+                            polygonArray[item.id] = polygon;
+                        }
+                    });
+                });
+
+                $.map(data.agents, function (item) {
+
+                    var contentString = '<div id="content">' +
+                        '<p id="name">' + item.name + '</p>' +
+                        '</div>';
+
+                    var infoWindow = new google.maps.InfoWindow({
+                        content: contentString
+                    });
+
+                    map.addMarker({
+                        lat: item.lat,
+                        lng: item.lng,
+                        title:  item.name,
+//                    click: function (e) {
+//                        infoWindow.setPosition({lat: e.position.lat(), lng: e.position.lng()});
+//                        infoWindow.open(map.map);
+//                    }
+                    });
+                    var area = item.area;
+                    var user = item.user;
+                    map.drawOverlay({
+                        lat: item.lat,
+                        lng: item.lng,
+                        content: '<div class=""><ul class="">' +
+                        '<li>'  + user.name + '</li>' +
+                        '<li>'  + area.name + '</li>' +
+                        '</ul></div>'
+                    });
+                });
+            }
+
+            function getListAgents() {
+                $("#type_search").val('agents');
+                $(".data_search").select2({
+                    'placeholder' : "{{'-- '. trans('home.select'). ' '. trans('home.agency') .' --'}}",
+                    ajax : {
+                        url : "{{route('Admin::Api::sale@getListAgents')}}",
+                        dataType:'json',
+                        delay:500,
+                        data: function (params) {
+                            var queryParameters = {
+                                q: params.term
+                            }
+                            return queryParameters;
+                        },
+                        processResults: function(data, page) {
+                            return {
+                                results: $.map(data.data, function (item) {
+                                    return {
+                                        text: item.name,
+                                        id: item.id,
+                                    }
+                                })
+                            };
+                        },
+                        dropdownCssClass: "bigdrop", // apply css that makes the dropdown taller
+                        escapeMarkup: function(m) {
+                            return m;
+                        }
+                    }
+                });
+            }
+
+            function showDataAgents(data) {
+                var polygonArray = [];
+                $.map(data.locations, function (item) {
+                    var c = item.coordinates;
+                    var coordinate = JSON.parse(c);
+                    var border_color = '#333';
+                    var background_color = '#333';
+                    if(data.area.border_color){
+                        border_color = data.area.border_color;
+                    }
+                    if(data.area.background_color){
+                        background_color = data.area.background_color;
+                    }
                     if (coordinate) {
                         var bounds = new google.maps.LatLngBounds();
                         for (i = 0; i < coordinate.length; i++) {
@@ -774,16 +865,13 @@
                             strokeWeight: 1,
                             fillColor: background_color,
                             fillOpacity: 0.4,
+
                         });
                         polygonArray[item.id] = polygon;
                     }
                 });
-            });
-
-            $.map(data.agents, function (item) {
-
                 var contentString = '<div id="content">' +
-                    '<p id="name">' + item.name + '</p>' +
+                    '<p id="name">' + data.agents.name + '</p>' +
                     '</div>';
 
                 var infoWindow = new google.maps.InfoWindow({
@@ -791,129 +879,33 @@
                 });
 
                 map.addMarker({
-                    lat: item.lat,
-                    lng: item.lng,
-                    title:  item.name,
-//                    click: function (e) {
-//                        infoWindow.setPosition({lat: e.position.lat(), lng: e.position.lng()});
-//                        infoWindow.open(map.map);
-//                    }
+                    lat:  data.agents.lat,
+                    lng:  data.agents.lng,
+                    title:   data.agents.name,
                 });
-                var area = item.area;
-                var user = item.user;
+
+                var area = data.area;
+                var user = data.user;
+
                 map.drawOverlay({
-                    lat: item.lat,
-                    lng: item.lng,
-                    content: '<div class=""><ul class="">' +
-                    '<li>'  + user.name + '</li>' +
-                    '<li>'  + area.name + '</li>' +
-                    '</ul></div>'
+                    lat: data.agents.lat,
+                    lng: data.agents.lng,
+                    content: '<div class="info">' +
+                                '<h5>' + data.agents.name + '</h5>' +
+                                '<div class="user_data">' +
+                                    '<p class="data">%TT 100/10000 = 18%</p>' +
+                                    '<ul class="info_user">' +
+                                    '<li>'  + user.name + '</li>' +
+                                    '<li>'  + area.name + '</li>' +
+                                    '</ul>' +
+                                '</div>' +
+                            '</div>'
                 });
-            });
-        }
+            }
 
-        function getListAgents() {
-            $("#type_search").val('agents');
-
-            $(".data_search").select2({
-                'placeholder' : "{{'-- '. trans('home.select'). ' '. trans('home.agency') .' --'}}",
-                ajax : {
-                    url : "{{route('Admin::Api::sale@getListAgents')}}",
-                    dataType:'json',
-                    delay:500,
-                    data: function (params) {
-                        var queryParameters = {
-                            q: params.term
-                        }
-                        return queryParameters;
-                    },
-                    processResults: function(data, page) {
-                        return {
-                            results: $.map(data.data, function (item) {
-
-                                return {
-                                    text: item.name,
-                                    id: item.id,
-                                }
-                            })
-                        };
-                    },
-                    dropdownCssClass: "bigdrop", // apply css that makes the dropdown taller
-                    escapeMarkup: function(m) {
-                        return m;
-                    }
-                }
-            });
-        }
-
-        function showDataAgents(data) {
-            var polygonArray = [];
-            $.map(data.locations, function (item) {
-                var c = item.coordinates;
-                var coordinate = JSON.parse(c);
-                var border_color = '#333';
-                var background_color = '#333';
-                if(data.area.border_color){
-                    border_color = data.area.border_color;
-                }
-                if(data.area.background_color){
-                    background_color = data.area.background_color;
-                }
-                if (coordinate) {
-                    var bounds = new google.maps.LatLngBounds();
-                    for (i = 0; i < coordinate.length; i++) {
-                        var c = coordinate[i];
-                        bounds.extend(new google.maps.LatLng(c[0], c[1]));
-                    }
-                    var path = coordinate;
-                    map.setCenter(bounds.getCenter().lat(), bounds.getCenter().lng());
-                    var infoWindow = new google.maps.InfoWindow({
-                        content: "<p>" + item.name + "</p>"
-                    });
-                    polygon = map.drawPolygon({
-                        paths: path,
-                        strokeColor: border_color,
-                        strokeOpacity: 1,
-                        strokeWeight: 1,
-                        fillColor: background_color,
-                        fillOpacity: 0.4,
-                        mouseover: function (clickEvent) {
-                            var position = clickEvent.latLng;
-                            infoWindow.setPosition(position);
-                            infoWindow.open(map.map);
-                        },
-                        mouseout: function (clickEvent) {
-                            if (infoWindow) {
-                                infoWindow.close();
-                            }
-                        }
-                    });
-                    polygonArray[item.id] = polygon;
-                }
-            });
-
-
-            var contentString = '<div id="content">' +
-                '<p id="name">' + data.agents.name + '</p>' +
-                '</div>';
-
-            var infoWindow = new google.maps.InfoWindow({
-                content: contentString
-            });
-
-            map.addMarker({
-                lat:  data.agents.lat,
-                lng:  data.agents.lng,
-                title:   data.agents.name,
-                click: function (e) {
-                    infoWindow.setPosition({lat: e.position.lat(), lng: e.position.lng()});
-                    infoWindow.open(map.map);
-                }
-            });
-        }
     });
+
+
 
 </script>
 @endpush
-
-
