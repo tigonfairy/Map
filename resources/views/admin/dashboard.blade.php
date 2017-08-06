@@ -22,9 +22,9 @@
         }
         .info {
             z-index: 99999;
-
         }
         .data {
+            z-index: 99999;
             border: 1px solid yellow;
             background-color: yellow;
             color: red;
@@ -32,9 +32,10 @@
             float: left;
         }
         .info_user {
+            z-index: 99999;
             list-style: none;
-            font-size: 12px;
-            margin-left: 10px;
+            font-size: 14px;
+            /*margin-left: 10px;*/
             float: left;
         }
     </style>
@@ -560,7 +561,7 @@
                         lng: 105.83415979999995,
                         width: "100%",
                         height: '500px',
-                        zoom: 11,
+                        zoom: 13,
                         fullscreenControl: true,
                     });
                     if (type_search == 'areas' ) {
@@ -791,16 +792,25 @@
 //                        infoWindow.open(map.map);
 //                    }
                     });
+
                     var area = item.area;
                     var user = item.user;
+
                     map.drawOverlay({
                         lat: item.lat,
                         lng: item.lng,
-                        content: '<div class=""><ul class="">' +
+                        content: '<div class="info">' +
+                        '<h5>' + item.name + '</h5>' +
+                        '<div class="user_data">' +
+                        '<p class="data">%TT 100/10000 = 18%</p>' +
+                        '<ul class="info_user">' +
                         '<li>'  + user.name + '</li>' +
                         '<li>'  + area.name + '</li>' +
-                        '</ul></div>'
+                        '</ul>' +
+                        '</div>' +
+                        '</div>'
                     });
+
                 });
             }
 
