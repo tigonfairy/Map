@@ -181,7 +181,7 @@ class ProductController extends AdminController
     {
 
         $validator = Validator::make($request->all(), [
-            'file'=>'required|max:50000|mimes:xlsx'
+            'file'=>'required|max:50000|mimes:xlsx,csv'
         ]);
 
         if($validator->fails()) {
