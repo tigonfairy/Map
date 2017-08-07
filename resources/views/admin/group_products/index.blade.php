@@ -72,7 +72,12 @@
             },
             columns: [
                 {data: 'id', name: 'id'},
-                {data: 'name', name: 'name'},
+                    @php  $raw_locale = \Session::get('locale'); @endphp
+                    @if($raw_locale != null and $raw_locale == 'en')
+                {data: 'name_en', name: 'name_en'},
+                    @else
+                {data: 'name_vn', name: 'name_vn'},
+                    @endif
                 {data: 'created_at', name: 'created_at'},
                 {data: 'action', name: 'action', orderable: false, searchable: false}
             ]

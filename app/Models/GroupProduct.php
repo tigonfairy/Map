@@ -8,6 +8,7 @@ use Auth;
 
 class GroupProduct extends Model
 {
+    protected $fillable = ['name_vn','name_en','code'];
     public static function getDatatables()
     {
         $model = static::select([
@@ -15,9 +16,6 @@ class GroupProduct extends Model
         ]);
 
         return Datatables::eloquent($model)
-            ->editColumn('name', function ($model) {
-                return Auth::user()->lang == 'en' ? $model->nameEng : $model->name ;
-            })
             ->addColumn('action', 'admin.group_products.datatables.action')
             ->make(true);
     }

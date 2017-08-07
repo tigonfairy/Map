@@ -6,7 +6,6 @@
             -moz-column-count: 2; /* Firefox */
             column-count: 2;
         }
-
         @media (max-width: 768px) {
             .ct {
                 -webkit-column-count: 1; /* Chrome, Safari, Opera */
@@ -14,7 +13,6 @@
                 column-count: 1;
             }
         }
-
         @media (min-width: 992px) {
             .ct {
                 -webkit-column-count: 2; /* Chrome, Safari, Opera */
@@ -22,13 +20,22 @@
                 column-count: 2;
             }
         }
-
         .info {
-            list-style: none;
-            margin-left: 100px;
+            z-index: 99999;
         }
-
-
+        .data {
+            border: 1px solid yellow;
+            background-color: yellow;
+            color: red;
+            font-size: 12px;
+            float: left;
+        }
+        .info_user {
+            list-style: none;
+            font-size: 12px;
+            margin-left: 10px;
+            float: left;
+        }
     </style>
     <!-- BEGIN PAGE HEADER-->
     <!-- BEGIN PAGE TITLE-->
@@ -144,245 +151,223 @@
 
 <script type="text/javascript">
     $(document).ready(function () {
-
         {{--$('.monthPicker').datepicker({--}}
-            {{--changeMonth: true,--}}
-            {{--changeYear: true,--}}
-            {{--showButtonPanel: true,--}}
-            {{--dateFormat: 'mm-yy',--}}
-            {{--onClose: function (dateText, inst) {--}}
-                {{--var month = $("#ui-datepicker-div .ui-datepicker-month :selected").val();--}}
-                {{--var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val();--}}
-                {{--$(this).datepicker('setDate', new Date(year, month, 1));--}}
-            {{--}--}}
+        {{--changeMonth: true,--}}
+        {{--changeYear: true,--}}
+        {{--showButtonPanel: true,--}}
+        {{--dateFormat: 'mm-yy',--}}
+        {{--onClose: function (dateText, inst) {--}}
+        {{--var month = $("#ui-datepicker-div .ui-datepicker-month :selected").val();--}}
+        {{--var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val();--}}
+        {{--$(this).datepicker('setDate', new Date(year, month, 1));--}}
+        {{--}--}}
         {{--});--}}
         {{--//chart cot--}}
         {{--Highcharts.chart('container', {--}}
-            {{--chart: {--}}
-                {{--type: 'column',--}}
-                {{--style: {--}}
-                    {{--fontFamily: 'serif'--}}
-                {{--}--}}
-            {{--},--}}
-            {{--title: {--}}
-                {{--text: 'Tiến độ doanh số'--}}
-            {{--},--}}
-            {{--subtitle: {--}}
-{{--//                text: 'Source: WorldClimate.com'--}}
-            {{--},--}}
-            {{--xAxis: {--}}
-                {{--categories: [--}}
-                    {{--'Jan',--}}
-                    {{--'Feb',--}}
-                    {{--'Mar',--}}
-                    {{--'Apr',--}}
-                    {{--'May',--}}
-                    {{--'Jun',--}}
-                    {{--'Jul',--}}
-                    {{--'Aug',--}}
-                    {{--'Sep',--}}
-                    {{--'Oct',--}}
-                    {{--'Nov',--}}
-                    {{--'Dec'--}}
-                {{--],--}}
-                {{--crosshair: true--}}
-            {{--},--}}
-            {{--yAxis: {--}}
-                {{--min: 0,--}}
-                {{--title: {--}}
-                    {{--text: 'Doanh số '--}}
-                {{--}--}}
-            {{--},--}}
-            {{--tooltip: {--}}
-                {{--headerFormat: '<span style="font-size:10px">{point.key}</span><table>',--}}
-                {{--pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +--}}
-                {{--'<td style="padding:0"><b>{point.y} </b></td></tr>',--}}
-                {{--footerFormat: '</table>',--}}
-                {{--shared: true,--}}
-                {{--useHTML: true--}}
-            {{--},--}}
-            {{--plotOptions: {--}}
-                {{--column: {--}}
-                    {{--pointPadding: 0.2,--}}
-                    {{--borderWidth: 0--}}
-                {{--},--}}
-                {{--series: {--}}
-                    {{--dataLabels: {--}}
-                        {{--enabled: true,--}}
-                        {{--crop: false,--}}
-                        {{--overflow: 'none',--}}
-                        {{--formatter: function () {--}}
-                            {{--return this.point.y;--}}
-                        {{--}--}}
-                    {{--}--}}
-                {{--}--}}
-            {{--},--}}
-            {{--series: [{--}}
-                {{--name: 'DTKH',--}}
-                {{--data: {{json_encode($sales_plan)}}--}}
-
-            {{--}, {--}}
-                {{--name: 'DTTT',--}}
-                {{--data: {{json_encode($sales_real)}}--}}
-
-            {{--}]--}}
+        {{--chart: {--}}
+        {{--type: 'column',--}}
+        {{--style: {--}}
+        {{--fontFamily: 'serif'--}}
+        {{--}--}}
+        {{--},--}}
+        {{--title: {--}}
+        {{--text: 'Tiến độ doanh số'--}}
+        {{--},--}}
+        {{--subtitle: {--}}
+        {{--//                text: 'Source: WorldClimate.com'--}}
+        {{--},--}}
+        {{--xAxis: {--}}
+        {{--categories: [--}}
+        {{--'Jan',--}}
+        {{--'Feb',--}}
+        {{--'Mar',--}}
+        {{--'Apr',--}}
+        {{--'May',--}}
+        {{--'Jun',--}}
+        {{--'Jul',--}}
+        {{--'Aug',--}}
+        {{--'Sep',--}}
+        {{--'Oct',--}}
+        {{--'Nov',--}}
+        {{--'Dec'--}}
+        {{--],--}}
+        {{--crosshair: true--}}
+        {{--},--}}
+        {{--yAxis: {--}}
+        {{--min: 0,--}}
+        {{--title: {--}}
+        {{--text: 'Doanh số '--}}
+        {{--}--}}
+        {{--},--}}
+        {{--tooltip: {--}}
+        {{--headerFormat: '<span style="font-size:10px">{point.key}</span><table>',--}}
+        {{--pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +--}}
+        {{--'<td style="padding:0"><b>{point.y} </b></td></tr>',--}}
+        {{--footerFormat: '</table>',--}}
+        {{--shared: true,--}}
+        {{--useHTML: true--}}
+        {{--},--}}
+        {{--plotOptions: {--}}
+        {{--column: {--}}
+        {{--pointPadding: 0.2,--}}
+        {{--borderWidth: 0--}}
+        {{--},--}}
+        {{--series: {--}}
+        {{--dataLabels: {--}}
+        {{--enabled: true,--}}
+        {{--crop: false,--}}
+        {{--overflow: 'none',--}}
+        {{--formatter: function () {--}}
+        {{--return this.point.y;--}}
+        {{--}--}}
+        {{--}--}}
+        {{--}--}}
+        {{--},--}}
+        {{--series: [{--}}
+        {{--name: 'DTKH',--}}
+        {{--data: {{json_encode($sales_plan)}}--}}
+        {{--}, {--}}
+        {{--name: 'DTTT',--}}
+        {{--data: {{json_encode($sales_real)}}--}}
+        {{--}]--}}
         {{--});--}}
-
-
         {{--var chartSp = Highcharts.chart('chartSp', {--}}
-            {{--chart: {--}}
-                {{--plotBackgroundColor: null,--}}
-                {{--plotBorderWidth: null,--}}
-                {{--plotShadow: false,--}}
-                {{--type: 'pie',--}}
-                {{--style: {--}}
-                    {{--fontFamily: 'serif'--}}
-                {{--}--}}
-            {{--},--}}
-            {{--title: {--}}
-                {{--text: 'Biểu đổ'--}}
-            {{--},--}}
-            {{--tooltip: {--}}
-                {{--pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'--}}
-            {{--},--}}
-            {{--plotOptions: {--}}
-                {{--pie: {--}}
-                    {{--allowPointSelect: true,--}}
-                    {{--cursor: 'pointer',--}}
-                    {{--dataLabels: {--}}
-                        {{--enabled: true--}}
-                    {{--},--}}
-                    {{--showInLegend: true--}}
-                {{--}--}}
-            {{--},--}}
-            {{--series: []--}}
+        {{--chart: {--}}
+        {{--plotBackgroundColor: null,--}}
+        {{--plotBorderWidth: null,--}}
+        {{--plotShadow: false,--}}
+        {{--type: 'pie',--}}
+        {{--style: {--}}
+        {{--fontFamily: 'serif'--}}
+        {{--}--}}
+        {{--},--}}
+        {{--title: {--}}
+        {{--text: 'Biểu đổ'--}}
+        {{--},--}}
+        {{--tooltip: {--}}
+        {{--pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'--}}
+        {{--},--}}
+        {{--plotOptions: {--}}
+        {{--pie: {--}}
+        {{--allowPointSelect: true,--}}
+        {{--cursor: 'pointer',--}}
+        {{--dataLabels: {--}}
+        {{--enabled: true--}}
+        {{--},--}}
+        {{--showInLegend: true--}}
+        {{--}--}}
+        {{--},--}}
+        {{--series: []--}}
         {{--});--}}
-
         {{--$.ajax({--}}
-            {{--method: "post",--}}
-            {{--url: "{{route('Admin::chart')}}",--}}
-            {{--headers: {--}}
-                {{--'X-CSRF-Token': "{{ csrf_token() }}"--}}
-            {{--},--}}
-            {{--data: {--}}
-                {{--type: 1--}}
-            {{--},--}}
-            {{--dataType: 'json',--}}
-            {{--success: function (data) {--}}
-                {{--if (data.title) {--}}
-                    {{--chartSp.setTitle({--}}
-                        {{--text: 'Biểu đô tháng ' + data.title--}}
-                    {{--});--}}
-                {{--}--}}
-
-                {{--if (data.chart) {--}}
-                    {{--var seriesLength = chartSp.series.length;--}}
-                    {{--for (var i = seriesLength - 1; i > -1; i--) {--}}
-                        {{--//chart.series[i].remove();--}}
-                        {{--if (chartSp.series[i].name == document.getElementById("series_name").value)--}}
-                            {{--chartSp.series[i].remove();--}}
-                    {{--}--}}
-
-                    {{--chartSp.addSeries(--}}
-                            {{--{--}}
-                                {{--name: 'S/p',--}}
-                                {{--colorByPoint: true,--}}
-                                {{--data: data.chart--}}
-                            {{--}--}}
-                    {{--)--}}
-                {{--}--}}
-                {{--if (data.table) {--}}
-                    {{--var table = data.table;--}}
-                    {{--var string = '<table class="table table-striped table-bordered" cellspacing="0" width="100%">' +--}}
-                            {{--' <thead> <tr> <th>Sản phẩm</th> <th>Doanh số</th></tr></thead><tbody>';--}}
-
-                    {{--table.forEach(function (value) {--}}
-                        {{--string += '<tr>';--}}
-                        {{--string += '<td>';--}}
-                        {{--string += value.name;--}}
-                        {{--string += '</td>';--}}
-                        {{--string += '<td>';--}}
-                        {{--string += value.y;--}}
-                        {{--string += '</td>';--}}
-
-                        {{--string += '</tr>';--}}
-
-                    {{--});--}}
-                    {{--string += '</tbody></table>';--}}
-                    {{--$('#tableData').html(string);--}}
-                {{--}--}}
-
-
-            {{--},--}}
-            {{--error: function (err) {--}}
-                {{--console.log(err);--}}
-                {{--alert('Lỗi, hãy thử lại sau');--}}
-            {{--}--}}
+        {{--method: "post",--}}
+        {{--url: "{{route('Admin::chart')}}",--}}
+        {{--headers: {--}}
+        {{--'X-CSRF-Token': "{{ csrf_token() }}"--}}
+        {{--},--}}
+        {{--data: {--}}
+        {{--type: 1--}}
+        {{--},--}}
+        {{--dataType: 'json',--}}
+        {{--success: function (data) {--}}
+        {{--if (data.title) {--}}
+        {{--chartSp.setTitle({--}}
+        {{--text: 'Biểu đô tháng ' + data.title--}}
         {{--});--}}
-
+        {{--}--}}
+        {{--if (data.chart) {--}}
+        {{--var seriesLength = chartSp.series.length;--}}
+        {{--for (var i = seriesLength - 1; i > -1; i--) {--}}
+        {{--//chart.series[i].remove();--}}
+        {{--if (chartSp.series[i].name == document.getElementById("series_name").value)--}}
+        {{--chartSp.series[i].remove();--}}
+        {{--}--}}
+        {{--chartSp.addSeries(--}}
+        {{--{--}}
+        {{--name: 'S/p',--}}
+        {{--colorByPoint: true,--}}
+        {{--data: data.chart--}}
+        {{--}--}}
+        {{--)--}}
+        {{--}--}}
+        {{--if (data.table) {--}}
+        {{--var table = data.table;--}}
+        {{--var string = '<table class="table table-striped table-bordered" cellspacing="0" width="100%">' +--}}
+        {{--' <thead> <tr> <th>Sản phẩm</th> <th>Doanh số</th></tr></thead><tbody>';--}}
+        {{--table.forEach(function (value) {--}}
+        {{--string += '<tr>';--}}
+        {{--string += '<td>';--}}
+        {{--string += value.name;--}}
+        {{--string += '</td>';--}}
+        {{--string += '<td>';--}}
+        {{--string += value.y;--}}
+        {{--string += '</td>';--}}
+        {{--string += '</tr>';--}}
+        {{--});--}}
+        {{--string += '</tbody></table>';--}}
+        {{--$('#tableData').html(string);--}}
+        {{--}--}}
+        {{--},--}}
+        {{--error: function (err) {--}}
+        {{--console.log(err);--}}
+        {{--alert('Lỗi, hãy thử lại sau');--}}
+        {{--}--}}
+        {{--});--}}
         {{--$('.radioButton').change(function () {--}}
-            {{--var type = $(this).val();--}}
-
-            {{--$.ajax({--}}
-                {{--method: "post",--}}
-                {{--url: "{{route('Admin::chart')}}",--}}
-                {{--headers: {--}}
-                    {{--'X-CSRF-Token': "{{ csrf_token() }}"--}}
-                {{--},--}}
-                {{--data: {--}}
-                    {{--type: type--}}
-                {{--},--}}
-                {{--dataType: 'json',--}}
-                {{--success: function (data) {--}}
-                    {{--if (data.title) {--}}
-                        {{--chartSp.setTitle({--}}
-                            {{--text: 'Biểu đô ' + data.title--}}
-                        {{--});--}}
-                    {{--}--}}
-                    {{--if (data.chart) {--}}
-                        {{--while (chartSp.series.length > 0) {--}}
-                            {{--chartSp.series[0].remove(false);--}}
-                        {{--}--}}
-
-                        {{--chartSp.redraw();--}}
-                        {{--chartSp.addSeries(--}}
-                                {{--{--}}
-                                    {{--name: 'S/p',--}}
-                                    {{--colorByPoint: true,--}}
-                                    {{--data: data.chart--}}
-                                {{--}--}}
-                        {{--)--}}
-                    {{--}--}}
-                    {{--if (data.table) {--}}
-                        {{--$('#tableData').html('');--}}
-                        {{--var table = data.table;--}}
-                        {{--var string = '<table class="table table-striped table-bordered" cellspacing="0" width="100%">' +--}}
-                                {{--' <thead> <tr> <th>Sản phẩm</th> <th>Doanh số</th></tr></thead><tbody>';--}}
-
-                        {{--table.forEach(function (value) {--}}
-                            {{--string += '<tr>';--}}
-                            {{--string += '<td>';--}}
-                            {{--string += value.name;--}}
-                            {{--string += '</td>';--}}
-                            {{--string += '<td>';--}}
-                            {{--string += value.y;--}}
-                            {{--string += '</td>';--}}
-
-                            {{--string += '</tr>';--}}
-
-                        {{--});--}}
-                        {{--string += '</tbody></table>';--}}
-                        {{--$('#tableData').html(string);--}}
-                    {{--}--}}
-
-
-                {{--},--}}
-                {{--error: function (err) {--}}
-                    {{--console.log(err);--}}
-                {{--}--}}
-            {{--});--}}
+        {{--var type = $(this).val();--}}
+        {{--$.ajax({--}}
+        {{--method: "post",--}}
+        {{--url: "{{route('Admin::chart')}}",--}}
+        {{--headers: {--}}
+        {{--'X-CSRF-Token': "{{ csrf_token() }}"--}}
+        {{--},--}}
+        {{--data: {--}}
+        {{--type: type--}}
+        {{--},--}}
+        {{--dataType: 'json',--}}
+        {{--success: function (data) {--}}
+        {{--if (data.title) {--}}
+        {{--chartSp.setTitle({--}}
+        {{--text: 'Biểu đô ' + data.title--}}
         {{--});--}}
-
+        {{--}--}}
+        {{--if (data.chart) {--}}
+        {{--while (chartSp.series.length > 0) {--}}
+        {{--chartSp.series[0].remove(false);--}}
+        {{--}--}}
+        {{--chartSp.redraw();--}}
+        {{--chartSp.addSeries(--}}
+        {{--{--}}
+        {{--name: 'S/p',--}}
+        {{--colorByPoint: true,--}}
+        {{--data: data.chart--}}
+        {{--}--}}
+        {{--)--}}
+        {{--}--}}
+        {{--if (data.table) {--}}
+        {{--$('#tableData').html('');--}}
+        {{--var table = data.table;--}}
+        {{--var string = '<table class="table table-striped table-bordered" cellspacing="0" width="100%">' +--}}
+        {{--' <thead> <tr> <th>Sản phẩm</th> <th>Doanh số</th></tr></thead><tbody>';--}}
+        {{--table.forEach(function (value) {--}}
+        {{--string += '<tr>';--}}
+        {{--string += '<td>';--}}
+        {{--string += value.name;--}}
+        {{--string += '</td>';--}}
+        {{--string += '<td>';--}}
+        {{--string += value.y;--}}
+        {{--string += '</td>';--}}
+        {{--string += '</tr>';--}}
+        {{--});--}}
+        {{--string += '</tbody></table>';--}}
+        {{--$('#tableData').html(string);--}}
+        {{--}--}}
+        {{--},--}}
+        {{--error: function (err) {--}}
+        {{--console.log(err);--}}
+        {{--}--}}
+        {{--});--}}
+        {{--});--}}
         //map
         var polygonArray = [];
         map = new GMaps({
@@ -396,25 +381,18 @@
                     maxZoom: 11,
                     imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'
                 });
-
-               //  onClick OVERRIDE
-                markerCluster.onClick = function(clickedClusterIcon) {
-                    alert(1);
-                    return multiChoice(clickedClusterIcon.cluster_);
-                }
-
+//                markerCluster.onClick = function(clickedClusterIcon) {
+//                    alert(1);
+//                    return multiChoice(clickedClusterIcon.cluster_);
+//                }
                 return markerCluster;
             }
         });
-
-
         var TotalBounds = new google.maps.LatLngBounds();
                 @if($locations)
                 @foreach($locations as $key => $location)
-
                 @php
                     $locat = $location['address'];
-
                     $border_color = '#333';
                     $background_color = '#333';
                     if($location['border_color']){
@@ -426,7 +404,6 @@
                 @endphp
         var c = "{{$locat->coordinates}}";
         var coordinate = JSON.parse(c);
-
         if (coordinate) {
             var bounds = new google.maps.LatLngBounds();
             for (i = 0; i < coordinate.length; i++) {
@@ -439,7 +416,7 @@
             {{--var infoWindow{{$locat->id}} = new google.maps.InfoWindow({--}}
                     {{--content: "<p>{{$locat->name}}</p>"--}}
                     {{--});--}}
-                    polygon = map.drawPolygon({
+                polygon = map.drawPolygon({
                 paths: path,
                 strokeColor: "{{$border_color}}",
                 strokeOpacity: 1,
@@ -468,81 +445,67 @@
                 @endif
         var markers = [];
                 @foreach($agents as $agent)
-
         var contentString = '<div id="content">' +
-                        '<p id="name">' + "{{$agent->name}}" + '</p>' +
-                        '<p id="manager">' + '{{$agent->user->email}}' + '</p>' +
-                        '</div>';
+                '<p id="name">' + "{{$agent->name}}" + '</p>' +
+                '<p id="manager">' + '{{$agent->user->email}}' + '</p>' +
+                '</div>';
         var infoWindow = new google.maps.InfoWindow({
             content: contentString
         });
-
         var marker = map.addMarker({
             lat: "{{$agent->lat}}",
             lng: "{{$agent->lng}}",
             title: "{{$agent->name}}",
         });
-
         map.drawOverlay({
             lat: "{{$agent->lat}}",
             lng: "{{$agent->lng}}",
             content: '<div class="overlay_agents">{{$agent->name}}</div>'
         });
-
         markers.push(marker);
-
         /* Change markers on zoom */
         @endforeach
-
-     map.fitBounds(TotalBounds);
+        map.fitBounds(TotalBounds);
         map.panToBounds(TotalBounds);
-      $('.overlay_agents').css({"display":"none"});
-           map.addListener('zoom_changed', function () {
+        $('.overlay_agents').css({"display":"none"});
+        map.addListener('zoom_changed', function () {
             var zoom = map.getZoom();
             if (zoom < 10) {
                 $('.overlay_agents').css({"display":"none"});
                 $.each(map.markers,function(){this.setMap(null)});
             } else {
                 $('.overlay_agents').css({"display":"block"});
-            $.each(map.markers,function(){this.setMap(map.map)});
+                $.each(map.markers,function(){this.setMap(map.map)});
             }
-
         });
-
-        //cluster function to do stuff
-        function multiChoice(clickedCluster)
-        {
-            //clusters markers
-            var markers = clickedCluster.getMarkers();
-
-            //console check
-            console.log(clickedCluster);
-            console.log(markers);
-
-            if (markers.length > 1)
-            {
-                //content of info window
-                var infowindow = new google.maps.InfoWindow({
-                    content: ''+
-                    '<p>'+markers.length+' = length</p>'+
-                    '<p>testing blah blah</p>',
-                    position: clickedCluster.center_
-                });
-
-                //show the window
-                infowindow.open(clickedCluster.map_);
-
-                return false;
-            }
-            return true;
-        };
-
-
+//        //cluster function to do stuff
+//        function multiChoice(clickedCluster)
+//        {
+//            //clusters markers
+//            var markers = clickedCluster.getMarkers();
+//            //console check
+//            console.log(clickedCluster);
+//            console.log(markers);
+//            if (markers.length > 1)
+//            {
+//                //content of info window
+//                var infowindow = new google.maps.InfoWindow({
+//                    content: ''+
+//                    '<p>'+markers.length+' = length</p>'+
+//                    '<p>testing blah blah</p>',
+//                    position: clickedCluster.center_
+//                });
+//
+//                //show the window
+//                infowindow.open(clickedCluster.map_);
+//
+//                return false;
+//            }
+//            return true;
+//        }
         // search
-
         $( ".search_type" ).change(function() {
             var search_type = $(this).val();
-
             if (search_type == 1) {
                 getListAreas();
             } else if (search_type == 2) {
@@ -553,7 +516,6 @@
                 getListAgents();
             }
         });
-
         $('#geocoding_form').submit(function(e){
             e.preventDefault();
             var type_search = $("#type_search").val();
@@ -563,7 +525,6 @@
                 data: $('#geocoding_form').serialize(),
                 cache: false,
                 success: function(data){
-
                     map = new GMaps({
                         div: '#map',
                         lat: 21.0277644,
@@ -573,12 +534,10 @@
                         zoom: 11,
                         fullscreenControl: true,
                     });
-
                     if (type_search == 'areas' ) {
                         showDataAreas(data);
                     }
                     if (type_search == 'sale_admins' || type_search == 'sale_mans') {
-
                         showDataSales(data);
                     }
                     if (type_search == 'agents') {
@@ -587,7 +546,6 @@
                 }
             });
         });
-
         function getListAreas() {
             $("#type_search").val('areas');
             $(".data_search").select2({
@@ -621,7 +579,6 @@
                 }
             });
         }
-
         function showDataAreas(data) {
             var polygonArray = [];
             $.map(data.locations, function (item) {
@@ -667,16 +624,13 @@
                     polygonArray[item.id] = polygon;
                 }
             });
-
             $.map(data.agents, function (item) {
                 var contentString = '<div id="content">' +
                     '<p id="name">' + item.name + '</p>' +
                     '</div>';
-
                 var infoWindow = new google.maps.InfoWindow({
                     content: contentString
                 });
-
                 map.addMarker({
                     lat: item.lat,
                     lng: item.lng,
@@ -688,7 +642,6 @@
                 });
             });
         }
-
         function getListSaleAdmins() {
             $("#type_search").val('sale_admins');
             $(".data_search").select2({
@@ -720,7 +673,6 @@
                 }
             });
         }
-
         function getListSaleMans() {
             $("#type_search").val('sale_mans');
             $(".data_search").select2({
@@ -752,17 +704,14 @@
                 }
             });
         }
-
         function showDataSales(data) {
             var polygonArray = [];
-            console.log(data);
             $.map(data.locations, function (location) {
                 $.map(location, function (item) {
                     var c = item.coordinates;
                     var coordinate = JSON.parse(c);
                     var border_color = '#333';
                     var background_color = '#333';
-
                     if (coordinate) {
                         var bounds = new google.maps.LatLngBounds();
                         for (i = 0; i < coordinate.length; i++) {
@@ -771,7 +720,6 @@
                         }
                         var path = coordinate;
                         map.setCenter(bounds.getCenter().lat(), bounds.getCenter().lng());
-
                         polygon = map.drawPolygon({
                             paths: path,
                             strokeColor: border_color,
@@ -784,17 +732,13 @@
                     }
                 });
             });
-
             $.map(data.agents, function (item) {
-
                 var contentString = '<div id="content">' +
                     '<p id="name">' + item.name + '</p>' +
                     '</div>';
-
                 var infoWindow = new google.maps.InfoWindow({
                     content: contentString
                 });
-
                 map.addMarker({
                     lat: item.lat,
                     lng: item.lng,
@@ -809,17 +753,15 @@
                 map.drawOverlay({
                     lat: item.lat,
                     lng: item.lng,
-                    content: '<div class=""><ul class="info">' +
+                    content: '<div class=""><ul class="">' +
                     '<li>'  + user.name + '</li>' +
                     '<li>'  + area.name + '</li>' +
                     '</ul></div>'
                 });
             });
         }
-
         function getListAgents() {
             $("#type_search").val('agents');
-
             $(".data_search").select2({
                 'placeholder' : "{{'-- '. trans('home.select'). ' '. trans('home.agency') .' --'}}",
                 ajax : {
@@ -835,7 +777,6 @@
                     processResults: function(data, page) {
                         return {
                             results: $.map(data.data, function (item) {
-
                                 return {
                                     text: item.name,
                                     id: item.id,
@@ -850,7 +791,6 @@
                 }
             });
         }
-
         function showDataAgents(data) {
             var polygonArray = [];
             $.map(data.locations, function (item) {
@@ -872,9 +812,6 @@
                     }
                     var path = coordinate;
                     map.setCenter(bounds.getCenter().lat(), bounds.getCenter().lng());
-                    var infoWindow = new google.maps.InfoWindow({
-                        content: "<p>" + item.name + "</p>"
-                    });
                     polygon = map.drawPolygon({
                         paths: path,
                         strokeColor: border_color,
@@ -882,43 +819,38 @@
                         strokeWeight: 1,
                         fillColor: background_color,
                         fillOpacity: 0.4,
-                        mouseover: function (clickEvent) {
-                            var position = clickEvent.latLng;
-                            infoWindow.setPosition(position);
-                            infoWindow.open(map.map);
-                        },
-                        mouseout: function (clickEvent) {
-                            if (infoWindow) {
-                                infoWindow.close();
-                            }
-                        }
                     });
                     polygonArray[item.id] = polygon;
                 }
             });
-
-
             var contentString = '<div id="content">' +
                 '<p id="name">' + data.agents.name + '</p>' +
                 '</div>';
-
             var infoWindow = new google.maps.InfoWindow({
                 content: contentString
             });
-
             map.addMarker({
                 lat:  data.agents.lat,
                 lng:  data.agents.lng,
                 title:   data.agents.name,
-                click: function (e) {
-                    infoWindow.setPosition({lat: e.position.lat(), lng: e.position.lng()});
-                    infoWindow.open(map.map);
-                }
+            });
+            var area = data.area;
+            var user = data.user;
+            map.drawOverlay({
+                lat: data.agents.lat,
+                lng: data.agents.lng,
+                content: '<div class="info">' +
+                '<h5>' + data.agents.name + '</h5>' +
+                '<div class="user_data">' +
+                '<p class="data">%TT 100/10000 = 18%</p>' +
+                '<ul class="info_user">' +
+                '<li>'  + user.name + '</li>' +
+                '<li>'  + area.name + '</li>' +
+                '</ul>' +
+                '</div>' +
+                '</div>'
             });
         }
     });
-
 </script>
 @endpush
-
-

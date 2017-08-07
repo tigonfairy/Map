@@ -1,7 +1,5 @@
 .idea
 /public/storage
-/storage/*.key
 /public/files
 vendor
-storage
 /.env
