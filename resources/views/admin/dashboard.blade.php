@@ -445,10 +445,10 @@
                 @endif
         var markers = [];
                 @foreach($agents as $agent)
-        var contentString = '<div id="content">' +
-                '<p id="name">' + "{{$agent->name}}" + '</p>' +
-                '<p id="manager">' + '{{$agent->user->email}}' + '</p>' +
-                '</div>';
+        {{--var contentString = '<div id="content">' +--}}
+                {{--'<p id="name">' + "{{$agent->name}}" + '</p>' +--}}
+                {{--'<p id="manager">' + '{{$agent->user->email}}' + '</p>' +--}}
+                {{--'</div>';--}}
         var infoWindow = new google.maps.InfoWindow({
             content: contentString
         });

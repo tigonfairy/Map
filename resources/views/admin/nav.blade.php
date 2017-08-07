@@ -34,7 +34,7 @@
                             {{--<span class="arrow"></span>--}}
                         {{--</a>--}}
                     {{--</li>--}}
-                    @if(auth()->user()->roles()->first()->id == 1)
+
                     <li class="nav-item  ">
                         <a href="{{route('Admin::map@listLocation')}}" class="nav-link nav-toggle">
                             <i class="icon-settings"></i>
@@ -42,7 +42,7 @@
                             <span class="arrow"></span>
                         </a>
                     </li>
-                    @endif
+
 
                     <li class="nav-item  ">
                         <a href="{{route('Admin::map@listAgency')}}" class="nav-link nav-toggle">
@@ -51,7 +51,7 @@
                             <span class="arrow"></span>
                         </a>
                     </li>
-                    @if(auth()->user()->roles()->first()->id != 3)
+
                     <li class="nav-item  ">
                         <a href="{{route('Admin::map@listMapUser')}}" class="nav-link nav-toggle">
                             <i class="icon-settings"></i>
@@ -59,8 +59,8 @@
                             <span class="arrow"></span>
                         </a>
                     </li>
-                    @endif
-                    @if(auth()->user()->roles()->first()->id !=3)
+
+
                     <li class="nav-item  ">
                         <a href="{{route('Admin::map@search')}}" class="nav-link nav-toggle">
                             <i class="icon-settings"></i>
@@ -68,10 +68,10 @@
                             <span class="arrow"></span>
                         </a>
                     </li>
-                    @endif
+
                 </ul>
             </li>
-            @if(auth()->user()->roles()->first()->id == 1)
+
             <li class="nav-item">
                 <a href="javascript:;" class="nav-link nav-toggle">
                     <i class="icon-user"></i>
@@ -95,7 +95,7 @@
                     </li>
                 </ul>
             </li>
-            @endif
+
             <li class="nav-item">
                 <a href="javascript:;" class="nav-link nav-toggle">
                     <i class="icon-user"></i>
@@ -122,7 +122,7 @@
                     </li>
                 </ul>
             </li>
-            @if(auth()->user()->roles()->first()->id != 3)
+
             <li class="nav-item">
                 <a href="javascript:;" class="nav-link nav-toggle">
                     <i class="icon-user"></i>
@@ -137,7 +137,7 @@
                             <span class="title">{{ trans('home.listAccount') }}</span>
                         </a>
                     </li>
-                    @if(auth()->user()->roles()->first()->id == 1)
+
                     <li class="nav-item  ">
                         <a href="{{route('Admin::role@index')}}" class="nav-link" >
                             <i class="icon-lock"></i>
@@ -151,11 +151,11 @@
                             <span class="title">{{ trans('home.permission') }}</span>
                         </a>
                     </li>
-                    @endif
+
                 </ul>
             </li>
-            @endif
-            @if(auth()->user()->roles()->first()->id == 1)
+
+
             <li class="nav-item">
                 <a href="{{route('Admin::config@index')}}" class="nav-link nav-toggle">
                     <i class="icon-settings"></i>
@@ -163,7 +163,7 @@
                     <span class="arrow"></span>
                 </a>
             </li>
-            @endif
+
         </ul>
         <!-- END SIDEBAR MENU -->
         <!-- END SIDEBAR MENU -->

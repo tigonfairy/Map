@@ -53,7 +53,7 @@ class HomeController extends AdminController
             $agentId= array_unique(array_merge($agentId,$agentIds));
 
             //map for sale admin
-            if($role->id != 3) {
+            if($role and $role->id != 3) {
                 $areas = Area::whereIn('parent_id',$area)->get();
                 $user->area()->get()->map( function ($item) use ($areas) {
                     $areas->push($item);
@@ -92,24 +92,24 @@ class HomeController extends AdminController
 
         //chart cot
 
-        $products = DB::table('sale_agents')
-            ->select(\DB::raw('SUM(sales_plan) as sales_plan,SUM(sales_real) as sales_real,month'))
-            ->whereIn('agent_id',$agentId)->groupBy('month')->where('month','like','%'.$year.'%')->orderBy('month')
-            ->get()->toArray();
-        $sales_plan = [];
-        $sales_real = [];
-
-
-        for($i = 0;$i < 12;$i++){
-            $sales_plan[$i] = 0;
-            $sales_real[$i] = 0;
-        }
-
-        foreach ($products as $key => $product){
-            $sales_plan[$key] = intval($product->sales_plan);
-            $sales_real[$key] = intval($product->sales_real);
-
-        }
+//        $products = DB::table('sale_agents')
+//            ->select(\DB::raw('SUM(sales_plan) as sales_plan,SUM(sales_real) as sales_real,month'))
+//            ->whereIn('agent_id',$agentId)->groupBy('month')->where('month','like','%'.$year.'%')->orderBy('month')
+//            ->get()->toArray();
+//        $sales_plan = [];
+//        $sales_real = [];
+//
+//
+//        for($i = 0;$i < 12;$i++){
+//            $sales_plan[$i] = 0;
+//            $sales_real[$i] = 0;
+//        }
+//
+//        foreach ($products as $key => $product){
+//            $sales_plan[$key] = intval($product->sales_plan);
+//            $sales_real[$key] = intval($product->sales_real);
+//
+//        }
 
         //end chart cot
 

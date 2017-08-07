@@ -56,6 +56,7 @@ Route::group(['middleware' => ['auth','language'],
             'as' => 'user@',
         ], function () {
             Route::get('/datatables', ['as' => 'datatables', 'uses' => 'UserController@getDatatables']);
+            Route::post('/importExcel', ['as' => 'importExcel', 'uses' => 'UserController@importExcel']);
             Route::get('/', ['as' => 'index', 'uses' => 'UserController@index']);
             Route::get('/add', ['as' => 'add', 'uses' => 'UserController@add']);
             Route::post('/store', ['as' => 'store', 'uses' => 'UserController@store']);
