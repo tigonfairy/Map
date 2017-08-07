@@ -23,6 +23,11 @@
             }
         }
 
+        .info {
+            list-style: none;
+            margin-left: 100px;
+        }
+
 
     </style>
     <!-- BEGIN PAGE HEADER-->
@@ -804,7 +809,7 @@
                 map.drawOverlay({
                     lat: item.lat,
                     lng: item.lng,
-                    content: '<div class=""><ul class="">' +
+                    content: '<div class=""><ul class="info">' +
                     '<li>'  + user.name + '</li>' +
                     '<li>'  + area.name + '</li>' +
                     '</ul></div>'
