@@ -12,8 +12,9 @@
                 <div class="heading-btn-group">
                     <a href="{{route('Admin::product@add')}}" class="btn btn-primary"><i class="icon-add"></i> {!! trans('home.create') . ' ' . trans('home.Product') !!}</a>
 
-                    <a href="#import-product" class="btn btn-success" data-toggle="modal" id="btn-system-product">Thêm sản
+                    <a href="#import-product" class="btn btn-info" data-toggle="modal" id="btn-system-product">Thêm sản
                         phẩm từ Excel</a>
+                    <a href="{{asset('product_example.xlsx')}}" class="btn btn-success"  id="btn-system-product">Mẫu</a>
                 </div>
             </div>
             <div id="divLoading"></div>
