@@ -112,6 +112,7 @@ Route::group(['middleware' => ['auth','language'],
             Route::post('/add-map-user', ['as' => 'addMapUserPost', 'uses' => 'MapController@addMapUserPost']);
             Route::get('/{id}/edit-map-user', ['as' => 'editMapUser', 'uses' => 'MapController@editMapUser']);
             Route::post('/{id}/edit-map-user', ['as' => 'editMapUser', 'uses' => 'MapController@editMapUserPost']);
+            Route::post('/import-excel-agent', ['as' => 'importExcelAgent', 'uses' => 'MapController@importExcelAgent']);
 
 
             Route::get('/add-agency', ['as' => 'addAgency', 'uses' => 'MapController@addAgency']);
