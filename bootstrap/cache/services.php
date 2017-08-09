@@ -28,13 +28,12 @@
     24 => 'Collective\\Html\\HtmlServiceProvider',
     25 => 'Maatwebsite\\Excel\\ExcelServiceProvider',
     26 => 'Laracasts\\Flash\\FlashServiceProvider',
-    27 => 'Laravel\\Socialite\\SocialiteServiceProvider',
-    28 => 'App\\Providers\\AppServiceProvider',
-    29 => 'App\\Providers\\AuthServiceProvider',
-    30 => 'App\\Providers\\EventServiceProvider',
-    31 => 'App\\Providers\\RouteServiceProvider',
-    32 => 'Yajra\\Datatables\\DatatablesServiceProvider',
-    33 => 'Greggilbert\\Recaptcha\\RecaptchaServiceProvider',
+    27 => 'App\\Providers\\AppServiceProvider',
+    28 => 'App\\Providers\\AuthServiceProvider',
+    29 => 'App\\Providers\\EventServiceProvider',
+    30 => 'App\\Providers\\RouteServiceProvider',
+    31 => 'Yajra\\Datatables\\DatatablesServiceProvider',
+    32 => 'Greggilbert\\Recaptcha\\RecaptchaServiceProvider',
   ),
   'eager' => 
   array (
@@ -129,7 +128,6 @@
     'form' => 'Collective\\Html\\HtmlServiceProvider',
     'Collective\\Html\\HtmlBuilder' => 'Collective\\Html\\HtmlServiceProvider',
     'Collective\\Html\\FormBuilder' => 'Collective\\Html\\HtmlServiceProvider',
-    'Laravel\\Socialite\\Contracts\\Factory' => 'Laravel\\Socialite\\SocialiteServiceProvider',
   ),
   'when' => 
   array (
@@ -173,9 +171,6 @@
     array (
     ),
     'Collective\\Html\\HtmlServiceProvider' => 
-    array (
-    ),
-    'Laravel\\Socialite\\SocialiteServiceProvider' => 
     array (
     ),
   ),

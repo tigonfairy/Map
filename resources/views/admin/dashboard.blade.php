@@ -53,10 +53,9 @@
                     <div class="col-md-2">
                         <select class="search_type form-control">
                             <option value="">-- Chọn loại {{ trans('home.search') }} --</option>
-                            <option value="1">Theo vùng</option>
-                            <option value="2">Theo giám sát vùng</option>
-                            <option value="3">Theo nhân viên kinh doanh</option>
                             <option value="4">Theo đại lý</option>
+                            <option value="2">Theo giám sát vùng / Trưởng vùng</option>
+                            <option value="3">Theo giám đốc vùng</option>
                         </select>
                     </div>
                     <input type="hidden" name="type_search" value="" id="type_search"/>
@@ -631,9 +630,9 @@
                         }
                         var path = coordinate;
                         map.setCenter(bounds.getCenter().lat(), bounds.getCenter().lng());
-                        var infoWindow = new google.maps.InfoWindow({
-                            content: "<p>" + item.name + "</p>"
-                        });
+//                        var infoWindow = new google.maps.InfoWindow({
+//                            content: "<p>" + item.name + "</p>"
+//                        });
                         polygon = map.drawPolygon({
                             paths: path,
                             strokeColor: border_color,
@@ -641,24 +640,32 @@
                             strokeWeight: 1,
                             fillColor: background_color,
                             fillOpacity: 0.4,
-                            mouseover: function (clickEvent) {
-                                var position = clickEvent.latLng;
-                                infoWindow.setPosition(position);
-                                infoWindow.open(map.map);
-                            },
-                            mouseout: function (clickEvent) {
-                                if (infoWindow) {
-                                    infoWindow.close();
-                                }
-                            }
+//                            mouseover: function (clickEvent) {
+//                                var position = clickEvent.latLng;
+//                                infoWindow.setPosition(position);
+//                                infoWindow.open(map.map);
+//                            },
+//                            mouseout: function (clickEvent) {
+//                                if (infoWindow) {
+//                                    infoWindow.close();
+//                                }
+//                            }
                         });
                         polygonArray[item.id] = polygon;
                     }
                 });
 
                 $.map(data.agents, function (item) {
-                    var contentString = '<div id="content">' +
-                        '<p id="name">' + item.name + '</p>' +
+                    var user = item.user;
+                    var contentString = '<div class="info">' +
+                        '<h5>' + item.name + '</h5>' +
+                        '<div class="user_data">' +
+                        '<p class="data">%TT 100/10000 = 18%</p>' +
+                        '<ul class="info_user">' +
+                        '<li>'  + user.name + '</li>' +
+                        '<li>'  + data.area.name + '</li>' +
+                        '</ul>' +
+                        '</div>' +
                         '</div>';
 
                     var infoWindow = new google.maps.InfoWindow({
@@ -775,8 +782,18 @@
 
                 $.map(data.agents, function (item) {
 
-                    var contentString = '<div id="content">' +
-                        '<p id="name">' + item.name + '</p>' +
+                    var area = item.area;
+                    var user = item.user;
+
+                    var contentString = '<div class="info">' +
+                        '<h5>' + item.name + '</h5>' +
+                        '<div class="user_data">' +
+                        '<p class="data">%TT 100/10000 = 18%</p>' +
+                        '<ul class="info_user">' +
+                        '<li>'  + user.name + '</li>' +
+                        '<li>'  + area.name + '</li>' +
+                        '</ul>' +
+                        '</div>' +
                         '</div>';
 
                     var infoWindow = new google.maps.InfoWindow({
@@ -787,29 +804,26 @@
                         lat: item.lat,
                         lng: item.lng,
                         title:  item.name,
-//                    click: function (e) {
-//                        infoWindow.setPosition({lat: e.position.lat(), lng: e.position.lng()});
-//                        infoWindow.open(map.map);
-//                    }
+                    click: function (e) {
+                        infoWindow.setPosition({lat: e.position.lat(), lng: e.position.lng()});
+                        infoWindow.open(map.map);
+                    }
                     });
 
-                    var area = item.area;
-                    var user = item.user;
-
-                    map.drawOverlay({
-                        lat: item.lat,
-                        lng: item.lng,
-                        content: '<div class="info">' +
-                        '<h5>' + item.name + '</h5>' +
-                        '<div class="user_data">' +
-                        '<p class="data">%TT 100/10000 = 18%</p>' +
-                        '<ul class="info_user">' +
-                        '<li>'  + user.name + '</li>' +
-                        '<li>'  + area.name + '</li>' +
-                        '</ul>' +
-                        '</div>' +
-                        '</div>'
-                    });
+//                    map.drawOverlay({
+//                        lat: item.lat,
+//                        lng: item.lng,
+//                        content: '<div class="info">' +
+//                        '<h5>' + item.name + '</h5>' +
+//                        '<div class="user_data">' +
+//                        '<p class="data">%TT 100/10000 = 18%</p>' +
+//                        '<ul class="info_user">' +
+//                        '<li>'  + user.name + '</li>' +
+//                        '<li>'  + area.name + '</li>' +
+//                        '</ul>' +
+//                        '</div>' +
+//                        '</div>'
+//                    });
 
                 });
             }
@@ -880,8 +894,19 @@
                         polygonArray[item.id] = polygon;
                     }
                 });
-                var contentString = '<div id="content">' +
-                    '<p id="name">' + data.agents.name + '</p>' +
+
+                var area = data.area;
+                var user = data.user;
+
+                var contentString = '<div class="info">' +
+                    '<h5>' + data.agents.name + '</h5>' +
+                    '<div class="user_data">' +
+                    '<p class="data">%TT 100/10000 = 18%</p>' +
+                    '<ul class="info_user">' +
+                    '<li>'  + user.name + '</li>' +
+                    '<li>'  + area.name + '</li>' +
+                    '</ul>' +
+                    '</div>' +
                     '</div>';
 
                 var infoWindow = new google.maps.InfoWindow({
@@ -892,25 +917,29 @@
                     lat:  data.agents.lat,
                     lng:  data.agents.lng,
                     title:   data.agents.name,
+                    infoWindow : infoWindow,
+                    click: function (e) {
+                        infoWindow.setPosition({lat: e.position.lat(), lng: e.position.lng()});
+                        infoWindow.open(map.map);
+                    }
                 });
+//                infoWindow.open(map, marker);infoWindow.open(map, marker);
 
-                var area = data.area;
-                var user = data.user;
 
-                map.drawOverlay({
-                    lat: data.agents.lat,
-                    lng: data.agents.lng,
-                    content: '<div class="info">' +
-                                '<h5>' + data.agents.name + '</h5>' +
-                                '<div class="user_data">' +
-                                    '<p class="data">%TT 100/10000 = 18%</p>' +
-                                    '<ul class="info_user">' +
-                                    '<li>'  + user.name + '</li>' +
-                                    '<li>'  + area.name + '</li>' +
-                                    '</ul>' +
-                                '</div>' +
-                            '</div>'
-                });
+//                map.drawOverlay({
+//                    lat: data.agents.lat,
+//                    lng: data.agents.lng,
+//                    content: '<div class="info">' +
+//                                '<h5>' + data.agents.name + '</h5>' +
+//                                '<div class="user_data">' +
+//                                    '<p class="data">%TT 100/10000 = 18%</p>' +
+//                                    '<ul class="info_user">' +
+//                                    '<li>'  + user.name + '</li>' +
+//                                    '<li>'  + area.name + '</li>' +
+//                                    '</ul>' +
+//                                '</div>' +
+//                            '</div>'
+//                });
             }
 
     });

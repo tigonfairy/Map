@@ -429,7 +429,7 @@ class MapController extends AdminController
             $listIds = $area->subArea()->get()->pluck('id')->toArray();
             $listIds[] = $dataSearch;
             $locations = $area->address;
-            $agents = Agent::whereIn('area_id',$listIds)->get();
+            $agents = Agent::whereIn('area_id',$listIds)->with('user')->get();
 
             if($agents){
                 $idAgent = clone $agents;
