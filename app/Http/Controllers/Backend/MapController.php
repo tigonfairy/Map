@@ -240,12 +240,8 @@ class MapController extends AdminController
         if($role->id == 1){
             $agents = $agents->paginate(10);
         }else{
-            if(Cache::has('agentId')){
-                $agentID = Cache::get('agentId');
-            }else{
-                $agentID = User::getListAgencyByRole();
-            }
 
+            $agentID = User::getListAgencyByRole();
             $agents = $agents->whereIn('id',$agentID)->paginate(10);
         }
 

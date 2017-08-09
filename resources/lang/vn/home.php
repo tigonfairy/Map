@@ -66,4 +66,5 @@ return array(
     'code' => 'Mã số',
     'parent_product' => 'Nhóm sản phẩm',
     'note_product' => '(\'Không cần chọn mục này nếu là nhóm sản phẩm\')',
+    'address' => 'Địa chỉ'
 );

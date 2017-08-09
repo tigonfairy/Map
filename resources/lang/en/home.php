@@ -66,4 +66,5 @@ return [
     'code' => 'Code',
     'parent_product' => 'Group Product',
     'note_product' => '(\'Not choose If is Group Product\')',
+    'address' => 'Address'
 ];

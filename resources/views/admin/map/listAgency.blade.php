@@ -82,6 +82,7 @@
 
                     <th>{{ trans('home.code') }}</th>
                     <th>{{ trans('home.name') }}</th>
+                    <th>{{ trans('home.address') }}</th>
                     <th>{{ trans('home.manager') }}</th>
                     <th>{{ trans('home.place') }}</th>
                     <th>{{ trans('home.action') }}</th>
@@ -92,6 +93,7 @@
                         <tr role="row" id="">
                             <td>{{$agent->code}}</td>
                             <td>{{$agent->name}}</td>
+                            <td>{{$agent->address}}</td>
                             <td>{!! $agent->user ? $agent->user->name : '' !!}</td>
                             <td>{!! $agent->area ? $agent->area->name : '' !!}</td>
                             <td>
