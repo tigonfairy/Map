@@ -14,6 +14,8 @@ use App\Models\AddressGeojson;
 use Auth;
 use Illuminate\Support\Facades\Cache;
 use Image;
+use Validator;
+use App\Jobs\ImportAgent;
 class MapController extends AdminController
 {
     public function listLocation()
@@ -238,12 +240,8 @@ class MapController extends AdminController
         if($role->id == 1){
             $agents = $agents->paginate(10);
         }else{
-            if(Cache::has('agentId')){
-                $agentID = Cache::get('agentId');
-            }else{
-                $agentID = User::getListAgencyByRole();
-            }
 
+            $agentID = User::getListAgencyByRole();
             $agents = $agents->whereIn('id',$agentID)->paginate(10);
         }
 
@@ -504,5 +502,28 @@ class MapController extends AdminController
             abort(403);
         }
         return AddressGeojson::getDatatables();
+    }
+
+
+    public function importExcelAgent(Request $request) {
+        $validator = Validator::make($request->all(), [
+            'file'=>'required|max:50000|mimes:xlsx,csv'
+        ]);
+
+        if($validator->fails()) {
+            $response['status'] = 'fails';
+            $response['errors'] = $validator->errors();
+        } else {
+
+            $file = request()->file('file');
+            $filename = time() . '_' . mt_rand(1111, 9999) . '_' . $request->file('file')->getClientOriginalName();
+            $request->file('file')->move(storage_path('app/import/agents'), $filename);
+            $this->dispatch(new ImportAgent( storage_path('app/import/agents/' . $filename)));
+
+            flash()->success('Success!', 'Import successfully.');
+            $response['status'] = 'success';
+        }
+
+        return response()->json($response);
     }
 }

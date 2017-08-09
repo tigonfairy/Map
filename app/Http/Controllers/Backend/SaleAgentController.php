@@ -8,7 +8,8 @@ use App\Models\Product;
 use App\Models\SaleAgent;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-
+use Validator;
+use App\Jobs\ImportDataAgent;
 class SaleAgentController extends AdminController
 {
 
@@ -128,5 +129,27 @@ class SaleAgentController extends AdminController
     public function getDatatables()
     {
         return SaleAgent::getDatatables();
+    }
+    public function importExcelDataAgent(Request $request) {
+        $validator = Validator::make($request->all(), [
+            'file'=>'required|max:50000|mimes:xlsx,csv',
+            'month' => 'required'
+        ]);
+
+        if($validator->fails()) {
+            $response['status'] = 'fails';
+            $response['errors'] = $validator->errors();
+        } else {
+            $month = $request->input('month');
+            $file = request()->file('file');
+            $filename = $month.'_'.time() . '_' . mt_rand(1111, 9999) . '_' . $request->file('file')->getClientOriginalName();
+            $request->file('file')->move(storage_path('app/import/products'), $filename);
+            $this->dispatch(new ImportDataAgent( storage_path('app/import/products/' . $filename)),$month);
+
+            flash()->success('Success!', 'Data successfully updated.');
+            $response['status'] = 'success';
+        }
+
+        return response()->json($response);
     }
 }

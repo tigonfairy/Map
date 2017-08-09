@@ -70,7 +70,7 @@ class User extends Authenticatable
 
     public function manager()
     {
-        return $this->hasMany(User::class, 'manager_id');
+        return $this->belongsTo(User::class, 'manager_id');
     }
 
 
@@ -78,11 +78,7 @@ class User extends Authenticatable
     {
         $user = auth()->user();
         $role = $user->roles()->first();
-        if($role->id == 1) {
-            $model = static::select([
-                'id', 'email', 'created_at'
-            ])->with('roles');
-        } else {
+
             $users = $user->manager()->get();
             $users->push($user);
             $userIds = $users->pluck('id')->toArray();
@@ -92,17 +88,22 @@ class User extends Authenticatable
                     $userIds[] = $v;
                 }
             }
-            $model = static::select([
-                'id', 'email', 'created_at'
-            ])->with('roles')->whereIn('id', $userIds);
-        }
+            $model = static::select(['*']);
+
 
 
         return Datatables::eloquent($model)
             ->filter(function ($query) {
             })
-            ->editColumn('group', function ($model) {
-                return $model->roles ? $model->roles->first()['name'] : '';
+            ->editColumn('position', function ($model) {
+                return User::$positionTexts[$model->position];
+            })
+            ->addColumn('manager', function ($model) {
+                if($model->manager) {
+                    return $model->manager->code;
+                }
+                return '';
+
             })
             ->addColumn('action', 'admin.user.datatables.action')
             ->make(true);

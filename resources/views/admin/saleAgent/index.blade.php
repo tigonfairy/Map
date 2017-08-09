@@ -11,9 +11,59 @@
             <div class="heading-elements">
                 <div class="heading-btn-group">
                     <a href="{{route('Admin::saleAgent@add')}}" class="btn btn-primary"><i class="icon-add"></i> Thêm dữ liệu cho đại lý</a>
-
+                    <a href="#import-product" class="btn btn-info" data-toggle="modal" id="btn-system-product">Thêm doanh số từ Excel</a>
+                    <a href="{{asset('product_example.xlsx')}}" class="btn btn-success"  id="btn-system-product">Mẫu</a>
                 </div>
             </div>
+
+            <div id="divLoading"></div>
+            <div class="modal fade bs-modal-lg" id="import-product" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                            <h4 class="modal-title">Thêm doanh số cho đại lý bằng Excel</h4>
+                        </div>
+                        <form method="POST" action="{{ route('Admin::saleAgent@importExcelDataAgent') }}"
+                              enctype="multipart/form-data" id="import_form">
+                            {{ csrf_field() }}
+                            <div class="modal-body">
+                                <div class="row">
+                                    <div class="col-md-10" style="margin-bottom:10px">
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3">Thời gian</label>
+                                            <div class="col-md-8">
+                                                <input type="text" name ="month" class="form-control monthPicker" value="" />
+                                                <span id="month" class="error-import" style="color:red;"></span>
+                                            </div>
+                                        </div>
+                                        </div>
+                                    <div class="col-md-10">
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3">File</label>
+                                            <div class="col-md-8">
+                                                <input type="file" class="file-excel form-control" name="file">
+                                                <span id="file" class="error-import" style="color:red;"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn dark btn-outline" data-dismiss="modal">Đóng</button>
+                                <button type="button" class="btn green" id = "import">Import</button>
+                            </div>
+                        </form>
+                    </div>
+                    <!-- /.modal-content -->
+                </div>
+                <!-- /.modal-dialog -->
+            </div>
+
+
         </div>
     </div>
 
@@ -103,6 +153,38 @@
                 dt.draw();
             }
         });
+
+
+        $("#import").on("click", function () {
+            $("div#divLoading").addClass('show');
+            $('.error-import').text('');
+            var form = $('#import_form');
+            var data = new FormData(form[0]);
+            $.ajax({
+                headers: { 'X-CSRF-Token': $('input[name="_token"]').val() },
+                url: $('#import_form').attr('action'),
+                type: $('#import_form').attr('method'),
+                data: data,
+                processData: false,
+                cache:false,
+                contentType:false,
+                dataType: 'JSON',
+                success: function (res){
+
+                    $("#file").text('');
+                    if (res.status == 'success'){
+                        $("div#divLoading").removeClass('show');
+                        window.location.reload();
+                    } else {
+                        $.each(res.errors,function(index, value) {
+                            $("div#divLoading").removeClass('show');
+                            $("#"+index).text(value);
+                        });
+                    }
+                }
+            });
+        });
+
     } );
 
 

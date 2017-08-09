@@ -56,6 +56,7 @@ Route::group(['middleware' => ['auth','language'],
             'as' => 'user@',
         ], function () {
             Route::get('/datatables', ['as' => 'datatables', 'uses' => 'UserController@getDatatables']);
+            Route::post('/importExcel', ['as' => 'importExcel', 'uses' => 'UserController@importExcel']);
             Route::get('/', ['as' => 'index', 'uses' => 'UserController@index']);
             Route::get('/add', ['as' => 'add', 'uses' => 'UserController@add']);
             Route::post('/store', ['as' => 'store', 'uses' => 'UserController@store']);
@@ -111,6 +112,7 @@ Route::group(['middleware' => ['auth','language'],
             Route::post('/add-map-user', ['as' => 'addMapUserPost', 'uses' => 'MapController@addMapUserPost']);
             Route::get('/{id}/edit-map-user', ['as' => 'editMapUser', 'uses' => 'MapController@editMapUser']);
             Route::post('/{id}/edit-map-user', ['as' => 'editMapUser', 'uses' => 'MapController@editMapUserPost']);
+            Route::post('/import-excel-agent', ['as' => 'importExcelAgent', 'uses' => 'MapController@importExcelAgent']);
 
 
             Route::get('/add-agency', ['as' => 'addAgency', 'uses' => 'MapController@addAgency']);
@@ -139,6 +141,8 @@ Route::group(['middleware' => ['auth','language'],
             Route::get('/{agentId}/{month}/edit', ['as' => 'edit', 'uses' => 'SaleAgentController@edit']);
             Route::match(['put', 'patch'], '/{id}', ['as' => 'update', 'uses' => 'SaleAgentController@update']);
             Route::get('/{agentId}/{month}/delete', ['as' => 'delete', 'uses' => 'SaleAgentController@delete']);
+
+            Route::post('/import-excel-data-agent', ['as' => 'importExcelDataAgent', 'uses' => 'SaleAgentController@importExcelDataAgent']);
 
         });
 

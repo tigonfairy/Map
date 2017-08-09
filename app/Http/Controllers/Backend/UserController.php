@@ -9,6 +9,7 @@ use App\Models\User;
 use App\Models\Role;
 use App\Models\Permission;
 use Validator;
+use App\Jobs\ImportUser;
 class UserController extends AdminController
 {
 
@@ -147,5 +148,30 @@ class UserController extends AdminController
             $users = User::where('position',$position+1)->get();
         }
         return view('admin.user.get_position',compact('users'));
+    }
+
+
+    public function importExcel(Request $request)
+    {
+
+        $validator = Validator::make($request->all(), [
+            'file'=>'required|max:50000|mimes:xlsx,csv'
+        ]);
+
+        if($validator->fails()) {
+            $response['status'] = 'fails';
+            $response['errors'] = $validator->errors();
+        } else {
+
+            $file = request()->file('file');
+            $filename = time() . '_' . mt_rand(1111, 9999) . '_' . $request->file('file')->getClientOriginalName();
+            $request->file('file')->move(storage_path('app/import/users'), $filename);
+            $this->dispatch(new ImportUser( storage_path('app/import/users/' . $filename)));
+
+            flash()->success('Success!', 'User successfully updated.');
+            $response['status'] = 'success';
+        }
+
+        return response()->json($response);
     }
 }
