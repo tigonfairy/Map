@@ -12,7 +12,7 @@
                 <div class="heading-btn-group">
                     <a href="{{route('Admin::map@addAgency')}}" class="btn btn-primary"><i class="icon-add"></i> {{ trans('home.create_agency') }}</a>
                     <a href="#import-user" class="btn btn-info" data-toggle="modal" id="btn-system-product">Thêm đại lý từ Excel</a>
-                    <a href="{{asset('user_example.xlsx')}}" class="btn btn-success"  id="btn-system-product">Mẫu</a>
+                    <a href="{{asset('agent_example.xlsx')}}" class="btn btn-success"  id="btn-system-product">Mẫu</a>
                 </div>
             </div>
         </div>
@@ -79,6 +79,8 @@
             <table class="table table-striped table-bordered" cellspacing="0" width="100%" id="users-table">
                 <thead>
                 <tr>
+
+                    <th>{{ trans('home.code') }}</th>
                     <th>{{ trans('home.name') }}</th>
                     <th>{{ trans('home.manager') }}</th>
                     <th>{{ trans('home.place') }}</th>
@@ -88,8 +90,9 @@
                 <tbody>
                     @foreach($agents as $agent)
                         <tr role="row" id="">
+                            <td>{{$agent->code}}</td>
                             <td>{{$agent->name}}</td>
-                            <td>{!! $agent->user ? $agent->user->email : '' !!}</td>
+                            <td>{!! $agent->user ? $agent->user->name : '' !!}</td>
                             <td>{!! $agent->area ? $agent->area->name : '' !!}</td>
                             <td>
                                 <a href="{{route('Admin::map@agentDetail',[$agent->id])}}">
