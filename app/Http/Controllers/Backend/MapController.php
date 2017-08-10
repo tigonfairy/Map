@@ -420,6 +420,7 @@ class MapController extends AdminController
 
         $typeSearch = $request->input('type_search');
         $dataSearch = $request->input('data_search');
+        $month = $request->input('month');
 
 //        if($typeSearch == 'areas') {
 //            $area = Area::findOrFail($dataSearch);
@@ -443,15 +444,60 @@ class MapController extends AdminController
 
         if($typeSearch == 'agents') {
             $agent = Agent::findOrFail($dataSearch);
+            $totalSales = 0;
+            $saleProducts = 0;
+            $listProducts = [];
+            $capacity = 0;
+
+            $productParents = Product::getParent();
+
+            foreach ($productParents as $product) {
+                foreach ($product->getChildren as $p) {
+                    if (isset($p->code)) {
+                        $sales = SaleAgent::where('agent_id', $agent->id)->where('product_id', $p->id)->where('month',$month)->select('sales_real', 'capacity')->first();
+                        if($sales) {
+                            $saleProducts += $sales->sales_real;
+                            $capacity = $sales->capacity;
+                            $listProducts[] = [
+                                'id' => $p->id,
+                                'code' => $p->code,
+                                'totalSales' => $sales->sales_real,
+                                'percent' => $sales->sales_real/$capacity,
+                                'capacity' => $capacity
+                            ];
+                        }
+                    }
+                }
+                $totalSales += $saleProducts;
+                $saleProducts = 0;
+            }
+            $listProducts[] =  [
+                'id' => 0,
+                'code' => 'Tổng sản lượng',
+                'totalSales' => $totalSales,
+                'percent' => $totalSales/$capacity,
+                'capacity' => $capacity
+            ];
+
+
+//            $areas = $productParents->map(function ($product) use($agent, $products, $month, $totalSales, $saleProducts) {
+//
+//                $product->getChildren->map(function ($p) use($agent, $products, $month, $totalSales, $saleProducts) {
+//                   $saleProducts += SaleAgent::where('agent_id', $agent->id)->where('product_id', $p->id)->where('month', $month)->pluck('sales_real')->first();
+//                });
+//                dd($saleProducts);
+//            });
+
 //            $area=$agent->area;
             $user=$agent->user;
 //            $locations=$area->address;
 
             return response()->json([
-//                'area' =>  $area,
+                'capacity' =>  $capacity,
                 'user' => $user,
 //                'locations' =>  $locations,
                 'agents' =>  $agent,
+                'listProducts' => $listProducts
             ]);
         }
 

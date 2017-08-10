@@ -52,6 +52,7 @@ class Product extends Model
             ->addColumn('action', 'admin.product.datatables.action')
             ->make(true);
     }
+
     public function group(){
         return $this->belongsTo(GroupProduct::class,'parent_id','id');
     }
@@ -67,5 +68,14 @@ class Product extends Model
     public function maxgro() {
         $p = Product::where('level',1)->where('product_id',$this->getAttribute('id'))->where('name_code','maxgro')->first();
         return $p;
+    }
+
+    public static function getParent() {
+        $ps = Product::where('level',0)->get();
+        return $ps;
+    }
+
+    public function getChildren() {
+       return $this->hasMany(Product::class, 'product_id','id');
     }
 }

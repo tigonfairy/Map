@@ -65,12 +65,34 @@
                         </select>
                     </div>
 
+                    <div class="col-md-3">
+                        <input type="text" id="month" name="month" class="form-control monthPicker col-md-9"
+                               value="{{ old('month') ?: $month }}"/>
+                    </div>
+
                     <div class="col-md-4">
                         <button type="submit" class="btn btn-info">{{ trans('home.search') }}</button>
                     </div>
                 </div>
             </form>
 
+            {{--<div class="row">--}}
+                {{--<div class="form-group {{ $errors->has('month') ? 'has-error has-feedback' : '' }}">--}}
+                    {{--<label for="name" class="control-label text-semibold col-md-1">{{ trans('home.time') }}</label>--}}
+                    {{--<i class="icon-question4 text-muted text-size-mini cursor-pointer js-help-icon"--}}
+                       {{--data-content="Thời gian"></i>--}}
+                    {{--<div class="col-md-3">--}}
+                        {{--<input type="text" id="month" name="month" class="form-control monthPicker col-md-9"--}}
+                               {{--value="{{ old('month') ?: $month }}"/>--}}
+                    {{--</div>--}}
+                    {{--@if ($errors->has('month'))--}}
+                        {{--<div class="form-control-feedback">--}}
+                            {{--<i class="icon-notification2"></i>--}}
+                        {{--</div>--}}
+                        {{--<div class="help-block">{{ $errors->first('month') }}</div>--}}
+                    {{--@endif--}}
+                {{--</div>--}}
+            {{--</div>--}}
 
             <div class="portlet-body">
                 <div id="map" style=" width: 100% ;height: 500px"></div>
@@ -154,6 +176,19 @@
 
 <script type="text/javascript">
     $(document).ready(function () {
+
+        $('.monthPicker').datepicker( {
+            changeMonth: true,
+            changeYear: true,
+            showButtonPanel: true,
+            dateFormat: 'mm-yy',
+            onClose: function(dateText, inst) {
+                var month = $("#ui-datepicker-div .ui-datepicker-month :selected").val();
+                var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val();
+                $(this).datepicker('setDate', new Date(year, month, 1));
+            }
+        });
+
         {{--$('.monthPicker').datepicker({--}}
         {{--changeMonth: true,--}}
         {{--changeYear: true,--}}
@@ -827,11 +862,13 @@
             });
 
             var user = data.user;
+            var list_products = data.listProducts;
 
+            // info cho 1 marker
             var contentString = '<div class="info">' +
                 '<h5>' + data.agents.address + '</h5>' +
                 '<div class="user_data">' +
-                '<p class="data">%TT 100/10000 = 18%</p>' +
+                '<p class="data" id="data">%'+ list_products[0].code + ' ' + list_products[0].totalSales +'/'+ list_products[0].capacity +  '=' + list_products[0].percent + '%</p>' +
                 '<ul class="info_user">' +
                 '<li>'  + user.name + '</li>' +
                 '</ul>' +
@@ -860,7 +897,62 @@
                 '<h5>' + data.agents.name + '</h5>' +
                 '</div>'
             });
+
+
+
+            var tableSales = '<table class="table table-striped table-bordered table-products" cellspacing="0" width="100%" id="data-table">' +
+                '<thead>' +
+                '<tr>' +
+                '<th>Sản phẩm</th>' +
+                '<th>Mã</th>' +
+                '<th>Sản lượng</th>'+
+                '<th>Dung lượng</th>'+
+                '</tr>' +
+                '</thead>'+
+                '<tbody>' +
+                    '<tr>' +
+                    '<td>' +
+                    '<select id="choose_product">';
+                        $.map(list_products, function (product) {
+                            tableSales += '<option value="' + product.code + '">' + product.code + '</option>'
+                        });
+
+                tableSales += '</select>' +
+                    '</td>' +
+                    '<td id="code">' + list_products[0].code +'</td>'+
+                    '<td id="totalSales">' + list_products[0].totalSales +'</td>'+
+                    '<td id="capacity">' + list_products[0].capacity +'</td>' +
+                    '</tr>' +
+                '</tbody>' +
+                    '</table>';
+
+            map.addControl({
+                position: 'top_left',
+                content: tableSales,
+            });
+
+            select_product(list_products);
         }
+
+        function select_product(list_products) {
+
+            $(document).on('change', '#choose_product', function() {
+                var code = $(this).val();
+                console.log(list_products);
+                var data = $.grep(list_products, function(e){
+                    console.log(code);
+                    return e.code == code;
+                });
+
+                console.log(data);
+                var item = data[0];
+                $("#code").text(item.code);
+                $("#totalSales").text(item.totalSales);
+                $("#capacity").text(item.capacity);
+                $("#data").text('%'+ item.code + ' ' + item.totalSales +'/'+ item.capacity +  '=' + item.percent + '%');
+            });
+        }
+
     });
 </script>
 @endpush
