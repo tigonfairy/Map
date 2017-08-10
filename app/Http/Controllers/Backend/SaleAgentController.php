@@ -144,7 +144,7 @@ class SaleAgentController extends AdminController
             $file = request()->file('file');
             $filename = $month.'_'.time() . '_' . mt_rand(1111, 9999) . '_' . $request->file('file')->getClientOriginalName();
             $request->file('file')->move(storage_path('app/import/products'), $filename);
-            $this->dispatch(new ImportDataAgent( storage_path('app/import/products/' . $filename)),$month);
+            $this->dispatch(new ImportDataAgent( storage_path('app/import/products/' . $filename),$month));
 
             flash()->success('Success!', 'Data successfully updated.');
             $response['status'] = 'success';

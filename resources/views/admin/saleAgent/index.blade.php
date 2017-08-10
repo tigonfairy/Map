@@ -12,7 +12,7 @@
                 <div class="heading-btn-group">
                     <a href="{{route('Admin::saleAgent@add')}}" class="btn btn-primary"><i class="icon-add"></i> Thêm dữ liệu cho đại lý</a>
                     <a href="#import-product" class="btn btn-info" data-toggle="modal" id="btn-system-product">Thêm doanh số từ Excel</a>
-                    <a href="{{asset('product_example.xlsx')}}" class="btn btn-success"  id="btn-system-product">Mẫu</a>
+                    <a href="{{asset('data_agent.xlsx')}}" class="btn btn-success"  id="btn-system-product">Mẫu</a>
                 </div>
             </div>
 
