@@ -47,9 +47,7 @@ class ApiController extends AdminController
 
     public function getListSaleAdmins(Request $request){
 
-        $users = User::whereHas('roles', function ($query) {
-            $query->where('role_id', 2);
-        });
+        $users = User::where('position', User::GSV);
 
         if($request->input('q')){
             $users = $users->where('name','like','%'.$request->input('q').'%');

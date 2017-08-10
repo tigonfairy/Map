@@ -421,43 +421,62 @@ class MapController extends AdminController
         $typeSearch = $request->input('type_search');
         $dataSearch = $request->input('data_search');
 
-        if($typeSearch == 'areas') {
-            $area = Area::findOrFail($dataSearch);
-            $listIds=[];
-            $listIds = $area->subArea()->get()->pluck('id')->toArray();
-            $listIds[] = $dataSearch;
-            $locations = $area->address;
-            $agents = Agent::whereIn('area_id',$listIds)->with('user')->get();
+//        if($typeSearch == 'areas') {
+//            $area = Area::findOrFail($dataSearch);
+//            $listIds=[];
+//            $listIds = $area->subArea()->get()->pluck('id')->toArray();
+//            $listIds[] = $dataSearch;
+//            $locations = $area->address;
+//            $agents = Agent::whereIn('area_id',$listIds)->with('user')->get();
+//
+//            if($agents){
+//                $idAgent = clone $agents;
+//                $idAgent = $idAgent->pluck('id')->toArray();
+//            }
+//
+//            return response()->json([
+//                'area' =>  $area,
+//                'locations' =>  $locations,
+//                'agents' =>  $agents,
+//            ]);
+//        }
 
-            if($agents){
-                $idAgent = clone $agents;
-                $idAgent = $idAgent->pluck('id')->toArray();
-            }
+        if($typeSearch == 'agents') {
+            $agent = Agent::findOrFail($dataSearch);
+//            $area=$agent->area;
+            $user=$agent->user;
+//            $locations=$area->address;
 
             return response()->json([
-                'area' =>  $area,
-                'locations' =>  $locations,
-                'agents' =>  $agents,
+//                'area' =>  $area,
+                'user' => $user,
+//                'locations' =>  $locations,
+                'agents' =>  $agent,
             ]);
         }
 
-        if($typeSearch == 'sale_admins') {
+        if($typeSearch == 'gsv') {
             $user = User::findOrFail($dataSearch);
-            $userOwns = $user->manager()->get();
+            $userOwns = $user->owners()->get();
             $userOwns->push($user);
-            $areas = $userOwns->map(function ($user) {
-                return $user->area()->get();
-            });
+            $listIds = $userOwns->pluck('id')->toArray();
+//            $areas = $userOwns->map(function ($user) {
+//                return $user->area()->get();
+//            });
+            $areas= $user->area()->get();
 
             $locations=[];
-            $listIds=[];
-            foreach ($areas as $key => $areaIds) {
-                foreach ($areaIds as $k => $area) {
-                    array_push($listIds, $area->id);
-                    array_push($locations, $area->address);
+            foreach ($areas as $key => $area) {
+                foreach ($area->address as $k => $address) {
+                    $locations[] = [
+                        'border_color' => $area->border_color,
+                        'background_color' => $area->background_color,
+                        'area' => $address
+                    ];
                 }
             }
-            $agents = Agent::whereIn('area_id',$listIds)->with('area')->with('user')->get();
+
+            $agents = Agent::whereIn('manager_id',$listIds)->with('user')->get();
 
             return response()->json([
                 'locations' =>  $locations,
@@ -482,19 +501,7 @@ class MapController extends AdminController
             ]);
         }
 
-        if($typeSearch == 'agents') {
-            $agent = Agent::findOrFail($dataSearch);
-            $area=$agent->area;
-            $user=$agent->user;
-            $locations=$area->address;
 
-            return response()->json([
-                'area' =>  $area,
-                'user' => $user,
-                'locations' =>  $locations,
-                'agents' =>  $agent,
-            ]);
-        }
     }
 
     public function getDatatables() {

@@ -53,9 +53,10 @@
                     <div class="col-md-2">
                         <select class="search_type form-control">
                             <option value="">-- Chọn loại {{ trans('home.search') }} --</option>
-                            <option value="4">Theo đại lý</option>
-                            <option value="2">Theo giám sát vùng / Trưởng vùng</option>
-                            <option value="3">Theo giám đốc vùng</option>
+                            <option value="1">Theo đại lý</option>
+                            <option value="2">Theo giám sát vùng </option>
+                            <option value="3">Theo trưởng vùng </option>
+                            <option value="4">Theo giám đốc vùng</option>
                         </select>
                     </div>
                     <input type="hidden" name="type_search" value="" id="type_search"/>
@@ -69,6 +70,7 @@
                     </div>
                 </div>
             </form>
+
 
             <div class="portlet-body">
                 <div id="map" style=" width: 100% ;height: 500px"></div>
@@ -508,15 +510,16 @@
         $( ".search_type" ).change(function() {
             var search_type = $(this).val();
             if (search_type == 1) {
-                getListAreas();
-            } else if (search_type == 2) {
-                getListSaleAdmins();
-            } else if (search_type == 3) {
-                getListSaleMans();
-            } else if (search_type == 4) {
                 getListAgents();
+            } else if (search_type == 2) {
+                getListGSV();
+            } else if (search_type == 3) {
+                getListTV();
+            } else if (search_type == 4) {
+                getListGDV();
             }
         });
+
         $('#geocoding_form').submit(function(e){
             e.preventDefault();
             var type_search = $("#type_search").val();
@@ -532,17 +535,18 @@
                         lng: 105.83415979999995,
                         width: "100%",
                         height: '500px',
-                        zoom: 13,
+                        zoom: 11,
                         fullscreenControl: true,
                     });
-                    if (type_search == 'areas' ) {
-                        showDataAreas(data);
-                    }
-                    if (type_search == 'sale_admins' || type_search == 'sale_mans') {
-                        showDataSales(data);
-                    }
+
                     if (type_search == 'agents') {
                         showDataAgents(data);
+                    }
+                    if (type_search == 'gsv' || type_search == 'tv') {
+                        showDataSales(data);
+                    }
+                    if (type_search == 'gdv' ) {
+                        showDataAreas(data);
                     }
                 }
             });
@@ -647,8 +651,8 @@
             });
         }
 
-        function getListSaleAdmins() {
-            $("#type_search").val('sale_admins');
+        function getListGSV() {
+            $("#type_search").val('gsv');
             $(".data_search").select2({
                 'placeholder' : "{{'-- '. trans('home.select'). ' '. trans('home.manager') .' --'}}",
                 ajax : {
@@ -715,11 +719,11 @@
 
             var polygonArray = [];
             $.map(data.locations, function (location) {
-                $.map(location, function (item) {
+                    var item = location.area;
                     var c = item.coordinates;
                     var coordinate = JSON.parse(c);
-                    var border_color = '#333';
-                    var background_color = '#333';
+                    var border_color = location.border_color;
+                    var background_color = location.background_color;
                     if (coordinate) {
                         var bounds = new google.maps.LatLngBounds();
                         for (i = 0; i < coordinate.length; i++) {
@@ -738,19 +742,17 @@
                         });
                         polygonArray[item.id] = polygon;
                     }
-                });
             });
+
             $.map(data.agents, function (item) {
-                var area = item.area;
                 var user = item.user;
 
                 var contentString = '<div class="info">' +
-                    '<h5>' + item.name + '</h5>' +
+                    '<h5>' + item.address + '</h5>' +
                     '<div class="user_data">' +
                     '<p class="data">%TT 100/10000 = 18%</p>' +
                     '<ul class="info_user">' +
                     '<li>'  + user.name + '</li>' +
-                    '<li>'  + area.name + '</li>' +
                     '</ul>' +
                     '</div>' +
                     '</div>';
@@ -769,24 +771,15 @@
                         infoWindow.open(map.map);
                     }
                 });
-//                infoWindow.open(map, marker);infoWindow.open(map, marker);
 
-
-//                map.drawOverlay({
-//                    lat: data.agents.lat,
-//                    lng: data.agents.lng,
-//                    content: '<div class="info">' +
-//                                '<h5>' + data.agents.name + '</h5>' +
-//                                '<div class="user_data">' +
-//                                    '<p class="data">%TT 100/10000 = 18%</p>' +
-//                                    '<ul class="info_user">' +
-//                                    '<li>'  + user.name + '</li>' +
-//                                    '<li>'  + area.name + '</li>' +
-//                                    '</ul>' +
-//                                '</div>' +
-//                            '</div>'
-//                });
-            });
+                map.drawOverlay({
+                    lat: data.agents.lat,
+                    lng: data.agents.lng,
+                    content: '<div class="info">' +
+                                '<h5>' + data.agents.name + '</h5>' +
+                            '</div>'
+                });
+        });
         }
 
         function getListAgents() {
@@ -822,48 +815,25 @@
         }
 
         function showDataAgents(data) {
-            var polygonArray = [];
-            $.map(data.locations, function (item) {
-                var c = item.coordinates;
-                var coordinate = JSON.parse(c);
-                var border_color = '#333';
-                var background_color = '#333';
-                if(data.area.border_color){
-                    border_color = data.area.border_color;
-                }
-                if(data.area.background_color){
-                    background_color = data.area.background_color;
-                }
-                if (coordinate) {
-                    var bounds = new google.maps.LatLngBounds();
-                    for (i = 0; i < coordinate.length; i++) {
-                        var c = coordinate[i];
-                        bounds.extend(new google.maps.LatLng(c[0], c[1]));
-                    }
-                    var path = coordinate;
-                    map.setCenter(bounds.getCenter().lat(), bounds.getCenter().lng());
-                    polygon = map.drawPolygon({
-                        paths: path,
-                        strokeColor: border_color,
-                        strokeOpacity: 1,
-                        strokeWeight: 1,
-                        fillColor: background_color,
-                        fillOpacity: 0.4,
-                    });
-                    polygonArray[item.id] = polygon;
-                }
+
+            map = new GMaps({
+                div: '#map',
+                lat:  data.agents.lat,
+                lng: data.agents.lng,
+                width: "100%",
+                height: '500px',
+                zoom: 13,
+                fullscreenControl: true,
             });
 
-            var area = data.area;
             var user = data.user;
 
             var contentString = '<div class="info">' +
-                '<h5>' + data.agents.name + '</h5>' +
+                '<h5>' + data.agents.address + '</h5>' +
                 '<div class="user_data">' +
                 '<p class="data">%TT 100/10000 = 18%</p>' +
                 '<ul class="info_user">' +
                 '<li>'  + user.name + '</li>' +
-                '<li>'  + area.name + '</li>' +
                 '</ul>' +
                 '</div>' +
                 '</div>';
@@ -883,21 +853,13 @@
                 }
             });
 
-
-//            map.drawOverlay({
-//                lat: data.agents.lat,
-//                lng: data.agents.lng,
-//                content: '<div class="info">' +
-//                '<h5>' + data.agents.name + '</h5>' +
-//                '<div class="user_data">' +
-//                '<p class="data">%TT 100/10000 = 18%</p>' +
-//                '<ul class="info_user">' +
-//                '<li>'  + user.name + '</li>' +
-//                '<li>'  + area.name + '</li>' +
-//                '</ul>' +
-//                '</div>' +
-//                '</div>'
-//            });
+            map.drawOverlay({
+                lat: data.agents.lat,
+                lng: data.agents.lng,
+                content: '<div class="info">' +
+                '<h5>' + data.agents.name + '</h5>' +
+                '</div>'
+            });
         }
     });
 </script>

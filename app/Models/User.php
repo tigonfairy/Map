@@ -73,6 +73,11 @@ class User extends Authenticatable
         return $this->belongsTo(User::class, 'manager_id');
     }
 
+    public function owners()
+    {
+        return $this->hasMany(User::class, 'manager_id');
+    }
+
 
     public static function getDatatables()
     {
