@@ -23,6 +23,7 @@ class HomeController extends AdminController
         $role = $user->roles()->first();
         $year = Carbon::now()->year;
         $locations=[];
+        $month = Carbon::now()->format('m-Y');
         if($user->email == 'admin@gmail.com'){
             $area = Area::select('*')->get()->pluck('id')->toArray();
             $agentId = Agent::whereIn('area_id',$area)->get()->pluck('id')->toArray();
