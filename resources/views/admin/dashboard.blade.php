@@ -22,6 +22,7 @@
         }
         .info {
             z-index: 99999;
+            color: #0a0a0a;
         }
         .data {
             z-index: 99999;
@@ -32,6 +33,26 @@
             float: left;
         }
         .info_user {
+            z-index: 99999;
+            list-style: none;
+            font-size: 14px;
+            /*margin-left: 10px;*/
+            float: left;
+        }
+
+        .info_gsv{
+            z-index: 99999;
+            color: #0a0a0a;
+        }
+        .data_gsv {
+            z-index: 99999;
+            border: 1px solid yellow;
+            background-color: yellow;
+            color: red;
+            font-size: 12px;
+            float: left;
+        }
+        .info_user_gsv {
             z-index: 99999;
             list-style: none;
             font-size: 14px;
@@ -577,8 +598,11 @@
                     if (type_search == 'agents') {
                         showDataAgents(data);
                     }
-                    if (type_search == 'gsv' || type_search == 'tv') {
+                    if (type_search == 'gsv') {
                         showDataSales(data);
+                    }
+                    if (type_search == 'tv') {
+
                     }
                     if (type_search == 'gdv' ) {
                         showDataAreas(data);
@@ -586,6 +610,8 @@
                 }
             });
         });
+
+        var listSelectProducts = [];
 
         function getListAreas() {
             $("#type_search").val('areas');
@@ -691,7 +717,7 @@
             $(".data_search").select2({
                 'placeholder' : "{{'-- '. trans('home.select'). ' '. trans('home.manager') .' --'}}",
                 ajax : {
-                    url : "{{route('Admin::Api::sale@getListAdmins')}}",
+                    url : "{{route('Admin::Api::sale@getGSV')}}",
                     dataType:'json',
                     delay:500,
                     data: function (params) {
@@ -716,6 +742,7 @@
                     }
                 }
             });
+
         }
 
         function getListSaleMans() {
@@ -751,9 +778,10 @@
         }
 
         function showDataSales(data) {
-
+            var area_name = '';
             var polygonArray = [];
-            $.map(data.locations, function (location) {
+            $.map(data.locations, function (location, index) {
+
                     var item = location.area;
                     var c = item.coordinates;
                     var coordinate = JSON.parse(c);
@@ -777,17 +805,24 @@
                         });
                         polygonArray[item.id] = polygon;
                     }
+                    area_name += item.name;
+                    if (index < data.locations.length - 1) {
+                        area_name += '-';
+                    }
             });
 
-            $.map(data.agents, function (item) {
-                var user = item.user;
+            $.map(data.listAgents, function (item) {
+                var agent = item.agent;
+                var user = agent.user;
 
                 var contentString = '<div class="info">' +
-                    '<h5>' + item.address + '</h5>' +
+                    '<h5>' + agent.address + '</h5>' +
                     '<div class="user_data">' +
-                    '<p class="data">%TT 100/10000 = 18%</p>' +
+                    '<p class="data">%TT ' + item.totalSales + '/' + item.capacity + '=' +  item.percent + '%</p>' +
                     '<ul class="info_user">' +
-                    '<li>'  + user.name + '</li>' +
+                    '<li> NVKD:'  + user.name + '</li>' +
+                    '<li> GS :'  + data.user.name + '</li>' +
+                    '<li> GĐ :'  + data.director + '</li>' +
                     '</ul>' +
                     '</div>' +
                     '</div>';
@@ -797,9 +832,9 @@
                 });
 
                 map.addMarker({
-                    lat:  item.lat,
-                    lng:  item.lng,
-                    title:   item.name,
+                    lat:  agent.lat,
+                    lng:  agent.lng,
+                    title:   agent.name,
                     infoWindow : infoWindow,
                     click: function (e) {
                         infoWindow.setPosition({lat: e.position.lat(), lng: e.position.lng()});
@@ -808,13 +843,30 @@
                 });
 
                 map.drawOverlay({
-                    lat: data.agents.lat,
-                    lng: data.agents.lng,
+                    lat: agent.lat,
+                    lng: agent.lng,
                     content: '<div class="info">' +
-                                '<h5>' + data.agents.name + '</h5>' +
+                                '<h5>' + agent.name + '</h5>' +
                             '</div>'
                 });
-        });
+           });
+
+            var tableSales =
+                '<div class="info_gsv">' +
+                '<h3>' + area_name + '</h3>' +
+                '<div class="user_data_gsv">' +
+                '<p class="data_gsv">%TT ' + data.totalSales + '/' + data.capacity + '=' +  data.percent + '%</p>' +
+                '<ul class="info_user_gsv">' +
+                '<li> GS :'  + data.user.name + '</li>' +
+                '<li> GĐ :'  + data.director + '</li>' +
+                '</ul>' +
+                '</div>' +
+                '</div>';
+
+            map.addControl({
+                position: 'top_left',
+                content: tableSales,
+            });
         }
 
         function getListAgents() {
@@ -850,7 +902,7 @@
         }
 
         function showDataAgents(data) {
-
+            listSelectProdcuts = [];
             map = new GMaps({
                 div: '#map',
                 lat:  data.agents.lat,
@@ -931,28 +983,26 @@
                 content: tableSales,
             });
 
-            select_product(list_products);
-        }
-
-        function select_product(list_products) {
-
-            $(document).on('change', '#choose_product', function() {
-                var code = $(this).val();
-                console.log(list_products);
-                var data = $.grep(list_products, function(e){
-                    console.log(code);
-                    return e.code == code;
-                });
-
-                console.log(data);
-                var item = data[0];
-                $("#code").text(item.code);
-                $("#totalSales").text(item.totalSales);
-                $("#capacity").text(item.capacity);
-                $("#data").text('%'+ item.code + ' ' + item.totalSales +'/'+ item.capacity +  '=' + item.percent + '%');
+            $.each(list_products, function( index, value ) {
+                listSelectProducts.push(value);
             });
         }
 
+        $(document).on('change', '#choose_product', function() {
+            var code = $(this).val();
+
+            var data = $.grep(listSelectProducts, function(e){
+                return e.code == code;
+            });
+
+            var item = data[0];
+            $("#code").text(item.code);
+            $("#totalSales").text(item.totalSales);
+            $("#capacity").text(item.capacity);
+            $("#data").text('%'+ item.code + ' ' + item.totalSales +'/'+ item.capacity +  '=' + item.percent + '%');
+        });
     });
+
+
 </script>
 @endpush

@@ -31,7 +31,7 @@ Route::group(['middleware' => ['auth','language'],
                 'prefix' => 'sale',
                 'as' => 'sale@',
             ], function () {
-                Route::get('/get-list-admin', ['as' => 'getListAdmins', 'uses' => 'ApiController@getListSaleAdmins']);
+                Route::get('/get-giam-sat-vung', ['as' => 'getGSV', 'uses' => 'ApiController@getGSV']);
                 Route::get('/get-list-mans', ['as' => 'getListmans', 'uses' => 'ApiController@getListSaleMans']);
                 Route::get('/get-list-agents', ['as' => 'getListAgents', 'uses' => 'ApiController@getListAgents']);
             });

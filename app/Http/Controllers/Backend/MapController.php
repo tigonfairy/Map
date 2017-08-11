@@ -502,13 +502,19 @@ class MapController extends AdminController
         }
 
         if($typeSearch == 'gsv') {
+
+            $totalSales = 0;
+            $saleAgents = 0;
+            $listAgents = [];
+            $capacity = 0;
+
             $user = User::findOrFail($dataSearch);
+            $userParentName = $user->manager->name;
+
             $userOwns = $user->owners()->get();
             $userOwns->push($user);
             $listIds = $userOwns->pluck('id')->toArray();
-//            $areas = $userOwns->map(function ($user) {
-//                return $user->area()->get();
-//            });
+
             $areas= $user->area()->get();
 
             $locations=[];
@@ -524,9 +530,31 @@ class MapController extends AdminController
 
             $agents = Agent::whereIn('manager_id',$listIds)->with('user')->get();
 
+            foreach ($agents as $agent) {
+
+                $sales = SaleAgent::where('agent_id', $agent->id)->where('month',$month)->select('sales_real', 'capacity')->get();
+                foreach ($sales as $sale) {
+                    $saleAgents += $sale->sales_real;
+                    $capacity = $sale->capacity;
+                }
+                $listAgents[] = [
+                    'agent' => $agent,
+                    'totalSales' => $saleAgents,
+                    'capacity' => $capacity,
+                    'percent' => $saleAgents/$capacity
+                ];
+                $totalSales += $saleAgents;
+                $saleAgents = 0;
+            }
+
             return response()->json([
+                'user' => $user,
+                'director' => $userParentName,
                 'locations' =>  $locations,
-                'agents' =>  $agents,
+                'listAgents' => $listAgents,
+                'totalSales' => $totalSales,
+                'capacity' => $capacity,
+                'percent' => $totalSales/$capacity
             ]);
         }
 

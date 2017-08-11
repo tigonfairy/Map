@@ -45,7 +45,7 @@ class ApiController extends AdminController
         return $places;
     }
 
-    public function getListSaleAdmins(Request $request){
+    public function getGSV(Request $request){
 
         $users = User::where('position', User::GSV);
 
