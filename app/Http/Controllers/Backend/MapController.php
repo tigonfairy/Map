@@ -462,7 +462,7 @@ class MapController extends AdminController
                                 'id' => $p->id,
                                 'code' => $p->code,
                                 'totalSales' => $sales->sales_real,
-                                'percent' => $sales->sales_real/$capacity,
+                                'percent' => round($sales->sales_real/$capacity, 2),
                                 'capacity' => $capacity
                             ];
                         }
@@ -475,7 +475,7 @@ class MapController extends AdminController
                 'id' => 0,
                 'code' => 'Tổng sản lượng',
                 'totalSales' => $totalSales,
-                'percent' => $totalSales/$capacity,
+                'percent' => round($totalSales/$capacity, 2),
                 'capacity' => $capacity
             ];
 
@@ -541,7 +541,7 @@ class MapController extends AdminController
                     'agent' => $agent,
                     'totalSales' => $saleAgents,
                     'capacity' => $capacity,
-                    'percent' => $saleAgents/$capacity
+                    'percent' => round($saleAgents/$capacity, 2)
                 ];
                 $totalSales += $saleAgents;
                 $saleAgents = 0;
@@ -554,7 +554,7 @@ class MapController extends AdminController
                 'listAgents' => $listAgents,
                 'totalSales' => $totalSales,
                 'capacity' => $capacity,
-                'percent' => $totalSales/$capacity
+                'percent' => round($totalSales/$capacity, 2)
             ]);
         }
 
