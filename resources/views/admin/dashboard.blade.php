@@ -121,21 +121,9 @@
         </div>
     </div>
 
-    <div class="row ct">
-        <div class="portlet light">
-            <div class="portlet-title">
-                <div class="caption">
-                    <span class="caption-subject bold uppercase font-dark">Bảng doanh số</span>
-                </div>
-            </div>
-            <div class="portlet-body">
-                <div class="portlet-body">
-                    <div id="tableData"></div>
-                </div>
-            </div>
-        </div>
+    <div class="row ">
 
-
+    <div class="col-md-6">
         <div class="portlet light">
             <div class="portlet-title">
                 <div class="caption">
@@ -147,8 +135,10 @@
                 <div id="container" class="row"></div>
             </div>
         </div>
+    </div>
 
 
+    <div class="col-md-6">
         <div class="portlet light">
             <div class="portlet-title">
                 <div class="caption ">
@@ -172,16 +162,28 @@
                         </label>
                     </div>
                 </div>
-
-
             </div>
             <div class="portlet-body">
                 <div id="chartSp"></div>
             </div>
         </div>
+    </div>
 
+    </div>
 
-
+    <div class="row ">
+        <div class="portlet light">
+            <div class="portlet-title">
+                <div class="caption">
+                    <span class="caption-subject bold uppercase font-dark">Bảng doanh số</span>
+                </div>
+            </div>
+            <div class="portlet-body">
+                <div class="portlet-body">
+                    <div id="tableData"></div>
+                </div>
+            </div>
+        </div>
     </div>
 
 @endsection
@@ -210,223 +212,224 @@
             }
         });
 
-        {{--$('.monthPicker').datepicker({--}}
-        {{--changeMonth: true,--}}
-        {{--changeYear: true,--}}
-        {{--showButtonPanel: true,--}}
-        {{--dateFormat: 'mm-yy',--}}
-        {{--onClose: function (dateText, inst) {--}}
-        {{--var month = $("#ui-datepicker-div .ui-datepicker-month :selected").val();--}}
-        {{--var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val();--}}
-        {{--$(this).datepicker('setDate', new Date(year, month, 1));--}}
-        {{--}--}}
-        {{--});--}}
-        {{--//chart cot--}}
-        {{--Highcharts.chart('container', {--}}
-        {{--chart: {--}}
-        {{--type: 'column',--}}
-        {{--style: {--}}
-        {{--fontFamily: 'serif'--}}
-        {{--}--}}
-        {{--},--}}
-        {{--title: {--}}
-        {{--text: 'Tiến độ doanh số'--}}
-        {{--},--}}
-        {{--subtitle: {--}}
-        {{--//                text: 'Source: WorldClimate.com'--}}
-        {{--},--}}
-        {{--xAxis: {--}}
-        {{--categories: [--}}
-        {{--'Jan',--}}
-        {{--'Feb',--}}
-        {{--'Mar',--}}
-        {{--'Apr',--}}
-        {{--'May',--}}
-        {{--'Jun',--}}
-        {{--'Jul',--}}
-        {{--'Aug',--}}
-        {{--'Sep',--}}
-        {{--'Oct',--}}
-        {{--'Nov',--}}
-        {{--'Dec'--}}
-        {{--],--}}
-        {{--crosshair: true--}}
-        {{--},--}}
-        {{--yAxis: {--}}
-        {{--min: 0,--}}
-        {{--title: {--}}
-        {{--text: 'Doanh số '--}}
-        {{--}--}}
-        {{--},--}}
-        {{--tooltip: {--}}
-        {{--headerFormat: '<span style="font-size:10px">{point.key}</span><table>',--}}
-        {{--pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +--}}
-        {{--'<td style="padding:0"><b>{point.y} </b></td></tr>',--}}
-        {{--footerFormat: '</table>',--}}
-        {{--shared: true,--}}
-        {{--useHTML: true--}}
-        {{--},--}}
-        {{--plotOptions: {--}}
-        {{--column: {--}}
-        {{--pointPadding: 0.2,--}}
-        {{--borderWidth: 0--}}
-        {{--},--}}
-        {{--series: {--}}
-        {{--dataLabels: {--}}
-        {{--enabled: true,--}}
-        {{--crop: false,--}}
-        {{--overflow: 'none',--}}
-        {{--formatter: function () {--}}
-        {{--return this.point.y;--}}
-        {{--}--}}
-        {{--}--}}
-        {{--}--}}
-        {{--},--}}
-        {{--series: [{--}}
-        {{--name: 'DTKH',--}}
-        {{--data: {{json_encode($sales_plan)}}--}}
-        {{--}, {--}}
-        {{--name: 'DTTT',--}}
-        {{--data: {{json_encode($sales_real)}}--}}
-        {{--}]--}}
-        {{--});--}}
-        {{--var chartSp = Highcharts.chart('chartSp', {--}}
-        {{--chart: {--}}
-        {{--plotBackgroundColor: null,--}}
-        {{--plotBorderWidth: null,--}}
-        {{--plotShadow: false,--}}
-        {{--type: 'pie',--}}
-        {{--style: {--}}
-        {{--fontFamily: 'serif'--}}
-        {{--}--}}
-        {{--},--}}
-        {{--title: {--}}
-        {{--text: 'Biểu đổ'--}}
-        {{--},--}}
-        {{--tooltip: {--}}
-        {{--pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'--}}
-        {{--},--}}
-        {{--plotOptions: {--}}
-        {{--pie: {--}}
-        {{--allowPointSelect: true,--}}
-        {{--cursor: 'pointer',--}}
-        {{--dataLabels: {--}}
-        {{--enabled: true--}}
-        {{--},--}}
-        {{--showInLegend: true--}}
-        {{--}--}}
-        {{--},--}}
-        {{--series: []--}}
-        {{--});--}}
-        {{--$.ajax({--}}
-        {{--method: "post",--}}
-        {{--url: "{{route('Admin::chart')}}",--}}
-        {{--headers: {--}}
-        {{--'X-CSRF-Token': "{{ csrf_token() }}"--}}
-        {{--},--}}
-        {{--data: {--}}
-        {{--type: 1--}}
-        {{--},--}}
-        {{--dataType: 'json',--}}
-        {{--success: function (data) {--}}
-        {{--if (data.title) {--}}
-        {{--chartSp.setTitle({--}}
-        {{--text: 'Biểu đô tháng ' + data.title--}}
-        {{--});--}}
-        {{--}--}}
-        {{--if (data.chart) {--}}
-        {{--var seriesLength = chartSp.series.length;--}}
-        {{--for (var i = seriesLength - 1; i > -1; i--) {--}}
-        {{--//chart.series[i].remove();--}}
-        {{--if (chartSp.series[i].name == document.getElementById("series_name").value)--}}
-        {{--chartSp.series[i].remove();--}}
-        {{--}--}}
-        {{--chartSp.addSeries(--}}
-        {{--{--}}
-        {{--name: 'S/p',--}}
-        {{--colorByPoint: true,--}}
-        {{--data: data.chart--}}
-        {{--}--}}
-        {{--)--}}
-        {{--}--}}
-        {{--if (data.table) {--}}
-        {{--var table = data.table;--}}
-        {{--var string = '<table class="table table-striped table-bordered" cellspacing="0" width="100%">' +--}}
-        {{--' <thead> <tr> <th>Sản phẩm</th> <th>Doanh số</th></tr></thead><tbody>';--}}
-        {{--table.forEach(function (value) {--}}
-        {{--string += '<tr>';--}}
-        {{--string += '<td>';--}}
-        {{--string += value.name;--}}
-        {{--string += '</td>';--}}
-        {{--string += '<td>';--}}
-        {{--string += value.y;--}}
-        {{--string += '</td>';--}}
-        {{--string += '</tr>';--}}
-        {{--});--}}
-        {{--string += '</tbody></table>';--}}
-        {{--$('#tableData').html(string);--}}
-        {{--}--}}
-        {{--},--}}
-        {{--error: function (err) {--}}
-        {{--console.log(err);--}}
-        {{--alert('Lỗi, hãy thử lại sau');--}}
-        {{--}--}}
-        {{--});--}}
-        {{--$('.radioButton').change(function () {--}}
-        {{--var type = $(this).val();--}}
-        {{--$.ajax({--}}
-        {{--method: "post",--}}
-        {{--url: "{{route('Admin::chart')}}",--}}
-        {{--headers: {--}}
-        {{--'X-CSRF-Token': "{{ csrf_token() }}"--}}
-        {{--},--}}
-        {{--data: {--}}
-        {{--type: type--}}
-        {{--},--}}
-        {{--dataType: 'json',--}}
-        {{--success: function (data) {--}}
-        {{--if (data.title) {--}}
-        {{--chartSp.setTitle({--}}
-        {{--text: 'Biểu đô ' + data.title--}}
-        {{--});--}}
-        {{--}--}}
-        {{--if (data.chart) {--}}
-        {{--while (chartSp.series.length > 0) {--}}
-        {{--chartSp.series[0].remove(false);--}}
-        {{--}--}}
-        {{--chartSp.redraw();--}}
-        {{--chartSp.addSeries(--}}
-        {{--{--}}
-        {{--name: 'S/p',--}}
-        {{--colorByPoint: true,--}}
-        {{--data: data.chart--}}
-        {{--}--}}
-        {{--)--}}
-        {{--}--}}
-        {{--if (data.table) {--}}
-        {{--$('#tableData').html('');--}}
-        {{--var table = data.table;--}}
-        {{--var string = '<table class="table table-striped table-bordered" cellspacing="0" width="100%">' +--}}
-        {{--' <thead> <tr> <th>Sản phẩm</th> <th>Doanh số</th></tr></thead><tbody>';--}}
-        {{--table.forEach(function (value) {--}}
-        {{--string += '<tr>';--}}
-        {{--string += '<td>';--}}
-        {{--string += value.name;--}}
-        {{--string += '</td>';--}}
-        {{--string += '<td>';--}}
-        {{--string += value.y;--}}
-        {{--string += '</td>';--}}
-        {{--string += '</tr>';--}}
-        {{--});--}}
-        {{--string += '</tbody></table>';--}}
-        {{--$('#tableData').html(string);--}}
-        {{--}--}}
-        {{--},--}}
-        {{--error: function (err) {--}}
-        {{--console.log(err);--}}
-        {{--}--}}
-        {{--});--}}
-        {{--});--}}
+        $('.monthPicker').datepicker({
+        changeMonth: true,
+        changeYear: true,
+        showButtonPanel: true,
+        dateFormat: 'mm-yy',
+        onClose: function (dateText, inst) {
+        var month = $("#ui-datepicker-div .ui-datepicker-month :selected").val();
+        var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val();
+        $(this).datepicker('setDate', new Date(year, month, 1));
+        }
+        });
+        //chart cot
+        Highcharts.chart('container', {
+        chart: {
+        type: 'column',
+        style: {
+        fontFamily: 'serif'
+        }
+        },
+        title: {
+        text: 'Tiến độ doanh số'
+        },
+        subtitle: {
+        //                text: 'Source: WorldClimate.com'
+        },
+        xAxis: {
+        categories: [
+        'Jan',
+        'Feb',
+        'Mar',
+        'Apr',
+        'May',
+        'Jun',
+        'Jul',
+        'Aug',
+        'Sep',
+        'Oct',
+        'Nov',
+        'Dec'
+        ],
+        crosshair: true
+        },
+        yAxis: {
+        min: 0,
+        title: {
+        text: 'Doanh số '
+        }
+        },
+        tooltip: {
+        headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+        pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+        '<td style="padding:0"><b>{point.y} </b></td></tr>',
+        footerFormat: '</table>',
+        shared: true,
+        useHTML: true
+        },
+        plotOptions: {
+        column: {
+        pointPadding: 0.2,
+        borderWidth: 0
+        },
+        series: {
+        dataLabels: {
+        enabled: true,
+        crop: false,
+        overflow: 'none',
+        formatter: function () {
+        return this.point.y;
+        }
+        }
+        }
+        },
+        series: [{
+        name: 'DTKH',
+        data: {{json_encode($sales_plan)}}
+        }, {
+        name: 'DTTT',
+        data: {{json_encode($sales_real)}}
+        }]
+        });
+        var chartSp = Highcharts.chart('chartSp', {
+        chart: {
+        plotBackgroundColor: null,
+        plotBorderWidth: null,
+        plotShadow: false,
+        type: 'pie',
+        style: {
+        fontFamily: 'serif'
+        }
+        },
+        title: {
+        text: 'Biểu đổ'
+        },
+        tooltip: {
+        pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+        },
+        plotOptions: {
+        pie: {
+        allowPointSelect: true,
+        cursor: 'pointer',
+        dataLabels: {
+        enabled: true
+        },
+        showInLegend: true
+        }
+        },
+        series: []
+        });
+        $.ajax({
+        method: "post",
+        url: "{{route('Admin::chart')}}",
+        headers: {
+        'X-CSRF-Token': "{{ csrf_token() }}"
+        },
+        data: {
+        type: 1
+        },
+        dataType: 'json',
+        success: function (data) {
+        if (data.title) {
+        chartSp.setTitle({
+        text: 'Biểu đô tháng ' + data.title
+        });
+        }
+        if (data.chart) {
+        var seriesLength = chartSp.series.length;
+        for (var i = seriesLength - 1; i > -1; i--) {
+        //chart.series[i].remove();
+        if (chartSp.series[i].name == document.getElementById("series_name").value)
+        chartSp.series[i].remove();
+        }
+        chartSp.addSeries(
+        {
+        name: 'S/p',
+        colorByPoint: true,
+        data: data.chart
+        }
+        )
+        }
+        if (data.table) {
+        var table = data.table;
+        var string = '<table class="table table-striped table-bordered" cellspacing="0" width="100%">' +
+        ' <thead> <tr> <th>Sản phẩm</th> <th>Doanh số</th></tr></thead><tbody>';
+        table.forEach(function (value) {
+        string += '<tr>';
+        string += '<td>';
+        string += value.name;
+        string += '</td>';
+        string += '<td>';
+        string += value.y;
+        string += '</td>';
+        string += '</tr>';
+        });
+        string += '</tbody></table>';
+        $('#tableData').html(string);
+        }
+        },
+        error: function (err) {
+        console.log(err);
+        alert('Lỗi, hãy thử lại sau');
+        }
+        });
+        $('.radioButton').change(function () {
+        var type = $(this).val();
+        $.ajax({
+        method: "post",
+        url: "{{route('Admin::chart')}}",
+        headers: {
+        'X-CSRF-Token': "{{ csrf_token() }}"
+        },
+        data: {
+        type: type
+        },
+        dataType: 'json',
+        success: function (data) {
+        if (data.title) {
+        chartSp.setTitle({
+        text: 'Biểu đô ' + data.title
+        });
+        }
+        if (data.chart) {
+        while (chartSp.series.length > 0) {
+        chartSp.series[0].remove(false);
+        }
+        chartSp.redraw();
+        chartSp.addSeries(
+        {
+        name: 'S/p',
+        colorByPoint: true,
+        data: data.chart
+        }
+        )
+        }
+        if (data.table) {
+        $('#tableData').html('');
+        var table = data.table;
+        var string = '<table class="table table-striped table-bordered" cellspacing="0" width="100%">' +
+        ' <thead> <tr> <th>Sản phẩm</th> <th>Doanh số</th></tr></thead><tbody>';
+        table.forEach(function (value) {
+        string += '<tr>';
+        string += '<td>';
+        string += value.name;
+        string += '</td>';
+        string += '<td>';
+        string += value.y;
+        string += '</td>';
+        string += '</tr>';
+        });
+        string += '</tbody></table>';
+        $('#tableData').html(string);
+        }
+        },
+        error: function (err) {
+        console.log(err);
+        }
+        });
+        });
+
         //map
         var polygonArray = [];
         map = new GMaps({
@@ -602,7 +605,7 @@
                         showDataSales(data);
                     }
                     if (type_search == 'tv') {
-
+                      //  showDataSales(data);
                     }
                     if (type_search == 'gdv' ) {
                         showDataAreas(data);
@@ -745,12 +748,12 @@
 
         }
 
-        function getListSaleMans() {
-            $("#type_search").val('sale_mans');
+        function getListTV() {
+            $("#type_search").val('tv');
             $(".data_search").select2({
                 'placeholder' : "{{'-- '. trans('home.select'). ' '. trans('home.manager') .' --'}}",
                 ajax : {
-                    url : "{{route('Admin::Api::sale@getListmans')}}",
+                    url : "{{route('Admin::Api::sale@getListTV')}}",
                     dataType:'json',
                     delay:500,
                     data: function (params) {
