@@ -443,10 +443,6 @@
                     maxZoom: 11,
                     imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'
                 });
-//                markerCluster.onClick = function(clickedClusterIcon) {
-//                    alert(1);
-//                    return multiChoice(clickedClusterIcon.cluster_);
-//                }
                 return markerCluster;
             }
         });
@@ -588,15 +584,23 @@
                 data: $('#geocoding_form').serialize(),
                 cache: false,
                 success: function(data){
-                    map = new GMaps({
-                        div: '#map',
-                        lat: 21.0277644,
-                        lng: 105.83415979999995,
-                        width: "100%",
-                        height: '500px',
-                        zoom: 11,
-                        fullscreenControl: true,
+//                    map = new GMaps({
+//                        div: '#map',
+//                        lat: 21.0277644,
+//                        lng: 105.83415979999995,
+//                        width: "100%",
+//                        height: '500px',
+//                        zoom: 3,
+//                        fullscreenControl: true,
+//                    });
+
+                    var button ='<button id="swift" class="btn btn-primary">Full mode</button>';
+
+                    map.addControl({
+                        position: 'bottom_left',
+                        content: button,
                     });
+
 
                     if (type_search == 'agents') {
                         showDataAgents(data);
@@ -783,6 +787,18 @@
         function showDataSales(data) {
             var area_name = '';
             var polygonArray = [];
+            var markers2 = [];
+
+            map = new GMaps({
+                div: '#map',
+                lat: 21.0277644,
+                lng: 105.83415979999995,
+                width: "100%",
+                height: '500px',
+                zoom: 3,
+                fullscreenControl: true,
+            });
+
             $.map(data.locations, function (location, index) {
 
                     var item = location.area;
@@ -831,8 +847,8 @@
                     '<p class="data">%TT ' + item.totalSales + '/' + item.capacity + '=' +  item.percent + '%</p>' +
                     '<ul class="info_user">' +
                     '<li> NVKD:'  + user.name + '</li>' +
-                    '<li>' + postion + ':'  + data.user.name + '</li>' +
-                    '<li> GĐ :'  + data.director + '</li>' +
+                    '<li class="gsv" style="display: none">' + postion + ':'  + data.user.name + '</li>' +
+                    '<li class="gdv" style="display: none"> GĐ :'  + data.director + '</li>' +
                     '</ul>' +
                     '</div>' +
                     '</div>';
@@ -841,7 +857,7 @@
                     content: contentString
                 });
 
-                map.addMarker({
+                var marker = map.addMarker({
                     lat:  agent.lat,
                     lng:  agent.lng,
                     title:   agent.name,
@@ -851,7 +867,7 @@
                         infoWindow.open(map.map);
                     }
                 });
-
+                markers2.push(marker);
                 map.drawOverlay({
                     lat: agent.lat,
                     lng: agent.lng,
@@ -861,6 +877,15 @@
                 });
            });
 
+            var markerCluster = new MarkerClusterer(map, markers2, {
+                maxZoom: 11,
+                imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'
+            });
+
+            markerCluster.setMap(map);
+            markerCluster.resetViewport();
+            markerCluster.redraw();
+
             var tableSales =
                 '<div class="info_gsv">' +
                 '<h3>' + area_name + '</h3>' +
@@ -868,7 +893,7 @@
                 '<p class="data_gsv">%TT ' + data.totalSales + '/' + data.capacity + '=' +  data.percent + '%</p>' +
                 '<ul class="info_user_gsv">' +
                 '<li>' + postion + ':'  + data.user.name + '</li>' +
-                '<li> GĐ :'  + data.director + '</li>' +
+                '<li class="gdv" style="display: none"> GĐ :'  + data.director + '</li>' +
                 '</ul>' +
                 '</div>' +
                 '</div>';
@@ -926,6 +951,13 @@
             var user = data.user;
             var list_products = data.listProducts;
 
+            var postion = '';
+            if (data.gsv.position == 3) {
+                postion = 'TV';
+            } else {
+                postion = 'GS';
+            }
+
             // info cho 1 marker
             var contentString = '<div class="info">' +
                 '<h5>' + data.agents.address + '</h5>' +
@@ -933,6 +965,8 @@
                 '<p class="data" id="data">%'+ list_products[0].code + ' ' + list_products[0].totalSales +'/'+ list_products[0].capacity +  '=' + list_products[0].percent + '%</p>' +
                 '<ul class="info_user">' +
                 '<li>'  + user.name + '</li>' +
+                '<li class="gsv" style="display:none">' + postion + ':'  + data.gsv.name + '</li>' +
+                '<li class="gdv" style="display:none"> GĐ :'  + data.gdv.name + '</li>' +
                 '</ul>' +
                 '</div>' +
                 '</div>';
@@ -940,8 +974,6 @@
             var infoWindow = new google.maps.InfoWindow({
                 content: contentString
             });
-
-
 
             var myMarker = map.addMarker({
                 lat:  data.agents.lat,
@@ -994,6 +1026,13 @@
                 content: tableSales,
             });
 
+            var button ='<button id="swift" class="btn btn-primary">Full mode</button>';
+
+            map.addControl({
+                position: 'bottom_left',
+                content: button,
+            });
+
             $.each(list_products, function( index, value ) {
                 listSelectProducts.push(value);
             });
@@ -1011,6 +1050,21 @@
             $("#totalSales").text(item.totalSales);
             $("#capacity").text(item.capacity);
             $("#data").text('%'+ item.code + ' ' + item.totalSales +'/'+ item.capacity +  '=' + item.percent + '%');
+        });
+
+        $(document).on('click', '#swift', function() {
+            var text = $(this).text();
+
+            if (text == 'Full Mode') {
+                $(this).text('Compact Mode');
+                $('.gsv').show();
+                $('.gdv').show();
+            }
+            else {
+                $(this).text('Full Mode');
+                $('.gsv').hide();
+                $('.gdv').hide();
+            }
         });
     });
 

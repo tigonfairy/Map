@@ -492,12 +492,15 @@ class MapController extends AdminController
 
 //            $area=$agent->area;
             $user = $agent->user;
+            $gsv = $user->manager;
+            $gdv = $gsv->manager;
 //            $locations=$area->address;
 
             return response()->json([
                 'capacity' => $capacity,
                 'user' => $user,
-//                'locations' =>  $locations,
+                'gsv' =>  $gsv,
+                'gdv' =>  $gdv,
                 'agents' => $agent,
                 'listProducts' => $listProducts
             ]);
