@@ -605,7 +605,7 @@
                         showDataSales(data);
                     }
                     if (type_search == 'tv') {
-                      //  showDataSales(data);
+                        showDataSales(data);
                     }
                     if (type_search == 'gdv' ) {
                         showDataAreas(data);
@@ -814,6 +814,13 @@
                     }
             });
 
+            var postion = '';
+            if (data.user.position == 3) {
+                postion = 'TV';
+            } else {
+                postion = 'GS';
+            }
+
             $.map(data.listAgents, function (item) {
                 var agent = item.agent;
                 var user = agent.user;
@@ -824,7 +831,7 @@
                     '<p class="data">%TT ' + item.totalSales + '/' + item.capacity + '=' +  item.percent + '%</p>' +
                     '<ul class="info_user">' +
                     '<li> NVKD:'  + user.name + '</li>' +
-                    '<li> GS :'  + data.user.name + '</li>' +
+                    '<li>' + postion + ':'  + data.user.name + '</li>' +
                     '<li> GĐ :'  + data.director + '</li>' +
                     '</ul>' +
                     '</div>' +
@@ -860,7 +867,7 @@
                 '<div class="user_data_gsv">' +
                 '<p class="data_gsv">%TT ' + data.totalSales + '/' + data.capacity + '=' +  data.percent + '%</p>' +
                 '<ul class="info_user_gsv">' +
-                '<li> GS :'  + data.user.name + '</li>' +
+                '<li>' + postion + ':'  + data.user.name + '</li>' +
                 '<li> GĐ :'  + data.director + '</li>' +
                 '</ul>' +
                 '</div>' +

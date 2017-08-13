@@ -472,6 +472,7 @@ class MapController extends AdminController
                 $totalSales += $saleProducts;
                 $saleProducts = 0;
             }
+            $capacity = $capacity == 0 ? 1 : $capacity;
             $listProducts[] = [
                 'id' => 0,
                 'code' => 'Tổng sản lượng',
@@ -538,6 +539,7 @@ class MapController extends AdminController
                     $saleAgents += $sale->sales_real;
                     $capacity = $sale->capacity;
                 }
+                $capacity = $capacity == 0 ? 1 : $capacity;
                 $listAgents[] = [
                     'agent' => $agent,
                     'totalSales' => $saleAgents,
@@ -566,12 +568,19 @@ class MapController extends AdminController
             $listAgents = [];
             $capacity = 0;
 
-            $user = User::findOrFail($dataSearch);
-            $userParentName = $user->manager->name;
+            $userTv = User::findOrFail($dataSearch);
+            $userParentName = $userTv->manager->name;
 
-            $userOwns = $user->owners()->get();
-            $userOwns->push($user);
-            dd($userOwns);
+            $userOwns = $userTv->owners()->get();
+            foreach ($userOwns as $user) {
+                if (count($user->owners) > 0) {
+                    foreach ($user->owners as $u) {
+                        $userOwns->push($u);
+                    }
+                }
+            }
+            $userOwns->push($userTv);
+
             $listIds = $userOwns->pluck('id')->toArray();
 
             $areas = $user->area()->get();
@@ -592,10 +601,12 @@ class MapController extends AdminController
             foreach ($agents as $agent) {
 
                 $sales = SaleAgent::where('agent_id', $agent->id)->where('month', $month)->select('sales_real', 'capacity')->get();
+
                 foreach ($sales as $sale) {
                     $saleAgents += $sale->sales_real;
-                    $capacity = $sale->capacity;
+                    $capacity = isset($sale->capacity) ?  $sale->capacity : 1;
                 }
+                $capacity = $capacity == 0 ? 1 : $capacity;
                 $listAgents[] = [
                     'agent' => $agent,
                     'totalSales' => $saleAgents,
@@ -607,7 +618,7 @@ class MapController extends AdminController
             }
 
             return response()->json([
-                'user' => $user,
+                'user' => $userTv,
                 'director' => $userParentName,
                 'locations' => $locations,
                 'listAgents' => $listAgents,
