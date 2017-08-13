@@ -32,7 +32,7 @@ Route::group(['middleware' => ['auth','language'],
                 'as' => 'sale@',
             ], function () {
                 Route::get('/get-giam-sat-vung', ['as' => 'getGSV', 'uses' => 'ApiController@getGSV']);
-                Route::get('/get-list-mans', ['as' => 'getListmans', 'uses' => 'ApiController@getListSaleMans']);
+                Route::get('/get-truong-vung', ['as' => 'getListTV', 'uses' => 'ApiController@getListTV']);
                 Route::get('/get-list-agents', ['as' => 'getListAgents', 'uses' => 'ApiController@getListAgents']);
             });
 

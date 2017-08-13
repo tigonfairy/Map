@@ -416,7 +416,8 @@ class MapController extends AdminController
         return view('admin.map.search', compact('areas', 'agents', 'users'));
     }
 
-    public function dataSearch(Request $request) {
+    public function dataSearch(Request $request)
+    {
 
         $typeSearch = $request->input('type_search');
         $dataSearch = $request->input('data_search');
@@ -442,7 +443,7 @@ class MapController extends AdminController
 //            ]);
 //        }
 
-        if($typeSearch == 'agents') {
+        if ($typeSearch == 'agents') {
             $agent = Agent::findOrFail($dataSearch);
             $totalSales = 0;
             $saleProducts = 0;
@@ -454,15 +455,15 @@ class MapController extends AdminController
             foreach ($productParents as $product) {
                 foreach ($product->getChildren as $p) {
                     if (isset($p->code)) {
-                        $sales = SaleAgent::where('agent_id', $agent->id)->where('product_id', $p->id)->where('month',$month)->select('sales_real', 'capacity')->first();
-                        if($sales) {
+                        $sales = SaleAgent::where('agent_id', $agent->id)->where('product_id', $p->id)->where('month', $month)->select('sales_real', 'capacity')->first();
+                        if ($sales) {
                             $saleProducts += $sales->sales_real;
                             $capacity = $sales->capacity;
                             $listProducts[] = [
                                 'id' => $p->id,
                                 'code' => $p->code,
                                 'totalSales' => $sales->sales_real,
-                                'percent' => round($sales->sales_real/$capacity, 2),
+                                'percent' => round($sales->sales_real / $capacity, 2),
                                 'capacity' => $capacity
                             ];
                         }
@@ -471,11 +472,11 @@ class MapController extends AdminController
                 $totalSales += $saleProducts;
                 $saleProducts = 0;
             }
-            $listProducts[] =  [
+            $listProducts[] = [
                 'id' => 0,
                 'code' => 'Tổng sản lượng',
                 'totalSales' => $totalSales,
-                'percent' => round($totalSales/$capacity, 2),
+                'percent' => round($totalSales / $capacity, 2),
                 'capacity' => $capacity
             ];
 
@@ -489,19 +490,19 @@ class MapController extends AdminController
 //            });
 
 //            $area=$agent->area;
-            $user=$agent->user;
+            $user = $agent->user;
 //            $locations=$area->address;
 
             return response()->json([
-                'capacity' =>  $capacity,
+                'capacity' => $capacity,
                 'user' => $user,
 //                'locations' =>  $locations,
-                'agents' =>  $agent,
+                'agents' => $agent,
                 'listProducts' => $listProducts
             ]);
         }
 
-        if($typeSearch == 'gsv') {
+        if ($typeSearch == 'gsv') {
 
             $totalSales = 0;
             $saleAgents = 0;
@@ -515,9 +516,9 @@ class MapController extends AdminController
             $userOwns->push($user);
             $listIds = $userOwns->pluck('id')->toArray();
 
-            $areas= $user->area()->get();
+            $areas = $user->area()->get();
 
-            $locations=[];
+            $locations = [];
             foreach ($areas as $key => $area) {
                 foreach ($area->address as $k => $address) {
                     $locations[] = [
@@ -528,11 +529,11 @@ class MapController extends AdminController
                 }
             }
 
-            $agents = Agent::whereIn('manager_id',$listIds)->with('user')->get();
+            $agents = Agent::whereIn('manager_id', $listIds)->with('user')->get();
 
             foreach ($agents as $agent) {
 
-                $sales = SaleAgent::where('agent_id', $agent->id)->where('month',$month)->select('sales_real', 'capacity')->get();
+                $sales = SaleAgent::where('agent_id', $agent->id)->where('month', $month)->select('sales_real', 'capacity')->get();
                 foreach ($sales as $sale) {
                     $saleAgents += $sale->sales_real;
                     $capacity = $sale->capacity;
@@ -541,7 +542,7 @@ class MapController extends AdminController
                     'agent' => $agent,
                     'totalSales' => $saleAgents,
                     'capacity' => $capacity,
-                    'percent' => round($saleAgents/$capacity, 2)
+                    'percent' => round($saleAgents / $capacity, 2)
                 ];
                 $totalSales += $saleAgents;
                 $saleAgents = 0;
@@ -550,32 +551,71 @@ class MapController extends AdminController
             return response()->json([
                 'user' => $user,
                 'director' => $userParentName,
-                'locations' =>  $locations,
+                'locations' => $locations,
                 'listAgents' => $listAgents,
                 'totalSales' => $totalSales,
                 'capacity' => $capacity,
-                'percent' => round($totalSales/$capacity, 2)
+                'percent' => round($totalSales / $capacity, 2)
             ]);
         }
 
-        if($typeSearch == 'sale_mans') {
-            $agents = Agent::where('manager_id',$dataSearch)->get();
-            $areas=[];
-            foreach ($agents as $key => $agent) {
-                array_push($areas, $agent->area);
-            }
-            $locations=[];
+        if ($typeSearch == 'tv') {
+
+            $totalSales = 0;
+            $saleAgents = 0;
+            $listAgents = [];
+            $capacity = 0;
+
+            $user = User::findOrFail($dataSearch);
+            $userParentName = $user->manager->name;
+
+            $userOwns = $user->owners()->get();
+            $userOwns->push($user);
+            dd($userOwns);
+            $listIds = $userOwns->pluck('id')->toArray();
+
+            $areas = $user->area()->get();
+
+            $locations = [];
             foreach ($areas as $key => $area) {
-                array_push($locations, $area->address);
+                foreach ($area->address as $k => $address) {
+                    $locations[] = [
+                        'border_color' => $area->border_color,
+                        'background_color' => $area->background_color,
+                        'area' => $address
+                    ];
+                }
+            }
+
+            $agents = Agent::whereIn('manager_id', $listIds)->with('user')->get();
+
+            foreach ($agents as $agent) {
+
+                $sales = SaleAgent::where('agent_id', $agent->id)->where('month', $month)->select('sales_real', 'capacity')->get();
+                foreach ($sales as $sale) {
+                    $saleAgents += $sale->sales_real;
+                    $capacity = $sale->capacity;
+                }
+                $listAgents[] = [
+                    'agent' => $agent,
+                    'totalSales' => $saleAgents,
+                    'capacity' => $capacity,
+                    'percent' => round($saleAgents / $capacity, 2)
+                ];
+                $totalSales += $saleAgents;
+                $saleAgents = 0;
             }
 
             return response()->json([
-                'locations' =>  $locations,
-                'agents' =>  $agents,
+                'user' => $user,
+                'director' => $userParentName,
+                'locations' => $locations,
+                'listAgents' => $listAgents,
+                'totalSales' => $totalSales,
+                'capacity' => $capacity,
+                'percent' => round($totalSales / $capacity, 2)
             ]);
         }
-
-
     }
 
     public function getDatatables() {

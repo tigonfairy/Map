@@ -56,29 +56,23 @@ class ApiController extends AdminController
         return $users;
     }
 
-    public function getListSaleMans(Request $request){
+    public function getListTV(Request $request){
 
-        $user = auth()->user();
-        $role = $user->roles()->first();
+//        $user = auth()->user();
+//        $role = $user->roles()->first();
+//
+//        $users = User::whereHas('roles', function ($query) {
+//            $query->where('role_id', 3);
+//        });
+//
 
-        $users = User::whereHas('roles', function ($query) {
-            $query->where('role_id', 3);
-        });
+        $users = User::where('position', User::TV);
 
         if($request->input('q')){
             $users = $users->where('name','like','%'.$request->input('q').'%');
         }
 
-        if($role->id == 1) {
-            $users = $users->orderBy('id','desc')->limit(50)->get();
-        } else {
-            $userOwns = $user->manager()->get();
-            $userOwns->push($user);
-            $managerIds = $userOwns->pluck('id')->toArray();
-            $users = $users->whereIn('id',$managerIds);
-            $users = $users->orderBy('id','desc')->limit(50)->get();
-        }
-
+        $users = $users->orderBy('id','desc')->limit(50)->get();
         return $users;
     }
 
