@@ -64,8 +64,11 @@ class ImportDataAgent
                     $codeAgent = trim($row[1]);
                     $agent = Agent::where('code',$codeAgent)->first();
                     if(empty($agent)) {
-                        $agentError[] = $codeAgent;
-                        dd($agentError);
+                        if($codeAgent) {
+                            $agentError[] = $codeAgent;
+                        }
+
+
                         continue;
                     }
                     $capacity = intval($row[5]);
@@ -100,6 +103,7 @@ class ImportDataAgent
             Notification::create($data);
             return;
         }
+        dd($agentError);
         if(count($agentError)) {
             $data['title'] = 'Một số đại lý chưa tồn tại khi import file '.$this->name;
             $data['content'] = [
