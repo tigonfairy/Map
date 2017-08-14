@@ -139,15 +139,19 @@ class UserController extends AdminController
     }
     public function getAccountPosition(Request $request) {
         $position = $request->input('position');
+        $manager = $request->input('manager',0);
         if(empty($position)) {
             return '';
         }
         if($position == User::NVKD) {
             $users = User::whereIn('position',[User::GSV,User::TV])->get();
-        }else {
+        }else if($position == User::GSV) {
+            $users = User::whereIn('position',[User::GĐV,User::TV])->get();
+        }
+        else {
             $users = User::where('position',$position+1)->get();
         }
-        return view('admin.user.get_position',compact('users'));
+        return view('admin.user.get_position',compact('users','manager'));
     }
 
 
@@ -162,11 +166,11 @@ class UserController extends AdminController
             $response['status'] = 'fails';
             $response['errors'] = $validator->errors();
         } else {
-
+            $name =  $request->file('file')->getClientOriginalName();
             $file = request()->file('file');
             $filename = time() . '_' . mt_rand(1111, 9999) . '_' . $request->file('file')->getClientOriginalName();
             $request->file('file')->move(storage_path('app/import/users'), $filename);
-            $this->dispatch(new ImportUser( storage_path('app/import/users/' . $filename)));
+            $this->dispatch(new ImportUser( storage_path('app/import/users/' . $filename),$name));
 
             flash()->success('Success!', 'User successfully updated.');
             $response['status'] = 'success';

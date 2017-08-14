@@ -159,84 +159,6 @@
                   @endif
                 </div>
 
-                    {{--<div class="panel panel-flat">--}}
-                      {{--<div class="table-responsive">--}}
-                        {{--<table class="table table-hover">--}}
-                          {{--<thead>--}}
-                          {{--<tr>--}}
-                            {{--<th>Group</th>--}}
-                            {{--<th>Action</th>--}}
-                          {{--</tr>--}}
-                          {{--</thead>--}}
-                          {{--<tbody>--}}
-                          {{--@foreach($roles as $row)--}}
-                          {{--<tr role="row" id="">--}}
-                            {{--<td>{{$row->name}}</td>--}}
-                            {{--<td>--}}
-                                {{--<div class="checkbox">--}}
-                                  {{--<label>--}}
-                                    {{--<input type="radio" id="" name="role[]" value="{{$row->id}}" {{ isset($userRoles[$row->id]) ? ' checked="checked"' : ''  }}  class="js-checkbox">--}}
-                                  {{--</label>--}}
-                                {{--</div>--}}
-                            {{--</td>--}}
-                          {{--</tr>--}}
-                            {{--@endforeach--}}
-                          {{--</tbody>--}}
-                        {{--</table>--}}
-
-
-                      {{--</div>--}}
-
-                    {{--</div>--}}
-
-
-                    {{--<div class="panel panel-flat">--}}
-                      {{--<div class="table-responsive">--}}
-                        {{--<table class="table table-hover">--}}
-                          {{--<thead>--}}
-                          {{--<tr>--}}
-                            {{--<th>Permission</th>--}}
-                            {{--<th>True</th>--}}
-                            {{--<th>False</th>--}}
-                            {{--<th>Null</th>--}}
-                          {{--</tr>--}}
-                          {{--</thead>--}}
-                          {{--<tbody>--}}
-                          {{--@foreach($permission as $row)--}}
-                            {{--<tr role="row" id="">--}}
-                              {{--<td>{{$row->id}}</td>--}}
-                              {{--<td>--}}
-                                {{--<div class="radio">--}}
-                                  {{--<label class="radio-inline">--}}
-                                    {{--<input type="radio" name="status[{{$row->id}}]" {{ (isset($userPermissions[$row->id]) and $userPermissions[$row->id]->pivot->value == 0) ? ' checked="checked"' : ''  }} class="js-radio" value="0">--}}
-                                  {{--</label>--}}
-                                {{--</div>--}}
-                              {{--</td>--}}
-
-                              {{--<td>--}}
-                                {{--<div class="radio">--}}
-                                  {{--<label class="radio-inline">--}}
-                                    {{--<input type="radio" name="status[{{$row->id}}]" {{ (isset($userPermissions[$row->id]) and $userPermissions[$row->id]->pivot->value == 1) ? ' checked="checked"' : ''  }} class="js-radio" value="1">--}}
-                                  {{--</label>--}}
-                                {{--</div>--}}
-                              {{--</td>--}}
-
-                              {{--<td>--}}
-                                {{--<div class="radio">--}}
-                                  {{--<label class="radio-inline">--}}
-                                    {{--<input type="radio" name="status[{{$row->id}}]" {{ (isset($userPermissions[$row->id]) and $userPermissions[$row->id]->pivot->value == 2) ? ' checked="checked"' : ''  }} class="js-radio" value="2">--}}
-                                  {{--</label>--}}
-                                {{--</div>--}}
-                              {{--</td>--}}
-                            {{--</tr>--}}
-                            {{--@endforeach--}}
-                          {{--</tbody>--}}
-                        {{--</table>--}}
-
-
-                      {{--</div>--}}
-
-                    {{--</div>--}}
                   <div class="text-right">
                     <button type="submit" class="btn btn-primary">{{ isset($user) ? 'Cập nhật' : 'Thêm mới' }}</button>
                   </div>
@@ -260,12 +182,29 @@
 @push('scripts_foot')
 <script>
   $(document).ready(function () {
-    // Basic
-//    $("#position").select2();
 
-    //
-    // Select with icons
-    //
+
+      @if(isset($user))
+      var value = $('#position').val();
+         $.ajax({
+          method: "post",
+          url: "{{ route('Admin::user@getAccountPosition') }}",
+          headers: {
+              'X-CSRF-Token': "{{ csrf_token() }}"
+          },
+          data: {
+              position: value,
+              manager : '{{$user->manager_id}}'
+          },
+          dataType: 'html',
+          success: function(html){
+              $('#manager').html('');
+              $('#manager').append(html);
+              $('#manager').select2();
+          }
+      });
+
+      @endif
   $('#position').change(function(){
      var value = $(this).val();
       $.ajax({

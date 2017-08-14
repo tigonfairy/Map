@@ -80,7 +80,7 @@
                   <div class="form-group {{ $errors->has('cbd') ? 'has-error has-feedback' : '' }}">
                       <label for="parent_id" class="control-label text-semibold">CBD</label>
                       <i class="icon-question4 text-muted text-size-mini cursor-pointer js-help-icon" data-content='Mã sản phẩm CBD'></i>
-                      <input type="text" id="cbd" name="cbd" class="form-control" value="{{ old('cbd') ? : $product->cbd()->code }}" />
+                      <input type="text" id="cbd" name="cbd" class="form-control" value="{{ ($product->cbd()) ? @$product->cbd()->code : old('cbd') }}" />
                       @if ($errors->has('cbd'))
                           <div class="form-control-feedback">
                               <i class="icon-notification2"></i>
@@ -91,7 +91,7 @@
                   <div class="form-group {{ $errors->has('maxgreen') ? 'has-error has-feedback' : '' }}">
                       <label for="parent_id" class="control-label text-semibold">Maxgreen</label>
                       <i class="icon-question4 text-muted text-size-mini cursor-pointer js-help-icon" data-content='Mã sản phẩm CBD'></i>
-                      <input type="text" id="cbd" name="maxgreen" class="form-control" value="{{ old('maxgreen') ? : $product->maxgreen()->code}}" />
+                      <input type="text" id="cbd" name="maxgreen" class="form-control" value="{{ ($product->maxgreen()) ? @$product->maxgreen()->code : old('maxgreen') }}" />
                       @if ($errors->has('maxgreen'))
                           <div class="form-control-feedback">
                               <i class="icon-notification2"></i>
@@ -102,7 +102,7 @@
                   <div class="form-group {{ $errors->has('maxgro') ? 'has-error has-feedback' : '' }}">
                       <label for="parent_id" class="control-label text-semibold">Maxgr0</label>
                       <i class="icon-question4 text-muted text-size-mini cursor-pointer js-help-icon" data-content='Mã sản phẩm CBD'></i>
-                      <input type="text" id="maxgro" name="maxgro" class="form-control" value="{{ old('maxgro') ? : $product->maxgro()->code }}" />
+                      <input type="text" id="maxgro" name="maxgro" class="form-control" value="{{ ($product->maxgro()) ? @$product->maxgro()->code : old('maxgro') }}" />
                       @if ($errors->has('maxgro'))
                           <div class="form-control-feedback">
                               <i class="icon-notification2"></i>

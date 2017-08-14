@@ -84,7 +84,7 @@
                     <th>{{ trans('home.name') }}</th>
                     <th>{{ trans('home.address') }}</th>
                     <th>{{ trans('home.manager') }}</th>
-                    <th>{{ trans('home.place') }}</th>
+                    {{--<th>{{ trans('home.place') }}</th>--}}
                     <th>{{ trans('home.action') }}</th>
                 </tr>
                 </thead>
@@ -95,7 +95,7 @@
                             <td>{{$agent->name}}</td>
                             <td>{{$agent->address}}</td>
                             <td>{!! $agent->user ? $agent->user->name : '' !!}</td>
-                            <td>{!! $agent->area ? $agent->area->name : '' !!}</td>
+                            {{--<td>{!! $agent->area ? $agent->area->name : '' !!}</td>--}}
                             <td>
                                 <a href="{{route('Admin::map@agentDetail',[$agent->id])}}">
                                     <button type="button" class="btn btn-info btn-xs">{{ trans('home.show') }}</button></a>
@@ -109,6 +109,10 @@
                     @endforeach
                 </tbody>
             </table>
+
+            <div class="row" style="text-align: right">
+                {!! $agents->appends(Request::all())->links() !!}
+            </div>
         </div>
         <!-- /main content -->
     </div>

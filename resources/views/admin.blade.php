@@ -22,8 +22,10 @@
     <link href="/assets/global/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
     <link href="/assets/global/plugins/simple-line-icons/simple-line-icons.min.css" rel="stylesheet" type="text/css"/>
     <link href="/assets/global/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.6.2/css/bootstrap-select.min.css" rel="stylesheet" type="text/css"/>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/0.8.2/css/flag-icon.min.css" rel="stylesheet" type="text/css"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.6.2/css/bootstrap-select.min.css"
+          rel="stylesheet" type="text/css"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/0.8.2/css/flag-icon.min.css" rel="stylesheet"
+          type="text/css"/>
     <link href="/assets/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css" rel="stylesheet" type="text/css"/>
     <!-- END GLOBAL MANDATORY STYLES -->
     <!-- BEGIN PAGE LEVEL PLUGINS -->
@@ -55,9 +57,10 @@
     <link href="/assets/global/plugins/jquery-file-upload/css/jquery.fileupload.css" rel="stylesheet" type="text/css"/>
     <link href="/assets/global/plugins/jquery-file-upload/css/jquery.fileupload-ui.css" rel="stylesheet"
           type="text/css"/>
-    <link rel="stylesheet" type="text/css" media="screen" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/themes/base/jquery-ui.css">
+    <link rel="stylesheet" type="text/css" media="screen"
+          href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/themes/base/jquery-ui.css">
 
-    <link href="/assets/global/plugins/jquery-nestable/jquery.nestable.css" rel="stylesheet" type="text/css" />
+    <link href="/assets/global/plugins/jquery-nestable/jquery.nestable.css" rel="stylesheet" type="text/css"/>
     <!-- END PAGE LEVEL PLUGINS -->
     <!-- BEGIN THEME GLOBAL STYLES -->
     <link href="/assets/global/css/components-md.min.css" rel="stylesheet" id="style_components" type="text/css"/>
@@ -68,8 +71,8 @@
     <link href="/assets/layouts/layout/css/themes/darkblue.min.css" rel="stylesheet" type="text/css" id="style_color"/>
     <link href="/assets/layouts/layout/css/custom.min.css" rel="stylesheet" type="text/css"/>
 
-    <link href="/assets/global/plugins/bootstrap-colorpicker/css/colorpicker.css" rel="stylesheet" type="text/css" />
-    <link href="/assets/global/plugins/jquery-minicolors/jquery.minicolors.css" rel="stylesheet" type="text/css" />
+    <link href="/assets/global/plugins/bootstrap-colorpicker/css/colorpicker.css" rel="stylesheet" type="text/css"/>
+    <link href="/assets/global/plugins/jquery-minicolors/jquery.minicolors.css" rel="stylesheet" type="text/css"/>
 
     <!-- END THEME LAYOUT STYLES -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -79,26 +82,39 @@
         .select2-container {
             width: auto !important;
         }
+
         .ui-datepicker-calendar {
             display: none !important;
         }
+
         td.details-control {
             background: url('/assets/images/details_open.png') no-repeat center center;
             cursor: pointer;
         }
+
         tr.details td.details-control {
             background: url('/assets/images/details_close.png') no-repeat center center;
         }
+
         tfoot {
             display: table-header-group;
         }
-        .caret{
+
+        .caret {
             padding-top: 10px !important;
         }
 
 
     </style>
-@stack('style_head')
+    @stack('style_head')
+    <style>
+        .item-notification {
+            background: #eaedf2 !important;
+        }
+        .notification-sub {
+            border-bottom: 1px solid red;
+        }
+    </style>
 </head>
 <!-- END HEAD -->
 
@@ -125,17 +141,49 @@
             <!-- BEGIN TOP NAVIGATION MENU -->
             <div class="top-menu">
                 <ul class="nav navbar-nav pull-right">
+
+                    @if(Auth::user()->position == \App\Models\User::ADMIN)
+
+                        <li class="dropdown dropdown-extended dropdown-notification" id="header_notification_bar">
+                            <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown"
+                               data-close-others="true" aria-expanded="true">
+                                <i class="icon-bell"></i>
+                                <span class="badge badge-default" id="count_notification"> </span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li class="external" style="border-bottom: 1px solid red;">
+
+                                    <h3><a href="{{route('Admin::notification@getAll')}}"> Tất cả</a></h3>
+                                </li>
+                                <li>
+                                    <div class="slimScrollDiv"
+                                         style="position: relative; overflow: hidden; width: auto; max-height: 250px;">
+                                        <ul class="dropdown-menu-list scroller" id="list_notifications"
+                                            style="max-height: 250px; overflow-y: scroll; width: auto;"
+                                            data-handle-color="#637283" data-initialized="1">
+
+                                        </ul>
+                                    </div>
+                                </li>
+                            </ul>
+                        </li>
+                    @endif
+
+
                     <li style="margin-top: 9px;">
                         <select class="selectpicker" data-width="fit">
-                            <option value="{{URL::asset('')}}language/en" data-content='<span class="flag-icon flag-icon-us" ></span> English' {{ Auth::user()->lang == 'en' ? "selected=selected" : ""}}></option>
-                            <option  value="{{URL::asset('')}}language/vn" data-content='<span class="flag-icon flag-icon-vn" ></span> Việt Nam' {{ Auth::user()->lang == 'vn' ? "selected=selected" : ""}}></option>
+                            <option value="{{URL::asset('')}}language/en"
+                                    data-content='<span class="flag-icon flag-icon-us" ></span> English' {{ Auth::user()->lang == 'en' ? "selected=selected" : ""}}></option>
+                            <option value="{{URL::asset('')}}language/vn"
+                                    data-content='<span class="flag-icon flag-icon-vn" ></span> Việt Nam' {{ Auth::user()->lang == 'vn' ? "selected=selected" : ""}}></option>
                         </select>
                     </li>
 
                     <li class="dropdown dropdown-user">
                         <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown"
                            data-close-others="true">
-                            <img alt="" class="img-circle" src="{{ url('images/avatar.jpg') }}" style="height: 29px; width: 29px"/>
+                            <img alt="" class="img-circle" src="{{ url('images/avatar.jpg') }}"
+                                 style="height: 29px; width: 29px"/>
                             <span class="username username-hide-on-mobile">{{ Auth::user()->email }}</span>
                             <i class="fa fa-angle-down"></i>
                         </a>
@@ -177,10 +225,10 @@
             <!-- BEGIN CONTENT BODY -->
             <div class="page-content" style="background: #eef1f5 !important;">
 
-                @yield('content')
+            @yield('content')
 
 
-                <!-- END CONTENT BODY -->
+            <!-- END CONTENT BODY -->
             </div>
             <!-- END CONTENT -->
 
@@ -228,9 +276,9 @@
 <script src="/assets/global/plugins/bootstrap-daterangepicker/daterangepicker.min.js" type="text/javascript"></script>
 
 {{--<script src="/assets/global/plugins/bootstrap-timepicker/js/bootstrap-timepicker.min.js"--}}
-        {{--type="text/javascript"></script>--}}
+{{--type="text/javascript"></script>--}}
 {{--<script src="/assets/global/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"--}}
-        {{--type="text/javascript"></script>--}}
+{{--type="text/javascript"></script>--}}
 {{--<script src="/assets/global/plugins/clockface/js/clockface.js" type="text/javascript"></script>--}}
 {{--<script src="/assets/global/plugins/morris/morris.min.js" type="text/javascript"></script>--}}
 {{--<script src="/assets/global/plugins/morris/raphael-min.js" type="text/javascript"></script>--}}
@@ -292,6 +340,103 @@
 
 <!-- App scripts -->
 
+@if(Auth::user()->position == \App\Models\User::ADMIN)
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.13.0/moment.min.js"></script>
+
+
+    <script type="text/template" id="notifications-item-template">
+        <li class="notification-sub">
+            <a href="#" class="js-notification-link">
+                <p class="time js-notification-time"> </p>
+
+                <p class="message js-notification-content"> </p>
+            </a>
+        </li>
+    </script>
+
+
+    <script>
+        $(document).ready(function () {
+            (function () {
+                $('<audio id="notificationSound"><source src="{{ asset('assets/sounds/new-notification.ogg') }}" type="audio/ogg"><source src="{{ asset('assets/sounds/new-notification.mp3') }}" type="audio/mpeg"><source src="{{ asset('assets/sounds/new-notification.wav') }}" type="audio/wav"></audio>').appendTo('body');
+
+                function loadNotifications(since) {
+                    var $notifications = $('#notifications');
+                    var maxItemShow = 10;
+
+                    $.ajax({
+                        url: '{{ route('Admin::notification@getNotification') }}',
+                        data: since ? {since: since} : {limit: maxItemShow}
+                    }).then(function (response) {
+                        console.log(response);
+                        var unreadCount = response.metadata.unreadCount;
+                        $('#count_notification').text((unreadCount > 0 ? unreadCount : ''));
+                        var data = response.data.reverse();
+
+//
+//                        $notifications.find('.js-notification-time').each(function (child) {
+//                            var $this = $(this),
+//                                time = moment($this.data('time'));
+//
+//                            $this.text(time.fromNow());
+//                        });
+//
+                        if (data.length) {
+                            if (since) {
+                                $('#notificationSound')[0].play();
+                            }
+
+                            data.forEach(function (notification) {
+
+                                var $template = $('#notifications-item-template'),
+                                    $item = $($template.html());
+                                if(notification.unread == 1) {
+                                    $item.find('.js-notification-link').addClass('item-notification');
+                                }
+                                $item.find('.js-notification-link').attr('href', notification.link);
+                                $item.find('.js-notification-content').html(notification.title);
+                                var time = moment(notification.created_at);
+                                $item.find('.js-notification-time').text(time.fromNow());
+                                since = time.utc().unix() + 1;
+                                $item.prependTo($('#list_notifications'));
+                            });
+//
+//                            var total = $notifications.children().length;
+//
+//                            if (total > maxItemShow) {
+//                                $notifications.children(':nth-last-child(-n+' + (total - maxItemShow) + ')').remove();
+//                            }
+                        }
+
+                        setTimeout(function () {
+                            loadNotifications(since);
+                        }, 1000 * 15);
+                    });
+                }
+
+                loadNotifications();
+            })();
+
+            $('.js-help-icon').popover({
+                container: "body",
+                html: true,
+                trigger: "hover",
+                delay: {"hide": 1000}
+            });
+
+
+        });
+    </script>
+
+
+
+
+
+
+
+@endif
+
+
 <script>
 
     function strip_and_string(content) {
@@ -321,7 +466,7 @@
     };
 
     $(document).ready(function () {
-        $(function(){
+        $(function () {
             $('.selectpicker').selectpicker();
         });
 
@@ -351,30 +496,30 @@
     });
 
     {{--$(document).on('click', '.delete-btn', function (e) {--}}
-        {{--e.preventDefault();--}}
+    {{--e.preventDefault();--}}
 
-        {{--var url = $(this).attr('href');--}}
+    {{--var url = $(this).attr('href');--}}
 
-        {{--bootbox.confirm({--}}
-            {{--message: "Bạn có chắc chắn muốn xóa",--}}
-            {{--buttons: {--}}
-                {{--confirm: {--}}
-                    {{--label: 'Có',--}}
-                    {{--className: 'btn-success'--}}
-                {{--},--}}
-                {{--cancel: {--}}
-                    {{--label: 'Không',--}}
-                    {{--className: 'btn-danger'--}}
-                {{--}--}}
-            {{--},--}}
+    {{--bootbox.confirm({--}}
+    {{--message: "Bạn có chắc chắn muốn xóa",--}}
+    {{--buttons: {--}}
+    {{--confirm: {--}}
+    {{--label: 'Có',--}}
+    {{--className: 'btn-success'--}}
+    {{--},--}}
+    {{--cancel: {--}}
+    {{--label: 'Không',--}}
+    {{--className: 'btn-danger'--}}
+    {{--}--}}
+    {{--},--}}
 
 
-            {{--callback: function (result) {--}}
-                {{--if (result == true) {--}}
-                    {{--window.location.href = url;--}}
-                {{--}--}}
-            {{--}--}}
-        {{--});--}}
+    {{--callback: function (result) {--}}
+    {{--if (result == true) {--}}
+    {{--window.location.href = url;--}}
+    {{--}--}}
+    {{--}--}}
+    {{--});--}}
     {{--});--}}
 
 

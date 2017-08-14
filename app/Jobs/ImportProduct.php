@@ -14,6 +14,7 @@ use Request;
 use Excel;
 use App\Models\GroupProduct;
 use App\Models\Product;
+use App\Models\Notification;
 class ImportProduct
 //    implements ShouldQueue
 {
@@ -27,9 +28,11 @@ class ImportProduct
 //    protected $signature = 'crawProduct';
     protected $config;
     protected $filepath ;
-    public function __construct($filepath)
+    protected $name ;
+    public function __construct($filepath,$name)
     {
         $this->filepath = $filepath;
+        $this->name = $name;
     }
 
     /**
@@ -42,7 +45,7 @@ class ImportProduct
 
     public function handle()
     {
-//        try{
+        try{
             $datas = Excel::selectSheetsByIndex(0)->load($this->filepath, function ($reader) {
                 $reader->noHeading();
             })->skip(1)->get();
@@ -159,9 +162,15 @@ class ImportProduct
 
             }
 
-//        } catch (\Exception $ex){
-//            dd($ex->getTraceAsString().'--'.$ex->getLine());
-//        }
+        } catch (\Exception $ex){
+            $data['title'] = 'Hệ thống lỗi chưa tồn tại khi import file '.$this->name;
+            $data['content'] = [
+                'error' => $ex->getTraceAsString()
+            ];
+            $data['unread'] = 1;
+            Notification::create($data);
+            return;
+        }
 
     }
 }

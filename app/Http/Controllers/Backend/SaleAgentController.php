@@ -31,7 +31,7 @@ class SaleAgentController extends AdminController
             $managerIds = $userOwns->pluck('id')->toArray();
             $agents = Agent::whereIn('manager_id', $managerIds)->get();
         }
-        $products = Product::all();
+        $products = Product::where('level',1)->get();
 
         return view('admin.saleAgent.form',compact('agents', 'products'));
     }
@@ -39,80 +39,69 @@ class SaleAgentController extends AdminController
     public function store(Request $request)
     {
         $this->validate(request(),[
-            'agent_id' => 'required',
             'month' => 'required',
+            'capacity' => 'required'
         ],[
             'agent_id.required' => 'Vui lòng chọn đại lý',
             'month.required' => 'Vui lòng chọn thời gian',
         ]);
 
         $product_ids = request('product_id');
-        $sales_plan = request('sales_plan');
+        $capacity = request('capacity',0);
+        $sales_plan = request('sales_plan',0);
         $sales_real = request('sales_real');
 
         foreach ($product_ids as $key => $product_id) {
-            SaleAgent::firstOrCreate([
+            $agent = SaleAgent::firstOrCreate([
                 'agent_id' => request('agent_id'),
                 'product_id' => $product_id,
                 'month' => request('month'),
-                'sales_plan' => $sales_plan[$key] ? $sales_plan[$key] : 0,
+            ]);
+            $agent->update([
+                'sales_plan' => $sales_plan,
                 'sales_real' => $sales_real[$key] ? $sales_real[$key] : 0,
+                'capacity' => $capacity
             ]);
         }
 
-        return redirect()->route('Admin::map@listAgency')->with('success','Tạo dữ liệu cho đại lý thành công');
+        return redirect()->route('Admin::saleAgent@index')->with('success','Tạo dữ liệu cho đại lý thành công');
     }
 
     public function edit($agentId, $month)
     {
         $saleAgent = SaleAgent::where('agent_id',$agentId)->where('month',$month)->get();
-        $products = Product::all();
+        $products = Product::where('level',1)->get();
         $agents = Agent::all();
-
         return view('admin.saleAgent.form', compact('saleAgent', 'products', 'agents'));
     }
 
-    public function update($agentId)
+    public function update($agentId,Request $request)
     {
-        $this->validate(request(),[
+        Validator::make($request->all(), [
             'month' => 'required',
-        ],[
-            'month.required' => 'Vui lòng chọn thời gian',
-        ]);
+            'capacity' => 'required'
+        ])->validate();
+
 
         $product_ids = request('product_id');
+        $capacity = request('capacity');
         $sales_plan = request('sales_plan');
         $sales_real = request('sales_real');
 
-        $saleAgentCount = SaleAgent::where('agent_id',$agentId)->where('month',request('month'))->count();
 
-        if ($saleAgentCount > 0) {
+
+        if (count($sales_real)) {
             foreach ($product_ids as $key => $product_id) {
-                $saleAgent =  SaleAgent::where('agent_id',$agentId)->where('month',request('month'))->where('product_id',$product_id)->first();
-                if($saleAgent) {
-                    $saleAgent->update([
-                        'sales_plan' => $sales_plan[$key] ? $sales_plan[$key] : 0,
-                        'sales_real' => $sales_real[$key] ? $sales_real[$key] : 0,
-                    ]);
-                } else {
-                    SaleAgent::firstOrCreate([
+                    $sale = SaleAgent::firstOrCreate([
                         'agent_id' => $agentId,
                         'product_id' => $product_id,
                         'month' => request('month'),
-                        'sales_plan' => $sales_plan[$key] ? $sales_plan[$key] : 0,
-                        'sales_real' => $sales_real[$key] ? $sales_real[$key] : 0,
                     ]);
-                }
-            }
-        } else {
-            foreach ($product_ids as $key => $product_id) {
-                SaleAgent::firstOrCreate([
-                    'agent_id' => $agentId,
-                    'product_id' => $product_id,
-                    'month' => request('month'),
-                    'sales_plan' => $sales_plan[$key] ? $sales_plan[$key] : 0,
-                    'sales_real' => $sales_real[$key] ? $sales_real[$key] : 0,
-                ]);
+                        $sale->update([
+                           'capacity' => $capacity,
+                            'sales_plan' => $sales_plan,
+                            'sales_real' => (isset($sales_real[$key])) ? $sales_real[$key] : 0
+                        ]);
             }
         }
 
@@ -140,11 +129,12 @@ class SaleAgentController extends AdminController
             $response['status'] = 'fails';
             $response['errors'] = $validator->errors();
         } else {
+            $name =  $request->file('file')->getClientOriginalName();
             $month = $request->input('month');
             $file = request()->file('file');
             $filename = $month.'_'.time() . '_' . mt_rand(1111, 9999) . '_' . $request->file('file')->getClientOriginalName();
             $request->file('file')->move(storage_path('app/import/products'), $filename);
-            $this->dispatch(new ImportDataAgent( storage_path('app/import/products/' . $filename),$month));
+            $this->dispatch(new ImportDataAgent( storage_path('app/import/products/' . $filename),$month,$name));
 
             flash()->success('Success!', 'Data successfully updated.');
             $response['status'] = 'success';

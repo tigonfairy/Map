@@ -3,6 +3,7 @@
 namespace App\Jobs;
 
 use App\Models\Agent;
+use App\Models\Notification;
 use App\Models\SaleAgent;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\Job;
@@ -31,10 +32,12 @@ class ImportDataAgent
     protected $config;
     protected $filepath ;
     protected $month ;
-    public function __construct($filepath,$month)
+    protected $name ;
+    public function __construct($filepath,$month,$name)
     {
         $this->month = $month;
         $this->filepath = $filepath;
+        $this->name = $name;
     }
 
     /**
@@ -48,7 +51,8 @@ class ImportDataAgent
     public function handle()
     {
         $month = $this->month;
-//        try{
+        $agentError = [];
+        try{
             $datas = Excel::selectSheetsByIndex(0)->load($this->filepath, function ($reader) {
                 $reader->noHeading();
             })->get();
@@ -60,6 +64,11 @@ class ImportDataAgent
                     $codeAgent = trim($row[1]);
                     $agent = Agent::where('code',$codeAgent)->first();
                     if(empty($agent)) {
+                        if($codeAgent) {
+                            $agentError[] = $codeAgent;
+                        }
+
+
                         continue;
                     }
                     $capacity = intval($row[5]);
@@ -85,9 +94,23 @@ class ImportDataAgent
 
             }
 
-//        } catch (\Exception $ex){
-//            dd($ex->getTraceAsString().'--'.$ex->getLine());
-//        }
+        } catch (\Exception $ex){
+            $data['title'] = 'Hệ thống lỗi chưa tồn tại khi import file '.$this->name;
+            $data['content'] = [
+                'error' => $ex->getTraceAsString()
+            ];
+            $data['unread'] = 1;
+            Notification::create($data);
+            return;
+        }
+        if(count($agentError)) {
+            $data['title'] = 'Một số đại lý chưa tồn tại khi import file '.$this->name;
+            $data['content'] = [
+                'agent' => $agentError
+            ];
+            $data['unread'] = 1;
+            Notification::create($data);
 
+         }
     }
 }

@@ -16,6 +16,7 @@ use Excel;
 use App\Models\GroupProduct;
 use App\Models\Product;
 use App\Models\User;
+use App\Models\Notification;
 class ImportAgent
 //    implements ShouldQueue
 {
@@ -29,9 +30,11 @@ class ImportAgent
 //    protected $signature = 'crawProduct';
     protected $config;
     protected $filepath ;
-    public function __construct($filepath)
+    protected $name ;
+    public function __construct($filepath,$name)
     {
         $this->filepath = $filepath;
+        $this->name = $name;
     }
 
     /**
@@ -44,13 +47,12 @@ class ImportAgent
 
     public function handle()
     {
-//        try{
             $datas = Excel::selectSheetsByIndex(0)->load($this->filepath, function ($reader) {
                 $reader->noHeading();
             })->skip(1)->get();
-
+        $agentError = [];
             foreach ($datas as $row) {
-//                try{
+                try{
                     $code= 0 ;
                     if(isset($row[0])) {
                         $code = $row[0];
@@ -102,6 +104,7 @@ class ImportAgent
                         }
                     }
                     if($manager_id == 0 ) {
+                        $agentError[] = $code;
                         continue;
                     }
                     $agent = Agent::firstOrCreate(['code' => $code]);
@@ -117,16 +120,21 @@ class ImportAgent
 
 
 //
-//                } catch (\Exception $ex) {
-//                    continue;
-//                }
+                } catch (\Exception $ex) {
+                    continue;
+                }
 
 
             }
 
-//        } catch (\Exception $ex){
-//            dd($ex->getTraceAsString().'--'.$ex->getLine());
-//        }
+        if(count($agentError)) {
+            $data['title'] = 'Đại lý chưa có quản lý khi import file '.$this->name;
+            $data['content'] = [
+                'agentImport' => $agentError
+            ];
+            $data['unread'] = 1;
+            Notification::create($data);
 
+        }
     }
 }

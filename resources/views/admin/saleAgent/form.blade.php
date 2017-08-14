@@ -49,7 +49,10 @@
                                 <div class="form-group {{ $errors->has('month') ? 'has-error has-feedback' : '' }}">
                                     <label for="name" class="control-label text-semibold">Thời gian</label>
                                     <i class="icon-question4 text-muted text-size-mini cursor-pointer js-help-icon" data-content="Thời gian"></i>
-                                    <input type="text" id="month" name="month" class="form-control monthPicker" value="{{ old('month') ?: @$saleAgent[0]->month }}" />
+                                    <input type="text" id="month" name="month" class="form-control monthPicker" value="{{ old('month') ?: @$saleAgent[0]->month }}" @if(isset($saleAgent)) disabled @endif />
+                                    @if(isset($saleAgent))
+                                        <input type="hidden" name="month" value="{{@$saleAgent[0]->month}}">
+                                        @endif
                                     @if ($errors->has('month'))
                                         <div class="form-control-feedback">
                                             <i class="icon-notification2"></i>
@@ -57,15 +60,37 @@
                                         <div class="help-block">{{ $errors->first('month') }}</div>
                                     @endif
                                 </div>
+                                <div class="form-group {{ $errors->has('capacity') ? 'has-error has-feedback' : '' }}">
+                                    <label for="name" class="control-label text-semibold">Dung lượng vùng</label>
+                                    <i class="icon-question4 text-muted text-size-mini cursor-pointer js-help-icon" data-content="Thời gian"></i>
+                                    <input type="number" id="capacity" name="capacity" class="form-control" value="{{ old('capacity') ?: @$saleAgent[0]->capacity }}" />
+                                    @if ($errors->has('capacity'))
+                                        <div class="form-control-feedback">
+                                            <i class="icon-notification2"></i>
+                                        </div>
+                                        <div class="help-block">{{ $errors->first('capacity') }}</div>
+                                    @endif
+                                </div>
+                                <div class="form-group {{ $errors->has('sales_plan') ? 'has-error has-feedback' : '' }}">
+                                    <label for="name" class="control-label text-semibold">Doanh số kế hoạch</label>
+                                    <i class="icon-question4 text-muted text-size-mini cursor-pointer js-help-icon" data-content="Thời gian"></i>
+                                    <input type="number" id="sales_plan" name="sales_plan" class="form-control" value="{{ old('sales_plan') ?: @$saleAgent[0]->sales_plan }}" />
+                                    @if ($errors->has('sales_plan'))
+                                        <div class="form-control-feedback">
+                                            <i class="icon-notification2"></i>
+                                        </div>
+                                        <div class="help-block">{{ $errors->first('sales_plan') }}</div>
+                                    @endif
+                                </div>
+
 
                                 <!---------- Type of Product - Doanh số kế hoạch - Doanh số thực tế ------------>
 
                                 <div class="form-group">
                                     <table class="table table-striped table-bordered" cellspacing="0" width="100%">
                                         <thead>
-                                        <th>Id</th>
-                                        <th>Tên nhóm sản phẩm</th>
-                                        <th>Doanh số kế hoạch</th>
+                                        <th>Code</th>
+                                        <th>Tên sản phẩm</th>
                                         <th>Doanh số thực tế</th>
                                         </thead>
 
@@ -73,9 +98,8 @@
                                         @foreach($products as $key => $value)
                                             <tr>
                                                 <input type="hidden" name="product_id[]" value="{{ $value->id }}" />
-                                                <td>{{ $value->id }}</td>
-                                                <td>{{  $value->name }}</td>
-                                                <td><input type="text"  id="sales_plan" name="sales_plan[]" class="form-control" value="{{ @$saleAgent[$key]->product_id == $value->id ? @$saleAgent[$key]->sales_plan : 0 }}" /></td>
+                                                <td>{{ $value->code }}</td>
+                                                <td>{{  $value->name_vn}}</td>
                                                 <td><input type="text"  id="sales_real" name="sales_real[]" class="form-control" value="{{ @$saleAgent[$key]->product_id == $value->id ? @$saleAgent[$key]->sales_real : 0 }}" /></td>
                                             </tr>
                                         @endforeach
