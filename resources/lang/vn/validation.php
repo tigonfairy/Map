@@ -118,6 +118,8 @@ return [
         'password_confirmation' => 'Xác nhận mật khẩu',
         'name' => 'Tên',
         'phone' => 'Số điện thoại',
+        'capacity' => 'Dung lượng vùng',
+        'month' => 'Tháng'
     ],
 
 ];

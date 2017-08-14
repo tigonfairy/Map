@@ -7,13 +7,11 @@
             <div class="page-title">
                 <h2>{{ trans('home.listBusinessArea')}}</h2>
             </div>
-            @if(auth()->user()->roles()->first()->id == 1)
             <div class="heading-elements">
                 <div class="heading-btn-group">
                     <a href="{{route('Admin::map@addMapUser')}}" class="btn btn-primary"><i class="icon-add"></i> {{ trans('home.createBusinessArea')}}</a>
                 </div>
             </div>
-            @endif
         </div>
     </div>
 

@@ -71,47 +71,32 @@ class SaleAgentController extends AdminController
         return view('admin.saleAgent.form', compact('saleAgent', 'products', 'agents'));
     }
 
-    public function update($agentId)
+    public function update($agentId,Request $request)
     {
-        $this->validate(request(),[
+        Validator::make($request->all(), [
             'month' => 'required',
-        ],[
-            'month.required' => 'Vui lòng chọn thời gian',
-        ]);
+            'capacity' => 'required'
+        ])->validate();
+
 
         $product_ids = request('product_id');
+        $capacity = request('capacity');
         $sales_plan = request('sales_plan');
         $sales_real = request('sales_real');
 
-        $saleAgentCount = SaleAgent::where('agent_id',$agentId)->where('month',request('month'))->count();
 
-        if ($saleAgentCount > 0) {
+
+        if (count($sales_real)) {
             foreach ($product_ids as $key => $product_id) {
-                $saleAgent =  SaleAgent::where('agent_id',$agentId)->where('month',request('month'))->where('product_id',$product_id)->first();
-                if($saleAgent) {
-                    $saleAgent->update([
-                        'sales_plan' => $sales_plan[$key] ? $sales_plan[$key] : 0,
-                        'sales_real' => $sales_real[$key] ? $sales_real[$key] : 0,
-                    ]);
-                } else {
-                    SaleAgent::firstOrCreate([
+                    $sale = SaleAgent::firstOrCreate([
                         'agent_id' => $agentId,
                         'product_id' => $product_id,
                         'month' => request('month'),
-                        'sales_plan' => $sales_plan[$key] ? $sales_plan[$key] : 0,
-                        'sales_real' => $sales_real[$key] ? $sales_real[$key] : 0,
                     ]);
-                }
-            }
-        } else {
-            foreach ($product_ids as $key => $product_id) {
-                SaleAgent::firstOrCreate([
-                    'agent_id' => $agentId,
-                    'product_id' => $product_id,
-                    'month' => request('month'),
-                    'sales_plan' => $sales_plan[$key] ? $sales_plan[$key] : 0,
-                    'sales_real' => $sales_real[$key] ? $sales_real[$key] : 0,
-                ]);
+                        $sale->update([
+                           'capacity' => $capacity,
+                            'sales_plan' => $sales_plan,
+                        ]);
             }
         }
 
