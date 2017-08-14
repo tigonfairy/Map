@@ -580,6 +580,8 @@ class MapController extends AdminController
                     foreach ($user->owners as $u) {
                         $userOwns->push($u);
                     }
+                } else {
+                    $userOwns->push($user);
                 }
             }
             $userOwns->push($userTv);
@@ -628,6 +630,88 @@ class MapController extends AdminController
                 'totalSales' => $totalSales,
                 'capacity' => $capacity,
                 'percent' => round($totalSales / $capacity, 2)
+            ]);
+        }
+
+        if ($typeSearch == 'gdv') {
+            $totalSaleGSV = 0;
+            $totalSaleGDV = 0;
+            $saleAgents = 0;
+            $listAgents = [];
+            $capacity = 0;
+            $data = [];
+            $locations = [];
+            $userGdv = User::findOrFail($dataSearch);
+            $userGSV = $userGdv->owners()->get();
+
+            foreach ($userGSV as $user) {
+                if ($user->position == User::GSV) { // gsv
+                    if (count($user->owners) > 0) {
+                        $listIds = $user->owners->pluck('id')->toArray();
+                        $listIds[] = $user->id;
+                    }
+                } else if ($user->position == User::TV) {
+                    if (count($user->owners) > 0) {
+                        foreach ($user->owners as $u) {
+                            if (count($u->owners) > 0) {
+                                $listIds = $u->owners->pluck('id')->toArray();
+                            }
+                            $listIds[] = $u->id;
+                        }
+                    }
+                }
+                $listIds[] = $user->id;
+                $agents = Agent::whereIn('manager_id', $listIds)->with('user')->get();
+                foreach ($agents as $agent) {
+                    $sales = SaleAgent::where('agent_id', $agent->id)->where('month', $month)->select('sales_real', 'capacity')->get();
+
+                    foreach ($sales as $sale) {
+                        $saleAgents += $sale->sales_real;
+                        $capacity = isset($sale->capacity) ?  $sale->capacity : 1;
+                    }
+                    $capacity = $capacity == 0 ? 1 : $capacity;
+                    $listAgents[] = [
+                        'agent' => $agent,
+                        'totalSales' => $saleAgents,
+                        'capacity' => $capacity,
+                        'percent' => round($saleAgents / $capacity, 2)
+                    ];
+                    $totalSaleGSV += $saleAgents;
+                    $saleAgents = 0;
+                }
+                $listIds = [];
+                $totalSaleGDV += $totalSaleGSV;
+
+                $data[] = [
+                    'gsv' => $user->name,
+                    'agents' => $agents,
+                    'totalSales' => $totalSaleGSV,
+                    'capacity' => $capacity
+                ];
+                $totalSaleGSV = 0;
+
+                // area
+                $areas = $user->area()->get();
+
+                foreach ($areas as $key => $area) {
+                    foreach ($area->address as $k => $address) {
+                        $locations[] = [
+                            'border_color' => $area->border_color,
+                            'background_color' => $area->background_color,
+                            'area' => $address
+                        ];
+                    }
+                }
+            }
+
+            return response()->json([
+                'user' => $userGdv,
+                'result' => $data,
+                'locations' => $locations,
+                'listAgents' => $listAgents,
+                'totalSales' => $totalSaleGDV,
+                'capacity' => $capacity,
+                'percent' => round($totalSaleGSV / $capacity, 2)
             ]);
         }
     }

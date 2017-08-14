@@ -919,22 +919,33 @@
         function showDataSaleGDV(data) {
             var polygonArray = [];
 
-            map = new GMaps({
-                div: '#map',
-                lat: 21.0277644,
-                lng: 105.83415979999995,
-                width: "100%",
-                height: '500px',
-                zoom: 8,
+//            map = new GMaps({
+//                div: '#map',
+//                lat: 21.0277644,
+//                lng: 105.83415979999995,
+//                width: "100%",
+//                height: '500px',
+//                zoom: 8,
+//                fullscreenControl: true,
+//            });
+//
+//            var button ='<button id="swift" class="btn btn-primary">Full mode</button>';
+//
+//            map.addControl({
+//                position: 'bottom_left',
+//                content: button,
+//            });
+
+            var center = new google.maps.LatLng(21.0277644, 105.83415979999995);
+            var options = {
+                'zoom': 6,
+                'center': center,
+                'mapTypeId': google.maps.MapTypeId.ROADMAP,
                 fullscreenControl: true,
-            });
 
-            var button ='<button id="swift" class="btn btn-primary">Full mode</button>';
+            };
 
-            map.addControl({
-                position: 'bottom_left',
-                content: button,
-            });
+            var map = new google.maps.Map(document.getElementById("map"), options);
 
             $.map(data.locations, function (location, index) {
                 var item = location.area;
@@ -944,13 +955,16 @@
                 var background_color = location.background_color;
                 if (coordinate) {
                     var bounds = new google.maps.LatLngBounds();
+                    var path = [];
                     for (i = 0; i < coordinate.length; i++) {
                         var c = coordinate[i];
                         bounds.extend(new google.maps.LatLng(c[0], c[1]));
+                        path.push(new google.maps.LatLng(c[0], c[1]))
                     }
-                    var path = coordinate;
-                    map.setCenter(bounds.getCenter().lat(), bounds.getCenter().lng());
-                    polygon = map.drawPolygon({
+
+//                    var path = coordinate;
+//                    map.setCenter(bounds.getCenter().lat(), bounds.getCenter().lng());
+                    polygon = new google.maps.Polygon({
                         paths: path,
                         strokeColor: border_color,
                         strokeOpacity: 1,
@@ -958,24 +972,24 @@
                         fillColor: background_color,
                         fillOpacity: 0.4,
                     });
+                    polygon.setMap(map);
                     polygonArray[item.id] = polygon;
                 }
             });
+
 
             $.map(data.result, function (item) {
                 var agents = item.agents;
                 var markers = [];
                 $.map(agents, function (agent) {
-                    var marker = map.addMarker({
-                        lat:  agent.lat,
-                        lng:  agent.lng,
-                        title:   agent.name,
-                    });
+                    var latLng = new google.maps.LatLng(agent.lat,
+                        agent.lng);
+                    var marker = new google.maps.Marker({'position': latLng});
                     markers.push(marker);
                 });
 
                 var markerCluster = new MarkerClusterer(map, markers, {
-                    maxZoom: 11,
+                    maxZoom: 15,
                     imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'
                 });
 
@@ -1000,11 +1014,8 @@
                 '</ul>' +
                 '</div>' +
                 '</div>';
-
-            map.addControl({
-                position: 'top_left',
-                content: tableSales,
-            });
+            tableSales.index = 1;
+            map.controls[google.maps.ControlPosition.BOTTOM_CENTER].push(tableSales[0]);
         }
 
         function getListAgents() {
