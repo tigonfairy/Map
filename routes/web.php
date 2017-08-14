@@ -64,6 +64,7 @@ Route::group(['middleware' => ['auth','language'],
             Route::match(['put', 'patch'], '/{id}', ['as' => 'update', 'uses' => 'UserController@update']);
             Route::get('/{id}/delete', ['as' => 'delete', 'uses' => 'UserController@delete']);
             Route::post('/get-account-position', ['as' => 'getAccountPosition', 'uses' => 'UserController@getAccountPosition']);
+            Route::get('/export',['as' => 'export', 'uses' => 'UserController@export']);
         });
 
         Route::group([

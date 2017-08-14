@@ -13,6 +13,7 @@
                     <a href="{{route('Admin::user@add')}}" class="btn btn-primary"><i class="icon-add"></i> Thêm thành viên</a>
                     <a href="#import-user" class="btn btn-info" data-toggle="modal" id="btn-system-product">Thêm thành viên từ Excel</a>
                     <a href="{{asset('user_example.xlsx')}}" class="btn btn-success"  id="btn-system-product">Mẫu</a>
+                    <a href="{{route('Admin::user@export')}}" class="btn btn-info"  id="btn-system-product">Export Excel</a>
                 </div>
 
 
