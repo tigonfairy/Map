@@ -40,9 +40,19 @@
                             $agent = implode($agent,',');
                         @endphp
                     <p>
-                        Mã đại lý chưa tồn tạo : {{$agent}}
+                        Mã đại lý chưa tồn tại : {{$agent}}
                     </p>
                     @endif
+
+                     @if(isset($notification->content['agentImport']))
+                        @php $agent =$notification->content['agentImport'];
+                            $agent = implode($agent,',');
+                        @endphp
+                    <p>
+                         đại lý chưa có quản lý : {{$agent}}
+                    </p>
+                    @endif
+
                 </div>
 
 

@@ -16,6 +16,7 @@ use Excel;
 use App\Models\GroupProduct;
 use App\Models\Product;
 use App\Models\User;
+use App\Models\Notification;
 class ImportUser
 //    implements ShouldQueue
 {
@@ -29,22 +30,15 @@ class ImportUser
 //    protected $signature = 'crawProduct';
     protected $config;
     protected $filepath ;
-    public function __construct($filepath)
+    public function __construct($filepath,$name)
     {
         $this->filepath = $filepath;
+        $this->name = $name;
     }
-
-    /**
-     * Execute the job.
-     *
-     * @return void
-     */
-
-
 
     public function handle()
     {
-//        try{
+        try{
             $datas = Excel::selectSheetsByIndex(0)->load($this->filepath, function ($reader) {
                 $reader->noHeading();
             })->skip(1)->get();
@@ -96,9 +90,15 @@ class ImportUser
 
             }
 
-//        } catch (\Exception $ex){
-//            dd($ex->getTraceAsString().'--'.$ex->getLine());
-//        }
+        } catch (\Exception $ex){
+            $data['title'] = 'Hệ thống lỗi chưa tồn tại khi import file '.$this->name;
+            $data['content'] = [
+                'error' => $ex->getTraceAsString()
+            ];
+            $data['unread'] = 1;
+            Notification::create($data);
+            return;
+        }
 
     }
 }

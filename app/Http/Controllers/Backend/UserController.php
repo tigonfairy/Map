@@ -166,11 +166,11 @@ class UserController extends AdminController
             $response['status'] = 'fails';
             $response['errors'] = $validator->errors();
         } else {
-
+            $name =  $request->file('file')->getClientOriginalName();
             $file = request()->file('file');
             $filename = time() . '_' . mt_rand(1111, 9999) . '_' . $request->file('file')->getClientOriginalName();
             $request->file('file')->move(storage_path('app/import/users'), $filename);
-            $this->dispatch(new ImportUser( storage_path('app/import/users/' . $filename)));
+            $this->dispatch(new ImportUser( storage_path('app/import/users/' . $filename),$name));
 
             flash()->success('Success!', 'User successfully updated.');
             $response['status'] = 'success';

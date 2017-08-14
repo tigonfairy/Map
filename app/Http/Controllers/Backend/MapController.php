@@ -643,11 +643,11 @@ class MapController extends AdminController
             $response['status'] = 'fails';
             $response['errors'] = $validator->errors();
         } else {
-
+            $name =  $request->file('file')->getClientOriginalName();
             $file = request()->file('file');
             $filename = time() . '_' . mt_rand(1111, 9999) . '_' . $request->file('file')->getClientOriginalName();
             $request->file('file')->move(storage_path('app/import/agents'), $filename);
-            $this->dispatch(new ImportAgent( storage_path('app/import/agents/' . $filename)));
+            $this->dispatch(new ImportAgent( storage_path('app/import/agents/' . $filename),$name));
 
             flash()->success('Success!', 'Import successfully.');
             $response['status'] = 'success';
