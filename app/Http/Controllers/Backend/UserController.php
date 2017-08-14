@@ -148,7 +148,7 @@ class UserController extends AdminController
         }else {
             $users = User::where('position',$position+1)->get();
         }
-        return view('admin.user.get_position',compact('users',$manager));
+        return view('admin.user.get_position',compact('users','manager'));
     }
 
 
