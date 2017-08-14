@@ -144,6 +144,7 @@
                             </a>
                             <ul class="dropdown-menu">
                                 <li class="external">
+                                    <h3></h3>
                                     <a href="{{route('Admin::notification@getAll')}}">Tất cả</a>
                                 </li>
                                 <li>
