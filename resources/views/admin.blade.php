@@ -107,6 +107,11 @@
 
     </style>
     @stack('style_head')
+    <style>
+        .item-notification {
+            background: #eaedf2;
+        }
+    </style>
 </head>
 <!-- END HEAD -->
 
@@ -143,9 +148,9 @@
                                 <span class="badge badge-default" id="count_notification"> </span>
                             </a>
                             <ul class="dropdown-menu">
-                                <li class="external">
-                                    <h3></h3>
-                                    <a href="{{route('Admin::notification@getAll')}}">Tất cả</a>
+                                <li class="external" style="text-align: center">
+
+                                    <a href="{{route('Admin::notification@getAll')}}">  <h3>Tất cả</h3></a>
                                 </li>
                                 <li>
                                     <div class="slimScrollDiv"
@@ -382,7 +387,9 @@
 
                                 var $template = $('#notifications-item-template'),
                                     $item = $($template.html());
-
+                                if(notification.unread) {
+                                    $item.find('li').addClass('item-notification');
+                                }
                                 $item.find('.js-notification-link').attr('href', notification.link);
                                 $item.find('.js-notification-content').html(notification.title);
                                 var time = moment(notification.created_at);
