@@ -126,9 +126,6 @@ class MapController extends AdminController
     }
 
     public function editMapUserPost(Request $request,$id){
-        if (auth()->user()->roles->first()['id'] != 1) {
-            abort(403);
-        }
 
         $area = Area::findOrFail($id);
         $this->validate($request,[

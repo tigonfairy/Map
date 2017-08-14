@@ -57,6 +57,33 @@
                                 @endif
                             </div>
 
+
+
+                            <div class="form-group {{ $errors->has('textColor') ? 'has-error has-feedback' : '' }}">
+                                <label class="control-label col-md-3">Màu chữ</label>
+
+                                    <div class="input-group color colorpicker-default form-control"
+                                         data-color="{{isset($config['textColor']) ? $config['textColor'] : '#FF0000'}}"
+                                         data-color-format="rgba">
+                                        <input type="text" class="form-control"
+                                               value="{{isset($config['textColor']) ? $config['textColor'] : '#FF0000'}}"
+                                               name="textColor">
+                                        <span class="input-group-btn">
+                                                    <button class="btn default" type="button"><i
+                                                                style="background-color: {{isset($area) ? $area->border_color : '#3865a8'}};"></i>&nbsp;</button>
+                                                </span>
+                                    </div>
+                                @if ($errors->has('textColor'))
+                                    <div class="form-control-feedback">
+                                        <i class="icon-notification2"></i>
+                                    </div>
+                                    <div class="help-block">{{ $errors->first('textColor') }}</div>
+                                @endif
+                            </div>
+
+
+
+
                             <div class="text-right">
                                 <button type="submit" class="btn btn-primary">{{ trans('home.update') }}</button>
                             </div>
