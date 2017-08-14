@@ -185,7 +185,7 @@
 
 
       @if(isset($user))
-      console.log($('#position').val());
+      var value = $('#position').val();
          $.ajax({
           method: "post",
           url: "{{ route('Admin::user@getAccountPosition') }}",
