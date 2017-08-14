@@ -77,6 +77,36 @@ class User extends Authenticatable
     {
         return $this->hasMany(User::class, 'manager_id');
     }
+    public function getPositionTextAttribute()
+    {
+        $payment = $this->attributes['position'];
+
+        $message = '';
+
+        switch($payment)
+        {
+            case self::NVKD :
+                $message = 'NVKD';
+                break;
+            case  self::GSV :
+                $message = 'GS';
+                break;
+            case self::TV:
+                $message = 'TV';
+                break;
+            case self::GĐV:
+                $message = 'GDV';
+                break;
+            case self::SALE_ADMIN:
+                $message = 'P.GĐKD';
+                break;
+            default:
+                $message = 'Chưa rõ';
+                break;
+        }
+
+        return $message;
+    }
 
 
     public static function getDatatables()

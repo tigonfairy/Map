@@ -10,22 +10,18 @@ use App\Models\Role;
 use App\Models\Permission;
 use Validator;
 use App\Jobs\ImportUser;
+use Excel;
 class UserController extends AdminController
 {
 
     public function index(Request $request)
     {
-        if (auth()->user()->roles->first()['id'] == 3) {
-            abort(403);
-        }
         return view('admin.user.index');
     }
 
     public function add()
     {
-        if (auth()->user()->roles->first()['id'] == 3) {
-            abort(403);
-        }
+
         $roles = Role::all();
         $permission = Permission::all();
         $users = User::whereHas('roles', function ($query) {
@@ -37,9 +33,7 @@ class UserController extends AdminController
 
     public function store(Request $request)
     {
-        if (auth()->user()->roles->first()['id'] == 3) {
-            abort(403);
-        }
+
         Validator::make($request->all(), [
             'name' => 'required',
             'code' =>'required',
@@ -76,9 +70,6 @@ class UserController extends AdminController
 
     public function edit($id)
     {
-        if (auth()->user()->roles->first()['id'] == 3) {
-            abort(403);
-        }
         $user = User::findOrFail($id);
 //        $roles = Role::all();
 //        $userRoles = $user->roles->keyBy('id');
@@ -90,9 +81,7 @@ class UserController extends AdminController
 
     public function update($id, Request $request)
     {
-        if (auth()->user()->roles->first()['id'] == 3) {
-            abort(403);
-        }
+
         $user = User::findOrFail($id);
 
         $this->validate($request,[
@@ -177,5 +166,29 @@ class UserController extends AdminController
         }
 
         return response()->json($response);
+    }
+    public function export(Request $request) {
+        $users = User::where('position','!=',User::ADMIN)->get();
+        $exportUserArray = [];
+        foreach ($users as $user){
+            $exportUser['Mã'] = $user->code;
+            $exportUser['Họ và tên'] = $user->name;
+            $exportUser['Địa chỉ email'] = $user->email;
+            $exportUser['SĐT'] = $user->phone;
+            $exportUser['Chức vụ'] = $user->positionText;
+            $exportUser['Quản lý'] = ($user->manager and $user->manager->code) ? $user->manager->code : '';
+            $exportUserArray[] = $exportUser;
+        }
+
+        Excel::create('danh-sach-tai-khoan-' . time(), function ($excel) use ($exportUserArray) {
+
+            $excel->sheet('khach-hang', function ($sheet) use ($exportUserArray) {
+
+                $sheet->fromArray($exportUserArray);
+
+            });
+
+        })->download('xlsx');
+
     }
 }
