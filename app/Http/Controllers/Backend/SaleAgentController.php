@@ -96,6 +96,7 @@ class SaleAgentController extends AdminController
                         $sale->update([
                            'capacity' => $capacity,
                             'sales_plan' => $sales_plan,
+                            'sales_real' => (isset($sales_real[$key])) ? $sales_real[$key] : 0
                         ]);
             }
         }
