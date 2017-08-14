@@ -7,6 +7,8 @@
         }
         .item {
             padding: 15px !important;
+            border-bottom: 1px solid red;
+            border-top:1px solid red;
         }
     </style>
     <!-- Page header -->
