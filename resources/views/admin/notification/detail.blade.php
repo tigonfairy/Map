@@ -30,14 +30,19 @@
 
         <div class="content-wrapper">
 
-            <div class="col-md-6">
+            <div class="col-md-6 col-md-offset-3">
                 <!-- BEGIN Portlet PORTLET-->
                 <div class="m-heading-1 border-green m-bordered">
                     <h3>{{$notification->title}}</h3>
-                    <h4>{{$notification->created_at->format('H:i:s d/m/Y')}}</h4>
+                    <h5>{{$notification->created_at->format('H:i:s d/m/Y')}}</h5>
+                    @if(isset($notification->content['agent']))
+                        @php $agent =$notification->content['agent'];
+                            $agent = implode($agent,',');
+                        @endphp
                     <p>
-
-                       </p>
+                        Mã đại lý chưa tồn tạo : {{$agent}}
+                    </p>
+                    @endif
                 </div>
 
 
