@@ -34,6 +34,7 @@ Route::group(['middleware' => ['auth','language'],
                 Route::get('/get-giam-sat-vung', ['as' => 'getGSV', 'uses' => 'ApiController@getGSV']);
                 Route::get('/get-truong-vung', ['as' => 'getListTV', 'uses' => 'ApiController@getListTV']);
                 Route::get('/get-list-agents', ['as' => 'getListAgents', 'uses' => 'ApiController@getListAgents']);
+                Route::get('/get-giam-doc-vung', ['as' => 'getListGDV', 'uses' => 'ApiController@getListGDV']);
             });
 
             Route::group([

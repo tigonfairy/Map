@@ -179,7 +179,7 @@ class UserController extends AdminController
             $exportUser['Quản lý'] = ($user->manager and $user->manager->code) ? $user->manager->code : '';
             $exportUserArray[] = $exportUser;
         }
-        
+
         Excel::create('danh-sach-tai-khoan-' . time(), function ($excel) use ($exportUserArray) {
 
             $excel->sheet('khach-hang', function ($sheet) use ($exportUserArray) {
