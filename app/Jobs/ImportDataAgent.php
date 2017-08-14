@@ -95,7 +95,7 @@ class ImportDataAgent
             $data['content'] = [
                 'error' => $ex->getTraceAsString()
             ];
-            $data['unread'] = 0;
+            $data['unread'] = 1;
             Notification::create($data);
             return;
         }
@@ -104,7 +104,7 @@ class ImportDataAgent
             $data['content'] = [
                 'agent' => $agentError
             ];
-            $data['unread'] = 0;
+            $data['unread'] = 1;
             Notification::create($data);
 
          }
