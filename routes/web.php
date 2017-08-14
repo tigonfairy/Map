@@ -71,7 +71,7 @@ Route::group(['middleware' => ['auth','language'],
             'as' => 'notification@',
         ], function () {
 
-            Route::post('/getNotification', ['as' => 'getNotification', 'uses' => 'NotificationController@getNotification']);
+            Route::get('/getNotification', ['as' => 'getNotification', 'uses' => 'NotificationController@getNotification']);
         });
 
     Route::group([
