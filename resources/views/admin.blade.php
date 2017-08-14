@@ -150,7 +150,7 @@
                             <ul class="dropdown-menu">
                                 <li class="external" style="text-align: center">
 
-                                    <a href="{{route('Admin::notification@getAll')}}">  <h3>Tất cả</h3></a>
+                                    <h3><a href="{{route('Admin::notification@getAll')}}"> Tất cả</a></h3>
                                 </li>
                                 <li>
                                     <div class="slimScrollDiv"
@@ -342,7 +342,7 @@
 
 
     <script type="text/template" id="notifications-item-template">
-        <li>
+        <li class="notification-sub">
             <a href="#" class="js-notification-link">
                 <p class="time js-notification-time"> </p>
 
@@ -388,7 +388,7 @@
                                 var $template = $('#notifications-item-template'),
                                     $item = $($template.html());
                                 if(notification.unread) {
-                                    $item.find('li').addClass('item-notification');
+                                    $item.find('.notification-sub').addClass('item-notification');
                                 }
                                 $item.find('.js-notification-link').attr('href', notification.link);
                                 $item.find('.js-notification-content').html(notification.title);
