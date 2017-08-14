@@ -11,4 +11,7 @@ class Notification extends Model
     protected $fillable = [
         'title', 'content', 'date_time', 'unread'
     ];
+    protected $casts = [
+        'content' => 'array',
+    ];
 }

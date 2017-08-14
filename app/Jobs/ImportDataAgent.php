@@ -3,6 +3,7 @@
 namespace App\Jobs;
 
 use App\Models\Agent;
+use App\Models\Notification;
 use App\Models\SaleAgent;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\Job;
@@ -31,10 +32,12 @@ class ImportDataAgent
     protected $config;
     protected $filepath ;
     protected $month ;
-    public function __construct($filepath,$month)
+    protected $name ;
+    public function __construct($filepath,$month,$name)
     {
         $this->month = $month;
         $this->filepath = $filepath;
+        $this->name = $name;
     }
 
     /**
@@ -47,7 +50,6 @@ class ImportDataAgent
 
     public function handle()
     {
-        dd($this->filepath);
         $month = $this->month;
         $agentError = [];
         try{
@@ -89,8 +91,22 @@ class ImportDataAgent
             }
 
         } catch (\Exception $ex){
-            dd($ex->getTraceAsString().'--'.$ex->getLine());
+            $data['title'] = 'Hệ thống lỗi chưa tồn tại khi import file '.$this->name;
+            $data['content'] = [
+                'error' => $ex->getTraceAsString()
+            ];
+            $data['unread'] = 0;
+            Notification::create($data);
+            return;
         }
+        if(count($agentError)) {
+            $data['title'] = 'Một số đại lý chưa tồn tại khi import file '.$this->name;
+            $data['content'] = [
+                'agent' => $agentError
+            ];
+            $data['unread'] = 0;
+            Notification::create($data);
 
+         }
     }
 }
