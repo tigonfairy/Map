@@ -22,13 +22,13 @@ class NotificationController extends AdminController
 
         $notifications = $notifications->get();
 
-//        $notifications->map(function ($notification) {
-//            $notification->link = route('Staff::notification@read', [
-//                $notification->id
-//            ]);
-//
-//            return $notification;
-//        });
+        $notifications->map(function ($notification) {
+            $notification->link = route('Admin::notification@detailNotification', [
+                $notification->id
+            ]);
+
+            return $notification;
+        });
 
         return ['data' => $notifications, 'metadata' => ['unreadCount' => $unreadCount]];
     }

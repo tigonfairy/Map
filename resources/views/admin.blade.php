@@ -144,8 +144,11 @@
                             </a>
                             <ul class="dropdown-menu">
                                 <li>
-                                    <div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; max-height: 250px;">
-                                        <ul class="dropdown-menu-list scroller" id="list_notifications" style="max-height: 250px; overflow: hidden; width: auto;" data-handle-color="#637283" data-initialized="1">
+                                    <div class="slimScrollDiv"
+                                         style="position: relative; overflow: hidden; width: auto; max-height: 250px;">
+                                        <ul class="dropdown-menu-list scroller" id="list_notifications"
+                                            style="max-height: 250px; overflow: hidden; width: auto;"
+                                            data-handle-color="#637283" data-initialized="1">
                                             <li>
                                                 <a href="#">
                                                     <span class="subject">
@@ -336,6 +339,18 @@
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.13.0/moment.min.js"></script>
 
 
+    <script type="text/template" id="notifications-item-template">
+        <li>
+            <a href="#" class="js-notification-link">
+                                    <span class="subject">
+                                    <span class="time js-notification-time"> </span>
+                                </span>
+                <span class="message js-notification-content"> </span>
+            </a>
+        </li>
+    </script>
+
+
     <script>
         $(document).ready(function () {
             (function () {
@@ -368,10 +383,16 @@
                             }
 
                             data.forEach(function (notification) {
-                               console.log(notification);
-                                var time = moment(notification.created_at);
 
+                                var $template = $('#notifications-item-template'),
+                                    $item = $($template.html());
+
+                                $item.find('.js-notification-link').attr('href', notification.link);
+                                $item.find('.js-notification-content').html(notification.content);
+                                var time = moment(notification.created_at);
+                                $item.find('.js-notification-time').text(time.fromNow());
                                 since = time.utc().unix() + 1;
+                                console.log($item);
                             });
 //
 //                            var total = $notifications.children().length;
