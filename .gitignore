@@ -3,3 +3,4 @@
 /public/files
 vendor
 /.env
+/storage/app/import/*

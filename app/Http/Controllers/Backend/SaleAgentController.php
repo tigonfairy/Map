@@ -39,24 +39,28 @@ class SaleAgentController extends AdminController
     public function store(Request $request)
     {
         $this->validate(request(),[
-            'agent_id' => 'required',
             'month' => 'required',
+            'capacity' => 'required'
         ],[
             'agent_id.required' => 'Vui lòng chọn đại lý',
             'month.required' => 'Vui lòng chọn thời gian',
         ]);
 
         $product_ids = request('product_id');
-        $sales_plan = request('sales_plan');
+        $capacity = request('capacity',0);
+        $sales_plan = request('sales_plan',0);
         $sales_real = request('sales_real');
 
         foreach ($product_ids as $key => $product_id) {
-            SaleAgent::firstOrCreate([
+            $agent = SaleAgent::firstOrCreate([
                 'agent_id' => request('agent_id'),
                 'product_id' => $product_id,
                 'month' => request('month'),
-                'sales_plan' => $sales_plan[$key] ? $sales_plan[$key] : 0,
+            ]);
+            $agent->update([
+                'sales_plan' => $sales_plan,
                 'sales_real' => $sales_real[$key] ? $sales_real[$key] : 0,
+                'capacity' => $capacity
             ]);
         }
 
