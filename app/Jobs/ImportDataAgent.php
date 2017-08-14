@@ -47,8 +47,10 @@ class ImportDataAgent
 
     public function handle()
     {
+        dd($this->filepath);
         $month = $this->month;
-//        try{
+        $agentError = [];
+        try{
             $datas = Excel::selectSheetsByIndex(0)->load($this->filepath, function ($reader) {
                 $reader->noHeading();
             })->get();
@@ -60,6 +62,7 @@ class ImportDataAgent
                     $codeAgent = trim($row[1]);
                     $agent = Agent::where('code',$codeAgent)->first();
                     if(empty($agent)) {
+                        $agentError[] = $codeAgent;
                         continue;
                     }
                     $capacity = intval($row[5]);
@@ -85,9 +88,9 @@ class ImportDataAgent
 
             }
 
-//        } catch (\Exception $ex){
-//            dd($ex->getTraceAsString().'--'.$ex->getLine());
-//        }
+        } catch (\Exception $ex){
+            dd($ex->getTraceAsString().'--'.$ex->getLine());
+        }
 
     }
 }

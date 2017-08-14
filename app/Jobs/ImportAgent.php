@@ -44,13 +44,12 @@ class ImportAgent
 
     public function handle()
     {
-//        try{
             $datas = Excel::selectSheetsByIndex(0)->load($this->filepath, function ($reader) {
                 $reader->noHeading();
             })->skip(1)->get();
 
             foreach ($datas as $row) {
-//                try{
+                try{
                     $code= 0 ;
                     if(isset($row[0])) {
                         $code = $row[0];
@@ -117,16 +116,13 @@ class ImportAgent
 
 
 //
-//                } catch (\Exception $ex) {
-//                    continue;
-//                }
+                } catch (\Exception $ex) {
+                    continue;
+                }
 
 
             }
 
-//        } catch (\Exception $ex){
-//            dd($ex->getTraceAsString().'--'.$ex->getLine());
-//        }
 
     }
 }
