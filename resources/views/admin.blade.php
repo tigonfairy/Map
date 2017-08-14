@@ -335,9 +335,8 @@
     <script type="text/template" id="notifications-item-template">
         <li>
             <a href="#" class="js-notification-link">
-                                    <span class="subject">
-                                    <span class="time js-notification-time"> </span>
-                                </span>
+                <span class="time js-notification-time"> </span>
+
                 <span class="message js-notification-content"> </span>
             </a>
         </li>
@@ -381,7 +380,7 @@
                                     $item = $($template.html());
 
                                 $item.find('.js-notification-link').attr('href', notification.link);
-                                $item.find('.js-notification-content').html(notification.content);
+                                $item.find('.js-notification-content').html(notification.title);
                                 var time = moment(notification.created_at);
                                 $item.find('.js-notification-time').text(time.fromNow());
                                 since = time.utc().unix() + 1;
