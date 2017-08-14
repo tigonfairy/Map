@@ -5,6 +5,9 @@
         .unread{
             background: #eaedf2;
         }
+        .item {
+            padding: 15px;
+        }
     </style>
     <!-- Page header -->
     <div class="page-header">
@@ -32,7 +35,7 @@
                         <div class="caption caption-md">
                             <i class="icon-bar-chart theme-font hide"></i>
                             <span class="caption-subject font-blue-madison bold uppercase">Danh sách thông báo</span>
-                            <span class="caption-helper">45 pending</span>
+
                         </div>
 
                     </div>
@@ -57,6 +60,9 @@
                     </div>
                 </div>
                 <!-- END PORTLET -->
+                    <div class="row" style="text-align: right">
+                        {!! $notifications->links() !!}
+                    </div>
             </div>
         </div>
         <!-- /main content -->
