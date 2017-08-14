@@ -400,7 +400,7 @@
                                     .text(time.fromNow());
 
                                 $item.prependTo($notifications);
-
+                                $('#list_notifications').prependTo($item);
                                 since = time.utc().unix() + 1;
                             });
 //
