@@ -64,7 +64,7 @@ class SaleAgentController extends AdminController
             ]);
         }
 
-        return redirect()->route('Admin::map@listAgency')->with('success','Tạo dữ liệu cho đại lý thành công');
+        return redirect()->route('Admin::saleAgent@index')->with('success','Tạo dữ liệu cho đại lý thành công');
     }
 
     public function edit($agentId, $month)

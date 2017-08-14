@@ -46,7 +46,7 @@ class SaleAgent extends Model
                 '*'
             ])->with('agent');
         }
-
+        $model->orderBy('month','desc');
         return Datatables::eloquent($model)
             ->filter(function ($query) {
                 if (request()->has('agent')) {
