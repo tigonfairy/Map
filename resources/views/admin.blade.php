@@ -143,6 +143,9 @@
                                 <span class="badge badge-default" id="count_notification"> </span>
                             </a>
                             <ul class="dropdown-menu">
+                                <li class="external">
+                                    <a href="{{route('Admin::notification@getAll')}}">Tất cả</a>
+                                </li>
                                 <li>
                                     <div class="slimScrollDiv"
                                          style="position: relative; overflow: hidden; width: auto; max-height: 250px;">
