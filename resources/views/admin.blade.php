@@ -22,8 +22,10 @@
     <link href="/assets/global/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
     <link href="/assets/global/plugins/simple-line-icons/simple-line-icons.min.css" rel="stylesheet" type="text/css"/>
     <link href="/assets/global/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.6.2/css/bootstrap-select.min.css" rel="stylesheet" type="text/css"/>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/0.8.2/css/flag-icon.min.css" rel="stylesheet" type="text/css"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.6.2/css/bootstrap-select.min.css"
+          rel="stylesheet" type="text/css"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/0.8.2/css/flag-icon.min.css" rel="stylesheet"
+          type="text/css"/>
     <link href="/assets/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css" rel="stylesheet" type="text/css"/>
     <!-- END GLOBAL MANDATORY STYLES -->
     <!-- BEGIN PAGE LEVEL PLUGINS -->
@@ -55,9 +57,10 @@
     <link href="/assets/global/plugins/jquery-file-upload/css/jquery.fileupload.css" rel="stylesheet" type="text/css"/>
     <link href="/assets/global/plugins/jquery-file-upload/css/jquery.fileupload-ui.css" rel="stylesheet"
           type="text/css"/>
-    <link rel="stylesheet" type="text/css" media="screen" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/themes/base/jquery-ui.css">
+    <link rel="stylesheet" type="text/css" media="screen"
+          href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/themes/base/jquery-ui.css">
 
-    <link href="/assets/global/plugins/jquery-nestable/jquery.nestable.css" rel="stylesheet" type="text/css" />
+    <link href="/assets/global/plugins/jquery-nestable/jquery.nestable.css" rel="stylesheet" type="text/css"/>
     <!-- END PAGE LEVEL PLUGINS -->
     <!-- BEGIN THEME GLOBAL STYLES -->
     <link href="/assets/global/css/components-md.min.css" rel="stylesheet" id="style_components" type="text/css"/>
@@ -68,8 +71,8 @@
     <link href="/assets/layouts/layout/css/themes/darkblue.min.css" rel="stylesheet" type="text/css" id="style_color"/>
     <link href="/assets/layouts/layout/css/custom.min.css" rel="stylesheet" type="text/css"/>
 
-    <link href="/assets/global/plugins/bootstrap-colorpicker/css/colorpicker.css" rel="stylesheet" type="text/css" />
-    <link href="/assets/global/plugins/jquery-minicolors/jquery.minicolors.css" rel="stylesheet" type="text/css" />
+    <link href="/assets/global/plugins/bootstrap-colorpicker/css/colorpicker.css" rel="stylesheet" type="text/css"/>
+    <link href="/assets/global/plugins/jquery-minicolors/jquery.minicolors.css" rel="stylesheet" type="text/css"/>
 
     <!-- END THEME LAYOUT STYLES -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -79,26 +82,31 @@
         .select2-container {
             width: auto !important;
         }
+
         .ui-datepicker-calendar {
             display: none !important;
         }
+
         td.details-control {
             background: url('/assets/images/details_open.png') no-repeat center center;
             cursor: pointer;
         }
+
         tr.details td.details-control {
             background: url('/assets/images/details_close.png') no-repeat center center;
         }
+
         tfoot {
             display: table-header-group;
         }
-        .caret{
+
+        .caret {
             padding-top: 10px !important;
         }
 
 
     </style>
-@stack('style_head')
+    @stack('style_head')
 </head>
 <!-- END HEAD -->
 
@@ -128,52 +136,44 @@
 
                     @if(Auth::user()->position == \App\Models\User::ADMIN)
 
-                    <li class="dropdown dropdown-extended dropdown-notification" id="header_notification_bar">
-                        <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true" aria-expanded="true">
-                            <i class="icon-bell"></i>
-                            <span class="badge badge-default" id="count_notification"> </span>
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li class="external">
-                                <h3>
-                                    <span class="bold">12 pending</span> notifications</h3>
-                                <a href="page_user_profile_1.html">view all</a>
-                            </li>
-                            <li>
-                                <div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 250px;"><ul class="dropdown-menu-list scroller" style="height: 250px; overflow: hidden; width: auto;" data-handle-color="#637283" data-initialized="1">
-
-                                        <li>
-                                            <a href="javascript:;">
-                                                <span class="time">9 days</span>
-                                                <span class="details">
-                                                        <span class="label label-sm label-icon label-danger">
-                                                            <i class="fa fa-bolt"></i>
-                                                        </span> Storage server failed. </span>
-                                            </a>
-                                        </li>
-                                    </ul><div class="slimScrollBar" style="background: rgb(99, 114, 131); width: 7px; position: absolute; top: 0px; opacity: 0.4; display: none; border-radius: 7px; z-index: 99; right: 1px; height: 121.359px;"></div><div class="slimScrollRail" style="width: 7px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 7px; background: rgb(234, 234, 234); opacity: 0.2; z-index: 90; right: 1px;"></div></div>
-                            </li>
-                        </ul>
-                    </li>
+                        <li class="dropdown dropdown-extended dropdown-notification" id="header_notification_bar">
+                            <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown"
+                               data-close-others="true" aria-expanded="true">
+                                <i class="icon-bell"></i>
+                                <span class="badge badge-default" id="count_notification"> </span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; max-height: 250px;">
+                                        <ul class="dropdown-menu-list scroller" id="list_notifications" style="max-height: 250px; overflow: hidden; width: auto;" data-handle-color="#637283" data-initialized="1">
+                                            <li>
+                                                <a href="javascript:;">
+                                                    <span class="time">9 days</span>
+                                                    <span class="details"></span>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </li>
+                            </ul>
+                        </li>
                     @endif
-
-
-
-
-
 
 
                     <li style="margin-top: 9px;">
                         <select class="selectpicker" data-width="fit">
-                            <option value="{{URL::asset('')}}language/en" data-content='<span class="flag-icon flag-icon-us" ></span> English' {{ Auth::user()->lang == 'en' ? "selected=selected" : ""}}></option>
-                            <option  value="{{URL::asset('')}}language/vn" data-content='<span class="flag-icon flag-icon-vn" ></span> Việt Nam' {{ Auth::user()->lang == 'vn' ? "selected=selected" : ""}}></option>
+                            <option value="{{URL::asset('')}}language/en"
+                                    data-content='<span class="flag-icon flag-icon-us" ></span> English' {{ Auth::user()->lang == 'en' ? "selected=selected" : ""}}></option>
+                            <option value="{{URL::asset('')}}language/vn"
+                                    data-content='<span class="flag-icon flag-icon-vn" ></span> Việt Nam' {{ Auth::user()->lang == 'vn' ? "selected=selected" : ""}}></option>
                         </select>
                     </li>
 
                     <li class="dropdown dropdown-user">
                         <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown"
                            data-close-others="true">
-                            <img alt="" class="img-circle" src="{{ url('images/avatar.jpg') }}" style="height: 29px; width: 29px"/>
+                            <img alt="" class="img-circle" src="{{ url('images/avatar.jpg') }}"
+                                 style="height: 29px; width: 29px"/>
                             <span class="username username-hide-on-mobile">{{ Auth::user()->email }}</span>
                             <i class="fa fa-angle-down"></i>
                         </a>
@@ -215,10 +215,10 @@
             <!-- BEGIN CONTENT BODY -->
             <div class="page-content" style="background: #eef1f5 !important;">
 
-                @yield('content')
+            @yield('content')
 
 
-                <!-- END CONTENT BODY -->
+            <!-- END CONTENT BODY -->
             </div>
             <!-- END CONTENT -->
 
@@ -266,9 +266,9 @@
 <script src="/assets/global/plugins/bootstrap-daterangepicker/daterangepicker.min.js" type="text/javascript"></script>
 
 {{--<script src="/assets/global/plugins/bootstrap-timepicker/js/bootstrap-timepicker.min.js"--}}
-        {{--type="text/javascript"></script>--}}
+{{--type="text/javascript"></script>--}}
 {{--<script src="/assets/global/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"--}}
-        {{--type="text/javascript"></script>--}}
+{{--type="text/javascript"></script>--}}
 {{--<script src="/assets/global/plugins/clockface/js/clockface.js" type="text/javascript"></script>--}}
 {{--<script src="/assets/global/plugins/morris/morris.min.js" type="text/javascript"></script>--}}
 {{--<script src="/assets/global/plugins/morris/raphael-min.js" type="text/javascript"></script>--}}
@@ -331,7 +331,7 @@
 <!-- App scripts -->
 
 @if(Auth::user()->position == \App\Models\User::ADMIN)
-
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.13.0/moment.min.js"></script>
 
 
     <script>
@@ -345,12 +345,12 @@
 
                     $.ajax({
                         url: '{{ route('Admin::notification@getNotification') }}',
-                        data: since ? { since: since } : { limit: maxItemShow }
+                        data: since ? {since: since} : {limit: maxItemShow}
                     }).then(function (response) {
-
+                        console.log(response);
                         var unreadCount = response.metadata.unreadCount;
                         $('#count_notification').text((unreadCount > 0 ? unreadCount : ''));
-//                        var data = response.data.reverse();
+                        var data = response.data.reverse();
 
 //
 //                        $notifications.find('.js-notification-time').each(function (child) {
@@ -408,11 +408,8 @@
                 container: "body",
                 html: true,
                 trigger: "hover",
-                delay: { "hide": 1000 }
+                delay: {"hide": 1000}
             });
-
-
-
 
 
         });
@@ -424,63 +421,7 @@
 
 
 
-    @endif
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+@endif
 
 
 <script>
@@ -512,7 +453,7 @@
     };
 
     $(document).ready(function () {
-        $(function(){
+        $(function () {
             $('.selectpicker').selectpicker();
         });
 
@@ -542,30 +483,30 @@
     });
 
     {{--$(document).on('click', '.delete-btn', function (e) {--}}
-        {{--e.preventDefault();--}}
+    {{--e.preventDefault();--}}
 
-        {{--var url = $(this).attr('href');--}}
+    {{--var url = $(this).attr('href');--}}
 
-        {{--bootbox.confirm({--}}
-            {{--message: "Bạn có chắc chắn muốn xóa",--}}
-            {{--buttons: {--}}
-                {{--confirm: {--}}
-                    {{--label: 'Có',--}}
-                    {{--className: 'btn-success'--}}
-                {{--},--}}
-                {{--cancel: {--}}
-                    {{--label: 'Không',--}}
-                    {{--className: 'btn-danger'--}}
-                {{--}--}}
-            {{--},--}}
+    {{--bootbox.confirm({--}}
+    {{--message: "Bạn có chắc chắn muốn xóa",--}}
+    {{--buttons: {--}}
+    {{--confirm: {--}}
+    {{--label: 'Có',--}}
+    {{--className: 'btn-success'--}}
+    {{--},--}}
+    {{--cancel: {--}}
+    {{--label: 'Không',--}}
+    {{--className: 'btn-danger'--}}
+    {{--}--}}
+    {{--},--}}
 
 
-            {{--callback: function (result) {--}}
-                {{--if (result == true) {--}}
-                    {{--window.location.href = url;--}}
-                {{--}--}}
-            {{--}--}}
-        {{--});--}}
+    {{--callback: function (result) {--}}
+    {{--if (result == true) {--}}
+    {{--window.location.href = url;--}}
+    {{--}--}}
+    {{--}--}}
+    {{--});--}}
     {{--});--}}
 
 
