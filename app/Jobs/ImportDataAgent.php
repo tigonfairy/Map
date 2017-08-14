@@ -103,7 +103,6 @@ class ImportDataAgent
             Notification::create($data);
             return;
         }
-        dd($agentError);
         if(count($agentError)) {
             $data['title'] = 'Một số đại lý chưa tồn tại khi import file '.$this->name;
             $data['content'] = [
