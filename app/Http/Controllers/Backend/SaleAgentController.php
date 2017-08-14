@@ -66,9 +66,8 @@ class SaleAgentController extends AdminController
     public function edit($agentId, $month)
     {
         $saleAgent = SaleAgent::where('agent_id',$agentId)->where('month',$month)->get();
-        $products = Product::all();
+        $products = Product::where('level',1)->get();
         $agents = Agent::all();
-
         return view('admin.saleAgent.form', compact('saleAgent', 'products', 'agents'));
     }
 
