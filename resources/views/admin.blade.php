@@ -334,22 +334,6 @@
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.13.0/moment.min.js"></script>
 
 
-    <script type="text/template" id="notifications-template">
-        <li class="media">
-            <a href="#" class="media-link js-notification-link">
-                <!--<div class="media-left">
-                  <span class="btn border-primary text-primary btn-flat btn-rounded btn-icon btn-sm"><i class="icon-git-pull-request"></i></span>
-                </div>-->
-
-                <div class="media-body">
-                    <p class="js-notification-content"></p>
-                    <div class="media-annotation js-notification-time"></div>
-                </div>
-            </a>
-        </li>
-    </script>
-
-
     <script>
         $(document).ready(function () {
             (function () {
@@ -382,25 +366,9 @@
                             }
 
                             data.forEach(function (notification) {
-                                var $template = $('#notifications-item-template'),
-                                    $item = $($template.html());
+                               console.log(notification);
+                                var time = moment(notification.created_at);
 
-                                $item.find('.js-notification-link').attr('href', notification.link);
-
-                                if (notification.unread) {
-                                    $item.find('.js-notification-link').addClass('border-left-xlg border-left-green');
-                                }
-
-                                $item.find('.js-notification-content').html(notification.content);
-                                var time = moment(notification.createdAt);
-
-                                $item.find('.js-notification-time')
-                                    .data('time', time.toISOString())
-                                    .attr('title', time.toISOString())
-                                    .text(time.fromNow());
-
-                                $item.prependTo($notifications);
-                                $('#list_notifications').prependTo($item);
                                 since = time.utc().unix() + 1;
                             });
 //
