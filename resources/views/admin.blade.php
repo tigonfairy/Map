@@ -127,7 +127,7 @@
                 <ul class="nav navbar-nav pull-right">
 
 
-                    @if(Auth::uset()->type == \App\Models\User::ADMIN)
+                    @if(Auth::user()->type == \App\Models\User::ADMIN)
 
                     <li class="dropdown dropdown-extended dropdown-notification" id="header_notification_bar">
                         <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true" aria-expanded="true">
