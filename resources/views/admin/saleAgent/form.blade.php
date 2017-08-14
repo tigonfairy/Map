@@ -49,7 +49,10 @@
                                 <div class="form-group {{ $errors->has('month') ? 'has-error has-feedback' : '' }}">
                                     <label for="name" class="control-label text-semibold">Thời gian</label>
                                     <i class="icon-question4 text-muted text-size-mini cursor-pointer js-help-icon" data-content="Thời gian"></i>
-                                    <input type="text" id="month" name="month" class="form-control monthPicker" value="{{ old('month') ?: @$saleAgent[0]->month }}" />
+                                    <input type="text" id="month" name="month" class="form-control monthPicker" value="{{ old('month') ?: @$saleAgent[0]->month }}" @if(isset($saleAgent)) disabled @endif />
+                                    @if(isset($saleAgent))
+                                        <input type="hidden" name="month" value="{{@$saleAgent[0]->month}}">
+                                        @endif
                                     @if ($errors->has('month'))
                                         <div class="form-control-feedback">
                                             <i class="icon-notification2"></i>
