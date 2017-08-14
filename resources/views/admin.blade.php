@@ -147,9 +147,14 @@
                                     <div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; max-height: 250px;">
                                         <ul class="dropdown-menu-list scroller" id="list_notifications" style="max-height: 250px; overflow: hidden; width: auto;" data-handle-color="#637283" data-initialized="1">
                                             <li>
-                                                <a href="javascript:;">
-                                                    <span class="time">9 days</span>
-                                                    <span class="details"></span>
+                                                <a href="#">
+                                                    <span class="photo">
+                                                        <img src="../assets/layouts/layout3/img/avatar2.jpg" class="img-circle" alt=""> </span>
+                                                    <span class="subject">
+                                                        <span class="from"> Lisa Wong </span>
+                                                        <span class="time">Just Now </span>
+                                                    </span>
+                                                    <span class="message"> Vivamus sed auctor nibh congue nibh. auctor nibh auctor nibh... </span>
                                                 </a>
                                             </li>
                                         </ul>
