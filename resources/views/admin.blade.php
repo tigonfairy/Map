@@ -149,14 +149,7 @@
                                         <ul class="dropdown-menu-list scroller" id="list_notifications"
                                             style="max-height: 250px; overflow: hidden; width: auto;"
                                             data-handle-color="#637283" data-initialized="1">
-                                            <li>
-                                                <a href="#">
-                                                    <span class="subject">
-                                                        <span class="time">Just Now </span>
-                                                    </span>
-                                                    <span class="message"> Vivamus sed auctor nibh congue nibh. auctor nibh auctor nibh... </span>
-                                                </a>
-                                            </li>
+
                                         </ul>
                                     </div>
                                 </li>
@@ -392,7 +385,7 @@
                                 var time = moment(notification.created_at);
                                 $item.find('.js-notification-time').text(time.fromNow());
                                 since = time.utc().unix() + 1;
-                                console.log($item);
+                               $('#list_notifications').prependTo($item);
                             });
 //
 //                            var total = $notifications.children().length;
