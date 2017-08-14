@@ -335,9 +335,9 @@
     <script type="text/template" id="notifications-item-template">
         <li>
             <a href="#" class="js-notification-link">
-                <span class="time js-notification-time"> </span>
+                <p class="time js-notification-time"> </p>
 
-                <span class="message js-notification-content"> </span>
+                <p class="message js-notification-content"> </p>
             </a>
         </li>
     </script>
