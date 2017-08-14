@@ -46,7 +46,7 @@
                                     <div class="item @if($notification->unread) unread @endif" >
                                         <div class="item-head">
                                             <div class="item-details">
-                                                <span class="item-label">{{$notification->created_at->format('s:i:H d/m/Y')}}</span>
+                                                <span class="item-label">{{$notification->created_at->format('H:i:s d/m/Y')}}</span>
                                             </div>
 
                                         </div>

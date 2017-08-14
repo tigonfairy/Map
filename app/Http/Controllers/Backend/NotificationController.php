@@ -39,7 +39,7 @@ class NotificationController extends AdminController
         return view('admin.notification.detail',compact('notification'));
     }
     public function getAll(){
-        $notifications = Notification::orderBy('created_at', 'desc')->paginate(10);
+        $notifications = Notification::orderBy('created_at', 'desc')->paginate(5);
         return view('admin.notification.list',compact('notifications'));
     }
 }
