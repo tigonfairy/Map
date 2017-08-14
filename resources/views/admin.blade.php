@@ -429,7 +429,7 @@
 
 <!-- App scripts -->
 
-@if(Auth::uset()->type == \App\Models\User::ADMIN)
+@if(Auth::user()->type == \App\Models\User::ADMIN)
 
 
 
