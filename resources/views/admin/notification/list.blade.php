@@ -43,7 +43,7 @@
                         <div class="slimScrollDiv" style="position: relative; width: auto; "><div class="scroller" style="width: auto;" data-always-visible="1" data-rail-visible1="0" data-handle-color="#D7DCE2" data-initialized="1">
                                 <div class="general-item-list">
                                     @foreach($notifications as $notification)
-                                        <a href="{{route('Admin::notification@detailNotification', [$notification->id])}}">
+                                        {{--<a href="{{route('Admin::notification@detailNotification', [$notification->id])}}">--}}
                                     <div class="item @if($notification->unread) unread @endif" >
                                         <div class="item-head">
                                             <div class="item-details">
@@ -53,8 +53,10 @@
                                         </div>
                                         <div class="item-body">{{$notification->title}} </div>
                                     </div>
+
+                                        {{--</a>--}}
                                     @endforeach
-                                        </a>
+
 
                                 </div>
                             </div>
