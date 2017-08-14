@@ -145,7 +145,10 @@ class UserController extends AdminController
         }
         if($position == User::NVKD) {
             $users = User::whereIn('position',[User::GSV,User::TV])->get();
-        }else {
+        }else if($position == User::GSV) {
+            $users = User::whereIn('position',[User::GĐV,User::TV])->get();
+        }
+        else {
             $users = User::where('position',$position+1)->get();
         }
         return view('admin.user.get_position',compact('users','manager'));
