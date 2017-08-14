@@ -109,7 +109,7 @@
     @stack('style_head')
     <style>
         .item-notification {
-            background: #eaedf2;
+            background: #eaedf2 !important;
         }
     </style>
 </head>
