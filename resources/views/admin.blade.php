@@ -129,7 +129,7 @@
 
 
 
-                    <li class="dropdown dropdown-extended dropdown-notification open" id="header_notification_bar">
+                    <li class="dropdown dropdown-extended dropdown-notification" id="header_notification_bar">
                         <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true" aria-expanded="true">
                             <i class="icon-bell"></i>
                             <span class="badge badge-default"> 7 </span>
@@ -212,6 +212,33 @@
                                                         <span class="label label-sm label-icon label-info">
                                                             <i class="fa fa-bullhorn"></i>
                                                         </span> System Error. </span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="javascript:;">
+                                                <span class="time">9 days</span>
+                                                <span class="details">
+                                                        <span class="label label-sm label-icon label-danger">
+                                                            <i class="fa fa-bolt"></i>
+                                                        </span> Storage server failed. </span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="javascript:;">
+                                                <span class="time">9 days</span>
+                                                <span class="details">
+                                                        <span class="label label-sm label-icon label-danger">
+                                                            <i class="fa fa-bolt"></i>
+                                                        </span> Storage server failed. </span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="javascript:;">
+                                                <span class="time">9 days</span>
+                                                <span class="details">
+                                                        <span class="label label-sm label-icon label-danger">
+                                                            <i class="fa fa-bolt"></i>
+                                                        </span> Storage server failed. </span>
                                             </a>
                                         </li>
                                         <li>
