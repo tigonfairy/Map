@@ -31,7 +31,7 @@ class SaleAgentController extends AdminController
             $managerIds = $userOwns->pluck('id')->toArray();
             $agents = Agent::whereIn('manager_id', $managerIds)->get();
         }
-        $products = Product::all();
+        $products = Product::where('level',1)->get();
 
         return view('admin.saleAgent.form',compact('agents', 'products'));
     }
