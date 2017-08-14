@@ -139,6 +139,7 @@ class UserController extends AdminController
     }
     public function getAccountPosition(Request $request) {
         $position = $request->input('position');
+        $manager = $request->input('manager',0);
         if(empty($position)) {
             return '';
         }
@@ -147,7 +148,7 @@ class UserController extends AdminController
         }else {
             $users = User::where('position',$position+1)->get();
         }
-        return view('admin.user.get_position',compact('users'));
+        return view('admin.user.get_position',compact('users',$manager));
     }
 
 

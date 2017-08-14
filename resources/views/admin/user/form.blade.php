@@ -186,23 +186,23 @@
 
       @if(isset($user))
       console.log($('#position').val());
-         {{--$.ajax({--}}
-          {{--method: "post",--}}
-          {{--url: "{{ route('Admin::user@getAccountPosition') }}",--}}
-          {{--headers: {--}}
-              {{--'X-CSRF-Token': "{{ csrf_token() }}"--}}
-          {{--},--}}
-          {{--data: {--}}
-              {{--position: value--}}
-          {{--},--}}
-          {{--dataType: 'html',--}}
-          {{--success: function(html){--}}
-              {{--$('#manager').html('');--}}
-              {{--$('#manager').append(html);--}}
-              {{--$('#manager').select2();--}}
-
-          {{--}--}}
-      {{--});--}}
+         $.ajax({
+          method: "post",
+          url: "{{ route('Admin::user@getAccountPosition') }}",
+          headers: {
+              'X-CSRF-Token': "{{ csrf_token() }}"
+          },
+          data: {
+              position: value,
+              manager : '{{$user->manager_id}}'
+          },
+          dataType: 'html',
+          success: function(html){
+              $('#manager').html('');
+              $('#manager').append(html);
+              $('#manager').select2();
+          }
+      });
 
       @endif
   $('#position').change(function(){
