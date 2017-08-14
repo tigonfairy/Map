@@ -22,12 +22,14 @@ class ConfigController extends AdminController
         $this->validate($request,[
             'repassword' =>'required',
             'recaptcha' =>'required',
-            'textColor' => 'required'
+            'textColor' => 'required',
+            'fontSize' => 'required'
         ]);
 
         $data = [ 'repassword' => $request->input('repassword', 0),
                   'recaptcha' => $request->input('recaptcha'),
                     'textColor' => $request->input('textColor', '#FF0000'),
+                    'fontSize' => $request->input('fontSize', '15'),
                 ];
 
         file_put_contents(public_path().'/config/config.json', json_encode($data));
