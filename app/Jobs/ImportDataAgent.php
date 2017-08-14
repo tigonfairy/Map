@@ -65,6 +65,7 @@ class ImportDataAgent
                     $agent = Agent::where('code',$codeAgent)->first();
                     if(empty($agent)) {
                         $agentError[] = $codeAgent;
+                        dd($agentError);
                         continue;
                     }
                     $capacity = intval($row[5]);
