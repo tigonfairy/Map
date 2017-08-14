@@ -387,7 +387,7 @@
 
                                 var $template = $('#notifications-item-template'),
                                     $item = $($template.html());
-                                if(notification.unread) {
+                                if(notification.unread == 1) {
                                     $item.find('.js-notification-link').addClass('item-notification');
                                 }
                                 $item.find('.js-notification-link').attr('href', notification.link);
