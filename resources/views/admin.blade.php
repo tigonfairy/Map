@@ -385,7 +385,7 @@
                                 var time = moment(notification.created_at);
                                 $item.find('.js-notification-time').text(time.fromNow());
                                 since = time.utc().unix() + 1;
-                               $('#list_notifications').prependTo($item);
+                                $item.prependTo($('#list_notifications'));
                             });
 //
 //                            var total = $notifications.children().length;
