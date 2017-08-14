@@ -1,6 +1,11 @@
 @extends('admin')
 
 @section('content')
+    <style>
+        .unread{
+            background: #eaedf2;
+        }
+    </style>
     <!-- Page header -->
     <div class="page-header">
         <div class="page-header-content">
@@ -32,10 +37,10 @@
 
                     </div>
                     <div class="portlet-body">
-                        <div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; "><div class="scroller" style=" overflow: hidden; width: auto;" data-always-visible="1" data-rail-visible1="0" data-handle-color="#D7DCE2" data-initialized="1">
+                        <div class="slimScrollDiv" style="position: relative; width: auto; "><div class="scroller" style="width: auto;" data-always-visible="1" data-rail-visible1="0" data-handle-color="#D7DCE2" data-initialized="1">
                                 <div class="general-item-list">
                                     @foreach($notifications as $notification)
-                                    <div class="item">
+                                    <div class="item @if($notification->unread) unread @endif" >
                                         <div class="item-head">
                                             <div class="item-details">
                                                 <span class="item-label">{{$notification->created_at->format('s:i:H d/m/Y')}}</span>
@@ -48,7 +53,7 @@
 
 
                                 </div>
-                            </div><div class="slimScrollBar" style="background: rgb(215, 220, 226); width: 7px; position: absolute; top: 12px; opacity: 0.4; display: block; border-radius: 7px; z-index: 99; right: 1px; height: 142.24px;"></div><div class="slimScrollRail" style="width: 7px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 7px; background: rgb(234, 234, 234); opacity: 0.2; z-index: 90; right: 1px;"></div></div>
+                            </div>
                     </div>
                 </div>
                 <!-- END PORTLET -->
