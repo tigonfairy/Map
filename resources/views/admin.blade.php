@@ -111,6 +111,9 @@
         .item-notification {
             background: #eaedf2 !important;
         }
+        .notification-sub {
+            border-bottom: 1px solid red;
+        }
     </style>
 </head>
 <!-- END HEAD -->
