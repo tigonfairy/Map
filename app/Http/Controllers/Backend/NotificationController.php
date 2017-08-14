@@ -34,6 +34,12 @@ class NotificationController extends AdminController
     }
     public function detailNotification(Request $request,$id) {
         $notification = Notification::findOrFail($id);
+        $notification->unread= 0;
+        $notification->save();
         return view('admin.notification.detail',compact('notification'));
+    }
+    public function getAll(){
+        $notifications = Notification::orderBy('created_at', 'desc');
+        return view('admin.notification.getAll',compact('notifications'));
     }
 }

@@ -148,7 +148,7 @@
                                 <span class="badge badge-default" id="count_notification"> </span>
                             </a>
                             <ul class="dropdown-menu">
-                                <li class="external" style="text-align: center">
+                                <li class="external" style="border-bottom: 1px solid red;">
 
                                     <h3><a href="{{route('Admin::notification@getAll')}}"> Tất cả</a></h3>
                                 </li>
