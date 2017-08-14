@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers\Backend;
 
 use App\Account;
@@ -169,7 +168,7 @@ class UserController extends AdminController
     }
     public function export(Request $request) {
         $users = User::where('position','!=',User::ADMIN)->get();
-        $exportUserArray = [];
+        $exportUserArray = null;
         foreach ($users as $user){
             $exportUser['Mã'] = $user->code;
             $exportUser['Họ và tên'] = $user->name;
@@ -179,11 +178,18 @@ class UserController extends AdminController
             $exportUser['Quản lý'] = ($user->manager and $user->manager->code) ? $user->manager->code : '';
             $exportUserArray[] = $exportUser;
         }
+        ob_end_clean();
+        ob_start();
+        Excel::create('user', function ($excel) use ($exportUserArray) {
 
-        Excel::create('danh-sach-tai-khoan-' . time(), function ($excel) use ($exportUserArray) {
+            $excel->sheet('khach', function ($sheet) use ($exportUserArray) {
+                $sheet->cell('A1:F1', function($cells) {
+                    // call cell manipulation methods
+                    $cells->setBackground('#242729');
+                    $cells->setFontColor('#ff8000');
+                    $cells->setFontWeight('bold');
 
-            $excel->sheet('khach-hang', function ($sheet) use ($exportUserArray) {
-
+                });
                 $sheet->fromArray($exportUserArray);
 
             });
@@ -192,3 +198,4 @@ class UserController extends AdminController
 
     }
 }
+?>

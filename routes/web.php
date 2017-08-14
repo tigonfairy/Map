@@ -203,3 +203,4 @@ Route::group(['middleware' => ['auth','language'],
         });
 
 });
+?>
