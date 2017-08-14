@@ -147,7 +147,7 @@
                                     <div class="slimScrollDiv"
                                          style="position: relative; overflow: hidden; width: auto; max-height: 250px;">
                                         <ul class="dropdown-menu-list scroller" id="list_notifications"
-                                            style="max-height: 250px; overflow: hidden; width: auto;"
+                                            style="max-height: 250px; overflow-y: scroll; width: auto;"
                                             data-handle-color="#637283" data-initialized="1">
 
                                         </ul>
