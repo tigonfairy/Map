@@ -67,6 +67,14 @@ Route::group(['middleware' => ['auth','language'],
         });
 
         Route::group([
+            'prefix' => 'notifications',
+            'as' => 'notification@',
+        ], function () {
+
+            Route::post('/getNotification', ['as' => 'getNotification', 'uses' => 'NotificationController@getNotification']);
+        });
+
+    Route::group([
             'prefix' => 'permissions',
             'as' => 'permission@',
         ], function () {

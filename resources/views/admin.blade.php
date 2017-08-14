@@ -127,7 +127,7 @@
                 <ul class="nav navbar-nav pull-right">
 
 
-
+                    @if(Auth::uset()->type == \App\Models\User::ADMIN)
 
                     <li class="dropdown dropdown-extended dropdown-notification" id="header_notification_bar">
                         <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true" aria-expanded="true">
@@ -254,8 +254,7 @@
                             </li>
                         </ul>
                     </li>
-
-
+                    @endif
 
 
 
@@ -429,6 +428,159 @@
 <script src="/assets/pages/scripts/ui-modals.min.js" type="text/javascript"></script>
 
 <!-- App scripts -->
+
+@if(Auth::uset()->type == \App\Models\User::ADMIN)
+
+
+
+    <script>
+        $(document).ready(function () {
+            (function () {
+                $('<audio id="notificationSound"><source src="{{ asset('assets/sounds/new-notification.ogg') }}" type="audio/ogg"><source src="{{ asset('assets/sounds/new-notification.mp3') }}" type="audio/mpeg"><source src="{{ asset('assets/sounds/new-notification.wav') }}" type="audio/wav"></audio>').appendTo('body');
+
+                function loadNotifications(since) {
+                    var $notifications = $('#notifications');
+                    var maxItemShow = 10;
+
+                    $.ajax({
+                        url: '{{ route('Admin::notification@getNotification') }}',
+                        data: since ? { since: since } : { limit: maxItemShow }
+                    }).then(function (response) {
+                        console.log(response);
+//                        var data = response.data.reverse();
+//                        var unreadCount = response.metadata.unreadCount;
+//
+//                        $('#notifications-unread-count').text((unreadCount > 0 ? unreadCount : ''));
+//
+//                        $notifications.find('.js-notification-time').each(function (child) {
+//                            var $this = $(this),
+//                                time = moment($this.data('time'));
+//
+//                            $this.text(time.fromNow());
+//                        });
+//
+//                        if (data.length) {
+//                            if (since) {
+//                                $('#notificationSound')[0].play();
+//                            }
+
+//                            data.forEach(function (notification) {
+//                                var $template = $('#notifications-item-template'),
+//                                    $item = $($template.html());
+//
+//                                $item.find('.js-notification-link').attr('href', notification.link);
+//
+//                                if (notification.unread) {
+//                                    $item.find('.js-notification-link').addClass('border-left-xlg border-left-green');
+//                                }
+//
+//                                $item.find('.js-notification-content').html(notification.content);
+//                                var time = moment(notification.createdAt);
+//
+//                                $item.find('.js-notification-time')
+//                                    .data('time', time.toISOString())
+//                                    .attr('title', time.toISOString())
+//                                    .text(time.fromNow());
+//
+//                                $item.prependTo($notifications);
+//
+//                                since = time.utc().unix() + 1;
+//                            });
+
+//                            var total = $notifications.children().length;
+//
+//                            if (total > maxItemShow) {
+//                                $notifications.children(':nth-last-child(-n+' + (total - maxItemShow) + ')').remove();
+//                            }
+//                        }
+
+                        setTimeout(function () {
+                            loadNotifications(since);
+                        }, 1000 * 15);
+                    });
+                }
+
+                loadNotifications();
+            })();
+
+            $('.js-help-icon').popover({
+                container: "body",
+                html: true,
+                trigger: "hover",
+                delay: { "hide": 1000 }
+            });
+
+
+
+
+
+        });
+    </script>
+
+
+
+
+
+
+
+    @endif
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 <script>
 
