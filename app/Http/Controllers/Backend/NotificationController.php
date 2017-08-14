@@ -32,4 +32,8 @@ class NotificationController extends AdminController
 
         return ['data' => $notifications, 'metadata' => ['unreadCount' => $unreadCount]];
     }
+    public function detailNotification(Request $request,$id) {
+        $notification = Notification::findOrFail($id);
+        return view('admin.notification.detail',compact('notification'));
+    }
 }
