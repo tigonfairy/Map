@@ -59,7 +59,23 @@
             /*margin-left: 10px;*/
             float: left;
         }
+
+        .customBox {
+            position: absolute;
+            font-size: 16px;
+            background-color: yellow;
+            margin-left: 10px;
+        }
+        /*.customBox .gsv {*/
+            /*background-color: #00aaaa;*/
+
+        /*}*/
+        /*.customBox .ds {*/
+
+            /*color: red;*/
+        /*}*/
     </style>
+
     <!-- BEGIN PAGE HEADER-->
     <!-- BEGIN PAGE TITLE-->
     <h1 class="page-title"> Admin Dashboard</h1>
@@ -96,24 +112,6 @@
                     </div>
                 </div>
             </form>
-
-            {{--<div class="row">--}}
-                {{--<div class="form-group {{ $errors->has('month') ? 'has-error has-feedback' : '' }}">--}}
-                    {{--<label for="name" class="control-label text-semibold col-md-1">{{ trans('home.time') }}</label>--}}
-                    {{--<i class="icon-question4 text-muted text-size-mini cursor-pointer js-help-icon"--}}
-                       {{--data-content="Thời gian"></i>--}}
-                    {{--<div class="col-md-3">--}}
-                        {{--<input type="text" id="month" name="month" class="form-control monthPicker col-md-9"--}}
-                               {{--value="{{ old('month') ?: $month }}"/>--}}
-                    {{--</div>--}}
-                    {{--@if ($errors->has('month'))--}}
-                        {{--<div class="form-control-feedback">--}}
-                            {{--<i class="icon-notification2"></i>--}}
-                        {{--</div>--}}
-                        {{--<div class="help-block">{{ $errors->first('month') }}</div>--}}
-                    {{--@endif--}}
-                {{--</div>--}}
-            {{--</div>--}}
 
             <div class="portlet-body">
                 <div id="map" style=" width: 100% ;height: 500px"></div>
@@ -193,6 +191,7 @@
 <script type="text/javascript" src="/js/gmaps.js"></script>
 <script type="text/javascript" src="/js/prettify.js"></script>
 <script type="text/javascript" src="/js/gmaps.overlays.min.js"></script>
+<script type="text/javascript" src="/js/maplabel-compiled.js"></script>
 <script src="https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/markerclusterer.js">
 </script>
 
@@ -918,23 +917,18 @@
 
         function showDataSaleGDV(data) {
             var polygonArray = [];
+            var position = '';
 
-            map = new GMaps({
-                div: '#map',
-                lat: 21.0277644,
-                lng: 105.83415979999995,
-                width: "100%",
-                height: '500px',
-                zoom: 8,
+            var center = new google.maps.LatLng(21.0277644, 105.83415979999995);
+            var options = {
+                'zoom': 8,
+                'center': center,
+                'mapTypeId': google.maps.MapTypeId.ROADMAP,
                 fullscreenControl: true,
-            });
 
-            var button ='<button id="swift" class="btn btn-primary">Full mode</button>';
+            };
 
-            map.addControl({
-                position: 'bottom_left',
-                content: button,
-            });
+            var map = new google.maps.Map(document.getElementById("map"), options);
 
             $.map(data.locations, function (location, index) {
                 var item = location.area;
@@ -944,13 +938,16 @@
                 var background_color = location.background_color;
                 if (coordinate) {
                     var bounds = new google.maps.LatLngBounds();
+                    var path = [];
                     for (i = 0; i < coordinate.length; i++) {
                         var c = coordinate[i];
                         bounds.extend(new google.maps.LatLng(c[0], c[1]));
+                        path.push(new google.maps.LatLng(c[0], c[1]))
                     }
-                    var path = coordinate;
-                    map.setCenter(bounds.getCenter().lat(), bounds.getCenter().lng());
-                    polygon = map.drawPolygon({
+                    position = new google.maps.LatLng(bounds.getCenter().lat(), bounds.getCenter().lng());
+//                    var path = coordinate;
+//                    map.setCenter(bounds.getCenter().lat(), bounds.getCenter().lng());
+                    polygon = new google.maps.Polygon({
                         paths: path,
                         strokeColor: border_color,
                         strokeOpacity: 1,
@@ -958,54 +955,158 @@
                         fillColor: background_color,
                         fillOpacity: 0.4,
                     });
+                    polygon.setMap(map);
                     polygonArray[item.id] = polygon;
                 }
             });
+
 
             $.map(data.result, function (item) {
                 var agents = item.agents;
                 var markers = [];
                 $.map(agents, function (agent) {
-                    var marker = map.addMarker({
-                        lat:  agent.lat,
-                        lng:  agent.lng,
-                        title:   agent.name,
-                    });
+                    var latLng = new google.maps.LatLng(agent.lat,
+                        agent.lng);
+                    var marker = new google.maps.Marker({'position': latLng});
                     markers.push(marker);
                 });
 
                 var markerCluster = new MarkerClusterer(map, markers, {
-                    maxZoom: 11,
+                    maxZoom: 15,
                     imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'
                 });
 
-//                map.addMarker(markerCluster);
 
-//                map.drawOverlay({
-//                    lat: agent.lat,
-//                    lng: agent.lng,
-//                    content: '<div class="info">' +
-//                    '<h5>' + agent.name + '</h5>' +
-//                    '</div>'
+
+//                var mapLabel = new MapLabel({
+//                    text: '<p style="font-size: 12px">' + item.gsv + '</p>' ,
+//                    position: new google.maps.LatLng(markers[0].getPosition().lat(),  markers[0].getPosition().lng()),
+//                    map: map,
+//                    fontSize: 35,
+//                    align: 'right'
 //                });
-            });
+//                mapLabel.set('position', new google.maps.LatLng(markers[0].getPosition().lat(),  markers[0].getPosition().lng()));
 
-            var tableSales =
-                '<div class="info_gsv">' +
-                '<h5>Dữ liệu vùng</h5>' +
-                '<div class="user_data_gsv">' +
-                '<p class="">%TT ' + data.totalSales + '/' + data.capacity + '=' +  data.percent + '%</p>' +
-                '<ul class="info_user_gsv">' +
-                '<li> GĐ :'  + data.user.name + '</li>' +
-                '</ul>' +
-                '</div>' +
+                var customTxt =
+                '<div class="customBox">' +
+                '<p class="gsv">' + item.gsv + ' - %TT ' + item.totalSales + '/' + item.capacity + '=' +  item.percent + '</p>' +
                 '</div>';
-
-            map.addControl({
-                position: 'top_left',
-                content: tableSales,
+                txt = new TxtOverlay(new google.maps.LatLng(markers[0].getPosition().lat(),  markers[0].getPosition().lng()), customTxt, "customBox", map);
             });
+
+//            var customTxt =
+//                '<div class="customBox">' +
+//                '<p class="gsv">' + data.user.name + ' - %TT ' + data.totalSales + '/' + data.capacity + '=' +  data.percent + '</p>' +
+//                '</div>';
+//            txt = new TxtOverlay(position, customTxt, "customBox", map);
+//            tableSales.index = 1;
+//            map.controls[google.maps.ControlPosition.BOTTOM_CENTER].push(tableSales[0]);
+
+            var myTitle = document.createElement('h3');
+            myTitle.style.color = 'red';
+            myTitle.innerHTML = data.user.name + ' - %TT ' + data.totalSales + '/' + data.capacity + '=' +  data.percent  + "%";
+            var myTextDiv = document.createElement('div');
+            myTextDiv.appendChild(myTitle);
+
+            map.controls[google.maps.ControlPosition.BOTTOM_CENTER].push(myTextDiv);
         }
+
+        function TxtOverlay(pos, txt, cls, map) {
+
+            // Now initialize all properties.
+            this.pos = pos;
+            this.txt_ = txt;
+            this.cls_ = cls;
+            this.map_ = map;
+
+            // We define a property to hold the image's
+            // div. We'll actually create this div
+            // upon receipt of the add() method so we'll
+            // leave it null for now.
+            this.div_ = null;
+
+            // Explicitly call setMap() on this overlay
+            this.setMap(map);
+        }
+
+        TxtOverlay.prototype = new google.maps.OverlayView();
+
+        TxtOverlay.prototype.onAdd = function() {
+
+            // Note: an overlay's receipt of onAdd() indicates that
+            // the map's panes are now available for attaching
+            // the overlay to the map via the DOM.
+
+            // Create the DIV and set some basic attributes.
+            var div = document.createElement('DIV');
+            div.className = this.cls_;
+
+            div.innerHTML = this.txt_;
+
+            // Set the overlay's div_ property to this DIV
+            this.div_ = div;
+            var overlayProjection = this.getProjection();
+            var position = overlayProjection.fromLatLngToDivPixel(this.pos);
+            div.style.left = position.x + 'px';
+            div.style.top = position.y + 'px';
+            // We add an overlay to a map via one of the map's panes.
+
+            var panes = this.getPanes();
+            panes.floatPane.appendChild(div);
+        }
+        TxtOverlay.prototype.draw = function() {
+
+
+            var overlayProjection = this.getProjection();
+
+            // Retrieve the southwest and northeast coordinates of this overlay
+            // in latlngs and convert them to pixels coordinates.
+            // We'll use these coordinates to resize the DIV.
+            var position = overlayProjection.fromLatLngToDivPixel(this.pos);
+
+
+            var div = this.div_;
+            div.style.left = position.x + 'px';
+            div.style.top = position.y + 'px';
+
+
+
+        }
+        //Optional: helper methods for removing and toggling the text overlay.
+        TxtOverlay.prototype.onRemove = function() {
+            this.div_.parentNode.removeChild(this.div_);
+            this.div_ = null;
+        }
+        TxtOverlay.prototype.hide = function() {
+            if (this.div_) {
+                this.div_.style.visibility = "hidden";
+            }
+        }
+
+        TxtOverlay.prototype.show = function() {
+            if (this.div_) {
+                this.div_.style.visibility = "visible";
+            }
+        }
+
+        TxtOverlay.prototype.toggle = function() {
+            if (this.div_) {
+                if (this.div_.style.visibility == "hidden") {
+                    this.show();
+                } else {
+                    this.hide();
+                }
+            }
+        }
+
+        TxtOverlay.prototype.toggleDOM = function() {
+            if (this.getMap()) {
+                this.setMap(null);
+            } else {
+                this.setMap(this.map_);
+            }
+        }
+
 
         function getListAgents() {
             $("#type_search").val('agents');

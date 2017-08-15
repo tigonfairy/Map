@@ -683,7 +683,8 @@ class MapController extends AdminController
                     'gsv' => $user->name,
                     'agents' => $agents,
                     'totalSales' => $totalSaleGSV,
-                    'capacity' => $capacity
+                    'capacity' => $capacity,
+                    'percent' => round($totalSaleGSV / $capacity, 2)
                 ];
                 $totalSaleGSV = 0;
 
@@ -708,7 +709,7 @@ class MapController extends AdminController
                 'listAgents' => $listAgents,
                 'totalSales' => $totalSaleGDV,
                 'capacity' => $capacity,
-                'percent' => round($totalSaleGSV / $capacity, 2)
+                'percent' => round($totalSaleGDV / $capacity, 2)
             ]);
         }
     }
