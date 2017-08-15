@@ -21,9 +21,9 @@ class AdminController extends Controller
      * @param null $old
      * @return string
      */
-    public function saveImage($file, $old = null)
+    public function saveImage($file, $old = null ,$name = null)
     {
-        $filename = md5(time()) . '.' . $file->getClientOriginalExtension();
+        $filename = $name.md5(time()) . '.' . $file->getClientOriginalExtension();
         Image::make($file->getRealPath())->save(public_path('files/'. $filename));
 
         if ($old) {
