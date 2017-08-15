@@ -234,13 +234,8 @@ class MapController extends AdminController
             $key = $request->input('q');
             $agents = $agents->where('name','like','%'.$key.'%');
         }
-        if($role->id == 1){
-            $agents = $agents->paginate(10);
-        }else{
 
-            $agentID = User::getListAgencyByRole();
-            $agents = $agents->whereIn('id',$agentID)->paginate(10);
-        }
+            $agents = $agents->paginate(10);
 
 
         return view('admin.map.listAgency',compact('agents'));
@@ -249,17 +244,9 @@ class MapController extends AdminController
     public function addAgency(Request $request){
 
         $user = auth()->user();
-        $role = $user->roles()->first();
-
-        if($role->id == 1){
             $users = User::all();
             $areas = Area::all();
-        }else{
-            $users = $user->manager()->get();
-            $users->push($user);
-            $managerIds = $users->pluck('id')->toArray();
-            $areas = Area::all()->whereIn('manager_id', $managerIds);
-        }
+
 
         return view('admin.map.addAgency',compact('users','areas'));
     }
