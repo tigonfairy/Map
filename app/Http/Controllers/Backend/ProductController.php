@@ -200,4 +200,35 @@ class ProductController extends AdminController
 
         return response()->json($response);
     }
+
+    public function export(Request $request) {
+        $products = Product::where('level',0)->get();
+        $exportUserArray = null;
+        foreach ($products as $product){
+            $exportUser['Tên sản phẩm'] = $product->name_vn;
+            $exportUser['CBD'] = ($product->cbd()) ? $product->cbd()->code : '';
+            $exportUser['Maxgreen'] = ($product->maxgreen()) ? $product->maxgreen()->code : '';
+            $exportUser['Maxgr0'] =  ($product->maxgro()) ? $product->maxgro()->code : '';
+            $exportUser['Nhóm sản phẩm'] = ($product->group) ? $product->group->name_vn : '';
+            $exportUserArray[] = $exportUser;
+        }
+        ob_end_clean();
+        ob_start();
+        Excel::create('product_'.time(), function ($excel) use ($exportUserArray) {
+
+            $excel->sheet('products', function ($sheet) use ($exportUserArray) {
+//                $sheet->cell('A1:F1', function($cells) {
+//                    // call cell manipulation methods
+//                    $cells->setBackground('#242729');
+//                    $cells->setFontColor('#ff8000');
+//                    $cells->setFontWeight('bold');
+//
+//                });
+                $sheet->fromArray($exportUserArray);
+
+            });
+
+        })->download('xlsx');
+
+    }
 }
