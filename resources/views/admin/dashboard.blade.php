@@ -589,7 +589,7 @@
                         lng: 105.83415979999995,
                         width: "100%",
                         height: '500px',
-                        zoom: 10,
+                        zoom: 8,
                         fullscreenControl: true,
                     });
 
@@ -854,14 +854,6 @@
                         infoWindow.setPosition({lat: e.position.lat(), lng: e.position.lng()});
                         infoWindow.open(map.map);
                     }
-                });
-
-                map.drawOverlay({
-                    lat: agent.lat,
-                    lng: agent.lng,
-                    content: '<div class="info">' +
-                    '<h5>' + agent.name + '</h5>' +
-                    '</div>'
                 });
             });
 
