@@ -170,7 +170,7 @@ Route::group(['middleware' => ['auth','language'],
             Route::get('/{id}/edit', ['as' => 'edit', 'uses' => 'ProductController@edit']);
             Route::match(['put', 'patch'], '/{id}', ['as' => 'update', 'uses' => 'ProductController@update']);
             Route::get('/{id}/delete', ['as' => 'delete', 'uses' => 'ProductController@delete']);
-
+            Route::get('/export',['as' => 'export', 'uses' => 'ProductController@export']);
 
 
         });
