@@ -26,6 +26,11 @@ class ConfigController extends AdminController
             'fontSize' => 'required'
         ]);
 
+        $config = [];
+        if (file_exists(public_path().'/config/config.json')) {
+            $config = json_decode(file_get_contents(public_path().'/config/config.json'),true);
+        }
+
         $data = [ 'repassword' => $request->input('repassword', 0),
                   'recaptcha' => $request->input('recaptcha'),
                     'textColor' => $request->input('textColor', '#FF0000'),

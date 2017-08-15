@@ -65,6 +65,7 @@ Route::group(['middleware' => ['auth','language'],
             Route::match(['put', 'patch'], '/{id}', ['as' => 'update', 'uses' => 'UserController@update']);
             Route::get('/{id}/delete', ['as' => 'delete', 'uses' => 'UserController@delete']);
             Route::post('/get-account-position', ['as' => 'getAccountPosition', 'uses' => 'UserController@getAccountPosition']);
+            Route::get('/export',['as' => 'export', 'uses' => 'UserController@export']);
         });
 
         Route::group([
@@ -169,6 +170,8 @@ Route::group(['middleware' => ['auth','language'],
             Route::get('/{id}/edit', ['as' => 'edit', 'uses' => 'ProductController@edit']);
             Route::match(['put', 'patch'], '/{id}', ['as' => 'update', 'uses' => 'ProductController@update']);
             Route::get('/{id}/delete', ['as' => 'delete', 'uses' => 'ProductController@delete']);
+            Route::get('/export',['as' => 'export', 'uses' => 'ProductController@export']);
+
 
         });
 
@@ -202,3 +205,4 @@ Route::group(['middleware' => ['auth','language'],
         });
 
 });
+?>
