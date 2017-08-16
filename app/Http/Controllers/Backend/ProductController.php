@@ -217,13 +217,13 @@ class ProductController extends AdminController
         Excel::create('product_'.time(), function ($excel) use ($exportUserArray) {
 
             $excel->sheet('products', function ($sheet) use ($exportUserArray) {
-//                $sheet->cell('A1:F1', function($cells) {
-//                    // call cell manipulation methods
-//                    $cells->setBackground('#242729');
-//                    $cells->setFontColor('#ff8000');
-//                    $cells->setFontWeight('bold');
-//
-//                });
+                $sheet->cell('A1:F1', function($cells) {
+                    // call cell manipulation methods
+                    $cells->setBackground('#242729');
+                    $cells->setFontColor('#ff8000');
+                    $cells->setFontWeight('bold');
+
+                });
                 $sheet->fromArray($exportUserArray);
 
             });
