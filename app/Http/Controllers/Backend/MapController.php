@@ -706,6 +706,7 @@ class MapController extends AdminController
     }
     public function exportAgency() {
         ini_set('max_execution_time', 300);
+        ini_set('memory_limit', -1);
         $agents = Agent::all();
         $exportUserArray = null;
         foreach ($agents as $agent){
@@ -777,20 +778,20 @@ class MapController extends AdminController
                 }
             }
             if($agent->rank) {
-                $rank =$agent->rank;
-                if($rank== Agent::diamond) {
+                $rank = $agent->rank;
+                if ($rank == Agent::diamond) {
                     $exportUser['Xếp hạng'] = 'Kim Cương';
                 }
-                if($rank== Agent::gold) {
+                if ($rank == Agent::gold) {
                     $exportUser['Xếp hạng'] = 'Vàng';
                 }
-                if($rank== Agent::silver) {
+                if ($rank == Agent::silver) {
                     $exportUser['Xếp hạng'] = 'Bạc';
                 }
-                if($rank== Agent::unclassified) {
+                if ($rank == Agent::unclassified) {
                     $exportUser['Xếp hạng'] = 'Chưa xếp hạng';
                 }
-
+            }
             $exportUserArray[] = $exportUser;
         }
         ob_end_clean();

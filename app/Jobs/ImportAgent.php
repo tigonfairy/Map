@@ -47,6 +47,8 @@ class ImportAgent
 
     public function handle()
     {
+        ini_set('max_execution_time', 300);
+        ini_set('memory_limit', -1);
             $datas = Excel::selectSheetsByIndex(0)->load($this->filepath, function ($reader) {
                 $reader->noHeading();
             })->skip(1)->get();
@@ -119,11 +121,8 @@ class ImportAgent
                             $attribute = Agent::agentNew;
                         }
                         if($str == 'dl-doi-thu') {
-<<<<<<< HEAD
-                            $attribute = Agent::agentNew;
-=======
                             $attribute = Agent::agentRival;
->>>>>>> da3b6752f533a646d4630b0915c4101dd2ddf20c
+
 
                         }
                     }
