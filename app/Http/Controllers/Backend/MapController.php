@@ -445,6 +445,7 @@ class MapController extends AdminController
                             $capacity = $sales->capacity;
                             $listProducts[] = [
                                 'id' => $p->id,
+                                'name' => $p->code . ' - ' . $p->name_vn,
                                 'code' => $p->code,
                                 'totalSales' => $sales->sales_real,
                                 'percent' => round($sales->sales_real / $capacity, 2),
@@ -459,6 +460,7 @@ class MapController extends AdminController
             $capacity = $capacity == 0 ? 1 : $capacity;
             $listProducts[] = [
                 'id' => 0,
+                'name' => 'Tổng sản lượng',
                 'code' => 'Tổng sản lượng',
                 'totalSales' => $totalSales,
                 'percent' => round($totalSales / $capacity, 2),
