@@ -13,6 +13,7 @@
                     <a href="{{route('Admin::map@addAgency')}}" class="btn btn-primary"><i class="icon-add"></i> {{ trans('home.create_agency') }}</a>
                     <a href="#import-user" class="btn btn-info" data-toggle="modal" id="btn-system-product">Thêm đại lý từ Excel</a>
                     <a href="{{asset('agent_example.xlsx')}}" class="btn btn-success"  id="btn-system-product">Mẫu</a>
+                    <a href="{{route('Admin::map@exportAgency')}}" class="btn btn-info" >Export Excel</a>
                 </div>
             </div>
         </div>

@@ -7,9 +7,29 @@ use Auth;
 use Illuminate\Database\Eloquent\Model;
 class Agent extends Model
 {
+
+
+    const diamond = 1;
+    const gold = 2;
+    const silver = 3;
+    const unclassified = 4;
+    const rival = 5;
+
+
+    public static $statusRank = [
+        self::diamond => 'Kim cương',
+        self::gold => 'Vàng',
+        self::silver => "Bạc",
+        self::unclassified => 'Chưa phân hạng',
+        self::rival => 'Đối thủ'
+        ];
+
+    const agentNew = 1;
+    const agentRival = 2;
+
     protected $table = 'agents';
     protected $fillable = [
-        'name', 'manager_id', 'lat', 'lng', 'area_id','icon','address','code','rank'
+        'name', 'manager_id', 'lat', 'lng', 'area_id','icon','address','code','rank','attribute'
     ];
 
     public function user(){

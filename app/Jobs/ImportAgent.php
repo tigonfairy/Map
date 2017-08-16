@@ -107,13 +107,60 @@ class ImportAgent
                         $agentError[] = $code;
                         continue;
                     }
+                        $attribute = 0;
+                    $config = [];
+                    if (file_exists(public_path().'/config/config.json')) {
+                        $config = json_decode(file_get_contents(public_path().'/config/config.json'),true);
+                    }
+                    $icon = '';
+                    if(isset($row[11]) and $row[11]) {
+                        $str = str_slug($row[11]);
+                        if($str == 'dl-moi') {
+                            $attribute = Agent::agentNew;
+                        }
+                        if($str == 'dl-doi-thu') {
+                            $attribute = Agent::agentNew;
+
+                        }
+                    }
+                    $rank = 0;
+
+                    if(isset($row[12]) and $row[12]) {
+
+
+                        $str = str_slug($row[12]);
+                        if($str == 'kim-cuong') {
+                            $rank = Agent::diamond;
+                            $icon = (isset($config['agent_diamond'])) ? $config['agent_diamond'] : null;
+                        }
+                        if($str == 'vang') {
+                            $rank = Agent::gold;
+                            $icon = (isset($config['agent_gold'])) ? $config['agent_gold'] : null;
+                        }
+                        if($str == 'bac') {
+                            $rank = Agent::silver;
+                            $icon = (isset($config['agent_silver'])) ? $config['agent_silver'] : null;
+                        }
+                        if($str == 'chua-xep-hang') {
+                            $rank = Agent::unclassified;
+                            $icon = (isset($config['agent_unclassified'])) ? $config['agent_unclassified'] : null;
+                        }
+                    }
+                    if($attribute == Agent::agentRival) {
+                        $icon = (isset($config['agent_rival'])) ? $config['agent_rival'] : null;
+                    }
+
+
                     $agent = Agent::firstOrCreate(['code' => $code]);
                     $data = [
                       'name' => trim($name),
                         'address' => trim($address),
                         'manager_id' => $manager_id,
                         'lat' => $lat,
-                        'lng' => $lng
+                        'lng' => $lng,
+                        'attribute' => $attribute,
+                        'rank' => $rank,
+                        'icon' => $icon
                     ];
                     $agent->update($data);
 
