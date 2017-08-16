@@ -792,10 +792,6 @@ class MapController extends AdminController
             }
 
 
-
-
-
-
             $exportUserArray[] = $exportUser;
         }
         ob_end_clean();
