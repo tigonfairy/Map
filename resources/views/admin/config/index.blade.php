@@ -27,7 +27,7 @@
                 @endif
                 <div class="panel panel-flat">
                     <div class="panel-body">
-                        <form method="POST" action="{{  route('Admin::config@store') }}">
+                        <form method="POST" action="{{  route('Admin::config@store') }}" enctype="multipart/form-data">
                             {{ csrf_field() }}
                             <div class="form-group {{ $errors->has('repassword') ? 'has-error has-feedback' : '' }}">
                                 <label for="name" class="control-label text-semibold">Số lần nhập sai mật khẩu</label>
@@ -91,6 +91,84 @@
                                     <div class="help-block">{{ $errors->first('fontSize') }}</div>
                                 @endif
                             </div>
+
+
+                            {{--set up đại lý--}}
+                            <div class="form-group {{ $errors->has('agent_diamond') ? 'has-error has-feedback' : '' }}">
+                                <label for="name" class="control-label text-semibold">Đại lý kim cương</label>
+                                @if( isset($config['agent_diamond']) and ($config['agent_diamond']))
+                                    <img src="{{$config['agent_diamond']}}" style="width: 100px;height: 100px" alt="">
+                                @endif
+                                <i class="icon-question4 text-muted text-size-mini cursor-pointer js-help-icon" data-content=""></i>
+                                <input type="file" id="fontSize" name="agent_diamond" class="form-control" />
+                                @if ($errors->has('agent_diamond'))
+                                    <div class="form-control-feedback">
+                                        <i class="icon-notification2"></i>
+                                    </div>
+                                    <div class="help-block">{{ $errors->first('agent_diamond') }}</div>
+                                @endif
+                            </div>
+
+                            <div class="form-group {{ $errors->has('agent_gold') ? 'has-error has-feedback' : '' }}">
+                                <label for="name" class="control-label text-semibold">Đại lý vàng</label>
+                                @if( isset($config['agent_gold']) and ($config['agent_gold']))
+                                    <img src="{{$config['agent_gold']}}" style="width: 100px;height: 100px" alt="">
+                                @endif
+                                <i class="icon-question4 text-muted text-size-mini cursor-pointer js-help-icon" data-content=""></i>
+                                <input type="file"  name="agent_gold" class="form-control" />
+                                @if ($errors->has('agent_gold'))
+                                    <div class="form-control-feedback">
+                                        <i class="icon-notification2"></i>
+                                    </div>
+                                    <div class="help-block">{{ $errors->first('agent_gold') }}</div>
+                                @endif
+                            </div>
+
+
+                            <div class="form-group {{ $errors->has('agent_silver') ? 'has-error has-feedback' : '' }}">
+                                <label for="name" class="control-label text-semibold">Đại lý bạc</label>
+                                @if( isset($config['agent_silver']) and ($config['agent_silver']))
+                                    <img src="{{$config['agent_silver']}}" style="width: 100px;height: 100px" alt="">
+                                @endif
+                                <i class="icon-question4 text-muted text-size-mini cursor-pointer js-help-icon" data-content=""></i>
+                                <input type="file"  name="agent_silver" class="form-control" />
+                                @if ($errors->has('agent_silver'))
+                                    <div class="form-control-feedback">
+                                        <i class="icon-notification2"></i>
+                                    </div>
+                                    <div class="help-block">{{ $errors->first('agent_silver') }}</div>
+                                @endif
+                            </div>
+
+                            <div class="form-group {{ $errors->has('agent_unclassified') ? 'has-error has-feedback' : '' }}">
+                                <label for="name" class="control-label text-semibold">Đại lý chưa phân hạng</label>
+                                @if( isset($config['agent_unclassified']) and ($config['agent_unclassified']))
+                                    <img src="{{$config['agent_unclassified']}}" style="width: 100px;height: 100px" alt="">
+                                @endif
+                                <i class="icon-question4 text-muted text-size-mini cursor-pointer js-help-icon" data-content=""></i>
+                                <input type="file"  name="agent_unclassified" class="form-control" />
+                                @if ($errors->has('agent_unclassified'))
+                                    <div class="form-control-feedback">
+                                        <i class="icon-notification2"></i>
+                                    </div>
+                                    <div class="help-block">{{ $errors->first('agent_unclassified') }}</div>
+                                @endif
+                            </div>
+                            <div class="form-group {{ $errors->has('agent_rival') ? 'has-error has-feedback' : '' }}">
+                                <label for="name" class="control-label text-semibold">Đại lý đối thủ</label>
+                                @if( isset($config['agent_rival']) and ($config['agent_rival']))
+                                    <img src="{{$config['agent_rival']}}" style="width: 100px;height: 100px" alt="">
+                                @endif
+                                <i class="icon-question4 text-muted text-size-mini cursor-pointer js-help-icon" data-content=""></i>
+                                <input type="file"  name="agent_rival" class="form-control" />
+                                @if ($errors->has('agent_rival'))
+                                    <div class="form-control-feedback">
+                                        <i class="icon-notification2"></i>
+                                    </div>
+                                    <div class="help-block">{{ $errors->first('agent_rival') }}</div>
+                                @endif
+                            </div>
+
 
 
 
