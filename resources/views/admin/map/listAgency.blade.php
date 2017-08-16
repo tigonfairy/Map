@@ -99,11 +99,10 @@
                             <td>
                                 <a href="{{route('Admin::map@agentDetail',[$agent->id])}}">
                                     <button type="button" class="btn btn-info btn-xs">{{ trans('home.show') }}</button></a>
-                                @if(auth()->user()->roles()->first()->id != 3)
+
                                 <a href="{{route('Admin::map@editAgent',[$agent->id])}}">
                                     <button type="button" class="btn btn-warning btn-xs">{{ trans('home.edit') }}</button></a>
                                 <a onclick="return xoaCat();" href="{{route('Admin::map@agentDelete',[$agent->id])}}" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-remove"></span> Del</a>
-                                    @endif
                             </td>
                         </tr>
                     @endforeach
