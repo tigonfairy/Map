@@ -39,7 +39,6 @@
             /*margin-left: 10px;*/
             float: left;
         }
-
         .info_gsv{
             z-index: 99999;
             color: #0a0a0a;
@@ -59,7 +58,6 @@
             /*margin-left: 10px;*/
             float: left;
         }
-
         .customBox {
             position: absolute;
             font-size: 16px;
@@ -67,12 +65,10 @@
             margin-left: 10px;
         }
         /*.customBox .gsv {*/
-            /*background-color: #00aaaa;*/
-
+        /*background-color: #00aaaa;*/
         /*}*/
         /*.customBox .ds {*/
-
-            /*color: red;*/
+        /*color: red;*/
         /*}*/
     </style>
 
@@ -121,51 +117,51 @@
 
     <div class="row ">
 
-    <div class="col-md-6">
-        <div class="portlet light">
-            <div class="portlet-title">
-                <div class="caption">
-                    <i class="icon-directions font-green hide"></i>
-                    <span class="caption-subject bold font-dark uppercase "> Tiến độ doanh số</span>
-                </div>
-            </div>
-            <div class="portlet-body">
-                <div id="container" class="row"></div>
-            </div>
-        </div>
-    </div>
-
-
-    <div class="col-md-6">
-        <div class="portlet light">
-            <div class="portlet-title">
-                <div class="caption ">
-                    <span class="caption-subject font-dark bold uppercase">Biểu đồ</span>
-                </div>
-                <div class="clearfix" style="margin-bottom: 20px">
-                    <div class="btn-group col-xs-12" data-toggle="buttons">
-                        <label class="btn btn-default active col-xs-6 col-md-3">
-                            <input type="radio" name="radio" class="toggle radioButton" value="1"> Tháng
-                            gần nhất
-                        </label>
-                        <label class="btn btn-default col-xs-6 col-md-3">
-                            <input type="radio" name="radio" class="toggle radioButton" value="2">Tháng có doanh số
-                            cao nhất
-                        </label>
-                        <label class="btn  btn-default col-xs-6 col-md-3">
-                            <input type="radio" name="radio" class="toggle radioButton" value="3"> Trung bình tháng
-                        </label>
-                        <label class="btn  btn-default col-xs-6 col-md-3">
-                            <input type="radio" name="radio" class="toggle radioButton" value="4">Tổng sản lượng
-                        </label>
+        <div class="col-md-6">
+            <div class="portlet light">
+                <div class="portlet-title">
+                    <div class="caption">
+                        <i class="icon-directions font-green hide"></i>
+                        <span class="caption-subject bold font-dark uppercase "> Tiến độ doanh số</span>
                     </div>
                 </div>
-            </div>
-            <div class="portlet-body">
-                <div id="chartSp"></div>
+                <div class="portlet-body">
+                    <div id="container" class="row"></div>
+                </div>
             </div>
         </div>
-    </div>
+
+
+        <div class="col-md-6">
+            <div class="portlet light">
+                <div class="portlet-title">
+                    <div class="caption ">
+                        <span class="caption-subject font-dark bold uppercase">Biểu đồ</span>
+                    </div>
+                    <div class="clearfix" style="margin-bottom: 20px">
+                        <div class="btn-group col-xs-12" data-toggle="buttons">
+                            <label class="btn btn-default active col-xs-6 col-md-3">
+                                <input type="radio" name="radio" class="toggle radioButton" value="1"> Tháng
+                                gần nhất
+                            </label>
+                            <label class="btn btn-default col-xs-6 col-md-3">
+                                <input type="radio" name="radio" class="toggle radioButton" value="2">Tháng có doanh số
+                                cao nhất
+                            </label>
+                            <label class="btn  btn-default col-xs-6 col-md-3">
+                                <input type="radio" name="radio" class="toggle radioButton" value="3"> Trung bình tháng
+                            </label>
+                            <label class="btn  btn-default col-xs-6 col-md-3">
+                                <input type="radio" name="radio" class="toggle radioButton" value="4">Tổng sản lượng
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="portlet-body">
+                    <div id="chartSp"></div>
+                </div>
+            </div>
+        </div>
 
     </div>
 
@@ -198,7 +194,6 @@
 
 <script type="text/javascript">
     $(document).ready(function () {
-
         $('.monthPicker').datepicker( {
             changeMonth: true,
             changeYear: true,
@@ -210,225 +205,223 @@
                 $(this).datepicker('setDate', new Date(year, month, 1));
             }
         });
-
         $('.monthPicker').datepicker({
-        changeMonth: true,
-        changeYear: true,
-        showButtonPanel: true,
-        dateFormat: 'mm-yy',
-        onClose: function (dateText, inst) {
-        var month = $("#ui-datepicker-div .ui-datepicker-month :selected").val();
-        var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val();
-        $(this).datepicker('setDate', new Date(year, month, 1));
-        }
+            changeMonth: true,
+            changeYear: true,
+            showButtonPanel: true,
+            dateFormat: 'mm-yy',
+            onClose: function (dateText, inst) {
+                var month = $("#ui-datepicker-div .ui-datepicker-month :selected").val();
+                var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val();
+                $(this).datepicker('setDate', new Date(year, month, 1));
+            }
         });
         //chart cot
         Highcharts.chart('container', {
-        chart: {
-        type: 'column',
-        style: {
-        fontFamily: 'serif'
-        }
-        },
-        title: {
-        text: 'Tiến độ doanh số'
-        },
-        subtitle: {
-        //                text: 'Source: WorldClimate.com'
-        },
-        xAxis: {
-        categories: [
-        'Jan',
-        'Feb',
-        'Mar',
-        'Apr',
-        'May',
-        'Jun',
-        'Jul',
-        'Aug',
-        'Sep',
-        'Oct',
-        'Nov',
-        'Dec'
-        ],
-        crosshair: true
-        },
-        yAxis: {
-        min: 0,
-        title: {
-        text: 'Doanh số '
-        }
-        },
-        tooltip: {
-        headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-        pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-        '<td style="padding:0"><b>{point.y} </b></td></tr>',
-        footerFormat: '</table>',
-        shared: true,
-        useHTML: true
-        },
-        plotOptions: {
-        column: {
-        pointPadding: 0.2,
-        borderWidth: 0
-        },
-        series: {
-        dataLabels: {
-        enabled: true,
-        crop: false,
-        overflow: 'none',
-        formatter: function () {
-        return this.point.y;
-        }
-        }
-        }
-        },
-        series: [{
-        name: 'DTKH',
-        data: {{json_encode($sales_plan)}}
-        }, {
-        name: 'DTTT',
-        data: {{json_encode($sales_real)}}
-        }]
+            chart: {
+                type: 'column',
+                style: {
+                    fontFamily: 'serif'
+                }
+            },
+            title: {
+                text: 'Tiến độ doanh số'
+            },
+            subtitle: {
+                //                text: 'Source: WorldClimate.com'
+            },
+            xAxis: {
+                categories: [
+                    'Jan',
+                    'Feb',
+                    'Mar',
+                    'Apr',
+                    'May',
+                    'Jun',
+                    'Jul',
+                    'Aug',
+                    'Sep',
+                    'Oct',
+                    'Nov',
+                    'Dec'
+                ],
+                crosshair: true
+            },
+            yAxis: {
+                min: 0,
+                title: {
+                    text: 'Doanh số '
+                }
+            },
+            tooltip: {
+                headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+                pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                '<td style="padding:0"><b>{point.y} </b></td></tr>',
+                footerFormat: '</table>',
+                shared: true,
+                useHTML: true
+            },
+            plotOptions: {
+                column: {
+                    pointPadding: 0.2,
+                    borderWidth: 0
+                },
+                series: {
+                    dataLabels: {
+                        enabled: true,
+                        crop: false,
+                        overflow: 'none',
+                        formatter: function () {
+                            return this.point.y;
+                        }
+                    }
+                }
+            },
+            series: [{
+                name: 'DTKH',
+                data: {{json_encode($sales_plan)}}
+            }, {
+                name: 'DTTT',
+                data: {{json_encode($sales_real)}}
+            }]
         });
         var chartSp = Highcharts.chart('chartSp', {
-        chart: {
-        plotBackgroundColor: null,
-        plotBorderWidth: null,
-        plotShadow: false,
-        type: 'pie',
-        style: {
-        fontFamily: 'serif'
-        }
-        },
-        title: {
-        text: 'Biểu đổ'
-        },
-        tooltip: {
-        pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
-        },
-        plotOptions: {
-        pie: {
-        allowPointSelect: true,
-        cursor: 'pointer',
-        dataLabels: {
-        enabled: true
-        },
-        showInLegend: true
-        }
-        },
-        series: []
+            chart: {
+                plotBackgroundColor: null,
+                plotBorderWidth: null,
+                plotShadow: false,
+                type: 'pie',
+                style: {
+                    fontFamily: 'serif'
+                }
+            },
+            title: {
+                text: 'Biểu đổ'
+            },
+            tooltip: {
+                pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+            },
+            plotOptions: {
+                pie: {
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    dataLabels: {
+                        enabled: true
+                    },
+                    showInLegend: true
+                }
+            },
+            series: []
         });
         $.ajax({
-        method: "post",
-        url: "{{route('Admin::chart')}}",
-        headers: {
-        'X-CSRF-Token': "{{ csrf_token() }}"
-        },
-        data: {
-        type: 1
-        },
-        dataType: 'json',
-        success: function (data) {
-        if (data.title) {
-        chartSp.setTitle({
-        text: 'Biểu đô tháng ' + data.title
-        });
-        }
-        if (data.chart) {
-        var seriesLength = chartSp.series.length;
-        for (var i = seriesLength - 1; i > -1; i--) {
-        //chart.series[i].remove();
-        if (chartSp.series[i].name == document.getElementById("series_name").value)
-        chartSp.series[i].remove();
-        }
-        chartSp.addSeries(
-        {
-        name: 'S/p',
-        colorByPoint: true,
-        data: data.chart
-        }
-        )
-        }
-        if (data.table) {
-        var table = data.table;
-        var string = '<table class="table table-striped table-bordered" cellspacing="0" width="100%">' +
-        ' <thead> <tr> <th>Sản phẩm</th> <th>Doanh số</th></tr></thead><tbody>';
-        table.forEach(function (value) {
-        string += '<tr>';
-        string += '<td>';
-        string += value.name;
-        string += '</td>';
-        string += '<td>';
-        string += value.y;
-        string += '</td>';
-        string += '</tr>';
-        });
-        string += '</tbody></table>';
-        $('#tableData').html(string);
-        }
-        },
-        error: function (err) {
-        console.log(err);
-        alert('Lỗi, hãy thử lại sau');
-        }
+            method: "post",
+            url: "{{route('Admin::chart')}}",
+            headers: {
+                'X-CSRF-Token': "{{ csrf_token() }}"
+            },
+            data: {
+                type: 1
+            },
+            dataType: 'json',
+            success: function (data) {
+                if (data.title) {
+                    chartSp.setTitle({
+                        text: 'Biểu đô tháng ' + data.title
+                    });
+                }
+                if (data.chart) {
+                    var seriesLength = chartSp.series.length;
+                    for (var i = seriesLength - 1; i > -1; i--) {
+                        //chart.series[i].remove();
+                        if (chartSp.series[i].name == document.getElementById("series_name").value)
+                            chartSp.series[i].remove();
+                    }
+                    chartSp.addSeries(
+                        {
+                            name: 'S/p',
+                            colorByPoint: true,
+                            data: data.chart
+                        }
+                    )
+                }
+                if (data.table) {
+                    var table = data.table;
+                    var string = '<table class="table table-striped table-bordered" cellspacing="0" width="100%">' +
+                        ' <thead> <tr> <th>Sản phẩm</th> <th>Doanh số</th></tr></thead><tbody>';
+                    table.forEach(function (value) {
+                        string += '<tr>';
+                        string += '<td>';
+                        string += value.name;
+                        string += '</td>';
+                        string += '<td>';
+                        string += value.y;
+                        string += '</td>';
+                        string += '</tr>';
+                    });
+                    string += '</tbody></table>';
+                    $('#tableData').html(string);
+                }
+            },
+            error: function (err) {
+                console.log(err);
+                alert('Lỗi, hãy thử lại sau');
+            }
         });
         $('.radioButton').change(function () {
-        var type = $(this).val();
-        $.ajax({
-        method: "post",
-        url: "{{route('Admin::chart')}}",
-        headers: {
-        'X-CSRF-Token': "{{ csrf_token() }}"
-        },
-        data: {
-        type: type
-        },
-        dataType: 'json',
-        success: function (data) {
-        if (data.title) {
-        chartSp.setTitle({
-        text: 'Biểu đô ' + data.title
+            var type = $(this).val();
+            $.ajax({
+                method: "post",
+                url: "{{route('Admin::chart')}}",
+                headers: {
+                    'X-CSRF-Token': "{{ csrf_token() }}"
+                },
+                data: {
+                    type: type
+                },
+                dataType: 'json',
+                success: function (data) {
+                    if (data.title) {
+                        chartSp.setTitle({
+                            text: 'Biểu đô ' + data.title
+                        });
+                    }
+                    if (data.chart) {
+                        while (chartSp.series.length > 0) {
+                            chartSp.series[0].remove(false);
+                        }
+                        chartSp.redraw();
+                        chartSp.addSeries(
+                            {
+                                name: 'S/p',
+                                colorByPoint: true,
+                                data: data.chart
+                            }
+                        )
+                    }
+                    if (data.table) {
+                        $('#tableData').html('');
+                        var table = data.table;
+                        var string = '<table class="table table-striped table-bordered" cellspacing="0" width="100%">' +
+                            ' <thead> <tr> <th>Sản phẩm</th> <th>Doanh số</th></tr></thead><tbody>';
+                        table.forEach(function (value) {
+                            string += '<tr>';
+                            string += '<td>';
+                            string += value.name;
+                            string += '</td>';
+                            string += '<td>';
+                            string += value.y;
+                            string += '</td>';
+                            string += '</tr>';
+                        });
+                        string += '</tbody></table>';
+                        $('#tableData').html(string);
+                    }
+                },
+                error: function (err) {
+                    console.log(err);
+                }
+            });
         });
-        }
-        if (data.chart) {
-        while (chartSp.series.length > 0) {
-        chartSp.series[0].remove(false);
-        }
-        chartSp.redraw();
-        chartSp.addSeries(
-        {
-        name: 'S/p',
-        colorByPoint: true,
-        data: data.chart
-        }
-        )
-        }
-        if (data.table) {
-        $('#tableData').html('');
-        var table = data.table;
-        var string = '<table class="table table-striped table-bordered" cellspacing="0" width="100%">' +
-        ' <thead> <tr> <th>Sản phẩm</th> <th>Doanh số</th></tr></thead><tbody>';
-        table.forEach(function (value) {
-        string += '<tr>';
-        string += '<td>';
-        string += value.name;
-        string += '</td>';
-        string += '<td>';
-        string += value.y;
-        string += '</td>';
-        string += '</tr>';
-        });
-        string += '</tbody></table>';
-        $('#tableData').html(string);
-        }
-        },
-        error: function (err) {
-        console.log(err);
-        }
-        });
-        });
-
         //map
         var polygonArray = [];
         map = new GMaps({
@@ -501,14 +494,14 @@
                 @endforeach
                 @endif
         var markers = [];
-                @foreach($agents as $agent)
+        @foreach($agents as $agent)
         {{--var contentString = '<div id="content">' +--}}
-                {{--'<p id="name">' + "{{$agent->name}}" + '</p>' +--}}
-                {{--'<p id="manager">' + '{{$agent->user->email}}' + '</p>' +--}}
-                {{--'</div>';--}}
-//        var infoWindow = new google.maps.InfoWindow({
-//            content: contentString
-//        });
+        {{--'<p id="name">' + "{{$agent->name}}" + '</p>' +--}}
+        {{--'<p id="manager">' + '{{$agent->user->email}}' + '</p>' +--}}
+        {{--'</div>';--}}
+        //        var infoWindow = new google.maps.InfoWindow({
+        //            content: contentString
+        //        });
         var marker = map.addMarker({
             lat: "{{$agent->lat}}",
             lng: "{{$agent->lng}}",
@@ -573,7 +566,6 @@
                 getListGDV();
             }
         });
-
         $('#geocoding_form').submit(function(e){
             e.preventDefault();
             var type_search = $("#type_search").val();
@@ -592,15 +584,11 @@
                         zoom: 8,
                         fullscreenControl: true,
                     });
-
                     var button ='<button id="swift" class="btn btn-primary">Full mode</button>';
-
                     map.addControl({
                         position: 'bottom_left',
                         content: button,
                     });
-
-
                     if (type_search == 'agents') {
                         showDataAgents(data);
                     }
@@ -616,9 +604,7 @@
                 }
             });
         });
-
         var listSelectProducts = [];
-
         function getListAreas() {
             $("#type_search").val('areas');
             $(".data_search").select2({
@@ -652,7 +638,6 @@
                 }
             });
         }
-
         function showDataAreas(data) {
             var polygonArray = [];
             $.map(data.locations, function (item) {
@@ -674,7 +659,6 @@
                     }
                     var path = coordinate;
                     map.setCenter(bounds.getCenter().lat(), bounds.getCenter().lng());
-
                     var infoWindow = new google.maps.InfoWindow({
                         content: "<p>" + item.name + "</p>"
                     });
@@ -717,7 +701,6 @@
                 });
             });
         }
-
         function getListGSV() {
             $("#type_search").val('gsv');
             $(".data_search").select2({
@@ -748,9 +731,7 @@
                     }
                 }
             });
-
         }
-
         function getListTV() {
             $("#type_search").val('tv');
             $(".data_search").select2({
@@ -782,13 +763,10 @@
                 }
             });
         }
-
         function showDataSales(data) {
             var area_name = '';
             var polygonArray = [];
-
             $.map(data.locations, function (location, index) {
-
                 var item = location.area;
                 var c = item.coordinates;
                 var coordinate = JSON.parse(c);
@@ -817,20 +795,17 @@
                     area_name += '-';
                 }
             });
-
             var postion = '';
             if (data.user.position == 3) {
                 postion = 'TV';
             } else {
                 postion = 'GS';
             }
-
             $.map(data.listAgents, function (item) {
                 var agent = item.agent;
                 var user = agent.user;
-
                 var contentString = '<div class="info">' +
-                    '<h5>' + agent.address + '</h5>' +
+                    '<h5 class="address" style="display:none">' + agent.address + '</h5>' +
                     '<div class="user_data">' +
                     '<p class="data">%TT ' + item.totalSales + '/' + item.capacity + '=' +  item.percent + '%</p>' +
                     '<ul class="info_user">' +
@@ -840,11 +815,9 @@
                     '</ul>' +
                     '</div>' +
                     '</div>';
-
                 var infoWindow = new google.maps.InfoWindow({
                     content: contentString
                 });
-
                 var marker = map.addMarker({
                     lat:  agent.lat,
                     lng:  agent.lng,
@@ -856,7 +829,6 @@
                     }
                 });
             });
-
             var tableSales =
                 '<div class="info_gsv">' +
                 '<h3>' + area_name + '</h3>' +
@@ -868,13 +840,11 @@
                 '</ul>' +
                 '</div>' +
                 '</div>';
-
             map.addControl({
                 position: 'top_left',
                 content: tableSales,
             });
         }
-
         function getListGDV() {
             $("#type_search").val('gdv');
             $(".data_search").select2({
@@ -906,22 +876,17 @@
                 }
             });
         }
-
         function showDataSaleGDV(data) {
             var polygonArray = [];
             var position = '';
-
             var center = new google.maps.LatLng(21.0277644, 105.83415979999995);
             var options = {
                 'zoom': 8,
                 'center': center,
                 'mapTypeId': google.maps.MapTypeId.ROADMAP,
                 fullscreenControl: true,
-
             };
-
             var map = new google.maps.Map(document.getElementById("map"), options);
-
             $.map(data.locations, function (location, index) {
                 var item = location.area;
                 var c = item.coordinates;
@@ -951,8 +916,6 @@
                     polygonArray[item.id] = polygon;
                 }
             });
-
-
             $.map(data.result, function (item) {
                 var agents = item.agents;
                 var markers = [];
@@ -962,14 +925,10 @@
                     var marker = new google.maps.Marker({'position': latLng});
                     markers.push(marker);
                 });
-
                 var markerCluster = new MarkerClusterer(map, markers, {
                     maxZoom: 15,
                     imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'
                 });
-
-
-
 //                var mapLabel = new MapLabel({
 //                    text: '<p style="font-size: 12px">' + item.gsv + '</p>' ,
 //                    position: new google.maps.LatLng(markers[0].getPosition().lat(),  markers[0].getPosition().lng()),
@@ -978,14 +937,12 @@
 //                    align: 'right'
 //                });
 //                mapLabel.set('position', new google.maps.LatLng(markers[0].getPosition().lat(),  markers[0].getPosition().lng()));
-
                 var customTxt =
-                '<div class="customBox">' +
-                '<p class="gsv">' + item.gsv + ' - %TT ' + item.totalSales + '/' + item.capacity + '=' +  item.percent + '</p>' +
-                '</div>';
+                    '<div class="customBox">' +
+                    '<p class="gsv">' + item.gsv + ' - %TT ' + item.totalSales + '/' + item.capacity + '=' +  item.percent + '</p>' +
+                    '</div>';
                 txt = new TxtOverlay(new google.maps.LatLng(markers[0].getPosition().lat(),  markers[0].getPosition().lng()), customTxt, "customBox", map);
             });
-
 //            var customTxt =
 //                '<div class="customBox">' +
 //                '<p class="gsv">' + data.user.name + ' - %TT ' + data.totalSales + '/' + data.capacity + '=' +  data.percent + '</p>' +
@@ -993,48 +950,36 @@
 //            txt = new TxtOverlay(position, customTxt, "customBox", map);
 //            tableSales.index = 1;
 //            map.controls[google.maps.ControlPosition.BOTTOM_CENTER].push(tableSales[0]);
-
             var myTitle = document.createElement('h3');
             myTitle.style.color = 'red';
             myTitle.innerHTML = data.user.name + ' - %TT ' + data.totalSales + '/' + data.capacity + '=' +  data.percent  + "%";
             var myTextDiv = document.createElement('div');
             myTextDiv.appendChild(myTitle);
-
             map.controls[google.maps.ControlPosition.BOTTOM_CENTER].push(myTextDiv);
         }
-
         function TxtOverlay(pos, txt, cls, map) {
-
             // Now initialize all properties.
             this.pos = pos;
             this.txt_ = txt;
             this.cls_ = cls;
             this.map_ = map;
-
             // We define a property to hold the image's
             // div. We'll actually create this div
             // upon receipt of the add() method so we'll
             // leave it null for now.
             this.div_ = null;
-
             // Explicitly call setMap() on this overlay
             this.setMap(map);
         }
-
         TxtOverlay.prototype = new google.maps.OverlayView();
-
         TxtOverlay.prototype.onAdd = function() {
-
             // Note: an overlay's receipt of onAdd() indicates that
             // the map's panes are now available for attaching
             // the overlay to the map via the DOM.
-
             // Create the DIV and set some basic attributes.
             var div = document.createElement('DIV');
             div.className = this.cls_;
-
             div.innerHTML = this.txt_;
-
             // Set the overlay's div_ property to this DIV
             this.div_ = div;
             var overlayProjection = this.getProjection();
@@ -1042,27 +987,18 @@
             div.style.left = position.x + 'px';
             div.style.top = position.y + 'px';
             // We add an overlay to a map via one of the map's panes.
-
             var panes = this.getPanes();
             panes.floatPane.appendChild(div);
         }
         TxtOverlay.prototype.draw = function() {
-
-
             var overlayProjection = this.getProjection();
-
             // Retrieve the southwest and northeast coordinates of this overlay
             // in latlngs and convert them to pixels coordinates.
             // We'll use these coordinates to resize the DIV.
             var position = overlayProjection.fromLatLngToDivPixel(this.pos);
-
-
             var div = this.div_;
             div.style.left = position.x + 'px';
             div.style.top = position.y + 'px';
-
-
-
         }
         //Optional: helper methods for removing and toggling the text overlay.
         TxtOverlay.prototype.onRemove = function() {
@@ -1074,13 +1010,11 @@
                 this.div_.style.visibility = "hidden";
             }
         }
-
         TxtOverlay.prototype.show = function() {
             if (this.div_) {
                 this.div_.style.visibility = "visible";
             }
         }
-
         TxtOverlay.prototype.toggle = function() {
             if (this.div_) {
                 if (this.div_.style.visibility == "hidden") {
@@ -1090,7 +1024,6 @@
                 }
             }
         }
-
         TxtOverlay.prototype.toggleDOM = function() {
             if (this.getMap()) {
                 this.setMap(null);
@@ -1098,8 +1031,6 @@
                 this.setMap(this.map_);
             }
         }
-
-
         function getListAgents() {
             $("#type_search").val('agents');
             $(".data_search").select2({
@@ -1131,7 +1062,6 @@
                 }
             });
         }
-
         function showDataAgents(data) {
             listSelectProdcuts = [];
             map = new GMaps({
@@ -1143,20 +1073,17 @@
                 zoom: 13,
                 fullscreenControl: true,
             });
-
             var user = data.user;
             var list_products = data.listProducts;
-
             var postion = '';
             if (data.gsv.position == 3) {
                 postion = 'TV';
             } else {
                 postion = 'GS';
             }
-
             // info cho 1 marker
             var contentString = '<div class="info">' +
-                '<h5>' + data.agents.address + '</h5>' +
+                '<h5 class="address" style="display:none">' + data.agents.address + '</h5>' +
                 '<div class="user_data">' +
                 '<p class="data" id="data">%'+ list_products[0].code + ' ' + list_products[0].totalSales +'/'+ list_products[0].capacity +  '=' + list_products[0].percent + '%</p>' +
                 '<ul class="info_user">' +
@@ -1166,11 +1093,9 @@
                 '</ul>' +
                 '</div>' +
                 '</div>';
-
             var infoWindow = new google.maps.InfoWindow({
                 content: contentString
             });
-
             var myMarker = map.addMarker({
                 lat:  data.agents.lat,
                 lng:  data.agents.lng,
@@ -1181,10 +1106,8 @@
                     infoWindow.open(map.map);
                 }
             });
-
             infoWindow.setPosition(myMarker.position);
             infoWindow.open(map.map);
-
             map.drawOverlay({
                 lat: data.agents.lat,
                 lng: data.agents.lng,
@@ -1192,80 +1115,69 @@
                 '<h5>' + data.agents.name + '</h5>' +
                 '</div>'
             });
-
             var tableSales = '<table class="table table-striped table-bordered table-products" cellspacing="0" width="100%" id="data-table">' +
                 '<thead>' +
                 '<tr>' +
-                '<th>Tên  Sản phẩm</th>' +
+                '<th>Tên Sản phẩm</th>' +
                 '<th>Mã Sản phẩm</th>' +
                 '<th>Sản lượng</th>'+
                 '<th>Dung lượng</th>'+
                 '</tr>' +
                 '</thead>'+
                 '<tbody>' +
-                    '<tr>' +
-                    '<td>' +
-                    '<select id="choose_product">';
-                        $.map(list_products, function (product) {
-                            tableSales += '<option value="' + product.code + '">' + product.code + '</option>'
-                        });
-
-                tableSales += '</select>' +
-                    '</td>' +
-                    '<td id="code">' + list_products[0].code +'</td>'+
-                    '<td id="totalSales">' + list_products[0].totalSales +'</td>'+
-                    '<td id="capacity">' + list_products[0].capacity +'</td>' +
-                    '</tr>' +
+                '<tr>' +
+                '<td>' +
+                '<select id="choose_product">';
+            $.map(list_products, function (product) {
+                tableSales += '<option value="' + product.code + '">' + product.name + '</option>'
+            });
+            tableSales += '</select>' +
+                '</td>' +
+                '<td id="code">' + list_products[0].code +'</td>'+
+                '<td id="totalSales">' + list_products[0].totalSales +'</td>'+
+                '<td id="capacity">' + list_products[0].capacity +'</td>' +
+                '</tr>' +
                 '</tbody>' +
-                    '</table>';
-
+                '</table>';
             map.addControl({
                 position: 'top_left',
                 content: tableSales,
             });
-
             var button ='<button id="swift" class="btn btn-primary">Full mode</button>';
-
             map.addControl({
                 position: 'bottom_left',
                 content: button,
             });
-
             $.each(list_products, function( index, value ) {
                 listSelectProducts.push(value);
             });
         }
-
         $(document).on('change', '#choose_product', function() {
             var code = $(this).val();
-
             var data = $.grep(listSelectProducts, function(e){
                 return e.code == code;
             });
-
             var item = data[0];
             $("#code").text(item.code);
             $("#totalSales").text(item.totalSales);
             $("#capacity").text(item.capacity);
             $("#data").text('%'+ item.code + ' ' + item.totalSales +'/'+ item.capacity +  '=' + item.percent + '%');
         });
-
         $(document).on('click', '#swift', function() {
             var text = $(this).text();
-
             if (text == 'Full Mode') {
                 $(this).text('Compact Mode');
                 $('.gsv').show();
                 $('.gdv').show();
+                $('.address').show();
             }
             else {
                 $(this).text('Full Mode');
                 $('.gsv').hide();
                 $('.gdv').hide();
+                $('.address').hide();
             }
         });
     });
-
-
 </script>
 @endpush
