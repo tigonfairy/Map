@@ -1103,6 +1103,7 @@
             var tableSales = '<table class="table table-striped table-bordered table-products" cellspacing="0" width="100%" id="data-table">' +
                 '<thead>' +
                 '<tr>' +
+                '<th>Tên  Sản phẩm</th>' +
                 '<th>Mã Sản phẩm</th>' +
                 '<th>Sản lượng</th>'+
                 '<th>Dung lượng</th>'+
@@ -1118,6 +1119,7 @@
 
                 tableSales += '</select>' +
                     '</td>' +
+                    '<td id="code">' + list_products[0].code +'</td>'+
                     '<td id="totalSales">' + list_products[0].totalSales +'</td>'+
                     '<td id="capacity">' + list_products[0].capacity +'</td>' +
                     '</tr>' +
