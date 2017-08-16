@@ -1,6 +1,6 @@
 <div class="page-sidebar-wrapper">
     <div class="page-sidebar navbar-collapse collapse">
-        <ul class="page-sidebar-menu  page-header-fixed " data-keep-expanded="false" data-auto-scroll="true"
+        <ul class="page-sidebar-menu  page-header-fixed  page-sidebar-menu-closed" data-keep-expanded="false" data-auto-scroll="true"
             data-slide-speed="200" style="padding-top: 20px">
 
             <li class="sidebar-toggler-wrapper hide">
@@ -14,7 +14,7 @@
 
             <li class="nav-item">
                 <a href="{{ url('/admin') }}" class="nav-link nav-toggle">
-                    <i class="icon-settings"></i>
+                    <i class="icon-home"></i>
                     <span class="title">{{ trans('home.Dashboard') }}</span>
                     <span class="arrow"></span>
                 </a>

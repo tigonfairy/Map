@@ -119,7 +119,11 @@ class ImportAgent
                             $attribute = Agent::agentNew;
                         }
                         if($str == 'dl-doi-thu') {
+<<<<<<< HEAD
                             $attribute = Agent::agentNew;
+=======
+                            $attribute = Agent::agentRival;
+>>>>>>> da3b6752f533a646d4630b0915c4101dd2ddf20c
 
                         }
                     }
