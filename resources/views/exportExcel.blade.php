@@ -35,6 +35,7 @@
     </style>
 </head>
 <body>
+@php $data = [] @endphp
 <table class="ht-table-data">
     <thead>
     <tr>
@@ -46,6 +47,15 @@
         <th align="center" valign="middle" width="10">DLV</th>
         <th align="center" valign="middle" width="10">TTKH</th>
         <th align="center" valign="middle" width="10">TT</th>
+        @foreach($groupProduct as $group)
+            <th align="center" valign="middle" width="10">{{$group->code}}</th>
+            @php $product = $group->product()->where('level',1)->get();@endphp
+            @if($product->count())
+                @foreach($product as $p)
+                    <th align="center" valign="middle" width="10">{{$p->code}}</th>
+                @endforeach
+                @endif
+        @endforeach
 
     </tr>
     <tr>
@@ -57,6 +67,17 @@
         <th align="center" valign="middle" width="10">Dung lượng vùng</th>
         <th align="center" valign="middle" width="10">Tổng sản lượng kế hoạch</th>
         <th align="center" valign="middle" width="10">Tổng sản lượng thực tế</th>
+        @foreach($groupProduct as $group)
+            <th align="center" valign="middle" width="10">{{$group->name_vn}}</th>
+            @php $product = $group->product()->where('level',1)->get();@endphp
+            @if($product->count())
+                @foreach($product as $p)
+                    <th align="center" valign="middle" width="10">{{$p->name_vn}}</th>
+                @endforeach
+            @endif
+        @endforeach
+
+
 
     </tr>
     </thead>

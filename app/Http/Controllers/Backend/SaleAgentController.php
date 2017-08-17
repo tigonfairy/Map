@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Backend;
 
 
 use App\Models\Agent;
+use App\Models\GroupProduct;
 use App\Models\Product;
 use App\Models\SaleAgent;
 use Illuminate\Http\Request;
@@ -23,15 +24,15 @@ class SaleAgentController extends AdminController
     {
         $user = auth()->user();
         $role = $user->roles()->first();
-        if($role->id == 1) {
+
             $agents = Agent::all();
 
-        } else {
-            $userOwns = $user->manager()->get();
-            $userOwns->push($user);
-            $managerIds = $userOwns->pluck('id')->toArray();
-            $agents = Agent::whereIn('manager_id', $managerIds)->get();
-        }
+
+//            $userOwns = $user->manager()->get();
+//            $userOwns->push($user);
+//            $managerIds = $userOwns->pluck('id')->toArray();
+//            $agents = Agent::whereIn('manager_id', $managerIds)->get();
+//
         $products = Product::where('level',1)->get();
 
         return view('admin.saleAgent.form',compact('agents', 'products'));
@@ -155,11 +156,11 @@ class SaleAgentController extends AdminController
             $exportUserArray= [];
             ob_end_clean();
             ob_start();
-            $hin = 'hin';
-            Excel::create('doanh_so_'.$month, function ($excel) use ($exportUserArray,$hin) {
+            $groupProduct = GroupProduct::orderBy('created_at','desc')->get();
+            Excel::create('doanh_so_'.$month, function ($excel) use ($exportUserArray,$groupProduct) {
 
-                $excel->sheet('khach', function ($sheet) use ($exportUserArray,$hin) {
-                    $sheet->loadView('exportExcel',['hin' => $hin]);
+                $excel->sheet('khach', function ($sheet) use ($exportUserArray,$groupProduct) {
+                    $sheet->loadView('exportExcel',['groupProduct' => $groupProduct]);
                 });
 
             })->download('xlsx');
