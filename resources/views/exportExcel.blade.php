@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Document</title>
+    <style>
+        body{
+            font-family: sans-serif;
+
+        }
+        tr > th ,tr > td{
+            wrap-text: true
+        }
+        table {
+            font-size: 14px;
+            /*border: 1px solid #808080;*/
+        }
+        table.ht-table-data thead tr th{
+            /*color: #FFD966;*/
+            /*background-color: #404040;*/
+        }
+        table.ht-table-data th{
+
+            white-space: normal;
+        }
+        table.ht-table-data td{
+            white-space: normal;
+        }
+        .text-uppercase{
+            text-transform: uppercase;
+        }
+        table.ht-table-data .ht-highlight{
+            /*color: #333;*/
+        }
+    </style>
+</head>
+<body>
+<table class="ht-table-data">
+    <thead>
+    <tr>
+        <th rowspan="2" align="center" valign="middle" width="10">STT</th>
+        <th rowspan="2"  align="center"valign="middle" width="20">Mã đại lý</th>
+        <th rowspan="2" align="center" valign="middle" width="30">Tên đại lý</th>
+        <th rowspan="2" align="center" valign="middle" width="25">NVKD</th>
+        <th rowspan="2" align="center" valign="middle" width="10">Mã NVKD</th>
+        <th align="center" valign="middle" width="10">DLV</th>
+        <th align="center" valign="middle" width="10">TTKH</th>
+        <th align="center" valign="middle" width="10">TT</th>
+
+    </tr>
+    <tr>
+        <th></th>
+        <th></th>
+        <th></th>
+        <th></th>
+        <th></th>
+        <th align="center" valign="middle" width="10">Dung lượng vùng</th>
+        <th align="center" valign="middle" width="10">Tổng sản lượng kế hoạch</th>
+        <th align="center" valign="middle" width="10">Tổng sản lượng thực tế</th>
+
+    </tr>
+    </thead>
+    <tbody>
+    <tr class="ht-highlight">
+
+    </tr>
+    <tr>
+
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

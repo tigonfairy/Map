@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Validator;
 use App\Jobs\ImportDataAgent;
+use Excel;
 class SaleAgentController extends AdminController
 {
 
@@ -141,5 +142,36 @@ class SaleAgentController extends AdminController
         }
 
         return response()->json($response);
+    }
+    public function exportExcelDataAgent(Request $request) {
+        $validator = Validator::make($request->all(), [
+            'month' => 'required'
+        ]);
+        if($validator->fails()) {
+            $response['status'] = 'fails';
+            $response['errors'] = $validator->errors();
+        } else {
+            $month = $request->input('month');
+            $exportUserArray= [];
+            ob_end_clean();
+            ob_start();
+            $hin = 'hin';
+            Excel::create('doanh_so_'.$month, function ($excel) use ($exportUserArray,$hin) {
+
+                $excel->sheet('khach', function ($sheet) use ($exportUserArray,$hin) {
+                    $sheet->loadView('exportExcel',['hin' => $hin]);
+                });
+
+            })->download('xlsx');
+//            $file = request()->file('file');
+//            $filename = $month.'_'.time() . '_' . mt_rand(1111, 9999) . '_' . $request->file('file')->getClientOriginalName();
+//            $request->file('file')->move(storage_path('app/import/products'), $filename);
+//            $this->dispatch(new ImportDataAgent( storage_path('app/import/products/' . $filename),$month,$name));
+//
+//            flash()->success('Success!', 'Data successfully updated.');
+//            $response['status'] = 'success';
+        }
+
+
     }
 }

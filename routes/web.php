@@ -156,6 +156,7 @@ Route::group(['middleware' => ['auth','language'],
             Route::get('/{agentId}/{month}/delete', ['as' => 'delete', 'uses' => 'SaleAgentController@delete']);
 
             Route::post('/import-excel-data-agent', ['as' => 'importExcelDataAgent', 'uses' => 'SaleAgentController@importExcelDataAgent']);
+            Route::post('/export-excel-data-agent', ['as' => 'exportExcelDataAgent', 'uses' => 'SaleAgentController@exportExcelDataAgent']);
 
         });
 
