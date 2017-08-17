@@ -766,6 +766,9 @@
         function showDataSales(data) {
             var area_name = '';
             var polygonArray = [];
+
+
+
             $.map(data.locations, function (location, index) {
                 var item = location.area;
                 var c = item.coordinates;
@@ -801,6 +804,7 @@
             } else {
                 postion = 'GS';
             }
+            var gmarkers = [];
             $.map(data.listAgents, function (item) {
                 var agent = item.agent;
                 var user = agent.user;
@@ -828,7 +832,15 @@
                         infoWindow.open(map.map);
                     }
                 });
+                gmarkers.push(marker);
             });
+
+            var button ='<a id="show_info" javascript:google.maps.event.trigger(gmarkers[0],"click"); class="btn btn-danger">Show Info</a>';
+            map.addControl({
+                position: 'bottom_left',
+                content: button,
+            });
+
             var tableSales =
                 '<div class="info_gsv">' +
                 '<h3>' + area_name + '</h3>' +
