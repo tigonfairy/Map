@@ -15,28 +15,22 @@ use Auth;
 use Illuminate\Support\Facades\Cache;
 use Image;
 use Validator;
+use Excel;
 use App\Jobs\ImportAgent;
 class MapController extends AdminController
 {
     public function listLocation()
     {
-        if (auth()->user()->roles->first()['id'] != 1) {
-            abort(403);
-        }
         return view('admin.map.index');
     }
 
     public function addMap(){
-        if (auth()->user()->roles->first()['id'] != 1) {
-            abort(403);
-        }
+
         return view('admin.map.addMap');
     }
 
     public function addMapPost(Request $request){
-        if (auth()->user()->roles->first()['id'] != 1) {
-            abort(403);
-        }
+
         $this->validate($request,[
            'name' => 'required',
             'coordinates' => 'required'
@@ -63,19 +57,12 @@ class MapController extends AdminController
     }
 
     public function editMap(Request $request,$id){
-        if (auth()->user()->roles->first()['id'] != 1) {
-            abort(403);
-        }
-
         $addressGeojson = AddressGeojson::findOrFail($id);
 
         return view('admin.map.editMap',compact('addressGeojson'));
     }
 
     public function editMapPost(Request $request, $id){
-        if (auth()->user()->roles->first()['id'] != 1) {
-            abort(403);
-        }
         $this->validate($request,[
             'name' => 'required',
             'coordinates' => 'required'
@@ -99,9 +86,7 @@ class MapController extends AdminController
     }
 
     public function deleteMap(Request $request,$id){
-        if (auth()->user()->roles->first()['id'] != 1) {
-            abort(403);
-        }
+
         $address = AddressGeojson::find($id);
         if($address){
             $address->delete();
@@ -114,9 +99,7 @@ class MapController extends AdminController
     }
 
     public function editMapUser(Request $request,$id){
-        if (auth()->user()->roles->first()['id'] != 1) {
-            abort(403);
-        }
+
 
         $area = Area::findOrFail($id);
         $users = User::all();
@@ -146,20 +129,15 @@ class MapController extends AdminController
 
     public function listMapUser(Request $request){
         $user = auth()->user();
-        $role = $user->roles()->first();
-        if ($role->id == 3) {
-            abort(403);
-        }
+
         $areas = Area::select('*');
         if($request->input('q')){
             $key = $request->input('q');
             $areas = $areas->where('name','like','%'.$key.'%');
         }
-        if($role->id == 1){ // tong vung
-            $areas = $areas->paginate(10);
-        }else{
+
             $areas = $areas->where('manager_id',$user->id)->paginate(10);
-        }
+
 
         return view('admin.map.listMapUser',compact('areas'));
     }
@@ -193,18 +171,12 @@ class MapController extends AdminController
     }
 
     public function addMapUser(){
-        if (auth()->user()->roles->first()['id'] != 1) {
-            abort(403);
-        }
 
         $users = User::all();
         return view('admin.map.addMapUser',compact('users'));
     }
 
     public function addMapUserPost(Request $request){
-        if (auth()->user()->roles->first()['id'] != 1) {
-            abort(403);
-        }
 
         $this->validate($request,[
             'manager_id' => 'required',
@@ -709,5 +681,113 @@ class MapController extends AdminController
         }
 
         return response()->json($response);
+    }
+    public function exportAgency() {
+        ini_set('max_execution_time', 300);
+        ini_set('memory_limit', -1);
+        $agents = Agent::all();
+        $exportUserArray = null;
+        foreach ($agents as $agent){
+            $exportUser['Mã số'] = $agent->code;
+            $exportUser['Tên đại lý'] = $agent->name;
+            $exportUser['Địa chỉ đại lý'] = $agent->address;
+
+            $manager = $agent->user;
+
+
+            $exportUser['NVKD'] = null;
+            $exportUser['Mã NV'] = null;
+            $exportUser['Giám sát']  = null;
+            $exportUser['Mã GS']  = null;
+            $exportUser['Trưởng vùng']  = null;
+            $exportUser['Mã TV']  = null;
+            $exportUser['Giám đốc vùng'] = null;
+            $exportUser['Mã GĐV'] = null;
+
+            if($manager->position == User::NVKD) {
+                $exportUser['NVKD'] = $manager->name;
+                $exportUser['Mã NV'] = $manager->code;
+            }
+            if($manager->position == User::GSV) {
+                $exportUser['Giám sát'] = $manager->name;
+                $exportUser['Mã GS'] = $manager->code;
+            }
+
+            if($manager->position == User::TV) {
+                $exportUser['Trưởng vùng'] = $manager->name;
+                $exportUser['Mã TV'] = $manager->code;
+            }
+            if($manager->position == User::GĐV) {
+                $exportUser['Giám đốc vùng'] = $manager->name;
+                $exportUser['Mã GĐV'] = $manager->code;
+            }
+            $m2 = $manager->manager;
+            while(true) {
+                if(empty($m2)) {
+                    break;
+                }
+                if($m2->position == User::NVKD) {
+                    $exportUser['NVKD'] = $m2->name;
+                    $exportUser['Mã NV'] = $m2->code;
+                }
+                if($m2->position == User::GSV) {
+                    $exportUser['Giám sát'] = $m2->name;
+                    $exportUser['Mã GS'] = $m2->code;
+                }
+                if($m2->position == User::TV) {
+                    $exportUser['Trưởng vùng'] = $m2->name;
+                    $exportUser['Mã TV'] = $m2->code;
+                }
+                if($m2->position == User::GĐV) {
+                    $exportUser['Giám đốc vùng'] = $m2->name;
+                    $exportUser['Mã GĐV'] = $m2->code;
+                    break;
+                }
+                $m2 = $m2->manager;
+            }
+            $exportUser['Thuộc tính']  = null;
+            $exportUser['Xếp hạng']  = null;
+            if($agent->attribute) {
+                if($agent->attribute == Agent::agentNew) {
+                    $exportUser['Thuộc tính'] = 'ĐL Mới';
+                }
+                if($agent->attribute == Agent::agentRival) {
+                    $exportUser['Thuộc tính'] = 'ĐL Đối thủ';
+                }
+            }
+            if($agent->rank) {
+                $rank = $agent->rank;
+                if ($rank == Agent::diamond) {
+                    $exportUser['Xếp hạng'] = 'Kim Cương';
+                }
+                if ($rank == Agent::gold) {
+                    $exportUser['Xếp hạng'] = 'Vàng';
+                }
+                if ($rank == Agent::silver) {
+                    $exportUser['Xếp hạng'] = 'Bạc';
+                }
+                if ($rank == Agent::unclassified) {
+                    $exportUser['Xếp hạng'] = 'Chưa xếp hạng';
+                }
+            }
+            $exportUserArray[] = $exportUser;
+        }
+        ob_end_clean();
+        ob_start();
+        Excel::create('agent_'.time(), function ($excel) use ($exportUserArray) {
+
+            $excel->sheet('agents', function ($sheet) use ($exportUserArray) {
+                $sheet->cell('A1:M1', function($cells) {
+                    // call cell manipulation methods
+                    $cells->setBackground('#242729');
+                    $cells->setFontColor('#ff8000');
+                    $cells->setFontWeight('bold');
+
+                });
+                $sheet->fromArray($exportUserArray);
+
+            });
+
+        })->download('xlsx');
     }
 }

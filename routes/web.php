@@ -125,6 +125,7 @@ Route::group(['middleware' => ['auth','language'],
             Route::get('/{id}/edit-map-user', ['as' => 'editMapUser', 'uses' => 'MapController@editMapUser']);
             Route::post('/{id}/edit-map-user', ['as' => 'editMapUser', 'uses' => 'MapController@editMapUserPost']);
             Route::post('/import-excel-agent', ['as' => 'importExcelAgent', 'uses' => 'MapController@importExcelAgent']);
+            Route::get('/export-excel-agent', ['as' => 'exportAgency', 'uses' => 'MapController@exportAgency']);
 
 
             Route::get('/add-agency', ['as' => 'addAgency', 'uses' => 'MapController@addAgency']);
@@ -155,6 +156,7 @@ Route::group(['middleware' => ['auth','language'],
             Route::get('/{agentId}/{month}/delete', ['as' => 'delete', 'uses' => 'SaleAgentController@delete']);
 
             Route::post('/import-excel-data-agent', ['as' => 'importExcelDataAgent', 'uses' => 'SaleAgentController@importExcelDataAgent']);
+            Route::post('/export-excel-data-agent', ['as' => 'exportExcelDataAgent', 'uses' => 'SaleAgentController@exportExcelDataAgent']);
 
         });
 

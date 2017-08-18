@@ -19,4 +19,7 @@ class GroupProduct extends Model
             ->addColumn('action', 'admin.group_products.datatables.action')
             ->make(true);
     }
+    public function product() {
+        return $this->hasMany(Product::class,'parent_id','id');
+    }
 }

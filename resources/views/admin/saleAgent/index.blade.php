@@ -13,6 +13,7 @@
                     <a href="{{route('Admin::saleAgent@add')}}" class="btn btn-primary"><i class="icon-add"></i> Thêm dữ liệu cho đại lý</a>
                     <a href="#import-product" class="btn btn-info" data-toggle="modal" id="btn-system-product">Thêm doanh số từ Excel</a>
                     <a href="{{asset('data_agent.xlsx')}}" class="btn btn-success"  id="btn-system-product">Mẫu</a>
+                    <a href="#export-product" class="btn btn-info" data-toggle="modal">Export Excel</a>
                 </div>
             </div>
 
@@ -54,7 +55,7 @@
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn dark btn-outline" data-dismiss="modal">Đóng</button>
-                                <button type="button" class="btn green" id = "import">Import</button>
+                                <button type="button" class="btn green" id="import">Import</button>
                             </div>
                         </form>
                     </div>
@@ -63,7 +64,42 @@
                 <!-- /.modal-dialog -->
             </div>
 
+            <div class="modal fade bs-modal-lg" id="export-product" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                            <h4 class="modal-title">Export Excel</h4>
+                        </div>
+                        <form method="POST" action="{{ route('Admin::saleAgent@exportExcelDataAgent') }}"
+                              enctype="multipart/form-data" id="import_form">
+                            {{ csrf_field() }}
+                            <div class="modal-body">
+                                <div class="row">
+                                    <div class="col-md-10" style="margin-bottom:10px">
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3">Thời gian</label>
+                                            <div class="col-md-8">
+                                                <input type="text" name ="month"  class="form-control monthPicker month-export" value="" />
+                                                <span id="month-export" class="error-import" style="color:red;"></span>
+                                            </div>
+                                        </div>
+                                    </div>
 
+                                </div>
+
+
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn dark btn-outline" data-dismiss="modal">Đóng</button>
+                                <button type="submit" class="btn green" id="export">Export</button>
+                            </div>
+                        </form>
+                    </div>
+                    <!-- /.modal-content -->
+                </div>
+                <!-- /.modal-dialog -->
+            </div>
         </div>
     </div>
 
@@ -183,6 +219,14 @@
                     }
                 }
             });
+        });
+        $('#export').on('click',function(e){
+           var month =  $('.month-export').val();
+           if(month == '') {
+               e.preventDefault();
+               $('#month-export').text('Vui lòng chọn tháng để export');
+           }
+
         });
 
     } );
