@@ -82,30 +82,58 @@
         <div class="portlet light ">
 
             <form method="post" id="geocoding_form">
+                <input type="hidden" name="type_search" value="" id="type_search"/>
                 <div class="row">
-                    <div class="col-md-2">
-                        <select class="search_type form-control">
-                            <option value="">-- Chọn loại {{ trans('home.search') }} --</option>
-                            <option value="1">Theo đại lý</option>
-                            <option value="2">Theo giám sát vùng </option>
-                            <option value="3">Theo trưởng vùng </option>
-                            <option value="4">Theo giám đốc vùng</option>
-                        </select>
-                    </div>
-                    <input type="hidden" name="type_search" value="" id="type_search"/>
-                    <div class="col-md-2">
-                        <select name="data_search" class="data_search form-control" id="locations" style="width:100%">
-                        </select>
-                    </div>
+                    @if($user->position != \App\Models\User::NVKD)
+                        <div class="col-md-2">
+                            {{--<select class="search_type form-control">--}}
+                                {{--<option value="">-- Chọn loại {{ trans('home.search') }} --</option>--}}
+                                {{--<option value="1">Theo đại lý</option>--}}
+                                {{--@if(auth()->user()->position != \App\Models\User::NVKD || auth()->user()->email == 'admin@gmail.com')--}}
+                                    {{--<option value="2">Theo giám sát vùng </option>--}}
+                                    {{--@if(auth()->user()->position == \App\Models\User::GDV || auth()->user()->position == \App\Models\User::TV  || auth()->user()->email == 'admin@gmail.com')--}}
+                                        {{--<option value="3">Theo trưởng vùng </option>--}}
+                                    {{--@endif--}}
+                                    {{--@if(auth()->user()->position == \App\Models\User::GDV || auth()->user()->email == 'admin@gmail.com')--}}
+                                        {{--<option value="4">Theo giám đốc vùng</option>--}}
+                                    {{--@endif--}}
+                                {{--@endif--}}
+                            {{--</select>--}}
 
-                    <div class="col-md-3">
-                        <input type="text" id="month" name="month" class="form-control monthPicker col-md-9"
-                               value="{{ old('month') ?: $month }}"/>
-                    </div>
 
-                    <div class="col-md-4">
-                        <button type="submit" class="btn btn-info">{{ trans('home.search') }}</button>
-                    </div>
+                                <select class="search_type form-control">
+                                    <option value="">-- Chọn loại {{ trans('home.search') }} --</option>
+                                    <option value="1">Theo đại lý</option>
+                                    <option value="2">Theo giám sát vùng </option>
+                                    <option value="3">Theo trưởng vùng </option>
+                                    <option value="4">Theo giám đốc vùng</option>
+                                </select>
+
+                        </div>
+
+                        <div class="col-md-2">
+                            <select name="data_search" class="data_search form-control" id="locations" style="width:100%">
+                            </select>
+                        </div>
+
+                        <div class="col-md-3">
+                            <input type="text" id="month" name="month" class="form-control monthPicker col-md-9"
+                                   value="{{ old('month') ?: $month }}"/>
+                        </div>
+
+                        <div class="col-md-4">
+                            <button type="submit" class="btn btn-info">{{ trans('home.search') }}</button>
+                        </div>
+                        @else
+                        <div class="col-md-3">
+                            <input type="text" id="month" name="month" class="form-control monthPicker col-md-9"
+                                   value="{{ old('month') ?: $month }}"/>
+                        </div>
+
+                        <div class="col-md-9">
+                            <button type="submit" class="btn btn-info">{{ trans('home.search') }}</button>
+                        </div>
+                    @endif
                 </div>
             </form>
 
@@ -422,138 +450,70 @@
                 }
             });
         });
+
+
         //map
-        var polygonArray = [];
-        map = new GMaps({
-            div: '#map',
-            lat: 21.0277644,
-            lng: 105.83415979999995,
-            zoom: 11,
-            fullscreenControl: true,
-            markerClusterer: function(map) {
-                markerCluster = new MarkerClusterer(map, [], {
-                    maxZoom: 11,
-                    imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'
-                });
-                return markerCluster;
-            }
-        });
-        var TotalBounds = new google.maps.LatLngBounds();
-                @if($locations)
-                @foreach($locations as $key => $location)
-                @php
-                    $locat = $location['address'];
-                    $border_color = '#333';
-                    $background_color = '#333';
-                    if($location['border_color']){
-                         $border_color = $location['border_color'];
-                    }
-                    if($location['background_color']){
-                         $background_color = $location['background_color'];
-                    }
-                @endphp
-        var c = "{{$locat->coordinates}}";
-        var coordinate = JSON.parse(c);
-        if (coordinate) {
-            var bounds = new google.maps.LatLngBounds();
-            for (i = 0; i < coordinate.length; i++) {
-                var c = coordinate[i];
-                bounds.extend(new google.maps.LatLng(c[0], c[1]));
-                TotalBounds.extend(new google.maps.LatLng(c[0], c[1]));
-            }
-            var path = coordinate;
-            map.setCenter(bounds.getCenter().lat(), bounds.getCenter().lng());
-            {{--var infoWindow{{$locat->id}} = new google.maps.InfoWindow({--}}
-                    {{--content: "<p>{{$locat->name}}</p>"--}}
-                    {{--});--}}
-                polygon = map.drawPolygon({
-                paths: path,
-                strokeColor: "{{$border_color}}",
-                strokeOpacity: 1,
-                strokeWeight: 1,
-                fillColor: "{{$background_color}}",
-                fillOpacity: 0.2,
-                {{--mouseover: function (clickEvent) {--}}
-                {{--var position = clickEvent.latLng;--}}
-                {{--infoWindow{{$locat->id}}.setPosition(position);--}}
-                {{--infoWindow{{$locat->id}}.open(map.map);--}}
-                {{--},--}}
-                {{--mouseout: function (clickEvent) {--}}
-                {{--if (infoWindow{{$locat->id}}) {--}}
-                {{--infoWindow{{$locat->id}}.close();--}}
-                {{--}--}}
-                {{--}--}}
-            });
-            polygonArray["{{$key}}"] = polygon;
-        }
-        map.drawOverlay({
-            lat: bounds.getCenter().lat(),
-            lng: bounds.getCenter().lng(),
-            content: '<div class="overlay">{{$locat->name}}</div>'
-        });
-                @endforeach
-                @endif
-        var markers = [];
-        @foreach($agents as $agent)
-        {{--var contentString = '<div id="content">' +--}}
-        {{--'<p id="name">' + "{{$agent->name}}" + '</p>' +--}}
-        {{--'<p id="manager">' + '{{$agent->user->email}}' + '</p>' +--}}
-        {{--'</div>';--}}
-        //        var infoWindow = new google.maps.InfoWindow({
-        //            content: contentString
-        //        });
-        var marker = map.addMarker({
-            lat: "{{$agent->lat}}",
-            lng: "{{$agent->lng}}",
-            title: "{{$agent->name}}",
-        });
-        map.drawOverlay({
-            lat: "{{$agent->lat}}",
-            lng: "{{$agent->lng}}",
-            content: '<div class="overlay_agents">{{$agent->name}}</div>'
-        });
-        markers.push(marker);
-        /* Change markers on zoom */
-        @endforeach
-        map.fitBounds(TotalBounds);
-        map.panToBounds(TotalBounds);
-        $('.overlay_agents').css({"display":"none"});
-        map.addListener('zoom_changed', function () {
-            var zoom = map.getZoom();
-            if (zoom < 10) {
-                $('.overlay_agents').css({"display":"none"});
-                $.each(map.markers,function(){this.setMap(null)});
-            } else {
-                $('.overlay_agents').css({"display":"block"});
-                $.each(map.markers,function(){this.setMap(map.map)});
-            }
-        });
-//        //cluster function to do stuff
-//        function multiChoice(clickedCluster)
-//        {
-//            //clusters markers
-//            var markers = clickedCluster.getMarkers();
-//            //console check
-//            console.log(clickedCluster);
-//            console.log(markers);
-//            if (markers.length > 1)
-//            {
-//                //content of info window
-//                var infowindow = new google.maps.InfoWindow({
-//                    content: ''+
-//                    '<p>'+markers.length+' = length</p>'+
-//                    '<p>testing blah blah</p>',
-//                    position: clickedCluster.center_
+        var type_search = 'gdv';
+        @if ($user->position == \App\Models\User::NVKD)
+            type_search = 'nvkd';
+        @endif
+
+        @if($user->position == \App\Models\User::GSV)
+            type_search == 'gsv';
+        @endif
+
+        @if($user->position == \App\Models\User::TV)
+            type_search == 'tv';
+        @endif
+
+
+
+        alert(type_search);
+        $.ajax({
+            type: "GET",
+            url: "{{ route('Admin::map@dataSearch') }}",
+            data: {
+                type_search : type_search,
+                data_search : '{{  $user->id }}',
+                month : '{{ $month }}',
+            },
+            cache: false,
+            success: function(data){
+
+//                map = new GMaps({
+//                    div: '#map',
+//                    lat: 21.0277644,
+//                    lng: 105.83415979999995,
+//                    width: "100%",
+//                    height: '500px',
+//                    zoom: 8,
+//                    fullscreenControl: true,
 //                });
-//
-//                //show the window
-//                infowindow.open(clickedCluster.map_);
-//
-//                return false;
-//            }
-//            return true;
-//        }
+//                var button ='<button id="swift" class="btn btn-primary">Full mode</button>';
+//                map.addControl({
+//                    position: 'bottom_left',
+//                    content: button,
+//                });
+                if (type_search == 'nvkd') {
+
+                    showDataAgents(data);
+                }
+                if (type_search == 'gsv') {
+                    showDataSales(data);
+                }
+                if (type_search == 'tv') {
+                    showDataSales(data);
+                }
+                if (type_search == 'gdv' ) {
+                    showDataSaleGDV(data);
+                }
+            }
+        });
+
+
+
         // search
+
         $( ".search_type" ).change(function() {
             var search_type = $(this).val();
             if (search_type == 1) {
@@ -569,6 +529,7 @@
         $('#geocoding_form').submit(function(e){
             e.preventDefault();
             var type_search = $("#type_search").val();
+
             $.ajax({
                 type: "GET",
                 url: "{{ route('Admin::map@dataSearch') }}",
@@ -589,8 +550,10 @@
                         position: 'bottom_left',
                         content: button,
                     });
-                    if (type_search == 'agents') {
-                        showDataAgents(data);
+
+                    if (type_search == 'agents' || type_search === undefined || type_search == null || type_search.length <= 0) {
+                        console.log(data);
+                       showDataAgents(data);
                     }
                     if (type_search == 'gsv') {
                         showDataSales(data);
@@ -604,6 +567,7 @@
                 }
             });
         });
+
         var listSelectProducts = [];
         function getListAreas() {
             $("#type_search").val('areas');
@@ -701,6 +665,7 @@
                 });
             });
         }
+
         function getListGSV() {
             $("#type_search").val('gsv');
             $(".data_search").select2({
@@ -767,8 +732,6 @@
             var area_name = '';
             var polygonArray = [];
 
-
-
             $.map(data.locations, function (location, index) {
                 var item = location.area;
                 var c = item.coordinates;
@@ -804,7 +767,7 @@
             } else {
                 postion = 'GS';
             }
-            var gmarkers = [];
+
             $.map(data.listAgents, function (item) {
                 var agent = item.agent;
                 var user = agent.user;
@@ -832,13 +795,6 @@
                         infoWindow.open(map.map);
                     }
                 });
-                gmarkers.push(marker);
-            });
-
-            var button ='<a id="show_info" javascript:google.maps.event.trigger(gmarkers[0],"click"); class="btn btn-danger">Show Info</a>';
-            map.addControl({
-                position: 'bottom_left',
-                content: button,
             });
 
             var tableSales =
@@ -889,6 +845,7 @@
             });
         }
         function showDataSaleGDV(data) {
+
             var polygonArray = [];
             var position = '';
             var center = new google.maps.LatLng(21.0277644, 105.83415979999995);
@@ -1074,6 +1031,7 @@
                 }
             });
         }
+
         function showDataAgents(data) {
             listSelectProdcuts = [];
             map = new GMaps({

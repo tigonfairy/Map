@@ -48,10 +48,16 @@ class ApiController extends AdminController
     public function getGSV(Request $request){
 
         $users = User::where('position', User::GSV);
+        $user = auth()->user();
 
         if($request->input('q')){
             $users = $users->where('name','like','%'.$request->input('q').'%');
         }
+
+        if ($user->position == User::GSV) {
+            $users->where('id', $user->id);
+        }
+
         $users = $users->orderBy('id','desc')->limit(50)->get();
         return $users;
     }
@@ -89,14 +95,20 @@ class ApiController extends AdminController
     public function getListAgents(Request $request){
 
         $user = auth()->user();
-        $role = $user->roles()->first();
 
         $agents = Agent::select('*');
         if($request->input('q')){
             $key = $request->input('q');
             $agents = $agents->where('name','like','%'.$key.'%');
         }
-        $agents = $agents->paginate(10);
+        if ($user->position == User::NVKD) {
+            $agents->where('manager_id', $user->id);
+        } else if ($user->position == User::GSV) {
+            $userOwns = $user->owners()->get();
+            $userOwns->push($user);
+            $listIds = $userOwns->pluck('id')->toArray();
+            $agents->whereIn('manager_id', $listIds);
+        }
 //        if($role->id == 1){
 //            $agents = $agents->paginate(10);
 //        }else{
@@ -106,6 +118,9 @@ class ApiController extends AdminController
 //            $agents = Agent::whereIn('manager_id', $managerIds);
 //            $agents = $agents->paginate(10);
 //        }
+
+
+        $agents = $agents->paginate(10);
         return $agents;
     }
 
