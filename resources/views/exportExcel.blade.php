@@ -35,7 +35,10 @@
     </style>
 </head>
 <body>
-@php $data = [] @endphp
+@php $data = [];
+$index = 0;
+
+@endphp
 <table class="ht-table-data">
     <thead>
     <tr>
@@ -49,12 +52,22 @@
         <th align="center" valign="middle" width="10">TT</th>
         @foreach($groupProduct as $group)
             <th align="center" valign="middle" width="10">{{$group->code}}</th>
-            @php $product = $group->product()->where('level',1)->get();@endphp
+
+            @php
+                $array = [];
+                $product = $group->product()->where('level',1)->get();
+            @endphp
+
             @if($product->count())
                 @foreach($product as $p)
+                    @php $array[] = $p->id @endphp
                     <th align="center" valign="middle" width="10">{{$p->code}}</th>
                 @endforeach
-                @endif
+            @endif
+            @php $data[] = [
+                'group' => $group->id,
+                'product' => $array
+            ]; @endphp
         @endforeach
 
     </tr>
@@ -76,18 +89,15 @@
                 @endforeach
             @endif
         @endforeach
-
-
-
     </tr>
     </thead>
     <tbody>
-    <tr class="ht-highlight">
+    {{--<tr class="ht-highlight">--}}
 
-    </tr>
-    <tr>
+    {{--</tr>--}}
+    @php
+            @endphp
 
-    </tr>
     </tbody>
 </table>
 </body>
