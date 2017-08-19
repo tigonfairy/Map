@@ -48,10 +48,19 @@ class ApiController extends AdminController
     public function getGSV(Request $request){
 
         $users = User::where('position', User::GSV);
+        $user = auth()->user();
 
         if($request->input('q')){
             $users = $users->where('name','like','%'.$request->input('q').'%');
         }
+
+        if ($user->position == User::TV || $user->position == User::GĐV ) {
+            $userOwns = $user->owners()->get();
+            $userOwnIds = $userOwns->where('position', User::GSV)->pluck('id')->toArray();
+
+            $users->whereIn('id', $userOwnIds);
+        }
+
         $users = $users->orderBy('id','desc')->limit(50)->get();
         return $users;
     }
@@ -68,18 +77,18 @@ class ApiController extends AdminController
 
     public function getListTV(Request $request){
 
-//        $user = auth()->user();
-//        $role = $user->roles()->first();
-//
-//        $users = User::whereHas('roles', function ($query) {
-//            $query->where('role_id', 3);
-//        });
-//
-
         $users = User::where('position', User::TV);
+        $user = auth()->user();
 
         if($request->input('q')){
             $users = $users->where('name','like','%'.$request->input('q').'%');
+        }
+
+        if ($user->position == User::GĐV ) {
+            $userOwns = $user->owners()->get();
+            $userOwnIds = $userOwns->where('position', User::TV)->pluck('id')->toArray();
+
+            $users->whereIn('id', $userOwnIds);
         }
 
         $users = $users->orderBy('id','desc')->limit(50)->get();
@@ -88,24 +97,65 @@ class ApiController extends AdminController
 
     public function getListAgents(Request $request){
 
-        $user = auth()->user();
-        $role = $user->roles()->first();
+        $account = auth()->user();
 
         $agents = Agent::select('*');
         if($request->input('q')){
             $key = $request->input('q');
             $agents = $agents->where('name','like','%'.$key.'%');
         }
+       if ($account->position == User::GSV) {
+            $userOwns = $account->owners()->get();
+            $userOwns->push($account);
+            $listIds = $userOwns->pluck('id')->toArray();
+            $agents->whereIn('manager_id', $listIds);
+        } else if ($account->position == User::TV) {
+            $userOwns = $account->owners()->get();
+            foreach ($userOwns as $user) {
+                if (count($user->owners) > 0) {
+                    foreach ($user->owners as $u) {
+                        $userOwns->push($u);
+                    }
+                } else {
+                    $userOwns->push($user);
+                }
+            }
+            $userOwns->push($account);
+
+            $listIds = $userOwns->pluck('id')->toArray();
+
+            $agents->whereIn('manager_id', $listIds);
+
+        } else if ($account->position == User::GĐV) {
+            $userGSV = $account->owners()->get();
+
+            $listIds = [];
+            foreach ($userGSV as $user) {
+                if ($user->position == User::GSV) { // gsv
+                    if (count($user->owners) > 0) {
+
+                        foreach ($user->owners as $us) {
+                            $listIds[] = $us->id;
+                        }
+                    }
+                } else if ($user->position == User::TV) { // tv
+                    if (count($user->owners) > 0) {
+                        foreach ($user->owners as $u) {
+                            if (count($u->owners) > 0) {
+                                $listIds = $u->owners->pluck('id')->toArray();
+                            }
+                            $listIds[] = $u->id;
+                        }
+                    }
+                }
+                $listIds[] = $user->id;
+            }
+
+            $agents = Agent::whereIn('manager_id', $listIds);
+
+        }
+
         $agents = $agents->paginate(10);
-//        if($role->id == 1){
-//            $agents = $agents->paginate(10);
-//        }else{
-//            $userOwns = $user->manager()->get();
-//            $userOwns->push($user);
-//            $managerIds = $userOwns->pluck('id')->toArray();
-//            $agents = Agent::whereIn('manager_id', $managerIds);
-//            $agents = $agents->paginate(10);
-//        }
         return $agents;
     }
 

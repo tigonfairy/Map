@@ -375,32 +375,19 @@ class MapController extends AdminController
     public function dataSearch(Request $request)
     {
 
-        $typeSearch = $request->input('type_search');
-        $dataSearch = $request->input('data_search');
+        $typeSearch =$request->input('type_search');
+        $dataSearch = $request->has('data_search') ? $request->input('data_search') : 0;
         $month = $request->input('month');
 
-//        if($typeSearch == 'areas') {
-//            $area = Area::findOrFail($dataSearch);
-//            $listIds=[];
-//            $listIds = $area->subArea()->get()->pluck('id')->toArray();
-//            $listIds[] = $dataSearch;
-//            $locations = $area->address;
-//            $agents = Agent::whereIn('area_id',$listIds)->with('user')->get();
-//
-//            if($agents){
-//                $idAgent = clone $agents;
-//                $idAgent = $idAgent->pluck('id')->toArray();
-//            }
-//
-//            return response()->json([
-//                'area' =>  $area,
-//                'locations' =>  $locations,
-//                'agents' =>  $agents,
-//            ]);
-//        }
+        if ($typeSearch == 'agents' || $typeSearch == 'nvkd' || $typeSearch == '') {
 
-        if ($typeSearch == 'agents') {
-            $agent = Agent::findOrFail($dataSearch);
+            if ($typeSearch == 'nvkd' || $dataSearch == 0 || $typeSearch == '') {
+                $user = auth()->user();
+                $agent = Agent::where('manager_id', $user->id)->first();
+            } else {
+                $agent = Agent::findOrFail($dataSearch);
+            }
+
             $totalSales = 0;
             $saleProducts = 0;
             $listProducts = [];
@@ -439,26 +426,15 @@ class MapController extends AdminController
                 'capacity' => $capacity
             ];
 
-
-//            $areas = $productParents->map(function ($product) use($agent, $products, $month, $totalSales, $saleProducts) {
-//
-//                $product->getChildren->map(function ($p) use($agent, $products, $month, $totalSales, $saleProducts) {
-//                   $saleProducts += SaleAgent::where('agent_id', $agent->id)->where('product_id', $p->id)->where('month', $month)->pluck('sales_real')->first();
-//                });
-//                dd($saleProducts);
-//            });
-
-//            $area=$agent->area;
             $user = $agent->user;
             $gsv = $user->manager;
             $gdv = $gsv->manager;
-//            $locations=$area->address;
 
             return response()->json([
                 'capacity' => $capacity,
                 'user' => $user,
-                'gsv' =>  $gsv,
-                'gdv' =>  $gdv,
+                'gsv' => $gsv,
+                'gdv' => $gdv,
                 'agents' => $agent,
                 'listProducts' => $listProducts
             ]);
@@ -620,6 +596,7 @@ class MapController extends AdminController
                 }
                 $listIds[] = $user->id;
                 $agents = Agent::whereIn('manager_id', $listIds)->with('user')->get();
+
                 foreach ($agents as $agent) {
                     $sales = SaleAgent::where('agent_id', $agent->id)->where('month', $month)->select('sales_real', 'capacity')->get();
 
@@ -672,6 +649,30 @@ class MapController extends AdminController
                 'capacity' => $capacity,
                 'percent' => round($totalSaleGDV / $capacity, 2)
             ]);
+        }
+
+        if ($typeSearch == 'admin') {
+            $users = User::all();
+            $listIds = $users->pluck('id')->toArray();
+            foreach ($users as $user) {
+                foreach ($user->area as $key => $area) {
+                    foreach ($area->address as $k => $address) {
+                        $locations[] = [
+                            'border_color' => $area->border_color,
+                            'background_color' => $area->background_color,
+                            'area' => $address
+                        ];
+                    }
+                }
+            }
+
+            $agents = Agent::whereIn('manager_id', $listIds)->with('user')->get();
+
+            return response()->json([
+                'locations' => $locations,
+                'agents' => $agents
+            ]);
+
         }
     }
 
