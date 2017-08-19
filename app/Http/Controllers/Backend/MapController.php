@@ -379,9 +379,9 @@ class MapController extends AdminController
         $dataSearch = $request->has('data_search') ? $request->input('data_search') : 0;
         $month = $request->input('month');
 
-        if ($typeSearch == 'agents' || $typeSearch == 'nvkd') {
+        if ($typeSearch == 'agents' || $typeSearch == 'nvkd' || $typeSearch == '') {
 
-            if ($typeSearch == 'nvkd' || $dataSearch == 0) {
+            if ($typeSearch == 'nvkd' || $dataSearch == 0 || $typeSearch == '') {
                 $user = auth()->user();
                 $agent = Agent::where('manager_id', $user->id)->first();
             } else {
@@ -640,7 +640,6 @@ class MapController extends AdminController
                 }
             }
 
-
             return response()->json([
                 'user' => $userGdv,
                 'result' => $data,
@@ -650,6 +649,30 @@ class MapController extends AdminController
                 'capacity' => $capacity,
                 'percent' => round($totalSaleGDV / $capacity, 2)
             ]);
+        }
+
+        if ($typeSearch == 'admin') {
+            $users = User::all();
+            $listIds = $users->pluck('id')->toArray();
+            foreach ($users as $user) {
+                foreach ($user->area as $key => $area) {
+                    foreach ($area->address as $k => $address) {
+                        $locations[] = [
+                            'border_color' => $area->border_color,
+                            'background_color' => $area->background_color,
+                            'area' => $address
+                        ];
+                    }
+                }
+            }
+
+            $agents = Agent::whereIn('manager_id', $listIds)->with('user')->get();
+
+            return response()->json([
+                'locations' => $locations,
+                'agents' => $agents
+            ]);
+
         }
     }
 

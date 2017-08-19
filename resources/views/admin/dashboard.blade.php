@@ -86,27 +86,18 @@
                 <div class="row">
                     @if($user->position != \App\Models\User::NVKD)
                         <div class="col-md-2">
-                            {{--<select class="search_type form-control">--}}
-                                {{--<option value="">-- Chọn loại {{ trans('home.search') }} --</option>--}}
-                                {{--<option value="1">Theo đại lý</option>--}}
-                                {{--@if(auth()->user()->position != \App\Models\User::NVKD || auth()->user()->email == 'admin@gmail.com')--}}
-                                    {{--<option value="2">Theo giám sát vùng </option>--}}
-                                    {{--@if(auth()->user()->position == \App\Models\User::GDV || auth()->user()->position == \App\Models\User::TV  || auth()->user()->email == 'admin@gmail.com')--}}
-                                        {{--<option value="3">Theo trưởng vùng </option>--}}
-                                    {{--@endif--}}
-                                    {{--@if(auth()->user()->position == \App\Models\User::GDV || auth()->user()->email == 'admin@gmail.com')--}}
-                                        {{--<option value="4">Theo giám đốc vùng</option>--}}
-                                    {{--@endif--}}
-                                {{--@endif--}}
-                            {{--</select>--}}
-
-
                                 <select class="search_type form-control">
                                     <option value="">-- Chọn loại {{ trans('home.search') }} --</option>
                                     <option value="1">Theo đại lý</option>
-                                    <option value="2">Theo giám sát vùng </option>
-                                    <option value="3">Theo trưởng vùng </option>
-                                    <option value="4">Theo giám đốc vùng</option>
+                                    @if($user->position != \App\Models\User::GSV)
+                                        <option value="2">Theo giám sát vùng </option>
+                                    @endif
+                                    @if($user->position != \App\Models\User::TV && $user->position != \App\Models\User::GSV)
+                                        <option value="3">Theo trưởng vùng </option>
+                                    @endif
+                                    @if(($user->position != \App\Models\User::GĐV && $user->position != \App\Models\User::GSV && $user->position != \App\Models\User::TV))
+                                        <option value="4">Theo giám đốc vùng</option>
+                                    @endif
                                 </select>
 
                         </div>
@@ -124,7 +115,8 @@
                         <div class="col-md-4">
                             <button type="submit" class="btn btn-info">{{ trans('home.search') }}</button>
                         </div>
-                        @else
+                    @else
+
                         <div class="col-md-3">
                             <input type="text" id="month" name="month" class="form-control monthPicker col-md-9"
                                    value="{{ old('month') ?: $month }}"/>
@@ -133,6 +125,7 @@
                         <div class="col-md-9">
                             <button type="submit" class="btn btn-info">{{ trans('home.search') }}</button>
                         </div>
+
                     @endif
                 </div>
             </form>
@@ -233,17 +226,7 @@
                 $(this).datepicker('setDate', new Date(year, month, 1));
             }
         });
-        $('.monthPicker').datepicker({
-            changeMonth: true,
-            changeYear: true,
-            showButtonPanel: true,
-            dateFormat: 'mm-yy',
-            onClose: function (dateText, inst) {
-                var month = $("#ui-datepicker-div .ui-datepicker-month :selected").val();
-                var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val();
-                $(this).datepicker('setDate', new Date(year, month, 1));
-            }
-        });
+
         //chart cot
         Highcharts.chart('container', {
             chart: {
@@ -451,24 +434,21 @@
             });
         });
 
-
         //map
-        var type_search = 'gdv';
+        var type_search = '';
+
         @if ($user->position == \App\Models\User::NVKD)
             type_search = 'nvkd';
+        @elseif($user->position == \App\Models\User::GSV)
+            type_search = 'gsv';
+        @elseif($user->position == \App\Models\User::TV)
+            type_search = 'tv';
+        @elseif($user->position == \App\Models\User::GĐV)
+            type_search = 'gdv';
+        @else
+            type_search = 'admin';
         @endif
 
-        @if($user->position == \App\Models\User::GSV)
-            type_search == 'gsv';
-        @endif
-
-        @if($user->position == \App\Models\User::TV)
-            type_search == 'tv';
-        @endif
-
-
-
-        alert(type_search);
         $.ajax({
             type: "GET",
             url: "{{ route('Admin::map@dataSearch') }}",
@@ -480,22 +460,17 @@
             cache: false,
             success: function(data){
 
-//                map = new GMaps({
-//                    div: '#map',
-//                    lat: 21.0277644,
-//                    lng: 105.83415979999995,
-//                    width: "100%",
-//                    height: '500px',
-//                    zoom: 8,
-//                    fullscreenControl: true,
-//                });
-//                var button ='<button id="swift" class="btn btn-primary">Full mode</button>';
-//                map.addControl({
-//                    position: 'bottom_left',
-//                    content: button,
-//                });
-                if (type_search == 'nvkd') {
+                map = new GMaps({
+                    div: '#map',
+                    lat: 21.0277644,
+                    lng: 105.83415979999995,
+                    width: "100%",
+                    height: '500px',
+                    zoom: 8,
+                    fullscreenControl: true,
+                });
 
+                if (type_search == 'nvkd') {
                     showDataAgents(data);
                 }
                 if (type_search == 'gsv') {
@@ -506,6 +481,9 @@
                 }
                 if (type_search == 'gdv' ) {
                     showDataSaleGDV(data);
+                }
+                if (type_search == 'admin' ) {
+                    showDataSaleAdmin(data);
                 }
             }
         });
@@ -542,7 +520,7 @@
                         lng: 105.83415979999995,
                         width: "100%",
                         height: '500px',
-                        zoom: 8,
+                        zoom: 7,
                         fullscreenControl: true,
                     });
                     var button ='<button id="swift" class="btn btn-primary">Full mode</button>';
@@ -552,7 +530,7 @@
                     });
 
                     if (type_search == 'agents' || type_search === undefined || type_search == null || type_search.length <= 0) {
-                        console.log(data);
+
                        showDataAgents(data);
                     }
                     if (type_search == 'gsv') {
@@ -745,7 +723,7 @@
                         bounds.extend(new google.maps.LatLng(c[0], c[1]));
                     }
                     var path = coordinate;
-                    map.setCenter(bounds.getCenter().lat(), bounds.getCenter().lng());
+//                    map.setCenter(bounds.getCenter().lat(), bounds.getCenter().lng());
                     polygon = map.drawPolygon({
                         paths: path,
                         strokeColor: border_color,
@@ -898,27 +876,14 @@
                     maxZoom: 15,
                     imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'
                 });
-//                var mapLabel = new MapLabel({
-//                    text: '<p style="font-size: 12px">' + item.gsv + '</p>' ,
-//                    position: new google.maps.LatLng(markers[0].getPosition().lat(),  markers[0].getPosition().lng()),
-//                    map: map,
-//                    fontSize: 35,
-//                    align: 'right'
-//                });
-//                mapLabel.set('position', new google.maps.LatLng(markers[0].getPosition().lat(),  markers[0].getPosition().lng()));
+
                 var customTxt =
                     '<div class="customBox">' +
                     '<p class="gsv">' + item.gsv + ' - %TT ' + item.totalSales + '/' + item.capacity + '=' +  item.percent + '</p>' +
                     '</div>';
                 txt = new TxtOverlay(new google.maps.LatLng(markers[0].getPosition().lat(),  markers[0].getPosition().lng()), customTxt, "customBox", map);
             });
-//            var customTxt =
-//                '<div class="customBox">' +
-//                '<p class="gsv">' + data.user.name + ' - %TT ' + data.totalSales + '/' + data.capacity + '=' +  data.percent + '</p>' +
-//                '</div>';
-//            txt = new TxtOverlay(position, customTxt, "customBox", map);
-//            tableSales.index = 1;
-//            map.controls[google.maps.ControlPosition.BOTTOM_CENTER].push(tableSales[0]);
+
             var myTitle = document.createElement('h3');
             myTitle.style.color = 'red';
             myTitle.innerHTML = data.user.name + ' - %TT ' + data.totalSales + '/' + data.capacity + '=' +  data.percent  + "%";
@@ -1120,6 +1085,50 @@
             });
             $.each(list_products, function( index, value ) {
                 listSelectProducts.push(value);
+            });
+        }
+
+        function showDataSaleAdmin(data) {
+            console.log(data);
+            var polygonArray = [];
+
+            $.map(data.locations, function (location, index) {
+                var item = location.area;
+                var c = item.coordinates;
+                var coordinate = JSON.parse(c);
+                var border_color = location.border_color;
+                var background_color = location.background_color;
+                if (coordinate) {
+                    var bounds = new google.maps.LatLngBounds();
+                    for (i = 0; i < coordinate.length; i++) {
+                        var c = coordinate[i];
+                        bounds.extend(new google.maps.LatLng(c[0], c[1]));
+                    }
+                    var path = coordinate;
+//                    map.setCenter(bounds.getCenter().lat(), bounds.getCenter().lng());
+                    polygon = map.drawPolygon({
+                        paths: path,
+                        strokeColor: border_color,
+                        strokeOpacity: 1,
+                        strokeWeight: 1,
+                        fillColor: background_color,
+                        fillOpacity: 0.4,
+                    });
+                    polygonArray[item.id] = polygon;
+                }
+            });
+
+            $.map(data.agents, function (item) {
+                var marker = map.addMarker({
+                    lat:  item.lat,
+                    lng:  item.lng,
+                    title:   item.name,
+//                    infoWindow : infoWindow,
+//                    click: function (e) {
+//                        infoWindow.setPosition({lat: e.position.lat(), lng: e.position.lng()});
+//                        infoWindow.open(map.map);
+//                    }
+                });
             });
         }
         $(document).on('change', '#choose_product', function() {
