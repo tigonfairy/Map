@@ -610,6 +610,7 @@ class MapController extends AdminController
             $listAgents = [];
             $capacity = 0;
             $data = [];
+            $dataGdv = [];
             $locations = [];
             $userGdv = User::findOrFail($dataSearch);
             $userGSV = $userGdv->owners()->get();
@@ -617,25 +618,27 @@ class MapController extends AdminController
             foreach ($userGSV as $user) {
                 if ($user->position == User::GSV) { // gsv
                     if (count($user->owners) > 0) {
-                        $listIds = $user->owners->pluck('id')->toArray();
-                        $listIds[] = $user->id;
+                        foreach ($user->owners as $u1) {
+                            $listIds[] = $u1->id;
+                        }
                     }
                 } else if ($user->position == User::TV) {
                     if (count($user->owners) > 0) {
-                        foreach ($user->owners as $u) {
-                            if (count($u->owners) > 0) {
-                                $listIds = $u->owners->pluck('id')->toArray();
+                        foreach ($user->owners as $u2) {
+                            if (count($u2->owners) > 0) {
+                                foreach ($u2->owners as $u3) {
+                                    $listIds[] = $u3->id;
+                                }
                             }
-                            $listIds[] = $u->id;
+                            $listIds[] = $u2->id;
                         }
                     }
                 }
                 $listIds[] = $user->id;
-                $agents = Agent::whereIn('manager_id', $listIds)->with('user')->get();
 
+                $agents = Agent::whereIn('manager_id', $listIds)->with('user')->get();
                 foreach ($agents as $agent) {
                     $sales = SaleAgent::where('agent_id', $agent->id)->where('month', $month)->select('sales_real', 'capacity')->get();
-
                     foreach ($sales as $sale) {
                         $saleAgents += $sale->sales_real;
                         $capacity = isset($sale->capacity) ?  $sale->capacity : 1;
@@ -652,7 +655,6 @@ class MapController extends AdminController
                 }
                 $listIds = [];
                 $totalSaleGDV += $totalSaleGSV;
-
                 $data[] = [
                     'gsv' => $user->name,
                     'agents' => $agents,
@@ -661,10 +663,8 @@ class MapController extends AdminController
                     'percent' => round($totalSaleGSV / $capacity, 2)
                 ];
                 $totalSaleGSV = 0;
-
                 // area
                 $areas = $user->area()->get();
-
                 foreach ($areas as $key => $area) {
                     foreach ($area->address as $k => $address) {
                         $locations[] = [
@@ -676,9 +676,31 @@ class MapController extends AdminController
                 }
             }
 
+            $agents = Agent::where('manager_id', $userGdv->id)->get();
+            if (count($agents) > 0) {
+                foreach ($agents as $agent) {
+                    $sales = SaleAgent::where('agent_id', $agent->id)->where('month', $month)->select('sales_real', 'capacity')->get();
+                    $saleAgents = 0;
+                    foreach ($sales as $sale) {
+                        $saleAgents += $sale->sales_real;
+                        $capacity = isset($sale->capacity) ? $sale->capacity : 1;
+                    }
+                    $capacity = $capacity == 0 ? 1 : $capacity;
+                    $dataGdv[] = [
+                        'gsv' => $userGdv->name,
+                        'agents' => $agent,
+                        'totalSales' => $saleAgents,
+                        'capacity' => $capacity,
+                        'percent' => round($saleAgents / $capacity, 2)
+                    ];
+                    $totalSaleGDV += $saleAgents;
+                }
+            }
+
             return response()->json([
                 'user' => $userGdv,
                 'result' => $data,
+                'resultGdv' => $dataGdv,
                 'locations' => $locations,
                 'listAgents' => $listAgents,
                 'totalSales' => $totalSaleGDV,
@@ -689,29 +711,49 @@ class MapController extends AdminController
 
         if ($typeSearch == 'admin') {
             $userGDVs = User::where('position', User::GĐV)->get();
+            $data = [];
+            $locations = [];
 
             foreach ($userGDVs as $gdv) {
                 $totalSaleGDV = 0;
-
+                $listAgents = [];
                 foreach ($gdv->owners as $user) {
                     $totalSaleGSV = 0;
-                        if ($user->position == User::GSV) { // gsv
-                            if (count($user->owners) > 0) {
-                                $listIds = $user->owners->pluck('id')->toArray();
-                                $listIds[] = $user->id;
-                            }
-                        } else if ($user->position == User::TV) {
-                            if (count($user->owners) > 0) {
-                                foreach ($user->owners as $u) {
-                                    if (count($u->owners) > 0) {
-                                        $listIds = $u->owners->pluck('id')->toArray();
+                    if ($user->position == User::GSV) { // gsv
+                        if (count($user->owners) > 0) {
+                           foreach ($user->owners as $u1) {
+                               $listIds[] = $u1->id;
+                           }
+                        }
+                    } else if ($user->position == User::TV) {
+                        if (count($user->owners) > 0) {
+                            foreach ($user->owners as $u2) {
+                                if (count($u2->owners) > 0) {
+                                    foreach ($u2->owners as $u3) {
+                                        $listIds[] = $u3->id;
                                     }
-                                    $listIds[] = $u->id;
                                 }
+                                $listIds[] = $u2->id;
                             }
                         }
-                        $listIds[] = $user->id;
+                    }
+                    $listIds[] = $user->id;
 
+                    // area
+                    $areas = $user->area()->get();
+
+                    foreach ($areas as $key => $area) {
+                        foreach ($area->address as $k => $address) {
+                            $locations[] = [
+                                'border_color' => $area->border_color,
+                                'background_color' => $area->background_color,
+                                'area' => $address
+                            ];
+                        }
+                    }
+                }
+
+                $listIds[] = $gdv->id;
                         $agents = Agent::whereIn('manager_id', $listIds)->with('user')->get();
                         $saleAgents = 0;
                         foreach ($agents as $agent) {
@@ -734,58 +776,19 @@ class MapController extends AdminController
                         $listIds = [];
                         $totalSaleGDV += $totalSaleGSV;
 
-//                        $data[] = [
-//                            'gsv' => $user->name,
-//                            'agents' => $agents,
-//                            'totalSales' => $totalSaleGSV,
-//                            'capacity' => $capacity,
-//                            'percent' => round($totalSaleGSV / $capacity, 2)
-//                        ];
+                    $data[] = [
+                        'gdv' => $gdv->name,
+                        'agents' => $agents,
+                        'totalSales' => $totalSaleGDV,
+                        'capacity' => $capacity,
+                        'percent' => round($totalSaleGDV / $capacity, 2)
+                    ];
 
-
-                        // area
-                        $areas = $user->area()->get();
-
-                        foreach ($areas as $key => $area) {
-                            foreach ($area->address as $k => $address) {
-                                $locations[] = [
-                                    'border_color' => $area->border_color,
-                                    'background_color' => $area->background_color,
-                                    'area' => $address
-                                ];
-                            }
-                        }
                 }
 
-                $data[] = [
-                    'gdv' => $gdv->name,
-                    'agents' => $agents,
-                    'totalSales' => $totalSaleGDV,
-                    'capacity' => $capacity,
-                    'percent' => round($totalSaleGDV / $capacity, 2)
-                ];
-                dd($data);
-            }
-
-
-//            $listIds = $users->pluck('id')->toArray();
-//            foreach ($users as $user) {
-//                foreach ($user->area as $key => $area) {
-//                    foreach ($area->address as $k => $address) {
-//                        $locations[] = [
-//                            'border_color' => $area->border_color,
-//                            'background_color' => $area->background_color,
-//                            'area' => $address
-//                        ];
-//                    }
-//                }
-//            }
-//
-//            $agents = Agent::whereIn('manager_id', $listIds)->with('user')->get();
-
             return response()->json([
+                'result' => $data,
                 'locations' => $locations,
-                'agents' => $agents
             ]);
 
         }

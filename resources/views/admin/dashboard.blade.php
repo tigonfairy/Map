@@ -833,7 +833,6 @@
             });
         }
         function showDataSaleGDV(data) {
-
             var polygonArray = [];
             var position = '';
             var center = new google.maps.LatLng(21.0277644, 105.83415979999995);
@@ -873,6 +872,7 @@
                     polygonArray[item.id] = polygon;
                 }
             });
+
             $.map(data.result, function (item) {
                 var agents = item.agents;
                 var markers = [];
@@ -895,6 +895,35 @@
                     '</ul>' +
                     '</div>';
                 txt = new TxtOverlay(new google.maps.LatLng(markers[0].getPosition().lat(),  markers[0].getPosition().lng()), customTxt, "customBox", map);
+            });
+
+            $.map(data.resultGdv, function (item) {
+                var agent = item.agents;
+                var latLng = new google.maps.LatLng(agent.lat,
+                        agent.lng);
+
+                var contentString = '<div class="info">' +
+                    '<h5 class="address" >' + agent.address + '</h5>' +
+                    '<div class="user_data">' +
+                    '<p class="data" id="data">%TT ' + item.totalSales + '/' + item.capacity + '=' +  item.percent + '%</p>' +
+                    '<ul class="info_user">' +
+                    '<li>'  +  item.gsv + '</li>' +
+                    '</ul>' +
+                    '</div>' +
+                    '</div>';
+
+                var infowindow = new google.maps.InfoWindow({
+                    content: contentString
+                });
+
+                var marker = new google.maps.Marker({
+                    'position': latLng,
+                    map: map,
+                });
+                marker.addListener('click', function() {
+                    infowindow.open(map, marker);
+                });
+
             });
 
             var myTitle = document.createElement('h3');
@@ -1103,7 +1132,15 @@
 
         function showDataSaleAdmin(data) {
             var polygonArray = [];
-
+            var position = '';
+            var center = new google.maps.LatLng(21.0277644, 105.83415979999995);
+            var options = {
+                'zoom': 5,
+                'center': center,
+                'mapTypeId': google.maps.MapTypeId.ROADMAP,
+                fullscreenControl: true,
+            };
+            var map = new google.maps.Map(document.getElementById("map"), options);
             $.map(data.locations, function (location, index) {
                 var item = location.area;
                 var c = item.coordinates;
@@ -1112,13 +1149,16 @@
                 var background_color = location.background_color;
                 if (coordinate) {
                     var bounds = new google.maps.LatLngBounds();
+                    var path = [];
                     for (i = 0; i < coordinate.length; i++) {
                         var c = coordinate[i];
                         bounds.extend(new google.maps.LatLng(c[0], c[1]));
+                        path.push(new google.maps.LatLng(c[0], c[1]))
                     }
-                    var path = coordinate;
+                    position = new google.maps.LatLng(bounds.getCenter().lat(), bounds.getCenter().lng());
+//                    var path = coordinate;
 //                    map.setCenter(bounds.getCenter().lat(), bounds.getCenter().lng());
-                    polygon = map.drawPolygon({
+                    polygon = new google.maps.Polygon({
                         paths: path,
                         strokeColor: border_color,
                         strokeOpacity: 1,
@@ -1126,44 +1166,42 @@
                         fillColor: background_color,
                         fillOpacity: 0.4,
                     });
+                    polygon.setMap(map);
                     polygonArray[item.id] = polygon;
                 }
             });
 
-            $.map(data.agents, function (item) {
+            console.log(data.result);
+            $.map(data.result, function (item) {
+                var agents = item.agents;
+                var markers = [];
+                $.map(agents, function (agent) {
 
-                var image =  "";
-
-                if (item.icon != "") {
-//                    icon = host + '/' +item.icon;
-                    var url = "http://" + window.location.hostname + "/" + item.icon;
-                    console.log(url);
-                    image = {
-                        url: url,
-                        // This marker is 20 pixels wide by 32 pixels high.
-                        size: new google.maps.Size(20, 32),
-                        // The origin for this image is (0, 0).
-                        origin: new google.maps.Point(0, 0),
-                        // The anchor for this image is the base of the flagpole at (0, 32).
-                        anchor: new google.maps.Point(0, 0)
-                    };
-                    console.log(image);
-                }
-
-
-                var marker = map.addMarker({
-                    lat:  item.lat,
-                    lng:  item.lng,
-                    title:   item.name,
-                    icon : image,
-//                    infoWindow : infoWindow,
-//                    click: function (e) {
-//                        infoWindow.setPosition({lat: e.position.lat(), lng: e.position.lng()});
-//                        infoWindow.open(map.map);
-//                    }
+                    var latLng = new google.maps.LatLng(agent.lat,
+                        agent.lng);
+                    var marker = new google.maps.Marker({'position': latLng});
+                    markers.push(marker);
                 });
+                var markerCluster = new MarkerClusterer(map, markers, {
+                    maxZoom: 15,
+                    imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'
+                });
+
+                var customTxt =
+                    '<div class="customBox">' +
+                    '<p class="data_gsv">%TT ' + item.totalSales + '/' + item.capacity + '=' +  item.percent + '%</p>' +
+                    '<ul class="info_user_gsv">' +
+                    '<li>' + item.gdv + '</li>' +
+                    '</ul>' +
+                    '</div>';
+                txt = new TxtOverlay(new google.maps.LatLng(markers[0].getPosition().lat(),  markers[0].getPosition().lng()), customTxt, "customBox", map);
             });
         }
+
+
+
+
+
         $(document).on('change', '#choose_product', function() {
             var code = $(this).val();
             var data = $.grep(listSelectProducts, function(e){
