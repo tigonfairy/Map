@@ -100,6 +100,9 @@ class User extends Authenticatable
             case self::SALE_ADMIN:
                 $message = 'P.GĐKD';
                 break;
+            case self::ADMIN:
+                $message = 'Admin';
+                break;
             default:
                 $message = 'Chưa rõ';
                 break;

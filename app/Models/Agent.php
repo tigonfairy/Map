@@ -23,7 +23,12 @@ class Agent extends Model
         self::unclassified => 'Chưa phân hạng',
         self::rival => 'Đối thủ'
         ];
-
+    public static $rankText = [
+        self::diamond => 'Kim cương',
+        self::gold => 'Vàng',
+        self::silver => "Bạc",
+        self::unclassified => 'Chưa phân hạng',
+    ];
     const agentNew = 1;
     const agentRival = 2;
 

@@ -217,7 +217,8 @@ class MapController extends AdminController
 
         $user = auth()->user();
             $users = User::all();
-            $areas = Area::all();
+        $areas =null;
+//            $areas = Area::all();
 
 
         return view('admin.map.addAgency',compact('users','areas'));
@@ -237,11 +238,33 @@ class MapController extends AdminController
             'lat.required' => 'Vui lòng chọn đại lý',
             'lng.required' => 'Vui lòng chọn đại lý',
         ]);
+
         $data = $request->all();
-        if(isset($data['icon'])){
-            $icon = $data['icon'];
-            Image::make(public_path($icon))->resize(22, 32)->save(public_path($icon));
+        $config = [];
+        if (file_exists(public_path().'/config/config.json')) {
+            $config = json_decode(file_get_contents(public_path().'/config/config.json'),true);
         }
+        $data['icon'] = '';
+        if(isset($data['rank'])) {
+            $rank = $data['rank'];
+            if($rank == Agent::diamond) {
+                $data['icon'] = (isset($config['agent_diamond'])) ? $config['agent_diamond'] : null;
+            }
+            if($rank == Agent::gold) {
+                $data['icon'] = (isset($config['agent_gold'])) ? $config['agent_gold'] : null;
+            }
+            if($rank == Agent::silver) {
+                $data['icon'] = (isset($config['agent_silver'])) ? $config['agent_silver'] : null;
+            }
+            if($rank == Agent::unclassified) {
+                $data['icon'] = (isset($config['agent_unclassified'])) ? $config['agent_unclassified'] : null;
+            }
+        }
+        if(isset($data['attribute']) and $data['attribute'] == Agent::agentRival) {
+            $data['icon'] = (isset($config['agent_rival'])) ? $config['agent_rival'] : null;
+
+        }
+
         Agent::create($data);
         return redirect()->route('Admin::map@listAgency')->with('success','Tạo đại lý thành công');
     }
@@ -293,17 +316,10 @@ class MapController extends AdminController
 
         $agent = Agent::findOrFail($id);
         $user = auth()->user();
-        $role = $user->roles()->first();
+        $areas=null;
+        $users = User::all();
+//        $areas = Area::all();
 
-        if($role->id == 1){
-            $users = User::all();
-            $areas = Area::all();
-        }else{
-            $users = $user->manager()->get();
-            $users->push($user);
-            $managerIds = $users->pluck('id')->toArray();
-            $areas = Area::all()->whereIn('manager_id', $managerIds);
-        }
 
         return view('admin.map.addAgency',compact('users','agent','areas'));
     }
@@ -323,9 +339,29 @@ class MapController extends AdminController
             'lat.required' => 'Vui lòng chọn đại lý',
             'lng.required' => 'Vui lòng chọn đại lý'
         ]);
-        if(isset($data['icon'])){
-            $icon = $data['icon'];
-            Image::make(public_path($icon))->resize(22, 32)->save(public_path($icon));
+        $config = [];
+        if (file_exists(public_path().'/config/config.json')) {
+            $config = json_decode(file_get_contents(public_path().'/config/config.json'),true);
+        }
+        $data['icon'] = '';
+        if(isset($data['rank'])) {
+            $rank = $data['rank'];
+            if($rank == Agent::diamond) {
+                $data['icon'] = (isset($config['agent_diamond'])) ? $config['agent_diamond'] : null;
+            }
+            if($rank == Agent::gold) {
+                $data['icon'] = (isset($config['agent_gold'])) ? $config['agent_gold'] : null;
+            }
+            if($rank == Agent::silver) {
+                $data['icon'] = (isset($config['agent_silver'])) ? $config['agent_silver'] : null;
+            }
+            if($rank == Agent::unclassified) {
+                $data['icon'] = (isset($config['agent_unclassified'])) ? $config['agent_unclassified'] : null;
+            }
+        }
+        if(isset($data['attribute']) and $data['attribute'] == Agent::agentRival) {
+            $data['icon'] = (isset($config['agent_rival'])) ? $config['agent_rival'] : null;
+
         }
 
         $agent = Agent::findOrFail($id);

@@ -122,8 +122,6 @@ class ImportAgent
                         }
                         if($str == 'dl-doi-thu') {
                             $attribute = Agent::agentRival;
-
-
                         }
                     }
                     $rank = 0;

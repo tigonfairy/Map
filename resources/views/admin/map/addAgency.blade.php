@@ -71,6 +71,35 @@
                         <div class="clearfix"></div>
                     </div>
 
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">{{ trans('home.address') }}</label>
+                            <div class="col-md-9">
+                                <input type="text" class="form-control " name="address" value="{{(isset($agent) ? @$agent->address : old('address'))}}" placeholder="Nhập địa chỉ">
+                            </div>
+                            @if ($errors->has('address'))
+                                <div class="form-control-feedback">
+                                    <i class="icon-notification2"></i>
+                                </div>
+                                <div class="help-block">{{ $errors->first('address') }}</div>
+                            @endif
+
+                            <div class="clearfix"></div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-md-3 control-label">{{ trans('home.code') }}</label>
+                            <div class="col-md-9">
+                                <input type="text" class="form-control code" name="code" value="{{(isset($agent) ? @$agent->code : old('code'))}}" placeholder="Nhập mã đại lý">
+                            </div>
+                            @if ($errors->has('code'))
+                                <div class="form-control-feedback">
+                                    <i class="icon-notification2"></i>
+                                </div>
+                                <div class="help-block">{{ $errors->first('code') }}</div>
+                            @endif
+                            <div class="clearfix"></div>
+                        </div>
+
                         <div class="form-group {{ $errors->has('user_id') ? 'has-error has-feedback' : '' }}">
                             <label for="name" class="control-label text-semibold col-md-3">{{ trans('home.manager') }}</label>
                             <i class="icon-question4 text-muted text-size-mini cursor-pointer js-help-icon"
@@ -79,7 +108,7 @@
                             <select name="manager_id" class="users form-control">
                                 <option value="">{{ '--'. trans('home.select'). ' '. trans('home.manager') .'--' }}</option>
                                 @foreach($users as $key => $value)
-                                    <option value="{{$value->id}}" @if( isset($agent) and $agent->manager_id == $value->id) selected  @elseif(old('manager_id') == $value->id) selected @endif >{{ $value->email}}</option>
+                                    <option value="{{$value->id}}" @if( isset($agent) and $agent->manager_id == $value->id) selected  @elseif(old('manager_id') == $value->id) selected @endif >{{ $value->name}}-{{$value->positionText}}</option>
                                 @endforeach
                             </select>
                             @if ($errors->has('manager_id'))
@@ -91,51 +120,91 @@
                             </div>
                             <div class="clearfix"></div>
                         </div>
-                        <div class="form-group {{ $errors->has('area_id') ? 'has-error has-feedback' : '' }}">
-                            <label for="name" class="control-label text-semibold col-md-3">{{ trans('home.place') }}</label>
+                        {{--<div class="form-group {{ $errors->has('area_id') ? 'has-error has-feedback' : '' }}">--}}
+                            {{--<label for="name" class="control-label text-semibold col-md-3">{{ trans('home.place') }}</label>--}}
+                            {{--<div class="col-md-9">--}}
+                            {{--<select name="area_id" class="places form-control" id ="locations" style="width:100%">--}}
+                                {{--@if(isset($areas))--}}
+                                    {{--@foreach($areas as $key => $value)--}}
+                                        {{--<option value="{{$value->id}}" @if(isset($agent) and $agent->area_id == $value->id) selected @elseif(old('area_id') == $value->id) selected @endif>{{ $value->name }}</option>--}}
+                                    {{--@endforeach--}}
+                                {{--@endif--}}
+                            {{--</select>--}}
+
+                            {{--@if ($errors->has('area_id'))--}}
+                                {{--<div class="form-control-feedback">--}}
+                                    {{--<i class="icon-notification2"></i>--}}
+                                {{--</div>--}}
+                                {{--<div class="help-block">{{ $errors->first('area_id') }}</div>--}}
+                            {{--@endif--}}
+
+                            {{--</div>--}}
+                            {{--<div class="clearfix"></div>--}}
+                        {{--</div>--}}
+                        <div class="form-group {{ $errors->has('rank') ? 'has-error has-feedback' : '' }}">
+                            <label for="name" class="control-label text-semibold col-md-3">{{ trans('home.rank') }}</label>
                             <div class="col-md-9">
-                            <select name="area_id" class="places form-control" id ="locations" style="width:100%">
-                                @if(isset($areas))
-                                    @foreach($areas as $key => $value)
-                                        <option value="{{$value->id}}" @if(isset($agent) and $agent->area_id == $value->id) selected @elseif(old('area_id') == $value->id) selected @endif>{{ $value->name }}</option>
-                                    @endforeach
-                                @endif
-                            </select>
+                                <select name="rank" class="form-control" style="width:100%">
+                                    <option value="0">{{ '--'. trans('home.select'). ' '. trans('home.rank') .'--' }}</option>
+                                        @foreach(\App\Models\Agent::$rankText as $key => $value)
+                                            <option value="{{$key}}" @if(isset($agent) and $agent->rank == $key) selected @endif>{{ $value }}</option>
+                                        @endforeach
 
-                            @if ($errors->has('area_id'))
-                                <div class="form-control-feedback">
-                                    <i class="icon-notification2"></i>
-                                </div>
-                                <div class="help-block">{{ $errors->first('area_id') }}</div>
-                            @endif
+                                </select>
 
-                            </div>
-                            <div class="clearfix"></div>
-                        </div>
-
-
-                        <div class="form-group {{ $errors->has('area_id') ? 'has-error has-feedback' : '' }}">
-                            <label for="name" class="control-label text-semibold col-md-3">Icon</label>
-                            <div class="col-md-9">
-
-                                <input type="text" style='display:none'  @if(isset($agent) and $agent->icon) value="{{$agent->icon}}" @endif name="icon" id="Image" />
-                                <div  value="Duyệt ảnh" class='button_chooseImage btn btn-info' onclick="BrowseServer();">Chọn ảnh</div>
-                                @if(isset($agent) and $agent->icon)
-                                <img src="{{asset($agent->icon)}}" alt=""   class='col-md-4' id='imageAvatar'>
-                                @else
-                                    <img src="" alt="" style="display:none"  class='col-md-4' id='imageAvatar'>
-                                    @endif
-
-                                @if ($errors->has('area_id'))
+                                @if ($errors->has('rank'))
                                     <div class="form-control-feedback">
                                         <i class="icon-notification2"></i>
                                     </div>
-                                    <div class="help-block">{{ $errors->first('area_id') }}</div>
+                                    <div class="help-block">{{ $errors->first('rank') }}</div>
                                 @endif
 
                             </div>
                             <div class="clearfix"></div>
                         </div>
+                        <div class="form-group {{ $errors->has('attribute') ? 'has-error has-feedback' : '' }}">
+                            <label for="name" class="control-label text-semibold col-md-3">{{ trans('home.attribute') }}</label>
+                            <div class="col-md-9">
+                                <select name="attribute" class="form-control" style="width:100%">
+                                    <option value="0">{{ '--'. trans('home.select'). ' '. trans('home.attribute') .'--' }}</option>
+                                        <option value="{{\App\Models\Agent::agentNew}}" @if(isset($agent) and $agent->attribute == \App\Models\Agent::agentNew) selected @elseif(old('attribute') == \App\Models\Agent::agentNew) selected @endif>Đại lý mới</option>
+                                        <option value="{{\App\Models\Agent::agentRival}}" @if(isset($agent) and $agent->attribute == \App\Models\Agent::agentRival) selected @elseif(old('attribute') == \App\Models\Agent::agentRival) selected @endif>Đại lý đối thủ</option>
+
+                                </select>
+
+                                @if ($errors->has('rank'))
+                                    <div class="form-control-feedback">
+                                        <i class="icon-notification2"></i>
+                                    </div>
+                                    <div class="help-block">{{ $errors->first('rank') }}</div>
+                                @endif
+
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+
+                        {{--<div class="form-group {{ $errors->has('area_id') ? 'has-error has-feedback' : '' }}">--}}
+                            {{--<label for="name" class="control-label text-semibold col-md-3">Icon</label>--}}
+                            {{--<div class="col-md-9">--}}
+
+                                {{--<input type="text" style='display:none'  @if(isset($agent) and $agent->icon) value="{{$agent->icon}}" @endif name="icon" id="Image" />--}}
+                                {{--<div  value="Duyệt ảnh" class='button_chooseImage btn btn-info' onclick="BrowseServer();">Chọn ảnh</div>--}}
+                                {{--@if(isset($agent) and $agent->icon)--}}
+                                {{--<img src="{{asset($agent->icon)}}" alt=""   class='col-md-4' id='imageAvatar'>--}}
+                                {{--@else--}}
+                                    {{--<img src="" alt="" style="display:none"  class='col-md-4' id='imageAvatar'>--}}
+                                    {{--@endif--}}
+
+                                {{--@if ($errors->has('area_id'))--}}
+                                    {{--<div class="form-control-feedback">--}}
+                                        {{--<i class="icon-notification2"></i>--}}
+                                    {{--</div>--}}
+                                    {{--<div class="help-block">{{ $errors->first('area_id') }}</div>--}}
+                                {{--@endif--}}
+
+                            {{--</div>--}}
+                            {{--<div class="clearfix"></div>--}}
+                        {{--</div>--}}
 
 
 
