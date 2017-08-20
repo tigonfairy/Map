@@ -98,8 +98,8 @@
                             <td>{!! $agent->user ? $agent->user->name : '' !!}</td>
                             {{--<td>{!! $agent->area ? $agent->area->name : '' !!}</td>--}}
                             <td>
-                                <a href="{{route('Admin::map@agentDetail',[$agent->id])}}">
-                                    <button type="button" class="btn btn-info btn-xs">{{ trans('home.show') }}</button></a>
+                                {{--<a href="{{route('Admin::map@agentDetail',[$agent->id])}}">--}}
+                                    {{--<button type="button" class="btn btn-info btn-xs">{{ trans('home.show') }}</button></a>--}}
 
                                 <a href="{{route('Admin::map@editAgent',[$agent->id])}}">
                                     <button type="button" class="btn btn-warning btn-xs">{{ trans('home.edit') }}</button></a>
