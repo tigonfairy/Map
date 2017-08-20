@@ -1,5 +1,12 @@
 @extends('admin')
 @section('content')
+<?php
+    if (file_exists(public_path().'/config/config.json')) {
+        $config = json_decode(file_get_contents(public_path().'/config/config.json'),true);
+
+    }
+?>
+
     <style>
         .ct {
             -webkit-column-count: 2; /* Chrome, Safari, Opera */
@@ -22,47 +29,49 @@
         }
         .info {
             z-index: 99999;
-            color: #0a0a0a;
+            color: <?php echo $config['textColor']  ?>;
         }
         .data {
             z-index: 99999;
             border: 1px solid yellow;
             background-color: yellow;
-            color: red;
-            font-size: 12px;
+            color: <?php echo $config['textColor']  ?>;
+            font-size: <?php echo $config['fontSize'] . 'px' ?>;
             float: left;
         }
         .info_user {
             z-index: 99999;
             list-style: none;
-            font-size: 14px;
+            font-size: <?php echo $config['fontSize'] . 'px' ?>;
             /*margin-left: 10px;*/
             float: left;
         }
         .info_gsv{
             z-index: 99999;
-            color: #0a0a0a;
+            color: <?php echo $config['textColor']  ?>;
         }
         .data_gsv {
             z-index: 99999;
             border: 1px solid yellow;
             background-color: yellow;
-            color: red;
-            font-size: 12px;
+            color: <?php echo $config['textColor']?>;
+            font-size: <?php echo $config['fontSize'] . 'px' ?>;
             float: left;
         }
         .info_user_gsv {
             z-index: 99999;
             list-style: none;
-            font-size: 14px;
+            font-size: <?php echo $config['fontSize'] . 'px' ?>;
             /*margin-left: 10px;*/
             float: left;
         }
         .customBox {
+            z-index: 99999;
             position: absolute;
-            font-size: 16px;
-            background-color: yellow;
+            font-size: <?php echo $config['fontSize'] . 'px' ?>;
+            background-color: #ffffff;
             margin-left: 10px;
+
         }
         /*.customBox .gsv {*/
         /*background-color: #00aaaa;*/
@@ -632,6 +641,7 @@
                 var infoWindow = new google.maps.InfoWindow({
                     content: contentString
                 });
+
                 map.addMarker({
                     lat: item.lat,
                     lng: item.lng,
@@ -879,7 +889,10 @@
 
                 var customTxt =
                     '<div class="customBox">' +
-                    '<p class="gsv">' + item.gsv + ' - %TT ' + item.totalSales + '/' + item.capacity + '=' +  item.percent + '</p>' +
+                        '<p class="data_gsv">%TT ' + item.totalSales + '/' + item.capacity + '=' +  item.percent + '%</p>' +
+                    '<ul class="info_user_gsv">' +
+                        '<li>' + item.gsv + '</li>' +
+                    '</ul>' +
                     '</div>';
                 txt = new TxtOverlay(new google.maps.LatLng(markers[0].getPosition().lat(),  markers[0].getPosition().lng()), customTxt, "customBox", map);
             });
@@ -1089,7 +1102,7 @@
         }
 
         function showDataSaleAdmin(data) {
-            console.log(data);
+
             var polygonArray = [];
 
             $.map(data.locations, function (location, index) {
@@ -1119,10 +1132,32 @@
             });
 
             $.map(data.agents, function (item) {
+
+                var image =  "";
+
+                if (item.icon != "") {
+//                    icon = host + '/' +item.icon;
+                    var url = "http://" + window.location.hostname + "/" + item.icon;
+                    console.log(url);
+                    image = {
+                        url: url,
+                        // This marker is 20 pixels wide by 32 pixels high.
+                        size: new google.maps.Size(20, 32),
+                        // The origin for this image is (0, 0).
+                        origin: new google.maps.Point(0, 0),
+                        // The anchor for this image is the base of the flagpole at (0, 32).
+                        anchor: new google.maps.Point(0, 0)
+                    };
+                    console.log(image);
+                }
+
+
+
                 var marker = map.addMarker({
                     lat:  item.lat,
                     lng:  item.lng,
                     title:   item.name,
+                    icon : image,
 //                    infoWindow : infoWindow,
 //                    click: function (e) {
 //                        infoWindow.setPosition({lat: e.position.lat(), lng: e.position.lng()});

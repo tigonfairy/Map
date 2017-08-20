@@ -509,20 +509,20 @@ class MapController extends AdminController
             $userParentName = $userTv->manager->name;
 
             $userOwns = $userTv->owners()->get();
-            foreach ($userOwns as $user) {
-                if (count($user->owners) > 0) {
-                    foreach ($user->owners as $u) {
-                        $userOwns->push($u);
+            foreach ($userOwns as $u) {
+                if (count($u->owners) > 0) {
+                    foreach ($u->owners as $us) {
+                        $userOwns->push($us);
                     }
                 } else {
-                    $userOwns->push($user);
+                    $userOwns->push($u);
                 }
             }
             $userOwns->push($userTv);
 
             $listIds = $userOwns->pluck('id')->toArray();
 
-            $areas = $user->area()->get();
+            $areas = $userTv->area()->get();
 
             $locations = [];
             foreach ($areas as $key => $area) {
@@ -652,21 +652,100 @@ class MapController extends AdminController
         }
 
         if ($typeSearch == 'admin') {
-            $users = User::all();
-            $listIds = $users->pluck('id')->toArray();
-            foreach ($users as $user) {
-                foreach ($user->area as $key => $area) {
-                    foreach ($area->address as $k => $address) {
-                        $locations[] = [
-                            'border_color' => $area->border_color,
-                            'background_color' => $area->background_color,
-                            'area' => $address
-                        ];
-                    }
+            $userGDVs = User::where('position', User::GĐV)->get();
+
+            foreach ($userGDVs as $gdv) {
+                $totalSaleGDV = 0;
+
+                foreach ($gdv->owners as $user) {
+                    $totalSaleGSV = 0;
+                        if ($user->position == User::GSV) { // gsv
+                            if (count($user->owners) > 0) {
+                                $listIds = $user->owners->pluck('id')->toArray();
+                                $listIds[] = $user->id;
+                            }
+                        } else if ($user->position == User::TV) {
+                            if (count($user->owners) > 0) {
+                                foreach ($user->owners as $u) {
+                                    if (count($u->owners) > 0) {
+                                        $listIds = $u->owners->pluck('id')->toArray();
+                                    }
+                                    $listIds[] = $u->id;
+                                }
+                            }
+                        }
+                        $listIds[] = $user->id;
+
+                        $agents = Agent::whereIn('manager_id', $listIds)->with('user')->get();
+                        $saleAgents = 0;
+                        foreach ($agents as $agent) {
+                            $sales = SaleAgent::where('agent_id', $agent->id)->where('month', $month)->select('sales_real', 'capacity')->get();
+
+                            foreach ($sales as $sale) {
+                                $saleAgents += $sale->sales_real;
+                                $capacity = isset($sale->capacity) ?  $sale->capacity : 1;
+                            }
+                            $capacity = $capacity == 0 ? 1 : $capacity;
+                            $listAgents[] = [
+                                'agent' => $agent,
+                                'totalSales' => $saleAgents,
+                                'capacity' => $capacity,
+                                'percent' => round($saleAgents / $capacity, 2)
+                            ];
+                            $totalSaleGSV += $saleAgents;
+                            $saleAgents = 0;
+                        }
+                        $listIds = [];
+                        $totalSaleGDV += $totalSaleGSV;
+
+//                        $data[] = [
+//                            'gsv' => $user->name,
+//                            'agents' => $agents,
+//                            'totalSales' => $totalSaleGSV,
+//                            'capacity' => $capacity,
+//                            'percent' => round($totalSaleGSV / $capacity, 2)
+//                        ];
+
+
+                        // area
+                        $areas = $user->area()->get();
+
+                        foreach ($areas as $key => $area) {
+                            foreach ($area->address as $k => $address) {
+                                $locations[] = [
+                                    'border_color' => $area->border_color,
+                                    'background_color' => $area->background_color,
+                                    'area' => $address
+                                ];
+                            }
+                        }
                 }
+
+                $data[] = [
+                    'gdv' => $gdv->name,
+                    'agents' => $agents,
+                    'totalSales' => $totalSaleGDV,
+                    'capacity' => $capacity,
+                    'percent' => round($totalSaleGDV / $capacity, 2)
+                ];
+                dd($data);
             }
 
-            $agents = Agent::whereIn('manager_id', $listIds)->with('user')->get();
+
+//            $listIds = $users->pluck('id')->toArray();
+//            foreach ($users as $user) {
+//                foreach ($user->area as $key => $area) {
+//                    foreach ($area->address as $k => $address) {
+//                        $locations[] = [
+//                            'border_color' => $area->border_color,
+//                            'background_color' => $area->background_color,
+//                            'area' => $address
+//                        ];
+//                    }
+//                }
+//            }
+//
+//            $agents = Agent::whereIn('manager_id', $listIds)->with('user')->get();
 
             return response()->json([
                 'locations' => $locations,

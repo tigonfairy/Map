@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Controllers\Auth;
 
+use App\Models\User;
 use Session;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -82,7 +83,7 @@ class LoginController extends Controller
                 $data['times'] += 1;
                 Session::put('repassword', $data);
                 if ($data['times'] >= $repassword) {
-                    $email_db = \App\User::where('email', $email)->first();
+                    $email_db = User::where('email', $email)->first();
                     if(count($email_db) > 0) {
                         $email_db->forceFill(['status' => false])->save();
                     }
