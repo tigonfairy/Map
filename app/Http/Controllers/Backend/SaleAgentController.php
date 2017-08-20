@@ -4,12 +4,14 @@ namespace App\Http\Controllers\Backend;
 
 
 use App\Models\Agent;
+use App\Models\GroupProduct;
 use App\Models\Product;
 use App\Models\SaleAgent;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Validator;
 use App\Jobs\ImportDataAgent;
+use Excel;
 class SaleAgentController extends AdminController
 {
 
@@ -22,15 +24,15 @@ class SaleAgentController extends AdminController
     {
         $user = auth()->user();
         $role = $user->roles()->first();
-        if($role->id == 1) {
+
             $agents = Agent::all();
 
-        } else {
-            $userOwns = $user->manager()->get();
-            $userOwns->push($user);
-            $managerIds = $userOwns->pluck('id')->toArray();
-            $agents = Agent::whereIn('manager_id', $managerIds)->get();
-        }
+
+//            $userOwns = $user->manager()->get();
+//            $userOwns->push($user);
+//            $managerIds = $userOwns->pluck('id')->toArray();
+//            $agents = Agent::whereIn('manager_id', $managerIds)->get();
+//
         $products = Product::where('level',1)->get();
 
         return view('admin.saleAgent.form',compact('agents', 'products'));
@@ -141,5 +143,36 @@ class SaleAgentController extends AdminController
         }
 
         return response()->json($response);
+    }
+    public function exportExcelDataAgent(Request $request) {
+        $validator = Validator::make($request->all(), [
+            'month' => 'required'
+        ]);
+        if($validator->fails()) {
+            $response['status'] = 'fails';
+            $response['errors'] = $validator->errors();
+        } else {
+            $month = $request->input('month');
+            $exportUserArray= [];
+            ob_end_clean();
+            ob_start();
+            $groupProduct = GroupProduct::orderBy('created_at','desc')->get();
+            Excel::create('doanh_so_'.$month, function ($excel) use ($exportUserArray,$groupProduct) {
+
+                $excel->sheet('khach', function ($sheet) use ($exportUserArray,$groupProduct) {
+                    $sheet->loadView('exportExcel',['groupProduct' => $groupProduct]);
+                });
+
+            })->download('xlsx');
+//            $file = request()->file('file');
+//            $filename = $month.'_'.time() . '_' . mt_rand(1111, 9999) . '_' . $request->file('file')->getClientOriginalName();
+//            $request->file('file')->move(storage_path('app/import/products'), $filename);
+//            $this->dispatch(new ImportDataAgent( storage_path('app/import/products/' . $filename),$month,$name));
+//
+//            flash()->success('Success!', 'Data successfully updated.');
+//            $response['status'] = 'success';
+        }
+
+
     }
 }
