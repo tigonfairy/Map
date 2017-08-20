@@ -299,10 +299,10 @@
             },
             series: [{
                 name: 'DTKH',
-                data: {{json_encode($sales_plan)}}
+                data: '{{json_encode($sales_plan)}}'
             }, {
                 name: 'DTTT',
-                data: {{json_encode($sales_real)}}
+                data: '{{json_encode($sales_real)}}'
             }]
         });
         var chartSp = Highcharts.chart('chartSp', {
@@ -1103,6 +1103,7 @@
 
         function showDataSaleAdmin(data) {
 
+            console.log(data);
             var polygonArray = [];
 
             $.map(data.locations, function (location, index) {
@@ -1152,12 +1153,13 @@
                 }
 
 
-
                 var marker = map.addMarker({
                     lat:  item.lat,
                     lng:  item.lng,
                     title:   item.name,
+
                     icon : image,
+
 //                    infoWindow : infoWindow,
 //                    click: function (e) {
 //                        infoWindow.setPosition({lat: e.position.lat(), lng: e.position.lng()});

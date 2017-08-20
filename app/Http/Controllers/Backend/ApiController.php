@@ -77,14 +77,6 @@ class ApiController extends AdminController
 
     public function getListTV(Request $request){
 
-//        $user = auth()->user();
-//        $role = $user->roles()->first();
-//
-//        $users = User::whereHas('roles', function ($query) {
-//            $query->where('role_id', 3);
-//        });
-//
-
         $users = User::where('position', User::TV);
         $user = auth()->user();
 
@@ -112,9 +104,11 @@ class ApiController extends AdminController
             $key = $request->input('q');
             $agents = $agents->where('name','like','%'.$key.'%');
         }
+
         if ($account->position == User::NVKD) {
             $agents->where('manager_id', $account->id);
         } else if ($account->position == User::GSV) {
+
             $userOwns = $account->owners()->get();
             $userOwns->push($account);
             $listIds = $userOwns->pluck('id')->toArray();
@@ -164,6 +158,7 @@ class ApiController extends AdminController
             $agents = Agent::whereIn('manager_id', $listIds);
 
         }
+
 //        if($role->id == 1){
 //            $agents = $agents->paginate(10);
 //        }else{

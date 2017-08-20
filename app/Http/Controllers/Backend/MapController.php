@@ -656,7 +656,7 @@ class MapController extends AdminController
 
             foreach ($userGDVs as $gdv) {
                 $totalSaleGDV = 0;
-                
+
                 foreach ($gdv->owners as $user) {
                     $totalSaleGSV = 0;
                         if ($user->position == User::GSV) { // gsv
@@ -675,9 +675,9 @@ class MapController extends AdminController
                             }
                         }
                         $listIds[] = $user->id;
-                        dd($listIds);
-                        $agents = Agent::whereIn('manager_id', $listIds)->with('user')->get();
 
+                        $agents = Agent::whereIn('manager_id', $listIds)->with('user')->get();
+                        $saleAgents = 0;
                         foreach ($agents as $agent) {
                             $sales = SaleAgent::where('agent_id', $agent->id)->where('month', $month)->select('sales_real', 'capacity')->get();
 
@@ -698,14 +698,14 @@ class MapController extends AdminController
                         $listIds = [];
                         $totalSaleGDV += $totalSaleGSV;
 
-                        $data[] = [
-                            'gsv' => $user->name,
-                            'agents' => $agents,
-                            'totalSales' => $totalSaleGSV,
-                            'capacity' => $capacity,
-                            'percent' => round($totalSaleGSV / $capacity, 2)
-                        ];
-                        $totalSaleGSV = 0;
+//                        $data[] = [
+//                            'gsv' => $user->name,
+//                            'agents' => $agents,
+//                            'totalSales' => $totalSaleGSV,
+//                            'capacity' => $capacity,
+//                            'percent' => round($totalSaleGSV / $capacity, 2)
+//                        ];
+
 
                         // area
                         $areas = $user->area()->get();
@@ -728,7 +728,7 @@ class MapController extends AdminController
                     'capacity' => $capacity,
                     'percent' => round($totalSaleGDV / $capacity, 2)
                 ];
-                $totalSaleGDV = 0;
+                dd($data);
             }
 
 

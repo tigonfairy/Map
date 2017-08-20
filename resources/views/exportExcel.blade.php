@@ -35,7 +35,12 @@
     </style>
 </head>
 <body>
-@php $data = [] @endphp
+
+@php $data = [];
+$index = 0;
+
+@endphp
+
 <table class="ht-table-data">
     <thead>
     <tr>
@@ -92,10 +97,16 @@
     {{--<tr class="ht-highlight">--}}
 
     {{--</tr>--}}
+<<<<<<< HEAD
     <tr>
         @php dd($data); @endphp
 
     </tr>
+=======
+    @php
+            @endphp
+
+>>>>>>> b541010a5a16f02fed013ad1480e09fe1574a75c
     </tbody>
 </table>
 </body>
