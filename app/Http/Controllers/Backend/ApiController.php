@@ -104,7 +104,11 @@ class ApiController extends AdminController
             $key = $request->input('q');
             $agents = $agents->where('name','like','%'.$key.'%');
         }
-       if ($account->position == User::GSV) {
+
+        if ($account->position == User::NVKD) {
+            $agents->where('manager_id', $account->id);
+        } else if ($account->position == User::GSV) {
+
             $userOwns = $account->owners()->get();
             $userOwns->push($account);
             $listIds = $userOwns->pluck('id')->toArray();
@@ -154,6 +158,17 @@ class ApiController extends AdminController
             $agents = Agent::whereIn('manager_id', $listIds);
 
         }
+
+//        if($role->id == 1){
+//            $agents = $agents->paginate(10);
+//        }else{
+//            $userOwns = $user->manager()->get();
+//            $userOwns->push($user);
+//            $managerIds = $userOwns->pluck('id')->toArray();
+//            $agents = Agent::whereIn('manager_id', $managerIds);
+//            $agents = $agents->paginate(10);
+//        }
+
 
         $agents = $agents->paginate(10);
         return $agents;
