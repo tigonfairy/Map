@@ -1102,8 +1102,6 @@
         }
 
         function showDataSaleAdmin(data) {
-
-            console.log(data);
             var polygonArray = [];
 
             $.map(data.locations, function (location, index) {
@@ -1157,9 +1155,7 @@
                     lat:  item.lat,
                     lng:  item.lng,
                     title:   item.name,
-
                     icon : image,
-
 //                    infoWindow : infoWindow,
 //                    click: function (e) {
 //                        infoWindow.setPosition({lat: e.position.lat(), lng: e.position.lng()});
