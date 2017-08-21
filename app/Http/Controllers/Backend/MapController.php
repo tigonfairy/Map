@@ -652,7 +652,7 @@ class MapController extends AdminController
                 $listIds = [];
                 $totalSaleGDV += $totalSaleGSV;
                 $data[] = [
-                    'gsv' => $user->name,
+                    'gsv' => $user,
                     'agents' => $agents,
                     'totalSales' => $totalSaleGSV,
                     'capacity' => $capacity,
@@ -683,7 +683,7 @@ class MapController extends AdminController
                     }
                     $capacity = $capacity == 0 ? 1 : $capacity;
                     $dataGdv[] = [
-                        'gsv' => $userGdv->name,
+                        'gsv' => $userGdv,
                         'agents' => $agent,
                         'totalSales' => $saleAgents,
                         'capacity' => $capacity,
