@@ -24,7 +24,9 @@
                     <div class="panel panel-flat">
                         <div class="panel-body">
                             <form method="POST" action="{{ route('Admin::config@globalConfig')}}">
+
                             {{ csrf_field() }}
+
 
                             <!---------- Agent ID------------>
 
@@ -32,22 +34,26 @@
                                 <div class="form-group">
                                     <table class="table table-striped table-bordered" cellspacing="0" width="100%">
                                         <thead>
+
                                         <th>{{trans('home.position')}}</th>
                                         <th>{{trans('home.textColor')}}</th>
                                         <th>{{trans('home.fontSize')}}</th>
+
                                         </thead>
 
                                         <tbody>
                                         @foreach(\App\Models\User::$positionTexts as $key => $value)
                                             @php
                                                 $textColor = null;
-                                                 $fontSize = null;
-                                             $config = \App\Models\Config::where('position_id',$key)->first();
-                                             if($config) {
-                                                 $textColor = $config->textColor;
-                                                 $fontSize = $config->fontSize;
-                                             }
+
+                                                         $fontSize = null;
+                                                     $config = \App\Models\Config::where('position_id',$key)->first();
+                                                     if($config) {
+                                                         $textColor = $config->textColor;
+                                                         $fontSize = $config->fontSize;
+                                                     }
                                             @endphp
+
                                             <tr>
                                                 <td>{{ $value }}</td>
                                                 <td>
@@ -58,17 +64,21 @@
                                                                value="{{$textColor}}"
                                                                name="textColor[{{$key}}]">
                                                         <span class="input-group-btn">
+
                                                     <button class="btn default" type="button"><i
                                                                 style="background-color: {{!empty($textColor) ? $textColor : '#3865a8'}};"></i>&nbsp;</button>
+
                                                 </span>
                                                     </div>
 
                                                 </td>
                                                 <td>
                                                     <div class="input-group  form-control">
+
                                                         <input type="number" name="fontSize[{{$key}}]"
                                                                class="form-control" value="{{$fontSize}}"/>
                                                     </div>
+
                                                 </td>
                                             </tr>
                                         @endforeach
@@ -99,7 +109,9 @@
             $(document).ready(function () {
                 $('.agents').select2();
 
+
                 $('.monthPicker').datepicker({
+
                     changeMonth: true,
                     changeYear: true,
                     showButtonPanel: true,
