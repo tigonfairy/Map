@@ -67,18 +67,14 @@
             float: left;
         }
         .customBox {
-            z-index: 99999;
             position: absolute;
-            font-size: {{ (auth()->user()->fontSize) ? auth()->user()->fontSize :  $config['fontSize']  }}px;
             background-color: #ffffff;
             margin-left: 10px;
+            margin-top: 5px;
+            vertical-align:middle;
+            width:35%;
+            text-align:center;
         }
-        /*.customBox .gsv {*/
-        /*background-color: #00aaaa;*/
-        /*}*/
-        /*.customBox .ds {*/
-        /*color: red;*/
-        /*}*/
     </style>
 
     <!-- BEGIN PAGE HEADER-->
@@ -881,6 +877,7 @@
             });
 
             $.map(data.result, function (item) {
+                console.log(item);
                 var agents = item.agents;
                 var markers = [];
                 $.map(agents, function (agent) {
@@ -890,10 +887,29 @@
                     if (agent.icon != "") {
                         image = 'http://' + window.location.hostname + '/' + agent.icon;
                     }
+
+                    var contentString = '<div class="info" style="font-size:' + agent.user.fontSize + 'px; color:' + agent.user.textColor + '">' +
+                        '<h5 class="address" style="font-size:' + agent.user.fontSize + 'px; color:' + agent.user.textColor + '">' + agent.address + '</h5>' +
+                        '<div class="user_data" style="font-size:' + agent.user.fontSize + 'px; color:' + agent.user.textColor + '">' +
+                        '<p class="data" id="data" style="font-size:' + agent.user.fontSize + 'px; color:' + agent.user.textColor + '">%TT ' + agent.totalSales + '/' + agent.capacity + '=' +  agent.percent + '%</p>' +
+                        '<ul class="info_user" style="font-size:' + agent.user.fontSize + 'px; color:' + agent.user.textColor + '">' +
+                        '<li>'  +  agent.user.name + '</li>' +
+                        '</ul>' +
+                        '</div>' +
+                        '</div>';
+
+                    var infowindow = new google.maps.InfoWindow({
+                        content: contentString
+                    });
+
                     var marker = new google.maps.Marker({
                         'position': latLng,
                         icon : image,
                     });
+                    marker.addListener('click', function() {
+                        infowindow.open(map, marker);
+                    });
+
                     markers.push(marker);
                 });
                 var markerCluster = new MarkerClusterer(map, markers, {
@@ -903,10 +919,8 @@
 
                 var customTxt =
                     '<div class="customBox" style="font-size:' + item.gsv.fontSize + 'px; color:' + item.gsv.textColor + '">' +
-                        '<p class="data_gsv" style="font-size:' + item.gsv.fontSize + 'px; color:' + item.gsv.textColor + '">%TT ' + item.totalSales + '/' + item.capacity + '=' +  item.percent + '%</p>' +
-                    '<ul class="info_user_gsv" style="font-size:' + item.gsv.fontSize + 'px; color:' + item.gsv.textColor + '">' +
-                        '<li>' + item.gsv.name + '</li>' +
-                    '</ul>' +
+                        '<span class="data_gsv" style="font-size:' + item.gsv.fontSize + 'px; color:' + item.gsv.textColor + '">%TT ' + item.totalSales + '/' + item.capacity + '=' +  item.percent + '%</span>' +
+                    '<span class="info_user_gsv" style="font-size:' + item.gsv.fontSize + 'px; color:' + item.gsv.textColor + '">' + item.gsv.name + '</span>' +
                     '</div>';
                 txt = new TxtOverlay(new google.maps.LatLng(markers[0].getPosition().lat(),  markers[0].getPosition().lng()), customTxt, "customBox", map);
             });
@@ -1197,6 +1211,7 @@
             });
 
             $.map(data.result, function (item) {
+
                 var agents = item.agents;
                 var markers = [];
                 $.map(agents, function (agent) {
@@ -1207,10 +1222,30 @@
                     if (agent.icon != "") {
                         image = 'http://' + window.location.hostname + '/' + agent.icon;
                     }
+
+                    var contentString = '<div class="info" style="font-size:' + agent.user.fontSize + 'px; color:' + agent.user.textColor + '">' +
+                        '<h5 class="address" style="font-size:' + agent.user.fontSize + 'px; color:' + agent.user.textColor + '">' + agent.address + '</h5>' +
+                        '<div class="user_data" style="font-size:' + agent.user.fontSize + 'px; color:' + agent.user.textColor + '">' +
+                        '<p class="data" id="data" style="font-size:' + agent.user.fontSize + 'px; color:' + agent.user.textColor + '">%TT ' + agent.totalSales + '/' + agent.capacity + '=' +  agent.percent + '%</p>' +
+                        '<ul class="info_user" style="font-size:' + agent.user.fontSize + 'px; color:' + agent.user.textColor + '">' +
+                        '<li>'  +  agent.user.name + '</li>' +
+                        '</ul>' +
+                        '</div>' +
+                        '</div>';
+
+                    var infowindow = new google.maps.InfoWindow({
+                        content: contentString
+                    });
+
                     var marker = new google.maps.Marker({
                         'position': latLng,
                         icon: image,
                     });
+
+                    marker.addListener('click', function() {
+                        infowindow.open(map, marker);
+                    });
+
                     markers.push(marker);
                 });
                 var markerCluster = new MarkerClusterer(map, markers, {
@@ -1219,18 +1254,13 @@
                 });
 
                 var customTxt =
-                    '<div class="customBox">' +
-                    '<p class="data_gsv">%TT ' + item.totalSales + '/' + item.capacity + '=' +  item.percent + '%</p>' +
-                    '<ul class="info_user_gsv">' +
-                    '<li>' + item.gdv + '</li>' +
-                    '</ul>' +
+                    '<div class="customBox" style="font-size:' + item.gdv.fontSize + 'px; color:' + item.gdv.textColor + '">' +
+                    '<span style="font-size:' + item.gdv.fontSize + 'px; color:' + item.gdv.textColor + '">%TT ' + item.totalSales + '/' + numberWithCommas(item.capacity) + '=' +  item.percent + '%</span>' +
+                    '<span style="font-size:' + item.gdv.fontSize + 'px; color:' + item.gdv.textColor + '">' + item.gdv.name +  '</span>' +
                     '</div>';
                 txt = new TxtOverlay(new google.maps.LatLng(markers[0].getPosition().lat(),  markers[0].getPosition().lng()), customTxt, "customBox", map);
             });
         }
-
-
-
 
 
         $(document).on('change', '#choose_product', function() {
@@ -1259,6 +1289,12 @@
                 $('.address').hide();
             }
         });
+
+        function numberWithCommas(x) {
+            var parts = x.toString().split(".");
+            parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+            return parts.join(".");
+        }
     });
 </script>
 @endpush
