@@ -143,7 +143,43 @@
                       @endif
                     </div>
 
-                <!---------- Status ------------>
+
+
+                  <div class="form-group {{ $errors->has('textColor') ? 'has-error has-feedback' : '' }}">
+                      <label class="control-label col-md-3"> {{trans('home.textColor')}} </label>
+
+                      <div class="input-group color colorpicker-default form-control"
+                           data-color="{{(isset($user) and $user->textColor) ? $user->textColor : '#000000'}}"
+                           data-color-format="rgba">
+                          <input type="text" class="form-control"
+                                 value="{{(isset($user) and $user->textColor) ? $user->textColor : '#000000'}}"
+                                 name="textColor">
+                          <span class="input-group-btn">
+                                                    <button class="btn default" type="button"><i
+                                                                style="background-color: {{(isset($user) and $user->textColor) ? $user->textColor : '#000000'}};"></i>&nbsp;</button>
+                                                </span>
+                      </div>
+                      @if ($errors->has('textColor'))
+                          <div class="form-control-feedback">
+                              <i class="icon-notification2"></i>
+                          </div>
+                          <div class="help-block">{{ $errors->first('textColor') }}</div>
+                      @endif
+                  </div>
+                  <div class="form-group {{ $errors->has('fontSize') ? 'has-error has-feedback' : '' }}">
+                      <label for="name" class="control-label text-semibold">{{trans('home.fontSize')}}</label>
+                      <i class="icon-question4 text-muted text-size-mini cursor-pointer js-help-icon" data-content=""></i>
+                      <input type="number" id="fontSize" name="fontSize" class="form-control" value="{{( isset($user) and $user->fontSize) ? $user->fontSize : 12 }}" />
+                      @if ($errors->has('fontSize'))
+                          <div class="form-control-feedback">
+                              <i class="icon-notification2"></i>
+                          </div>
+                          <div class="help-block">{{ $errors->first('fontSize') }}</div>
+                      @endif
+                  </div>
+
+
+                  <!---------- Status ------------>
                 <div class="form-group {{ $errors->has('status') ? 'has-error has-feedback' : '' }}">
                   <label for="name" class="control-label text-semibold">Trạng thái</label>
                   <i class="icon-question4 text-muted text-size-mini cursor-pointer js-help-icon" data-content="Trạng thái"></i>

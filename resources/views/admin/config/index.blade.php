@@ -59,38 +59,38 @@
 
 
 
-                            <div class="form-group {{ $errors->has('textColor') ? 'has-error has-feedback' : '' }}">
-                                <label class="control-label col-md-3">Màu chữ</label>
+                            {{--<div class="form-group {{ $errors->has('textColor') ? 'has-error has-feedback' : '' }}">--}}
+                                {{--<label class="control-label col-md-3">Màu chữ</label>--}}
 
-                                    <div class="input-group color colorpicker-default form-control"
-                                         data-color="{{isset($config['textColor']) ? $config['textColor'] : '#FF0000'}}"
-                                         data-color-format="rgba">
-                                        <input type="text" class="form-control"
-                                               value="{{isset($config['textColor']) ? $config['textColor'] : '#FF0000'}}"
-                                               name="textColor">
-                                        <span class="input-group-btn">
-                                                    <button class="btn default" type="button"><i
-                                                                style="background-color: {{isset($area) ? $area->border_color : '#3865a8'}};"></i>&nbsp;</button>
-                                                </span>
-                                    </div>
-                                @if ($errors->has('textColor'))
-                                    <div class="form-control-feedback">
-                                        <i class="icon-notification2"></i>
-                                    </div>
-                                    <div class="help-block">{{ $errors->first('textColor') }}</div>
-                                @endif
-                            </div>
-                            <div class="form-group {{ $errors->has('fontSize') ? 'has-error has-feedback' : '' }}">
-                                <label for="name" class="control-label text-semibold">Phông chữ hiển thị trên map</label>
-                                <i class="icon-question4 text-muted text-size-mini cursor-pointer js-help-icon" data-content=""></i>
-                                <input type="number" id="fontSize" name="fontSize" class="form-control" value="{{ isset($config['fontSize']) ? $config['fontSize'] : 15 }}" />
-                                @if ($errors->has('fontSize'))
-                                    <div class="form-control-feedback">
-                                        <i class="icon-notification2"></i>
-                                    </div>
-                                    <div class="help-block">{{ $errors->first('fontSize') }}</div>
-                                @endif
-                            </div>
+                                    {{--<div class="input-group color colorpicker-default form-control"--}}
+                                         {{--data-color="{{isset($config['textColor']) ? $config['textColor'] : '#FF0000'}}"--}}
+                                         {{--data-color-format="rgba">--}}
+                                        {{--<input type="text" class="form-control"--}}
+                                               {{--value="{{isset($config['textColor']) ? $config['textColor'] : '#FF0000'}}"--}}
+                                               {{--name="textColor">--}}
+                                        {{--<span class="input-group-btn">--}}
+                                                    {{--<button class="btn default" type="button"><i--}}
+                                                                {{--style="background-color: {{isset($area) ? $area->border_color : '#3865a8'}};"></i>&nbsp;</button>--}}
+                                                {{--</span>--}}
+                                    {{--</div>--}}
+                                {{--@if ($errors->has('textColor'))--}}
+                                    {{--<div class="form-control-feedback">--}}
+                                        {{--<i class="icon-notification2"></i>--}}
+                                    {{--</div>--}}
+                                    {{--<div class="help-block">{{ $errors->first('textColor') }}</div>--}}
+                                {{--@endif--}}
+                            {{--</div>--}}
+                            {{--<div class="form-group {{ $errors->has('fontSize') ? 'has-error has-feedback' : '' }}">--}}
+                                {{--<label for="name" class="control-label text-semibold">Phông chữ hiển thị trên map</label>--}}
+                                {{--<i class="icon-question4 text-muted text-size-mini cursor-pointer js-help-icon" data-content=""></i>--}}
+                                {{--<input type="number" id="fontSize" name="fontSize" class="form-control" value="{{ isset($config['fontSize']) ? $config['fontSize'] : 15 }}" />--}}
+                                {{--@if ($errors->has('fontSize'))--}}
+                                    {{--<div class="form-control-feedback">--}}
+                                        {{--<i class="icon-notification2"></i>--}}
+                                    {{--</div>--}}
+                                    {{--<div class="help-block">{{ $errors->first('fontSize') }}</div>--}}
+                                {{--@endif--}}
+                            {{--</div>--}}
 
 
                             {{--set up đại lý--}}

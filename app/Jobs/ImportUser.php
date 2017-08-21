@@ -17,6 +17,7 @@ use App\Models\GroupProduct;
 use App\Models\Product;
 use App\Models\User;
 use App\Models\Notification;
+use App\Models\Config;
 class ImportUser
 //    implements ShouldQueue
 {
@@ -61,17 +62,22 @@ class ImportUser
                 if(isset($row[3]) and $row[3]) {
                     $data['phone'] = $row[3];
                 }
+                $data['fontSize'] = 12;
+                $data['textColor'] = '#000000';
                 $data['position'] = User::NVKD;
                 if(isset($row['4']) and $row[4]) {
                     $position = str_slug($row[4]);
                     if($position == 'nvkd') {
                         $data['position'] = User::NVKD;
+
                     }
                     if($position == 'gs') {
                         $data['position'] = User::GSV;
+
                     }
                     if($position == 'tv') {
                         $data['position'] = User::TV;
+
                     }
                     if($position == 'pgdkd') {
                         $data['position'] = User::SALE_ADMIN;
@@ -79,6 +85,11 @@ class ImportUser
                     if($position == 'gdv') {
                         $data['position'] = User::GĐV;
                     }
+                }
+                $config = Config::where('position_id',$data['position'])->first();
+                if($config) {
+                    $data['fontSize'] = $config->fontSize;
+                    $data['textColor'] = $config->textColor;
                 }
                 $data['password'] =  bcrypt('123456');
                 if(isset($row[5]) and $row[5]) {

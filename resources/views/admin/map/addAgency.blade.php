@@ -172,17 +172,28 @@
 
                                 </select>
 
-                                @if ($errors->has('rank'))
+                                @if ($errors->has('attribute'))
                                     <div class="form-control-feedback">
                                         <i class="icon-notification2"></i>
                                     </div>
-                                    <div class="help-block">{{ $errors->first('rank') }}</div>
+                                    <div class="help-block">{{ $errors->first('attribute') }}</div>
                                 @endif
 
                             </div>
                             <div class="clearfix"></div>
                         </div>
+                        @if(isset($agent))
+                            <div class="form-group ">
+                                <label for="name" class="control-label text-semibold col-md-3">Icon</label>
+                                <div class="col-md-9">
+                                    <img src="{{asset($agent->icon)}}"  alt="" width="100">
 
+
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+
+                            @endif
                         {{--<div class="form-group {{ $errors->has('area_id') ? 'has-error has-feedback' : '' }}">--}}
                             {{--<label for="name" class="control-label text-semibold col-md-3">Icon</label>--}}
                             {{--<div class="col-md-9">--}}
