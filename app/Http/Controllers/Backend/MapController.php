@@ -329,13 +329,11 @@ class MapController extends AdminController
         $this->validate($request,[
             'manager_id' => 'required',
             'name' => 'required',
-            'area_id' => 'required',
             'lat' => 'required',
             'lng' => 'required'
         ],[
             'manager_id.required' => 'Vui lòng chọn nhân viên quản lý',
             'name.required' => 'Vui lòng nhập tên cho đại lý',
-            'area_id.required' => 'Vui lòng chọn vùng trực thuộc',
             'lat.required' => 'Vui lòng chọn đại lý',
             'lng.required' => 'Vui lòng chọn đại lý'
         ]);
@@ -367,7 +365,7 @@ class MapController extends AdminController
         $agent = Agent::findOrFail($id);
 
         $agent->update($data);
-        return redirect()->route('Admin::map@listAgency')->with('success','Sửa đại lý thành công');
+        return redirect()->back()->with('success','Sửa đại lý thành công');
     }
 
     public function mapUserDelete(Request $request,$id){
