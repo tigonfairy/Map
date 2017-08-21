@@ -91,19 +91,19 @@
                         </a>
                     </li>
 
-                    <li class="nav-item  ">
-                        <a href="{{route('Admin::role@index')}}" class="nav-link">
-                            <i class="icon-lock"></i>
-                            <span class="title">{{ trans('home.role') }}</span>
-                        </a>
-                    </li>
+                    {{--<li class="nav-item  ">--}}
+                        {{--<a href="{{route('Admin::role@index')}}" class="nav-link">--}}
+                            {{--<i class="icon-lock"></i>--}}
+                            {{--<span class="title">{{ trans('home.role') }}</span>--}}
+                        {{--</a>--}}
+                    {{--</li>--}}
 
-                    <li class="nav-item  ">
-                        <a href="{{route('Admin::permission@index')}}" class="nav-link">
-                            <i class="icon-lock"></i>
-                            <span class="title">{{ trans('home.permission') }}</span>
-                        </a>
-                    </li>
+                    {{--<li class="nav-item  ">--}}
+                        {{--<a href="{{route('Admin::permission@index')}}" class="nav-link">--}}
+                            {{--<i class="icon-lock"></i>--}}
+                            {{--<span class="title">{{ trans('home.permission') }}</span>--}}
+                        {{--</a>--}}
+                    {{--</li>--}}
 
                 </ul>
             </li>

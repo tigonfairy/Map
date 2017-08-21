@@ -10,6 +10,7 @@
 
         </div>
     </div>
+    @include('admin.flash')
     <!-- /page header -->
     <!-- Page container -->
     <div class="page-container">
@@ -31,9 +32,9 @@
                                 <div class="form-group">
                                     <table class="table table-striped table-bordered" cellspacing="0" width="100%">
                                         <thead>
-                                        <th>{{trans('position')}}</th>
-                                        <th>{{trans('textColor')}}</th>
-                                        <th>{{trans('fontSize')}}</th>
+                                        <th>{{trans('home.position')}}</th>
+                                        <th>{{trans('home.textColor')}}</th>
+                                        <th>{{trans('home.fontSize')}}</th>
                                         </thead>
 
                                         <tbody>
