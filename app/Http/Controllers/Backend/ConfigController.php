@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Backend;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Config;
 class ConfigController extends AdminController
 {
     public function index(Request $request)
@@ -24,8 +25,8 @@ class ConfigController extends AdminController
         }
         $config['repassword'] = $request->input('repassword', 0);
         $config['recaptcha'] = $request->input('recaptcha',2);
-        $config['textColor'] =$request->input('textColor', '#FF0000');
-        $config['fontSize'] =$request->input('fontSize', '15');
+//        $config['textColor'] =$request->input('textColor', '#FF0000');
+//        $config['fontSize'] =$request->input('fontSize', '15');
 
         if($request->file('agent_diamond')) {
             $old = (isset($config['agent_diamond'])) ? $config['agent_diamond'] : null;
@@ -60,4 +61,33 @@ class ConfigController extends AdminController
         return redirect()->route('Admin::config@index')
             ->with('success', 'Đã cập nhật thành công');
     }
+
+    public function globalConfig(Request $request) {
+        return view('admin.config.globalConfig');
+
+
+    }
+
+    public function postGlobalConfig(Request $request) {
+        $data = $request->all();
+
+        $textColor = $data['textColor'];
+        $fontSize = $data['fontSize'];
+        foreach (\App\Models\User::$positionTexts as $key => $value) {
+
+            if(isset($textColor[$key]) and isset($fontSize[$key])) {
+                if($textColor[$key] and $fontSize[$key]) {
+                    $config = Config::firstOrCreate(['position_id'=> $key]);
+                    $config->update([
+                         'fontSize' => $fontSize[$key],
+                        'textColor' =>$textColor[$key]
+                    ]);
+
+                }
+            }
+        }
+        return redirect()->back()->with('success','Cập nhật thành công');
+    }
+
+
 }

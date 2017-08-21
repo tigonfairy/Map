@@ -9,9 +9,9 @@ class Config extends Model
 {
     protected $table = 'configs';
     protected $fillable = [
-        'title', 'content', 'date_time', 'unread'
+        'fontSize', 'textColor', 'background', 'position_id'
     ];
-    protected $casts = [
-        'content' => 'array',
-    ];
+//    protected $casts = [
+//        'content' => 'array',
+//    ];
 }

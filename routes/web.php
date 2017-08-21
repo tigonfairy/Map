@@ -204,6 +204,9 @@ Route::group(['middleware' => ['auth','language'],
         ], function () {
             Route::get('/', ['as' => 'index', 'uses' => 'ConfigController@index']);
             Route::post('/store', ['as' => 'store', 'uses' => 'ConfigController@store']);
+
+            Route::get('/global-config', ['as' => 'globalConfig', 'uses' => 'ConfigController@globalConfig']);
+            Route::post('/global-config', ['as' => 'globalConfig', 'uses' => 'ConfigController@postGlobalConfig']);
         });
 
 });

@@ -68,5 +68,8 @@ return array(
     'note_product' => '(\'Không cần chọn mục này nếu là nhóm sản phẩm\')',
     'address' => 'Địa chỉ',
     'rank' => 'Cấp',
-    'attribute' => 'Thuộc tính'
+    'attribute' => 'Thuộc tính',
+    'configInterface' => 'Cấu hình giao diện',
+    'fontSize' => 'Cỡ chữ',
+    'textColor' => 'Màu chữ'
 );
