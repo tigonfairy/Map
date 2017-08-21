@@ -29,49 +29,49 @@
         }
         .info {
             z-index: 99999;
-            color: <?php echo $config['textColor']  ?>;
+            color: {{ (auth()->user()->textColor) ? auth()->user()->textColor : $config['textColor']  }};
         }
         .data {
             z-index: 99999;
             border: 1px solid yellow;
             background-color: yellow;
-            color: <?php echo $config['textColor']  ?>;
-            font-size: <?php echo $config['fontSize'] . 'px' ?>;
+            color: {{ (auth()->user()->textColor) ? auth()->user()->textColor : $config['textColor']  }};
+            font-size: {{ (auth()->user()->fontSize) ? auth()->user()->fontSize :  $config['fontSize']  }}px;
             float: left;
         }
         .info_user {
             z-index: 99999;
             list-style: none;
-            font-size: <?php echo $config['fontSize'] . 'px' ?>;
+            font-size: {{ (auth()->user()->fontSize) ? auth()->user()->fontSize :  $config['fontSize']  }}px;
+            color: {{ (auth()->user()->textColor) ? auth()->user()->textColor : $config['textColor']  }};
             /*margin-left: 10px;*/
             float: left;
         }
         .info_gsv{
             z-index: 99999;
-            color: <?php echo $config['textColor']  ?>;
+            color: {{ (auth()->user()->textColor) ? auth()->user()->textColor : $config['textColor']  }};
         }
         .data_gsv {
             z-index: 99999;
             border: 1px solid yellow;
             background-color: yellow;
-            color: <?php echo $config['textColor']?>;
-            font-size: <?php echo $config['fontSize'] . 'px' ?>;
+            color: {{ (auth()->user()->textColor) ? auth()->user()->textColor : $config['textColor']  }};
+            font-size: {{ (auth()->user()->fontSize) ? auth()->user()->fontSize :  $config['fontSize']  }}px;
             float: left;
         }
         .info_user_gsv {
             z-index: 99999;
             list-style: none;
-            font-size: <?php echo $config['fontSize'] . 'px' ?>;
+            font-size: {{ (auth()->user()->fontSize) ? auth()->user()->fontSize :  $config['fontSize']  }}px;
             /*margin-left: 10px;*/
             float: left;
         }
         .customBox {
             z-index: 99999;
             position: absolute;
-            font-size: <?php echo $config['fontSize'] . 'px' ?>;
+            font-size: {{ (auth()->user()->fontSize) ? auth()->user()->fontSize :  $config['fontSize']  }}px;
             background-color: #ffffff;
             margin-left: 10px;
-
         }
         /*.customBox .gsv {*/
         /*background-color: #00aaaa;*/
@@ -773,10 +773,16 @@
                 var infoWindow = new google.maps.InfoWindow({
                     content: contentString
                 });
+                var image = "";
+                if (agent.icon != "") {
+                    image = 'http://' + window.location.hostname + '/' + agent.icon;
+                }
+
                 var marker = map.addMarker({
                     lat:  agent.lat,
                     lng:  agent.lng,
                     title:   agent.name,
+                    icon : image,
                     infoWindow : infoWindow,
                     click: function (e) {
                         infoWindow.setPosition({lat: e.position.lat(), lng: e.position.lng()});
@@ -801,6 +807,7 @@
                 content: tableSales,
             });
         }
+
         function getListGDV() {
             $("#type_search").val('gdv');
             $(".data_search").select2({
@@ -832,6 +839,7 @@
                 }
             });
         }
+
         function showDataSaleGDV(data) {
             var polygonArray = [];
             var position = '';
@@ -858,8 +866,7 @@
                         path.push(new google.maps.LatLng(c[0], c[1]))
                     }
                     position = new google.maps.LatLng(bounds.getCenter().lat(), bounds.getCenter().lng());
-//                    var path = coordinate;
-//                    map.setCenter(bounds.getCenter().lat(), bounds.getCenter().lng());
+
                     polygon = new google.maps.Polygon({
                         paths: path,
                         strokeColor: border_color,
@@ -879,7 +886,14 @@
                 $.map(agents, function (agent) {
                     var latLng = new google.maps.LatLng(agent.lat,
                         agent.lng);
-                    var marker = new google.maps.Marker({'position': latLng});
+                    var image = "";
+                    if (agent.icon != "") {
+                        image = 'http://' + window.location.hostname + '/' + agent.icon;
+                    }
+                    var marker = new google.maps.Marker({
+                        'position': latLng,
+                        icon : image,
+                    });
                     markers.push(marker);
                 });
                 var markerCluster = new MarkerClusterer(map, markers, {
@@ -916,9 +930,14 @@
                     content: contentString
                 });
 
+                var image = "";
+                if (agent.icon != "") {
+                    image = 'http://' + window.location.hostname + '/' + agent.icon;
+                }
                 var marker = new google.maps.Marker({
                     'position': latLng,
                     map: map,
+                    icon : image,
                 });
                 marker.addListener('click', function() {
                     infowindow.open(map, marker);
@@ -1073,11 +1092,16 @@
             var infoWindow = new google.maps.InfoWindow({
                 content: contentString
             });
+            var image = "";
+            if (data.agents.icon != "") {
+                image = 'http://' + window.location.hostname + '/' + data.agents.icon;
+            }
             var myMarker = map.addMarker({
                 lat:  data.agents.lat,
                 lng:  data.agents.lng,
                 title:   data.agents.name,
                 infoWindow : infoWindow,
+                icon:image,
                 click: function (e) {
                     infoWindow.setPosition({lat: e.position.lat(), lng: e.position.lng()});
                     infoWindow.open(map.map);
@@ -1171,7 +1195,6 @@
                 }
             });
 
-            console.log(data.result);
             $.map(data.result, function (item) {
                 var agents = item.agents;
                 var markers = [];
@@ -1179,7 +1202,14 @@
 
                     var latLng = new google.maps.LatLng(agent.lat,
                         agent.lng);
-                    var marker = new google.maps.Marker({'position': latLng});
+                    var image = "";
+                    if (agent.icon != "") {
+                        image = 'http://' + window.location.hostname + '/' + agent.icon;
+                    }
+                    var marker = new google.maps.Marker({
+                        'position': latLng,
+                        icon: image,
+                    });
                     markers.push(marker);
                 });
                 var markerCluster = new MarkerClusterer(map, markers, {
