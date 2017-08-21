@@ -759,14 +759,14 @@
             $.map(data.listAgents, function (item) {
                 var agent = item.agent;
                 var user = agent.user;
-                var contentString = '<div class="info">' +
-                    '<h5 class="address" style="display:none">' + agent.address + '</h5>' +
-                    '<div class="user_data">' +
-                    '<p class="data">%TT ' + item.totalSales + '/' + item.capacity + '=' +  item.percent + '%</p>' +
-                    '<ul class="info_user">' +
+                var contentString = '<div class="info" style="font-size:' + user.fontSize + 'px; color:' + user.textColor + '">' +
+                    '<h5 class="address" style="display:none; font-size:' + user.fontSize + 'px; color:' + user.textColor + '">' + agent.address + '</h5>' +
+                    '<div class="user_data" style="font-size:' + user.fontSize + 'px; color:' + user.textColor + '">' +
+                    '<p class="data" style="font-size:' + user.fontSize + 'px; color:' + user.textColor + '">%TT ' + item.totalSales + '/' + item.capacity + '=' +  item.percent + '%</p>' +
+                    '<ul class="info_user" style="font-size:' + user.fontSize + 'px; color:' + user.textColor + '">' +
                     '<li> NVKD:'  + user.name + '</li>' +
-                    '<li class="gsv" style="display: none">' + postion + ':'  + data.user.name + '</li>' +
-                    '<li class="gdv" style="display: none"> GĐ :'  + data.director + '</li>' +
+                    '<li class="gsv" style="display: none; font-size:' + user.fontSize + 'px; color:' + user.textColor + '">' + postion + ':'  + data.user.name + '</li>' +
+                    '<li class="gdv" style="display: none; font-size:' + user.fontSize + 'px; color:' + user.textColor + '"> GĐ :'  + data.director + '</li>' +
                     '</ul>' +
                     '</div>' +
                     '</div>';
@@ -792,13 +792,13 @@
             });
 
             var tableSales =
-                '<div class="info_gsv">' +
-                '<h3>' + area_name + '</h3>' +
-                '<div class="user_data_gsv">' +
-                '<p class="data_gsv">%TT ' + data.totalSales + '/' + data.capacity + '=' +  data.percent + '%</p>' +
-                '<ul class="info_user_gsv">' +
+                '<div class="info_gsv" style="font-size:' + data.user.fontSize + 'px; color:' + data.user.textColor + '" >' +
+                '<h3 style="font-size:' + data.user.fontSize + 'px; color:' + data.user.textColor + '">' + area_name + '</h3>' +
+                '<div class="user_data_gsv" style="font-size:' + data.user.fontSize + 'px; color:' + data.user.textColor + '">' +
+                '<p class="data_gsv" style="font-size:' + data.user.fontSize + 'px; color:' + data.user.textColor + '">%TT ' + data.totalSales + '/' + data.capacity + '=' +  data.percent + '%</p>' +
+                '<ul class="info_user_gsv" style="font-size:' + data.user.fontSize + 'px; color:' + data.user.textColor + '">' +
                 '<li>' + postion + ':'  + data.user.name + '</li>' +
-                '<li class="gdv" style="display: none"> GĐ :'  + data.director + '</li>' +
+                '<li class="gdv" style="display: none; font-size:' + data.user.fontSize + 'px; color:' + data.user.textColor + '"> GĐ :'  + data.director + '</li>' +
                 '</ul>' +
                 '</div>' +
                 '</div>';
@@ -902,10 +902,10 @@
                 });
 
                 var customTxt =
-                    '<div class="customBox">' +
-                        '<p class="data_gsv">%TT ' + item.totalSales + '/' + item.capacity + '=' +  item.percent + '%</p>' +
-                    '<ul class="info_user_gsv">' +
-                        '<li>' + item.gsv + '</li>' +
+                    '<div class="customBox" style="font-size:' + item.gsv.fontSize + 'px; color:' + item.gsv.textColor + '">' +
+                        '<p class="data_gsv" style="font-size:' + item.gsv.fontSize + 'px; color:' + item.gsv.textColor + '">%TT ' + item.totalSales + '/' + item.capacity + '=' +  item.percent + '%</p>' +
+                    '<ul class="info_user_gsv" style="font-size:' + item.gsv.fontSize + 'px; color:' + item.gsv.textColor + '">' +
+                        '<li>' + item.gsv.name + '</li>' +
                     '</ul>' +
                     '</div>';
                 txt = new TxtOverlay(new google.maps.LatLng(markers[0].getPosition().lat(),  markers[0].getPosition().lng()), customTxt, "customBox", map);
@@ -916,12 +916,12 @@
                 var latLng = new google.maps.LatLng(agent.lat,
                         agent.lng);
 
-                var contentString = '<div class="info">' +
-                    '<h5 class="address" >' + agent.address + '</h5>' +
-                    '<div class="user_data">' +
-                    '<p class="data" id="data">%TT ' + item.totalSales + '/' + item.capacity + '=' +  item.percent + '%</p>' +
-                    '<ul class="info_user">' +
-                    '<li>'  +  item.gsv + '</li>' +
+                var contentString = '<div class="info" style="font-size:' + item.gsv.fontSize + 'px; color:' + item.gsv.textColor + '">' +
+                    '<h5 class="address" style="font-size:' + item.gsv.fontSize + 'px; color:' + item.gsv.textColor + '">' + agent.address + '</h5>' +
+                    '<div class="user_data" style="font-size:' + item.gsv.fontSize + 'px; color:' + item.gsv.textColor + '">' +
+                    '<p class="data" id="data" style="font-size:' + item.gsv.fontSize + 'px; color:' + item.gsv.textColor + '">%TT ' + item.totalSales + '/' + item.capacity + '=' +  item.percent + '%</p>' +
+                    '<ul class="info_user" style="font-size:' + item.gsv.fontSize + 'px; color:' + item.gsv.textColor + '">' +
+                    '<li>'  +  item.gsv.name + '</li>' +
                     '</ul>' +
                     '</div>' +
                     '</div>';
@@ -946,7 +946,7 @@
             });
 
             var myTitle = document.createElement('h3');
-            myTitle.style.color = 'red';
+            myTitle.style.color = data.user.textColor;
             myTitle.innerHTML = data.user.name + ' - %TT ' + data.totalSales + '/' + data.capacity + '=' +  data.percent  + "%";
             var myTextDiv = document.createElement('div');
             myTextDiv.appendChild(myTitle);
@@ -1069,6 +1069,7 @@
                 zoom: 13,
                 fullscreenControl: true,
             });
+
             var user = data.user;
             var list_products = data.listProducts;
             var postion = '';
@@ -1078,14 +1079,14 @@
                 postion = 'GS';
             }
             // info cho 1 marker
-            var contentString = '<div class="info">' +
-                '<h5 class="address" style="display:none">' + data.agents.address + '</h5>' +
-                '<div class="user_data">' +
-                '<p class="data" id="data">%'+ list_products[0].code + ' ' + list_products[0].totalSales +'/'+ list_products[0].capacity +  '=' + list_products[0].percent + '%</p>' +
-                '<ul class="info_user">' +
+            var contentString = '<div class="info" style="font-size:' + user.fontSize + 'px; color:' + user.textColor + '">' +
+                '<h5 class="address" style="display:none; font-size:' + user.fontSize + 'px; color:' + user.textColor + '">' + data.agents.address + '</h5>' +
+                '<div class="user_data" style="font-size:' + user.fontSize + 'px; color:' + user.textColor + '">' +
+                '<p class="data" id="data" style="font-size:' + user.fontSize + 'px; color:' + user.textColor + '">%'+ list_products[0].code + ' ' + list_products[0].totalSales +'/'+ list_products[0].capacity +  '=' + list_products[0].percent + '%</p>' +
+                '<ul class="info_user" style="font-size:' + user.fontSize + 'px; color:' + user.textColor + '">' +
                 '<li>'  + user.name + '</li>' +
-                '<li class="gsv" style="display:none">' + postion + ':'  + data.gsv.name + '</li>' +
-                '<li class="gdv" style="display:none"> GĐ :'  + data.gdv.name + '</li>' +
+                '<li class="gsv" style="display:none; font-size:' + user.fontSize + 'px; color:' + user.textColor + '">' + postion + ':'  + data.gsv.name + '</li>' +
+                '<li class="gdv" style="display:none; font-size:' + user.fontSize + 'px; color:' + user.textColor + '"> GĐ :'  + data.gdv.name + '</li>' +
                 '</ul>' +
                 '</div>' +
                 '</div>';
@@ -1112,7 +1113,7 @@
             map.drawOverlay({
                 lat: data.agents.lat,
                 lng: data.agents.lng,
-                content: '<div class="info">' +
+                content: '<div class="info" >' +
                 '<h5>' + data.agents.name + '</h5>' +
                 '</div>'
             });
