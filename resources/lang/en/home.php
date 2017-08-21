@@ -68,5 +68,9 @@ return [
     'note_product' => '(\'Not choose If is Group Product\')',
     'address' => 'Address',
     'rank' => 'Rank',
-    'attribute' => 'Attribute'
+    'attribute' => 'Attribute',
+    'configInterface' => 'Config display',
+    'fontSize' => 'Font Size',
+    'textColor' => 'Text color'
+
 ];
