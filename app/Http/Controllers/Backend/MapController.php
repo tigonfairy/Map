@@ -135,17 +135,15 @@ class MapController extends AdminController
             $key = $request->input('q');
             $areas = $areas->where('name','like','%'.$key.'%');
         }
+        $areas = $areas->paginate(10);
 
-            $areas = $areas->where('manager_id',$user->id)->paginate(10);
 
 
         return view('admin.map.listMapUser',compact('areas'));
     }
 
     public function mapUserDetail(Request $request,$id){
-        if (auth()->user()->roles->first()['id'] == 3) {
-            abort(403);
-        }
+
         $area = Area::findOrFail($id);
         $month = Carbon::now()->format('m-Y');
         if($request->input('month')){
@@ -162,7 +160,7 @@ class MapController extends AdminController
         }
 
         $products = DB::table('sale_agents')
-            ->select(\DB::raw('SUM(sales_plan) as sales_plan,SUM(sales_real) as sales_real,product_id,products.name'))
+            ->select(\DB::raw('SUM(sales_plan) as sales_plan,SUM(sales_real) as sales_real,sale_agents.product_id'))
             ->groupBy('product_id')
             ->whereIn('agent_id',$idAgent)->where('month',$month)
             ->join('products','sale_agents.product_id','=','products.id')

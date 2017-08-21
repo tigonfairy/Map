@@ -53,12 +53,12 @@
                         <td>
                             <a href="{{route('Admin::map@mapUserDetail',[$area->id])}}">
                                 <button type="button" class="btn btn-info btn-xs">{{ trans('home.show') }}</button></a>
-                            @if(auth()->user()->roles()->first()->id == 1)
+
                     <a href="{{route('Admin::map@editMapUser',[$area->id])}}">
                                 <button type="button" class="btn btn-warning btn-xs">{{ trans('home.edit') }}</button></a>
 
                             <a onclick="return xoaCat();" href="{{route('Admin::map@mapUserDelete',[$area->id])}}" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-remove"></span> {{ trans('home.delete') }}</a>
-                            @endif
+
                         </td>
                     </tr>
                 @endforeach
