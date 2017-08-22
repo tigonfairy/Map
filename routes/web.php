@@ -46,6 +46,7 @@ Route::group(['middleware' => ['auth','language'],
         });
 
         Route::get('/', ['as' => 'dashboard', 'uses' => 'HomeController@dashboard']);
+        Route::get('/home', ['as' => 'dashboard', 'uses' => 'HomeController@dashboard']);
         Route::post('/d', ['as' => 'chart', 'uses' => 'HomeController@chartDashboard']);
 
         Route::get('/admin', ['as' => 'dashboard', 'uses' => 'HomeController@dashboard']);
