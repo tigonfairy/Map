@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Backend;
 
 
+use App\Jobs\ExportAgent;
 use App\Models\Agent;
 use App\Models\GroupProduct;
 use App\Models\Product;
@@ -146,31 +147,19 @@ class SaleAgentController extends AdminController
     }
     public function exportExcelDataAgent(Request $request) {
         $validator = Validator::make($request->all(), [
-            'month' => 'required'
+            'startMonth' => 'required',
+            'endMonth' => 'required'
         ]);
         if($validator->fails()) {
             $response['status'] = 'fails';
             $response['errors'] = $validator->errors();
         } else {
-            $month = $request->input('month');
-            $exportUserArray= [];
-            ob_end_clean();
-            ob_start();
+            $startMonth = $request->input('startMonth');
+            $endMonth = $request->input('endMonth');
             $groupProduct = GroupProduct::orderBy('created_at','desc')->get();
-            Excel::create('doanh_so_'.$month, function ($excel) use ($exportUserArray,$groupProduct) {
-
-                $excel->sheet('khach', function ($sheet) use ($exportUserArray,$groupProduct) {
-                    $sheet->loadView('exportExcel',['groupProduct' => $groupProduct]);
-                });
-
-            })->download('xlsx');
-//            $file = request()->file('file');
-//            $filename = $month.'_'.time() . '_' . mt_rand(1111, 9999) . '_' . $request->file('file')->getClientOriginalName();
-//            $request->file('file')->move(storage_path('app/import/products'), $filename);
-//            $this->dispatch(new ImportDataAgent( storage_path('app/import/products/' . $filename),$month,$name));
-//
-//            flash()->success('Success!', 'Data successfully updated.');
-//            $response['status'] = 'success';
+            return view('exportExcel',compact('groupProduct','startMonth','endMonth'));
+//            $this->dispatch(new ExportAgent( $startMonth,$endMonth));
+//            return redirect()->back()->with('success','Export trong quá trình chạy.Vui lòng chờ thông báo để tải file');
         }
 
 

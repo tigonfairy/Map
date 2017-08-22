@@ -12,6 +12,7 @@ class NotificationController extends AdminController
     {
 
         $unreadCount = Notification::where('unread', 1)->count();
+
         $notifications = Notification::orderBy('created_at', 'desc');
 
         if ($request->has('since')) {

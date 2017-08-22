@@ -41,7 +41,7 @@ $index = 0;
 
 @endphp
 
-<table class="ht-table-data">
+<table class="ht-table-data" border="1">
     <thead>
     <tr>
         <th rowspan="2" align="center" valign="middle" width="10">STT</th>
@@ -74,11 +74,11 @@ $index = 0;
 
     </tr>
     <tr>
-        <th></th>
-        <th></th>
-        <th></th>
-        <th></th>
-        <th></th>
+        {{--<th></th>--}}
+        {{--<th></th>--}}
+        {{--<th></th>--}}
+        {{--<th></th>--}}
+        {{--<th></th>--}}
         <th align="center" valign="middle" width="10">Dung lượng vùng</th>
         <th align="center" valign="middle" width="10">Tổng sản lượng kế hoạch</th>
         <th align="center" valign="middle" width="10">Tổng sản lượng thực tế</th>
@@ -97,16 +97,33 @@ $index = 0;
     {{--<tr class="ht-highlight">--}}
 
     {{--</tr>--}}
-<<<<<<< HEAD
+    {{--GDv--}}
+    @php  $gdvs = \App\Models\User::where('position',\App\Models\User::GĐV)->get();@endphp
+    @if($gdvs->count())
+           @foreach($gdvs as $gdv)
+                @php $agents = \App\Models\Agent::where('manager_id',$gdv->id)->get();
+
+                    $agentNVKD = \App\Models\User::where('manager_id',$gdv->id)->has('agent','>',0)->get();
+                @endphp
+                @if($agents->count() || $agentNVKD->count()==0)
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td>{{$gdv->name}}</td>
+                            <td>{{$gdv->code}}</td>
+                        </tr>
+
+                @endif
+
+           @endforeach
+    @endif
+
+
     <tr>
-        @php dd($data); @endphp
+
 
     </tr>
-=======
-    @php
-            @endphp
-
->>>>>>> b541010a5a16f02fed013ad1480e09fe1574a75c
     </tbody>
 </table>
 </body>
