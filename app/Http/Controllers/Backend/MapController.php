@@ -634,6 +634,7 @@ class MapController extends AdminController
 
                 $agents = Agent::whereIn('manager_id', $listIds)->with('user')->get();
                 foreach ($agents as $agent) {
+
                     $sales = SaleAgent::where('agent_id', $agent->id)->where('month', $month)->select('sales_real', 'capacity')->get();
                     foreach ($sales as $sale) {
                         $saleAgents += $sale->sales_real;
@@ -647,12 +648,15 @@ class MapController extends AdminController
                         'percent' => round($saleAgents / $capacity, 2)
                     ];
                     $totalSaleGSV += $saleAgents;
+                    $agent->totalSales = $saleAgents;
+                    $agent->capacity = $capacity;
+                    $agent->percent = round($saleAgents / $capacity, 2);
                     $saleAgents = 0;
                 }
                 $listIds = [];
                 $totalSaleGDV += $totalSaleGSV;
                 $data[] = [
-                    'gsv' => $user->name,
+                    'gsv' => $user,
                     'agents' => $agents,
                     'totalSales' => $totalSaleGSV,
                     'capacity' => $capacity,
@@ -671,8 +675,8 @@ class MapController extends AdminController
                     }
                 }
             }
-
-            $agents = Agent::where('manager_id', $userGdv->id)->get();
+                
+            $agents = Agent::where('manager_id', $userGdv->id)->with('user')->get();
             if (count($agents) > 0) {
                 foreach ($agents as $agent) {
                     $sales = SaleAgent::where('agent_id', $agent->id)->where('month', $month)->select('sales_real', 'capacity')->get();
@@ -682,8 +686,12 @@ class MapController extends AdminController
                         $capacity = isset($sale->capacity) ? $sale->capacity : 1;
                     }
                     $capacity = $capacity == 0 ? 1 : $capacity;
+                    $agent->totalSales = $saleAgents;
+                    $agent->capacity = $capacity;
+                    $agent->percent = round($saleAgents / $capacity, 2);
+
                     $dataGdv[] = [
-                        'gsv' => $userGdv->name,
+                        'gsv' => $userGdv,
                         'agents' => $agent,
                         'totalSales' => $saleAgents,
                         'capacity' => $capacity,
@@ -692,6 +700,7 @@ class MapController extends AdminController
                     $totalSaleGDV += $saleAgents;
                 }
             }
+
 
             return response()->json([
                 'user' => $userGdv,
@@ -766,14 +775,18 @@ class MapController extends AdminController
                                 'capacity' => $capacity,
                                 'percent' => round($saleAgents / $capacity, 2)
                             ];
+
                             $totalSaleGSV += $saleAgents;
+                            $agent->totalSales = $saleAgents;
+                            $agent->capacity = $capacity;
+                            $agent->percent = round($saleAgents / $capacity, 2);
                             $saleAgents = 0;
                         }
                         $listIds = [];
                         $totalSaleGDV += $totalSaleGSV;
 
                     $data[] = [
-                        'gdv' => $gdv->name,
+                        'gdv' => $gdv,
                         'agents' => $agents,
                         'totalSales' => $totalSaleGDV,
                         'capacity' => $capacity,
