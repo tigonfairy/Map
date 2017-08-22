@@ -89,10 +89,6 @@
         #legend img {
             vertical-align: middle;
         }
-
-=======
-        }
->>>>>>> ec9a12636243d373c4ece61513ff853a1645f8a5
     </style>
 
     <!-- BEGIN PAGE HEADER-->
@@ -678,11 +674,7 @@
                 var agent = item.agent;
                 var user = agent.user;
                 var contentString = '<div class="info" style="font-size:' + user.fontSize + 'px; color:' + user.textColor + '">' +
-<<<<<<< HEAD
                     '<h5 class="address" style="display:none; font-size:' + user.fontSize + 'px; color:' + user.textColor + '">' + agent.name + ' - ' + agent.address + '</h5>' +
-=======
-                    '<h5 class="address" style="display:none; font-size:' + user.fontSize + 'px; color:' + user.textColor + '">' + agent.address + '</h5>' +
->>>>>>> ec9a12636243d373c4ece61513ff853a1645f8a5
                     '<div class="user_data" style="font-size:' + user.fontSize + 'px; color:' + user.textColor + '">' +
                     '<p class="data" style="font-size:' + user.fontSize + 'px; color:' + user.textColor + '">%TT ' + item.totalSales + '/' + item.capacity + '=' +  item.percent + '%</p>' +
                     '<ul class="info_user" style="font-size:' + user.fontSize + 'px; color:' + user.textColor + '">' +
@@ -803,7 +795,6 @@
             });
             var legend = document.getElementById('legend');
             $.map(data.result, function (item) {
-                console.log(item);
                 var agents = item.agents;
                 var markers = [];
                 $.map(agents, function (agent) {
@@ -815,19 +806,11 @@
                     }
 
                     var contentString = '<div class="info" style="font-size:' + agent.user.fontSize + 'px; color:' + agent.user.textColor + '">' +
-<<<<<<< HEAD
                         '<h5 class="address" style="font-size:' + agent.user.fontSize + 'px; color:' + agent.user.textColor + '">' + agent.name + ' - ' + agent.address + '</h5>' +
                         '<div class="user_data" style="font-size:' + agent.user.fontSize + 'px; color:' + agent.user.textColor + '">' +
                         '<p class="data" id="data" style="font-size:' + agent.user.fontSize + 'px; color:' + agent.user.textColor + '">%TT ' + agent.totalSales + '/' + agent.capacity + '=' +  agent.percent + '%</p>' +
                         '<ul class="info_user" style="font-size:' + agent.user.fontSize + 'px; color:' + agent.user.textColor + '">' +
                         '<li> NVKD:'  +  agent.user.name + '</li>' +
-=======
-                        '<h5 class="address" style="font-size:' + agent.user.fontSize + 'px; color:' + agent.user.textColor + '">' + agent.address + '</h5>' +
-                        '<div class="user_data" style="font-size:' + agent.user.fontSize + 'px; color:' + agent.user.textColor + '">' +
-                        '<p class="data" id="data" style="font-size:' + agent.user.fontSize + 'px; color:' + agent.user.textColor + '">%TT ' + agent.totalSales + '/' + agent.capacity + '=' +  agent.percent + '%</p>' +
-                        '<ul class="info_user" style="font-size:' + agent.user.fontSize + 'px; color:' + agent.user.textColor + '">' +
-                        '<li>'  +  agent.user.name + '</li>' +
->>>>>>> ec9a12636243d373c4ece61513ff853a1645f8a5
                         '</ul>' +
                         '</div>' +
                         '</div>';
@@ -858,8 +841,6 @@
 //                        '</div>';
 //                    txt = new TxtOverlay(new google.maps.LatLng(markers[0].getPosition().lat(),  markers[0].getPosition().lng()), customTxt, "customBox", map);
 //                }
-
-<<<<<<< HEAD
                 var div = document.createElement('div');
                 div.style.color = item.gsv.textColor;
                 div.innerHTML = item.gsv.name + ' - %TT ' + item.totalSales + '/' + item.capacity + '=' +  item.percent  + "%";
@@ -870,14 +851,13 @@
 //                var myTextDiv = document.createElement('div');
 //                myTextDiv.appendChild(myTitle);
 //                map.controls[google.maps.ControlPosition.BOTTOM_LEFT].push(myTextDiv);
-=======
+
                 var customTxt =
                     '<div class="customBox" style="font-size:' + item.gsv.fontSize + 'px; color:' + item.gsv.textColor + '">' +
                         '<span class="data_gsv" style="font-size:' + item.gsv.fontSize + 'px; color:' + item.gsv.textColor + '">%TT ' + item.totalSales + '/' + item.capacity + '=' +  item.percent + '%</span>' +
                     '<span class="info_user_gsv" style="font-size:' + item.gsv.fontSize + 'px; color:' + item.gsv.textColor + '">' + item.gsv.name + '</span>' +
                     '</div>';
                 txt = new TxtOverlay(new google.maps.LatLng(markers[0].getPosition().lat(),  markers[0].getPosition().lng()), customTxt, "customBox", map);
->>>>>>> ec9a12636243d373c4ece61513ff853a1645f8a5
             });
 
             map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(legend);
@@ -888,11 +868,7 @@
                         agent.lng);
 
                 var contentString = '<div class="info" style="font-size:' + item.gsv.fontSize + 'px; color:' + item.gsv.textColor + '">' +
-<<<<<<< HEAD
                     '<h5 class="address" style="font-size:' + item.gsv.fontSize + 'px; color:' + item.gsv.textColor + '">' + agent.name + ' - ' + agent.address + '</h5>' +
-=======
-                    '<h5 class="address" style="font-size:' + item.gsv.fontSize + 'px; color:' + item.gsv.textColor + '">' + agent.address + '</h5>' +
->>>>>>> ec9a12636243d373c4ece61513ff853a1645f8a5
                     '<div class="user_data" style="font-size:' + item.gsv.fontSize + 'px; color:' + item.gsv.textColor + '">' +
                     '<p class="data" id="data" style="font-size:' + item.gsv.fontSize + 'px; color:' + item.gsv.textColor + '">%TT ' + item.totalSales + '/' + item.capacity + '=' +  item.percent + '%</p>' +
                     '<ul class="info_user" style="font-size:' + item.gsv.fontSize + 'px; color:' + item.gsv.textColor + '">' +
@@ -1055,19 +1031,11 @@
             }
             // info cho 1 marker
             var contentString = '<div class="info" style="font-size:' + user.fontSize + 'px; color:' + user.textColor + '">' +
-<<<<<<< HEAD
                 '<h5 class="address" style="display:none; font-size:' + user.fontSize + 'px; color:' + user.textColor + '">' + data.agents.name + ' - ' + data.agents.address + '</h5>' +
                 '<div class="user_data" style="font-size:' + user.fontSize + 'px; color:' + user.textColor + '">' +
                 '<p class="data" id="data" style="font-size:' + user.fontSize + 'px; color:' + user.textColor + '">%'+ list_products[0].code + ' ' + list_products[0].totalSales +'/'+ list_products[0].capacity +  '=' + list_products[0].percent + '%</p>' +
                 '<ul class="info_user" style="font-size:' + user.fontSize + 'px; color:' + user.textColor + '">' +
                 '<li> NVKD:'  + user.name + '</li>' +
-=======
-                '<h5 class="address" style="display:none; font-size:' + user.fontSize + 'px; color:' + user.textColor + '">' + data.agents.address + '</h5>' +
-                '<div class="user_data" style="font-size:' + user.fontSize + 'px; color:' + user.textColor + '">' +
-                '<p class="data" id="data" style="font-size:' + user.fontSize + 'px; color:' + user.textColor + '">%'+ list_products[0].code + ' ' + list_products[0].totalSales +'/'+ list_products[0].capacity +  '=' + list_products[0].percent + '%</p>' +
-                '<ul class="info_user" style="font-size:' + user.fontSize + 'px; color:' + user.textColor + '">' +
-                '<li>'  + user.name + '</li>' +
->>>>>>> ec9a12636243d373c4ece61513ff853a1645f8a5
                 '<li class="gsv" style="display:none; font-size:' + user.fontSize + 'px; color:' + user.textColor + '">' + postion + ':'  + data.gsv.name + '</li>' +
                 '<li class="gdv" style="display:none; font-size:' + user.fontSize + 'px; color:' + user.textColor + '"> GĐ :'  + data.gdv.name + '</li>' +
                 '</ul>' +
@@ -1193,11 +1161,7 @@
                     }
 
                     var contentString = '<div class="info" style="font-size:' + agent.user.fontSize + 'px; color:' + agent.user.textColor + '">' +
-<<<<<<< HEAD
                         '<h5 class="address" style="font-size:' + agent.user.fontSize + 'px; color:' + agent.user.textColor + '">' + agent.name + ' - ' + agent.address + '</h5>' +
-=======
-                        '<h5 class="address" style="font-size:' + agent.user.fontSize + 'px; color:' + agent.user.textColor + '">' + agent.address + '</h5>' +
->>>>>>> ec9a12636243d373c4ece61513ff853a1645f8a5
                         '<div class="user_data" style="font-size:' + agent.user.fontSize + 'px; color:' + agent.user.textColor + '">' +
                         '<p class="data" id="data" style="font-size:' + agent.user.fontSize + 'px; color:' + agent.user.textColor + '">%TT ' + agent.totalSales + '/' + agent.capacity + '=' +  agent.percent + '%</p>' +
                         '<ul class="info_user" style="font-size:' + agent.user.fontSize + 'px; color:' + agent.user.textColor + '">' +
