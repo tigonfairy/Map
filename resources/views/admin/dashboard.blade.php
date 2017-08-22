@@ -75,6 +75,20 @@
             width:35%;
             text-align:center;
         }
+
+        #legend {
+            font-family: Arial, sans-serif;
+            background: #fff;
+            padding: 10px;
+            margin: 10px;
+        }
+        #legend h3 {
+            margin-top: 0;
+        }
+        #legend img {
+            vertical-align: middle;
+        }
+
     </style>
 
     <!-- BEGIN PAGE HEADER-->
@@ -137,6 +151,7 @@
 
             <div class="portlet-body">
                 <div id="map" style=" width: 100% ;height: 500px"></div>
+                <div id="legend"></div>
             </div>
         </div>
     </div>
@@ -552,103 +567,6 @@
         });
 
         var listSelectProducts = [];
-        function getListAreas() {
-            $("#type_search").val('areas');
-            $(".data_search").select2({
-                'placeholder' : "{{'-- '. trans('home.select'). ' '. trans('home.place') .' --'}}",
-                ajax : {
-                    url : "{{route('Admin::Api::area@getListAreas')}}",
-                    dataType:'json',
-                    delay:500,
-                    data: function (params) {
-                        var queryParameters = {
-                            q: params.term
-                        }
-                        return queryParameters;
-                    },
-                    processResults: function(data, page) {
-                        return {
-                            results: $.map(data, function (item) {
-                                return {
-                                    text: item.name,
-                                    slug: item.slug,
-                                    id: item.id,
-                                    coordinates:item.coordinates
-                                }
-                            })
-                        };
-                    },
-                    dropdownCssClass: "bigdrop", // apply css that makes the dropdown taller
-                    escapeMarkup: function(m) {
-                        return m;
-                    }
-                }
-            });
-        }
-        function showDataAreas(data) {
-            var polygonArray = [];
-            $.map(data.locations, function (item) {
-                var c = item.coordinates;
-                var coordinate = JSON.parse(c);
-                var border_color = '#333';
-                var background_color = '#333';
-                if(data.area.border_color){
-                    border_color = data.area.border_color;
-                }
-                if(data.area.background_color){
-                    background_color = data.area.background_color;
-                }
-                if (coordinate) {
-                    var bounds = new google.maps.LatLngBounds();
-                    for (i = 0; i < coordinate.length; i++) {
-                        var c = coordinate[i];
-                        bounds.extend(new google.maps.LatLng(c[0], c[1]));
-                    }
-                    var path = coordinate;
-                    map.setCenter(bounds.getCenter().lat(), bounds.getCenter().lng());
-                    var infoWindow = new google.maps.InfoWindow({
-                        content: "<p>" + item.name + "</p>"
-                    });
-                    polygon = map.drawPolygon({
-                        paths: path,
-                        strokeColor: border_color,
-                        strokeOpacity: 1,
-                        strokeWeight: 1,
-                        fillColor: background_color,
-                        fillOpacity: 0.4,
-                        mouseover: function (clickEvent) {
-                            var position = clickEvent.latLng;
-                            infoWindow.setPosition(position);
-                            infoWindow.open(map.map);
-                        },
-                        mouseout: function (clickEvent) {
-                            if (infoWindow) {
-                                infoWindow.close();
-                            }
-                        }
-                    });
-                    polygonArray[item.id] = polygon;
-                }
-            });
-            $.map(data.agents, function (item) {
-                var contentString = '<div id="content">' +
-                    '<p id="name">' + item.name + '</p>' +
-                    '</div>';
-                var infoWindow = new google.maps.InfoWindow({
-                    content: contentString
-                });
-
-                map.addMarker({
-                    lat: item.lat,
-                    lng: item.lng,
-                    title:  item.name,
-                    click: function (e) {
-                        infoWindow.setPosition({lat: e.position.lat(), lng: e.position.lng()});
-                        infoWindow.open(map.map);
-                    }
-                });
-            });
-        }
 
         function getListGSV() {
             $("#type_search").val('gsv');
@@ -756,7 +674,7 @@
                 var agent = item.agent;
                 var user = agent.user;
                 var contentString = '<div class="info" style="font-size:' + user.fontSize + 'px; color:' + user.textColor + '">' +
-                    '<h5 class="address" style="display:none; font-size:' + user.fontSize + 'px; color:' + user.textColor + '">' + agent.address + '</h5>' +
+                    '<h5 class="address" style="display:none; font-size:' + user.fontSize + 'px; color:' + user.textColor + '">' + agent.name + ' - ' + agent.address + '</h5>' +
                     '<div class="user_data" style="font-size:' + user.fontSize + 'px; color:' + user.textColor + '">' +
                     '<p class="data" style="font-size:' + user.fontSize + 'px; color:' + user.textColor + '">%TT ' + item.totalSales + '/' + item.capacity + '=' +  item.percent + '%</p>' +
                     '<ul class="info_user" style="font-size:' + user.fontSize + 'px; color:' + user.textColor + '">' +
@@ -875,9 +793,8 @@
                     polygonArray[item.id] = polygon;
                 }
             });
-
+            var legend = document.getElementById('legend');
             $.map(data.result, function (item) {
-                console.log(item);
                 var agents = item.agents;
                 var markers = [];
                 $.map(agents, function (agent) {
@@ -889,11 +806,11 @@
                     }
 
                     var contentString = '<div class="info" style="font-size:' + agent.user.fontSize + 'px; color:' + agent.user.textColor + '">' +
-                        '<h5 class="address" style="font-size:' + agent.user.fontSize + 'px; color:' + agent.user.textColor + '">' + agent.address + '</h5>' +
+                        '<h5 class="address" style="font-size:' + agent.user.fontSize + 'px; color:' + agent.user.textColor + '">' + agent.name + ' - ' + agent.address + '</h5>' +
                         '<div class="user_data" style="font-size:' + agent.user.fontSize + 'px; color:' + agent.user.textColor + '">' +
                         '<p class="data" id="data" style="font-size:' + agent.user.fontSize + 'px; color:' + agent.user.textColor + '">%TT ' + agent.totalSales + '/' + agent.capacity + '=' +  agent.percent + '%</p>' +
                         '<ul class="info_user" style="font-size:' + agent.user.fontSize + 'px; color:' + agent.user.textColor + '">' +
-                        '<li>'  +  agent.user.name + '</li>' +
+                        '<li> NVKD:'  +  agent.user.name + '</li>' +
                         '</ul>' +
                         '</div>' +
                         '</div>';
@@ -916,14 +833,28 @@
                     maxZoom: 15,
                     imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'
                 });
+//                if (markers.length > 0) {
+//                    var customTxt =
+//                        '<div class="customBox" style="font-size:' + item.gsv.fontSize + 'px; color:' + item.gsv.textColor + '">' +
+//                        '<span class="data_gsv" style="font-size:' + item.gsv.fontSize + 'px; color:' + item.gsv.textColor + '">%TT ' + item.totalSales + '/' + item.capacity + '=' +  item.percent + '%</span>' +
+//                        '<span class="info_user_gsv" style="font-size:' + item.gsv.fontSize + 'px; color:' + item.gsv.textColor + '">' + item.gsv.name + '</span>' +
+//                        '</div>';
+//                    txt = new TxtOverlay(new google.maps.LatLng(markers[0].getPosition().lat(),  markers[0].getPosition().lng()), customTxt, "customBox", map);
+//                }
 
-                var customTxt =
-                    '<div class="customBox" style="font-size:' + item.gsv.fontSize + 'px; color:' + item.gsv.textColor + '">' +
-                        '<span class="data_gsv" style="font-size:' + item.gsv.fontSize + 'px; color:' + item.gsv.textColor + '">%TT ' + item.totalSales + '/' + item.capacity + '=' +  item.percent + '%</span>' +
-                    '<span class="info_user_gsv" style="font-size:' + item.gsv.fontSize + 'px; color:' + item.gsv.textColor + '">' + item.gsv.name + '</span>' +
-                    '</div>';
-                txt = new TxtOverlay(new google.maps.LatLng(markers[0].getPosition().lat(),  markers[0].getPosition().lng()), customTxt, "customBox", map);
+                var div = document.createElement('div');
+                div.style.color = item.gsv.textColor;
+                div.innerHTML = item.gsv.name + ' - %TT ' + item.totalSales + '/' + item.capacity + '=' +  item.percent  + "%";
+                legend.appendChild(div);
+//                var myTitle = document.createElement('h3');
+//                myTitle.style.color = item.gsv.textColor;
+//                myTitle.innerHTML = item.gsv.name + ' - %TT ' + item.totalSales + '/' + item.capacity + '=' +  item.percent  + "%";
+//                var myTextDiv = document.createElement('div');
+//                myTextDiv.appendChild(myTitle);
+//                map.controls[google.maps.ControlPosition.BOTTOM_LEFT].push(myTextDiv);
             });
+
+            map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(legend);
 
             $.map(data.resultGdv, function (item) {
                 var agent = item.agents;
@@ -931,7 +862,7 @@
                         agent.lng);
 
                 var contentString = '<div class="info" style="font-size:' + item.gsv.fontSize + 'px; color:' + item.gsv.textColor + '">' +
-                    '<h5 class="address" style="font-size:' + item.gsv.fontSize + 'px; color:' + item.gsv.textColor + '">' + agent.address + '</h5>' +
+                    '<h5 class="address" style="font-size:' + item.gsv.fontSize + 'px; color:' + item.gsv.textColor + '">' + agent.name + ' - ' + agent.address + '</h5>' +
                     '<div class="user_data" style="font-size:' + item.gsv.fontSize + 'px; color:' + item.gsv.textColor + '">' +
                     '<p class="data" id="data" style="font-size:' + item.gsv.fontSize + 'px; color:' + item.gsv.textColor + '">%TT ' + item.totalSales + '/' + item.capacity + '=' +  item.percent + '%</p>' +
                     '<ul class="info_user" style="font-size:' + item.gsv.fontSize + 'px; color:' + item.gsv.textColor + '">' +
@@ -1094,11 +1025,11 @@
             }
             // info cho 1 marker
             var contentString = '<div class="info" style="font-size:' + user.fontSize + 'px; color:' + user.textColor + '">' +
-                '<h5 class="address" style="display:none; font-size:' + user.fontSize + 'px; color:' + user.textColor + '">' + data.agents.address + '</h5>' +
+                '<h5 class="address" style="display:none; font-size:' + user.fontSize + 'px; color:' + user.textColor + '">' + data.agents.name + ' - ' + data.agents.address + '</h5>' +
                 '<div class="user_data" style="font-size:' + user.fontSize + 'px; color:' + user.textColor + '">' +
                 '<p class="data" id="data" style="font-size:' + user.fontSize + 'px; color:' + user.textColor + '">%'+ list_products[0].code + ' ' + list_products[0].totalSales +'/'+ list_products[0].capacity +  '=' + list_products[0].percent + '%</p>' +
                 '<ul class="info_user" style="font-size:' + user.fontSize + 'px; color:' + user.textColor + '">' +
-                '<li>'  + user.name + '</li>' +
+                '<li> NVKD:'  + user.name + '</li>' +
                 '<li class="gsv" style="display:none; font-size:' + user.fontSize + 'px; color:' + user.textColor + '">' + postion + ':'  + data.gsv.name + '</li>' +
                 '<li class="gdv" style="display:none; font-size:' + user.fontSize + 'px; color:' + user.textColor + '"> GĐ :'  + data.gdv.name + '</li>' +
                 '</ul>' +
@@ -1224,7 +1155,7 @@
                     }
 
                     var contentString = '<div class="info" style="font-size:' + agent.user.fontSize + 'px; color:' + agent.user.textColor + '">' +
-                        '<h5 class="address" style="font-size:' + agent.user.fontSize + 'px; color:' + agent.user.textColor + '">' + agent.address + '</h5>' +
+                        '<h5 class="address" style="font-size:' + agent.user.fontSize + 'px; color:' + agent.user.textColor + '">' + agent.name + ' - ' + agent.address + '</h5>' +
                         '<div class="user_data" style="font-size:' + agent.user.fontSize + 'px; color:' + agent.user.textColor + '">' +
                         '<p class="data" id="data" style="font-size:' + agent.user.fontSize + 'px; color:' + agent.user.textColor + '">%TT ' + agent.totalSales + '/' + agent.capacity + '=' +  agent.percent + '%</p>' +
                         '<ul class="info_user" style="font-size:' + agent.user.fontSize + 'px; color:' + agent.user.textColor + '">' +
