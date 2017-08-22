@@ -74,6 +74,7 @@
             vertical-align:middle;
             width:35%;
             text-align:center;
+<<<<<<< HEAD
         }
 
         #legend {
@@ -88,7 +89,6 @@
         #legend img {
             vertical-align: middle;
         }
-
     </style>
 
     <!-- BEGIN PAGE HEADER-->
@@ -841,7 +841,6 @@
 //                        '</div>';
 //                    txt = new TxtOverlay(new google.maps.LatLng(markers[0].getPosition().lat(),  markers[0].getPosition().lng()), customTxt, "customBox", map);
 //                }
-
                 var div = document.createElement('div');
                 div.style.color = item.gsv.textColor;
                 div.innerHTML = item.gsv.name + ' - %TT ' + item.totalSales + '/' + item.capacity + '=' +  item.percent  + "%";
@@ -852,6 +851,13 @@
 //                var myTextDiv = document.createElement('div');
 //                myTextDiv.appendChild(myTitle);
 //                map.controls[google.maps.ControlPosition.BOTTOM_LEFT].push(myTextDiv);
+
+                var customTxt =
+                    '<div class="customBox" style="font-size:' + item.gsv.fontSize + 'px; color:' + item.gsv.textColor + '">' +
+                        '<span class="data_gsv" style="font-size:' + item.gsv.fontSize + 'px; color:' + item.gsv.textColor + '">%TT ' + item.totalSales + '/' + item.capacity + '=' +  item.percent + '%</span>' +
+                    '<span class="info_user_gsv" style="font-size:' + item.gsv.fontSize + 'px; color:' + item.gsv.textColor + '">' + item.gsv.name + '</span>' +
+                    '</div>';
+                txt = new TxtOverlay(new google.maps.LatLng(markers[0].getPosition().lat(),  markers[0].getPosition().lng()), customTxt, "customBox", map);
             });
 
             map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(legend);

@@ -675,7 +675,11 @@ class MapController extends AdminController
                     }
                 }
             }
+<<<<<<< HEAD
+                
+=======
 
+>>>>>>> ec9a12636243d373c4ece61513ff853a1645f8a5
             $agents = Agent::where('manager_id', $userGdv->id)->with('user')->get();
             if (count($agents) > 0) {
                 foreach ($agents as $agent) {
