@@ -72,7 +72,7 @@ $index = 0;
             ]; @endphp
         @endforeach
 
-    </tr>
+    </tr>git
     <tr>
         <th></th>
         <th></th>
