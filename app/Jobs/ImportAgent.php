@@ -53,6 +53,7 @@ class ImportAgent
                 $reader->noHeading();
             })->skip(1)->get();
         $agentError = [];
+        $notFound = [];
             foreach ($datas as $row) {
                 try{
                     $code= 0 ;
@@ -68,10 +69,18 @@ class ImportAgent
                     if(!isset($row[2]) || empty($row[2])) {
                         continue;
                     }
-                        $address = $row[2];
-                    $url = "http://maps.google.com/maps/api/geocode/json?address=".urlencode($row[2])."&sensor=false&region=VN";
+                    $address = str_replace(' -','-',$row[2]);
+                    $address = str_replace('- ','-',$row[2]);
+                    $address = str_replace('-',',',$row[2]);
+
+                    $url = "http://maps.google.com/maps/api/geocode/json?address=".urlencode($address)."&sensor=false&region=VN";
+
                     $response = file_get_contents($url);
                     $response = json_decode($response, true);
+                    if(!isset($response['results'][0])) {
+                        $notFound[] = $code;
+
+                    }
                     $lat = $response['results'][0]['geometry']['location']['lat'];
                     $lng = $response['results'][0]['geometry']['location']['lng'];
 
@@ -105,11 +114,14 @@ class ImportAgent
                             $manager_id = $nv->id;
                         }
                     }
+
                     if($manager_id == 0 ) {
                         $agentError[] = $code;
                         continue;
                     }
-                        $attribute = 0;
+
+
+                    $attribute = 0;
                     $config = [];
                     if (file_exists(public_path().'/config/config.json')) {
                         $config = json_decode(file_get_contents(public_path().'/config/config.json'),true);
@@ -163,10 +175,119 @@ class ImportAgent
                         'rank' => $rank,
                         'icon' => $icon
                     ];
+
+
+                    //gan cap bac cho agent
+
+                    $user = User::find($manager_id);
+                    if($user->position == User::SALE_ADMIN) {
+                        $data['pgdkd'] = $manager_id;
+                    }
+
+                    if($user->position == User::GĐV) {
+                        $data['gdv'] = $manager_id;
+                    }
+
+                    if($user->position == User::TV) {
+                        $data['tv'] = $manager_id;
+                        $user2 = $user->manager;
+                        if($user2 and $user2->position == User::GĐV) {
+                            $data['gdv'] = $user2->id;
+                            if($user2->manager->position == User::SALE_ADMIN) {
+                                $data['pgdkd'] = $user2->manager->id;
+                            }
+                        }
+                        if($user2 and $user2->position == User::SALE_ADMIN) {
+                            $data['pgdkd'] = $user2->id;
+                        }
+                    }
+                    if($user->position == User::GSV) {
+                        $data['gsv'] = $manager_id;
+                        $user2 = $user->manager;
+                        if($user2 and $user2->position == User::SALE_ADMIN) {
+                            $data['pgdkd'] = $user2->id;
+                        }
+                        if($user2 and $user2->position == User::GĐV) {
+                            $data['gdv'] = $user2->id;
+                            if($user2->manager->position == User::SALE_ADMIN) {
+                                $data['pgdkd'] = $user2->manager->id;
+                            }
+                        }
+                        if($user2 and $user2->position == User::TV) {
+                            $data['tv'] = $user2->id;
+
+                            $user2 = $user2->manager;
+                            if($user2 and $user2->position == User::GĐV) {
+                                $data['gdv'] = $user2->id;
+                                if($user2->manager->position == User::SALE_ADMIN) {
+                                    $data['pgdkd'] = $user2->manager->id;
+                                }
+                            }
+                            if($user2 and $user2->position == User::SALE_ADMIN) {
+                                $data['pgdkd'] = $user2->id;
+                            }
+                        }
+                    }
+
+                    if($user->position == User::NVKD) {
+                        $user2 = $user->manager;
+
+                        if($user2 and $user2->position == User::GSV) {
+                            $data['gsv'] = $user2->id;
+                            $user2 = $user2->manager;
+                            if($user2 and $user2->position == User::SALE_ADMIN) {
+                                $data['pgdkd'] = $user2->id;
+                            }
+                            if($user2 and $user2->position == User::GĐV) {
+                                $data['gdv'] = $user2->id;
+                                if($user2->manager->position == User::SALE_ADMIN) {
+                                    $data['pgdkd'] = $user2->manager->id;
+                                }
+                            }
+                            if($user2 and $user2->position == User::TV) {
+                                $data['tv'] = $user2->id;
+
+                                $user2 = $user2->manager;
+                                if($user2 and $user2->position == User::GĐV) {
+                                    $data['gdv'] = $user2->id;
+                                    if($user2->manager->position == User::SALE_ADMIN) {
+                                        $data['pgdkd'] = $user2->manager->id;
+                                    }
+                                }
+                                if($user2 and $user2->position == User::SALE_ADMIN) {
+                                    $data['pgdkd'] = $user2->id;
+                                }
+                            }
+                        }
+
+                        if($user2 and $user2->position == User::TV) {
+                            $data['tv'] = $user2->id;
+                            $user2 = $user2->manager;
+                            if($user2 and $user2->position == User::GĐV) {
+                                $data['gdv'] = $user2->id;
+                                if($user2->manager->position == User::SALE_ADMIN) {
+                                    $data['pgdkd'] = $user2->manager->id;
+                                }
+                            }
+                            if($user2 and $user2->position == User::SALE_ADMIN) {
+                                $data['pgdkd'] = $user2->id;
+                            }
+                        }
+                        if($user2 and  $user2->position ==  User::GĐV) {
+                            $data['gdv'] = $user2->id;
+                        }
+                    }
+
+
+
+                    //
+
+
                     $agent->update($data);
 
 
                 } catch (\Exception $ex) {
+                    dd($ex->getMessage());
                     continue;
                 }
 
@@ -174,9 +295,10 @@ class ImportAgent
             }
 
         if(count($agentError)) {
-            $data['title'] = 'Đại lý chưa có quản lý khi import file '.$this->name;
+            $data['title'] = 'Lỗi khi import file  đại lý vào hệ thống'.$this->name;
             $data['content'] = [
-                'agentImport' => $agentError
+                'agentImport' => $agentError,
+                'notFound' => $notFound
             ];
             $data['unread'] = 1;
             Notification::create($data);
