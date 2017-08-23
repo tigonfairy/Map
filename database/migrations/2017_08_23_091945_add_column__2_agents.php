@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddColumn1agents extends Migration
+class AddColumn2Agents extends Migration
 {
     /**
      * Run the migrations.
