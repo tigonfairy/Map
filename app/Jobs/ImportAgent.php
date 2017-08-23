@@ -53,6 +53,7 @@ class ImportAgent
                 $reader->noHeading();
             })->skip(1)->get();
         $agentError = [];
+        $notFound = [];
             foreach ($datas as $row) {
                 try{
                     $code= 0 ;
@@ -68,20 +69,18 @@ class ImportAgent
                     if(!isset($row[2]) || empty($row[2])) {
                         continue;
                     }
-                    $address = str_replace(' ','',$row[2]);
-                    $address = 'Đại Yên,Chương Mỹ,Hà Tây';
-                    $url = "http://maps.google.com/maps/api/geocode/json?address=".urlencode($address)."&sensor=false&region=VN";
-                    $ch = curl_init();
-                    curl_setopt($ch, CURLOPT_URL, $url);
-                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-                    curl_setopt($ch, CURLOPT_TIMEOUT, 3);
-                    $content = trim(curl_exec($ch));
-                    curl_close($ch);
-                    dd($content);
-                    $response = file_get_contents($url);
-                    dd($response);
-                    $response = json_decode($response, true);
+                    $address = str_replace(' -','-',$row[2]);
+                    $address = str_replace('- ','-',$row[2]);
+                    $address = str_replace('-',',',$row[2]);
 
+                    $url = "http://maps.google.com/maps/api/geocode/json?address=".urlencode($address)."&sensor=false&region=VN";
+
+                    $response = file_get_contents($url);
+                    $response = json_decode($response, true);
+                    if(!isset($response['results'][0])) {
+                        $notFound[] = $code;
+
+                    }
                     $lat = $response['results'][0]['geometry']['location']['lat'];
                     $lng = $response['results'][0]['geometry']['location']['lng'];
 
@@ -288,17 +287,18 @@ class ImportAgent
 
 
                 } catch (\Exception $ex) {
-                    dd($ex->getMessage().$ex->getLine());
-//                    continue;
+                    dd($ex->getMessage());
+                    continue;
                 }
 
 
             }
 
         if(count($agentError)) {
-            $data['title'] = 'Đại lý chưa có quản lý khi import file '.$this->name;
+            $data['title'] = 'Lỗi khi import file  đại lý vào hệ thống'.$this->name;
             $data['content'] = [
-                'agentImport' => $agentError
+                'agentImport' => $agentError,
+                'notFound' => $notFound
             ];
             $data['unread'] = 1;
             Notification::create($data);

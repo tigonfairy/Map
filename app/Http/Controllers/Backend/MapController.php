@@ -689,7 +689,9 @@ class MapController extends AdminController
 
                 $agents = Agent::whereIn('manager_id', $listIds)->with('user')->get();
 
-                $agentIds[] = $agents->pluck('id')->all();
+                foreach ($agents->pluck('id')->toArray() as $agentId) {
+                    $agentIds[] = $agentId;
+                }
 
                 foreach ($agents as $agent) {
 
@@ -734,8 +736,6 @@ class MapController extends AdminController
                 }
             }
 
-            dd($agentIds);
-
             $agents = Agent::where('manager_id', $userGdv->id)->with('user')->get();
             if (count($agents) > 0) {
                 foreach ($agents as $agent) {
@@ -761,6 +761,10 @@ class MapController extends AdminController
                 }
             }
 
+            foreach ($agents->pluck('id')->toArray() as $agentId) {
+                $agentIds[] = $agentId;
+            }
+
             // xử lý product
             $listProducts[] = [
                 'id' => 0,
@@ -770,8 +774,6 @@ class MapController extends AdminController
                 'percent' => round($totalSaleGDV / $capacity, 2),
                 'capacity' => $capacity
             ];
-
-            $agentIds = $agents->pluck('id')->toArray();
 
             $dataProducts = SaleAgent::join('products', 'sale_agents.product_id', '=', 'products.id')->whereIn('agent_id', $agentIds)->where('month', $month)->groupBy('sale_agents.product_id')
                 ->selectRaw('sum(sales_real) as sum, sale_agents.product_id, products.name_vn, products.code')->get();
@@ -796,7 +798,8 @@ class MapController extends AdminController
                 'listAgents' => $listAgents,
                 'totalSales' => $totalSaleGDV,
                 'capacity' => $capacity,
-                'percent' => round($totalSaleGDV / $capacity, 2)
+                'percent' => round($totalSaleGDV / $capacity, 2),
+                'listProducts' => $listProducts
             ]);
         }
 
