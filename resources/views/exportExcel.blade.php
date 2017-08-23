@@ -72,7 +72,7 @@ $index = 0;
             ]; @endphp
         @endforeach
 
-    </tr>git
+    </tr>
     <tr>
         {{--<th></th>--}}
         {{--<th></th>--}}
@@ -101,17 +101,21 @@ $index = 0;
     @php  $gdvs = \App\Models\User::where('position',\App\Models\User::GĐV)->get();@endphp
     @if($gdvs->count())
            @foreach($gdvs as $gdv)
-                @php $agents = \App\Models\Agent::where('manager_id',$gdv->id)->get();
-
-                    $agentNVKD = \App\Models\User::where('manager_id',$gdv->id)->where('position',\App\Models\User::NVKD)->has('agent','>',0)->get();
+                @php
+                    $agents = \App\Models\Agent::where('gdv',$gdv->id)->get();
                 @endphp
-                @if($agents->count() || $agentNVKD->count()==0)
+                @if($agents->count())
                         <tr>
                             <td></td>
                             <td></td>
                             <td></td>
                             <td>{{$gdv->name}}</td>
                             <td>{{$gdv->code}}</td>
+                            {{--dung luong vung--}}
+                            @php $dlv = \App\Models\SaleAgent::where('month','>=',$startMonth)->where('month','<=',$endMonth)->groupBy('agent_id')->get();
+                            dd($dlv);
+                            @endphp
+                            <td></td>
                         </tr>
 
                 @endif
