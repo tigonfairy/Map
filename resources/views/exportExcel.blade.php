@@ -103,7 +103,7 @@ $index = 0;
            @foreach($gdvs as $gdv)
                 @php $agents = \App\Models\Agent::where('manager_id',$gdv->id)->get();
 
-                    $agentNVKD = \App\Models\User::where('manager_id',$gdv->id)->has('agent','>',0)->get();
+                    $agentNVKD = \App\Models\User::where('manager_id',$gdv->id)->where('position',\App\Models\User::NVKD)->has('agent','>',0)->get();
                 @endphp
                 @if($agents->count() || $agentNVKD->count()==0)
                         <tr>
