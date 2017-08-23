@@ -14,10 +14,14 @@ class AddColumn1agents extends Migration
     public function up()
     {
         Schema::table('agents', function (Blueprint $table) {
-            $table->integer('gdv');
-            $table->integer('pgdkd');
-            $table->integer('tv');
-            $table->integer('gsv');
+            $table->dropColumn('gdv');
+            $table->dropColumn('pgdkd');
+            $table->dropColumn('tv');
+            $table->dropColumn('gsv');
+            $table->integer('gdv')->default(0);
+            $table->integer('pgdkd')->default(0);
+            $table->integer('tv')->default(0);
+            $table->integer('gsv')->default(0);
         });
     }
 
