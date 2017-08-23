@@ -259,7 +259,7 @@
                 text: 'Tiến độ doanh số'
             },
             subtitle: {
-                //                text: 'Source: WorldClimate.com'
+//                text: 'Source: WorldClimate.com'
             },
             xAxis: {
                 categories: [
@@ -302,20 +302,19 @@
                         enabled: true,
                         crop: false,
                         overflow: 'none',
-                        formatter: function () {
+                        formatter:function() {
                             return this.point.y;
                         }
                     }
                 }
             },
-            series: [{
-                name: 'DTKH',
-                data: '{{json_encode($sales_plan)}}'
-            }, {
+            series: [ {
                 name: 'DTTT',
-                data: '{{json_encode($sales_real)}}'
+                data: {{ json_encode($sales_real) }}
             }]
         });
+
+
         var chartSp = Highcharts.chart('chartSp', {
             chart: {
                 plotBackgroundColor: null,
@@ -344,6 +343,7 @@
             },
             series: []
         });
+
         $.ajax({
             method: "post",
             url: "{{route('Admin::chart')}}",
@@ -398,6 +398,7 @@
                 alert('Lỗi, hãy thử lại sau');
             }
         });
+
         $('.radioButton').change(function () {
             var type = $(this).val();
             $.ajax({
