@@ -69,8 +69,8 @@ class ImportAgent
                         continue;
                     }
                     $address = str_replace(' ','',$row[2]);
-                    $address = 'ĐạiYên,ChươngMỹ,HàTây';
-                    $url = "http://maps.google.com/maps/api/geocode/json?address=".urlencode($row[2])."&sensor=false&region=VN";
+                    $address = 'Đại Yên,Chương Mỹ,Hà Tây';
+                    $url = "http://maps.google.com/maps/api/geocode/json?address=".urlencode($address)."&sensor=false&region=VN";
                     $ch = curl_init();
                     curl_setopt($ch, CURLOPT_URL, $url);
                     curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
