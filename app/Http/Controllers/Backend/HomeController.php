@@ -33,20 +33,6 @@ class HomeController extends AdminController
             $agents = Agent::whereIn('manager_id', $userIds)->get();
             $agentId = $agents->pluck('id')->toArray();
 
-            //map
-
-            foreach ($users as $u) {
-                foreach ($u->area as $key => $area) {
-                    foreach ($area->address as $k => $address) {
-                        $locations[] = [
-                            'border_color' => $area->border_color,
-                            'background_color' => $area->background_color,
-                            'area' => $address
-                        ];
-                    }
-                }
-            }
-
         } else {
             $area = $user->area()->get()->pluck('id')->toArray();
             $subArea = Area::whereIn('parent_id', $area)->get()->pluck('id')->toArray();
@@ -77,6 +63,8 @@ class HomeController extends AdminController
             $sales_real[$key] = intval($product->sales_real);
 
         }
+
+        dd($sales_plan);
         //end chart cot
 
         return view('admin.dashboard', compact('month', 'sales_plan', 'sales_plan', 'sales_real', 'user'));

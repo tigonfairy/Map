@@ -262,6 +262,115 @@ class MapController extends AdminController
             $data['icon'] = (isset($config['agent_rival'])) ? $config['agent_rival'] : null;
 
         }
+        if($data['manager_id']) {
+            $data['gdv'] = 0;
+            $data['pgdkd'] = 0;
+            $data['tv'] = 0;
+            $data['gsv'] = 0;
+
+            $manager_id = $data['manager_id'];
+            $user = User::find($manager_id);
+            if($user->position == User::SALE_ADMIN) {
+                $data['pgdkd'] = $manager_id;
+            }
+
+            if($user->position == User::GĐV) {
+                $data['gdv'] = $manager_id;
+            }
+
+            if($user->position == User::TV) {
+                $data['tv'] = $manager_id;
+                $user2 = $user->manager;
+                if($user2 and $user2->position == User::GĐV) {
+                    $data['gdv'] = $user2->id;
+                    if($user2->manager->position == User::SALE_ADMIN) {
+                        $data['pgdkd'] = $user2->manager->id;
+                    }
+                }
+                if($user2 and $user2->position == User::SALE_ADMIN) {
+                    $data['pgdkd'] = $user2->id;
+                }
+            }
+            if($user->position == User::GSV) {
+                $data['gsv'] = $manager_id;
+                $user2 = $user->manager;
+                if($user2 and $user2->position == User::SALE_ADMIN) {
+                    $data['pgdkd'] = $user2->id;
+                }
+                if($user2 and $user2->position == User::GĐV) {
+                    $data['gdv'] = $user2->id;
+                    if($user2->manager->position == User::SALE_ADMIN) {
+                        $data['pgdkd'] = $user2->manager->id;
+                    }
+                }
+                if($user2 and $user2->position == User::TV) {
+                    $data['tv'] = $user2->id;
+
+                    $user2 = $user2->manager;
+                    if($user2 and $user2->position == User::GĐV) {
+                        $data['gdv'] = $user2->id;
+                        if($user2->manager->position == User::SALE_ADMIN) {
+                            $data['pgdkd'] = $user2->manager->id;
+                        }
+                    }
+                    if($user2 and $user2->position == User::SALE_ADMIN) {
+                        $data['pgdkd'] = $user2->id;
+                    }
+                }
+            }
+
+            if($user->position == User::NVKD) {
+                $user2 = $user->manager;
+
+                if($user2 and $user2->position == User::GSV) {
+                    $data['gsv'] = $user2->id;
+                    $user2 = $user2->manager;
+                    if($user2 and $user2->position == User::SALE_ADMIN) {
+                        $data['pgdkd'] = $user2->id;
+                    }
+                    if($user2 and $user2->position == User::GĐV) {
+                        $data['gdv'] = $user2->id;
+                        if($user2->manager->position == User::SALE_ADMIN) {
+                            $data['pgdkd'] = $user2->manager->id;
+                        }
+                    }
+                    if($user2 and $user2->position == User::TV) {
+                        $data['tv'] = $user2->id;
+
+                        $user2 = $user2->manager;
+                        if($user2 and $user2->position == User::GĐV) {
+                            $data['gdv'] = $user2->id;
+                            if($user2->manager->position == User::SALE_ADMIN) {
+                                $data['pgdkd'] = $user2->manager->id;
+                            }
+                        }
+                        if($user2 and $user2->position == User::SALE_ADMIN) {
+                            $data['pgdkd'] = $user2->id;
+                        }
+                    }
+                }
+
+                if($user2 and $user2->position == User::TV) {
+                    $data['tv'] = $user2->id;
+                    $user2 = $user2->manager;
+                    if($user2 and $user2->position == User::GĐV) {
+                        $data['gdv'] = $user2->id;
+                        if($user2->manager->position == User::SALE_ADMIN) {
+                            $data['pgdkd'] = $user2->manager->id;
+                        }
+                    }
+                    if($user2 and $user2->position == User::SALE_ADMIN) {
+                        $data['pgdkd'] = $user2->id;
+                    }
+                }
+                if($user2 and  $user2->position ==  User::GĐV) {
+                    $data['gdv'] = $user2->id;
+                }
+            }
+
+
+        }
+
 
         Agent::create($data);
         return redirect()->route('Admin::map@listAgency')->with('success','Tạo đại lý thành công');
@@ -360,7 +469,117 @@ class MapController extends AdminController
 
         }
 
+
+
         $agent = Agent::findOrFail($id);
+        if($data['manager_id'] != $agent->manager_id) {
+            $data['gdv'] = 0;
+            $data['pgdkd'] = 0;
+            $data['tv'] = 0;
+            $data['gsv'] = 0;
+
+            $manager_id = $data['manager_id'];
+            $user = User::find($manager_id);
+            if($user->position == User::SALE_ADMIN) {
+                $data['pgdkd'] = $manager_id;
+            }
+
+            if($user->position == User::GĐV) {
+                $data['gdv'] = $manager_id;
+            }
+
+            if($user->position == User::TV) {
+                $data['tv'] = $manager_id;
+                $user2 = $user->manager;
+                if($user2 and $user2->position == User::GĐV) {
+                    $data['gdv'] = $user2->id;
+                    if($user2->manager->position == User::SALE_ADMIN) {
+                        $data['pgdkd'] = $user2->manager->id;
+                    }
+                }
+                if($user2 and $user2->position == User::SALE_ADMIN) {
+                    $data['pgdkd'] = $user2->id;
+                }
+            }
+            if($user->position == User::GSV) {
+                $data['gsv'] = $manager_id;
+                $user2 = $user->manager;
+                if($user2 and $user2->position == User::SALE_ADMIN) {
+                    $data['pgdkd'] = $user2->id;
+                }
+                if($user2 and $user2->position == User::GĐV) {
+                    $data['gdv'] = $user2->id;
+                    if($user2->manager->position == User::SALE_ADMIN) {
+                        $data['pgdkd'] = $user2->manager->id;
+                    }
+                }
+                if($user2 and $user2->position == User::TV) {
+                    $data['tv'] = $user2->id;
+
+                    $user2 = $user2->manager;
+                    if($user2 and $user2->position == User::GĐV) {
+                        $data['gdv'] = $user2->id;
+                        if($user2->manager->position == User::SALE_ADMIN) {
+                            $data['pgdkd'] = $user2->manager->id;
+                        }
+                    }
+                    if($user2 and $user2->position == User::SALE_ADMIN) {
+                        $data['pgdkd'] = $user2->id;
+                    }
+                }
+            }
+
+            if($user->position == User::NVKD) {
+                $user2 = $user->manager;
+
+                if($user2 and $user2->position == User::GSV) {
+                    $data['gsv'] = $user2->id;
+                    $user2 = $user2->manager;
+                    if($user2 and $user2->position == User::SALE_ADMIN) {
+                        $data['pgdkd'] = $user2->id;
+                    }
+                    if($user2 and $user2->position == User::GĐV) {
+                        $data['gdv'] = $user2->id;
+                        if($user2->manager->position == User::SALE_ADMIN) {
+                            $data['pgdkd'] = $user2->manager->id;
+                        }
+                    }
+                    if($user2 and $user2->position == User::TV) {
+                        $data['tv'] = $user2->id;
+
+                        $user2 = $user2->manager;
+                        if($user2 and $user2->position == User::GĐV) {
+                            $data['gdv'] = $user2->id;
+                            if($user2->manager->position == User::SALE_ADMIN) {
+                                $data['pgdkd'] = $user2->manager->id;
+                            }
+                        }
+                        if($user2 and $user2->position == User::SALE_ADMIN) {
+                            $data['pgdkd'] = $user2->id;
+                        }
+                    }
+                }
+
+                if($user2 and $user2->position == User::TV) {
+                    $data['tv'] = $user2->id;
+                    $user2 = $user2->manager;
+                    if($user2 and $user2->position == User::GĐV) {
+                        $data['gdv'] = $user2->id;
+                        if($user2->manager->position == User::SALE_ADMIN) {
+                            $data['pgdkd'] = $user2->manager->id;
+                        }
+                    }
+                    if($user2 and $user2->position == User::SALE_ADMIN) {
+                        $data['pgdkd'] = $user2->id;
+                    }
+                }
+                if($user2 and  $user2->position ==  User::GĐV) {
+                    $data['gdv'] = $user2->id;
+                }
+            }
+
+
+        }
 
         $agent->update($data);
         return redirect()->back()->with('success','Sửa đại lý thành công');
@@ -501,6 +720,29 @@ class MapController extends AdminController
 
             $agents = Agent::whereIn('manager_id', $listIds)->with('user')->get();
 
+
+//            foreach ($productParents as $product) {
+//                foreach ($product->getChildren as $p) {
+//                    if (isset($p->code)) {
+//                        $sales = SaleAgent::where('agent_id', $agent->id)->where('product_id', $p->id)->where('month', $month)->select('sales_real', 'capacity')->first();
+//                        if ($sales) {
+//                            $saleProducts += $sales->sales_real;
+//                            $capacity = $sales->capacity;
+//                            $listProducts[] = [
+//                                'id' => $p->id,
+//                                'name' => $p->code . ' - ' . $p->name_vn,
+//                                'code' => $p->code,
+//                                'totalSales' => $sales->sales_real,
+//                                'percent' => round($sales->sales_real / $capacity, 2),
+//                                'capacity' => $capacity
+//                            ];
+//                        }
+//                    }
+//                }
+//                $totalSales += $saleProducts;
+//                $saleProducts = 0;
+//            }
+
             foreach ($agents as $agent) {
 
                 $sales = SaleAgent::where('agent_id', $agent->id)->where('month', $month)->select('sales_real', 'capacity')->get();
@@ -615,32 +857,6 @@ class MapController extends AdminController
                 $saleAgents = 0;
             }
 
-            // xử lý product
-            $listProducts[] = [
-                'id' => 0,
-                'name' => 'Tổng sản lượng',
-                'code' => 'Tổng sản lượng',
-                'totalSales' => $totalSales,
-                'percent' => round($totalSales / $capacity, 2),
-                'capacity' => $capacity
-            ];
-
-            $agentIds = $agents->pluck('id')->toArray();
-
-            $dataProducts = SaleAgent::join('products', 'sale_agents.product_id', '=', 'products.id')->whereIn('agent_id', $agentIds)->where('month', $month)->groupBy('sale_agents.product_id')
-                ->selectRaw('sum(sales_real) as sum, sale_agents.product_id, products.name_vn, products.code')->get();
-
-            foreach ($dataProducts as $product) {
-                $listProducts[] = [
-                    'id' => $product->product_id,
-                    'name' => $product->name_vn,
-                    'code' => $product->code,
-                    'totalSales' => $product->sum,
-                    'percent' => round($product->sum / $capacity, 2),
-                    'capacity' => $capacity
-                ];
-            }
-
             return response()->json([
                 'user' => $userTv,
                 'director' => $userParentName,
@@ -648,8 +864,7 @@ class MapController extends AdminController
                 'listAgents' => $listAgents,
                 'totalSales' => $totalSales,
                 'capacity' => $capacity,
-                'percent' => round($totalSales / $capacity, 2),
-                'listProducts' => $listProducts
+                'percent' => round($totalSales / $capacity, 2)
             ]);
         }
 
@@ -662,7 +877,6 @@ class MapController extends AdminController
             $data = [];
             $dataGdv = [];
             $locations = [];
-            $agentIds = [];
             $userGdv = User::findOrFail($dataSearch);
             $userGSV = $userGdv->owners()->get();
 
@@ -688,11 +902,6 @@ class MapController extends AdminController
                 $listIds[] = $user->id;
 
                 $agents = Agent::whereIn('manager_id', $listIds)->with('user')->get();
-
-                foreach ($agents->pluck('id')->toArray() as $agentId) {
-                    $agentIds[] = $agentId;
-                }
-
                 foreach ($agents as $agent) {
 
                     $sales = SaleAgent::where('agent_id', $agent->id)->where('month', $month)->select('sales_real', 'capacity')->get();
@@ -735,7 +944,6 @@ class MapController extends AdminController
                     }
                 }
             }
-
             $agents = Agent::where('manager_id', $userGdv->id)->with('user')->get();
             if (count($agents) > 0) {
                 foreach ($agents as $agent) {
@@ -761,34 +969,6 @@ class MapController extends AdminController
                 }
             }
 
-            foreach ($agents->pluck('id')->toArray() as $agentId) {
-                $agentIds[] = $agentId;
-            }
-
-            // xử lý product
-            $listProducts[] = [
-                'id' => 0,
-                'name' => 'Tổng sản lượng',
-                'code' => 'Tổng sản lượng',
-                'totalSales' => $totalSaleGDV,
-                'percent' => round($totalSaleGDV / $capacity, 2),
-                'capacity' => $capacity
-            ];
-
-            $dataProducts = SaleAgent::join('products', 'sale_agents.product_id', '=', 'products.id')->whereIn('agent_id', $agentIds)->where('month', $month)->groupBy('sale_agents.product_id')
-                ->selectRaw('sum(sales_real) as sum, sale_agents.product_id, products.name_vn, products.code')->get();
-
-            foreach ($dataProducts as $product) {
-                $listProducts[] = [
-                    'id' => $product->product_id,
-                    'name' => $product->name_vn,
-                    'code' => $product->code,
-                    'totalSales' => $product->sum,
-                    'percent' => round($product->sum / $capacity, 2),
-                    'capacity' => $capacity
-                ];
-            }
-
 
             return response()->json([
                 'user' => $userGdv,
@@ -798,8 +978,7 @@ class MapController extends AdminController
                 'listAgents' => $listAgents,
                 'totalSales' => $totalSaleGDV,
                 'capacity' => $capacity,
-                'percent' => round($totalSaleGDV / $capacity, 2),
-                'listProducts' => $listProducts
+                'percent' => round($totalSaleGDV / $capacity, 2)
             ]);
         }
 
