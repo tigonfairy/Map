@@ -105,10 +105,43 @@ class ImportAgent
                             $manager_id = $nv->id;
                         }
                     }
+
                     if($manager_id == 0 ) {
                         $agentError[] = $code;
                         continue;
                     }
+                    //gan cap bac cho agent
+
+                    $user1 = User::
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                         $attribute = 0;
                     $config = [];
                     if (file_exists(public_path().'/config/config.json')) {
