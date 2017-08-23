@@ -79,6 +79,7 @@ class ImportAgent
                     $response = json_decode($response, true);
                     if(!isset($response['results'][0])) {
                         $notFound[] = $code;
+                        continue;
 
                     }
                     $lat = $response['results'][0]['geometry']['location']['lat'];
@@ -287,7 +288,6 @@ class ImportAgent
 
 
                 } catch (\Exception $ex) {
-                    dd($ex->getMessage());
                     continue;
                 }
 
