@@ -46,7 +46,7 @@ class HomeController extends AdminController
 
         //chart cot
         $products = DB::table('sale_agents')
-            ->select(\DB::raw('SUM(sales_plan) as sales_plan,SUM(sales_real) as sales_real,month'))
+            ->select(\DB::raw('SUM(sales_real) as sales_real,month'))
             ->whereIn('agent_id', $agentId)->groupBy('month')->where('month', 'like', '%' . $year . '%')->orderBy('month')
             ->get()->toArray();
         $sales_plan = [];
@@ -54,17 +54,14 @@ class HomeController extends AdminController
 
 
         for ($i = 0; $i < 12; $i++) {
-            $sales_plan[$i] = 0;
             $sales_real[$i] = 0;
         }
 
         foreach ($products as $key => $product) {
-            $sales_plan[$key] = intval($product->sales_plan);
-            $sales_real[$key] = intval($product->sales_real);
-
+            $i = intval(explode('-',$product->month)[0]);
+            $sales_real[$i] = intval($product->sales_real);
         }
 
-        dd($sales_plan);
         //end chart cot
 
         return view('admin.dashboard', compact('month', 'sales_plan', 'sales_plan', 'sales_real', 'user'));
@@ -97,8 +94,8 @@ class HomeController extends AdminController
                 ->first()->month;
 
             $products = DB::table('sale_agents')
-                ->select(\DB::raw('SUM(sales_plan) as sales_plan,SUM(sales_real) as sales_real,sale_agents.product_id,products.name_vn,month'))
-                ->whereIn('agent_id',$agentId)->where('month','like',$lastMonth)->orderBy('month')->groupBy('product_id')
+                ->select(\DB::raw('SUM(sales_real) as sales_real,sale_agents.product_id,products.name_vn,month'))
+                ->whereIn('agent_id',$agentId)->where('month','like',$lastMonth)->orderBy('month')->groupBy('sale_agents.product_id')
                 ->join('products','sale_agents.product_id','=','products.id')
                 ->get()->toArray();
 
@@ -117,14 +114,14 @@ class HomeController extends AdminController
                 ->first()->month;
 
             $products = DB::table('sale_agents')
-                ->select(\DB::raw('SUM(sales_plan) as sales_plan,SUM(sales_real) as sales_real,product_id,products.name,month'))
-                ->whereIn('agent_id',$agentId)->where('month','like',$monthHighest)->groupBy('product_id')->orderBy('sales_real','desc')
+                ->select(\DB::raw('SUM(sales_real) as sales_real,sale_agents.product_id,products.name_vn,month'))
+                ->whereIn('agent_id',$agentId)->where('month','like',$monthHighest)->groupBy('sale_agents.product_id')->orderBy('sales_real','desc')
                 ->join('products','sale_agents.product_id','=','products.id')
                 ->get()->toArray();
             $chartData = [];
             foreach ($products as $key => $p){
 
-                $chartData[] = ['name' => $p->name,'y' => intval($p->sales_real)];
+                $chartData[] = ['name' => $p->name_vn,'y' => intval($p->sales_real)];
             }
 
             return Response::json(['chart' =>$chartData,'table' => $chartData ,'title' =>'tháng doanh số cao nhất '.$monthHighest ],200);
@@ -132,7 +129,7 @@ class HomeController extends AdminController
             $month = Carbon::now()->format('m-Y');
 
             $products = DB::table('sale_agents')
-                ->select(\DB::raw('SUM(sales_plan) as sales_plan,SUM(sales_real) as sales_real,product_id,products.name'))
+                ->select(\DB::raw('SUM(sales_real) as sales_real,sale_agents.product_id,products.name_vn'))
                 ->whereIn('agent_id',$agentId)->groupBy('product_id')->where('month','like','%'.$year.'%')->where('month','<',$month)
                 ->join('products','sale_agents.product_id','=','products.id')
                 ->get()->toArray();
@@ -140,14 +137,14 @@ class HomeController extends AdminController
                 ->groupBy('month')->where('month','like','%'.$year.'%')->where('month','<',$month)->get()->count();
             $chartData = [];
             foreach ($products as $key => $p){
-                $chartData[] = ['name' => $p->name,'y' => round(intval($p->sales_real)/$countMonth,2)];
+                $chartData[] = ['name' => $p->name_vn,'y' => round(intval($p->sales_real)/$countMonth,2)];
             }
 
             return Response::json(['chart' =>$chartData,'table' => $chartData ,'title' =>'trung bình '.$countMonth.' tháng' ],200);
         }else { // tong san luong
             $month = Carbon::now()->format('m-Y');
             $products = DB::table('sale_agents')
-                ->select(\DB::raw('SUM(sales_plan) as sales_plan,SUM(sales_real) as sales_real,product_id,products.name'))
+                ->select(\DB::raw('SUM(sales_plan) as sales_plan,SUM(sales_real) as sales_real,sale_agents.product_id,products.name_vn'))
                 ->whereIn('agent_id',$agentId)->where('month','like','%'.$year.'%')->where('month','<=',$month)->groupBy('product_id')
                 ->join('products','sale_agents.product_id','=','products.id')
                 ->get()->toArray();
@@ -156,7 +153,7 @@ class HomeController extends AdminController
             $chartData = [];
             foreach ($products as $key => $p){
 
-                $chartData[] = ['name' => $p->name,'y' => intval($p->sales_real)];
+                $chartData[] = ['name' => $p->name_vn,'y' => intval($p->sales_real)];
             }
 
             return Response::json(['chart' =>$chartData,'table' => $chartData ,'title' =>'tổng sản lượng đến tháng '.$month ],200);
