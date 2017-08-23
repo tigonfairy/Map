@@ -173,9 +173,12 @@ class ImportAgent
                     if($user->position == User::SALE_ADMIN) {
                         $data['pgdkd'] = $manager_id;
                     }
+
                     if($user->position == User::GĐV) {
                         $data['gdv'] = $manager_id;
                     }
+                    dd($user);
+                    dd($data);
                     if($user->position == User::TV) {
                         $data['tv'] = $manager_id;
                         $user2 = $user->manager;
