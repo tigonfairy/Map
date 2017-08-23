@@ -52,6 +52,14 @@
                          đại lý chưa có quản lý : {{$agent}}
                     </p>
                     @endif
+                    @if(isset($notification->content['notFound']))
+                        @php $agent =$notification->content['notFound'];
+                            $agent = implode($agent,',');
+                        @endphp
+                        <p>
+                            Mã đại lý mà địa chỉ không tìm thấy : {{$agent}}
+                        </p>
+                    @endif
 
                 </div>
 
