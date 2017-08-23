@@ -68,10 +68,20 @@ class ImportAgent
                     if(!isset($row[2]) || empty($row[2])) {
                         continue;
                     }
-                        $address = $row[2];
+                    $address = str_replace(' ','',$row[2]);
+                    $address = 'ĐạiYên,ChươngMỹ,HàTây';
                     $url = "http://maps.google.com/maps/api/geocode/json?address=".urlencode($row[2])."&sensor=false&region=VN";
+                    $ch = curl_init();
+                    curl_setopt($ch, CURLOPT_URL, $url);
+                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+                    curl_setopt($ch, CURLOPT_TIMEOUT, 3);
+                    $content = trim(curl_exec($ch));
+                    curl_close($ch);
+                    dd($content);
                     $response = file_get_contents($url);
+                    dd($response);
                     $response = json_decode($response, true);
+
                     $lat = $response['results'][0]['geometry']['location']['lat'];
                     $lng = $response['results'][0]['geometry']['location']['lng'];
 
@@ -167,6 +177,7 @@ class ImportAgent
                         'icon' => $icon
                     ];
 
+
                     //gan cap bac cho agent
 
                     $user = User::find($manager_id);
@@ -221,9 +232,6 @@ class ImportAgent
 
                     if($user->position == User::NVKD) {
                         $user2 = $user->manager;
-                        if($agent->id == 24) {
-                            dd($user2);
-                        }
 
                         if($user2 and $user2->position == User::GSV) {
                             $data['gsv'] = $user2->id;
@@ -280,7 +288,8 @@ class ImportAgent
 
 
                 } catch (\Exception $ex) {
-                    continue;
+                    dd($ex->getMessage().$ex->getLine());
+//                    continue;
                 }
 
 
