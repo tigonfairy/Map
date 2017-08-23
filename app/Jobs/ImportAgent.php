@@ -177,8 +177,7 @@ class ImportAgent
                     if($user->position == User::GĐV) {
                         $data['gdv'] = $manager_id;
                     }
-                    dd($user);
-                    dd($data);
+
                     if($user->position == User::TV) {
                         $data['tv'] = $manager_id;
                         $user2 = $user->manager;
@@ -219,8 +218,13 @@ class ImportAgent
                             }
                         }
                     }
+
                     if($user->position == User::NVKD) {
                         $user2 = $user->manager;
+                        if($agent->id == 24) {
+                            dd($user2);
+                        }
+
                         if($user2 and $user2->position == User::GSV) {
                             $data['gsv'] = $user2->id;
                             $user2 = $user2->manager;
@@ -261,6 +265,9 @@ class ImportAgent
                             if($user2 and $user2->position == User::SALE_ADMIN) {
                                 $data['pgdkd'] = $user2->id;
                             }
+                        }
+                        if($user2 and  $user2->position ==  User::GĐV) {
+                            $data['gdv'] = $user2->id;
                         }
                     }
 
