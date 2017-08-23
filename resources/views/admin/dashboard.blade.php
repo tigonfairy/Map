@@ -630,6 +630,7 @@
                 }
             });
         }
+
         function showDataSales(data) {
             var area_name = '';
             var polygonArray = [];
@@ -705,11 +706,51 @@
                 });
             });
 
+            var list_products = data.listProducts;
+
+
+
+            var tableSales = '<table class="table table-striped table-bordered table-products" cellspacing="0" width="100%" id="data-table">' +
+                '<thead>' +
+                '<tr>' +
+                '<th>Tên Sản phẩm</th>' +
+                '<th>Mã Sản phẩm</th>' +
+                '<th>Sản lượng</th>'+
+                '<th>Dung lượng</th>'+
+                '</tr>' +
+                '</thead>'+
+                '<tbody>' +
+                '<tr>' +
+                '<td>' +
+                '<select id="choose_product">';
+            $.map(list_products, function (product) {
+                tableSales += '<option value="' + product.code + '">' + product.code + ' - ' + product.name + '</option>'
+            });
+            tableSales += '</select>' +
+                '</td>' +
+                '<td id="code">' + list_products[0].code +'</td>'+
+                '<td id="totalSales">' + list_products[0].totalSales +'</td>'+
+                '<td id="capacity">' + list_products[0].capacity +'</td>' +
+                '</tr>' +
+                '</tbody>' +
+                '</table>';
+            map.addControl({
+                position: 'top_left',
+                content: tableSales,
+            });
+
+            listSelectProducts = [];
+            $.each(list_products, function( index, value ) {
+                listSelectProducts.push(value);
+            });
+
+
+
             var tableSales =
                 '<div class="info_gsv" style="font-size:' + data.user.fontSize + 'px; color:' + data.user.textColor + '" >' +
                 '<h3 style="font-size:' + data.user.fontSize + 'px; color:' + data.user.textColor + '">' + area_name + '</h3>' +
                 '<div class="user_data_gsv" style="font-size:' + data.user.fontSize + 'px; color:' + data.user.textColor + '">' +
-                '<p class="data_gsv" style="font-size:' + data.user.fontSize + 'px; color:' + data.user.textColor + '">%TT ' + data.totalSales + '/' + data.capacity + '=' +  data.percent + '%</p>' +
+                '<p class="data_gsv" id="data" style="font-size:' + data.user.fontSize + 'px; color:' + data.user.textColor + '">%TT ' + data.totalSales + '/' + data.capacity + '=' +  data.percent + '%</p>' +
                 '<ul class="info_user_gsv" style="font-size:' + data.user.fontSize + 'px; color:' + data.user.textColor + '">' +
                 '<li>' + postion + ':'  + data.user.name + '</li>' +
                 '<li class="gdv" style="display: none; font-size:' + data.user.fontSize + 'px; color:' + data.user.textColor + '"> GĐ :'  + data.director + '</li>' +
@@ -717,7 +758,7 @@
                 '</div>' +
                 '</div>';
             map.addControl({
-                position: 'top_left',
+                position: 'bottom_right',
                 content: tableSales,
             });
         }
@@ -833,27 +874,14 @@
                     maxZoom: 15,
                     imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'
                 });
-//                if (markers.length > 0) {
-//                    var customTxt =
-//                        '<div class="customBox" style="font-size:' + item.gsv.fontSize + 'px; color:' + item.gsv.textColor + '">' +
-//                        '<span class="data_gsv" style="font-size:' + item.gsv.fontSize + 'px; color:' + item.gsv.textColor + '">%TT ' + item.totalSales + '/' + item.capacity + '=' +  item.percent + '%</span>' +
-//                        '<span class="info_user_gsv" style="font-size:' + item.gsv.fontSize + 'px; color:' + item.gsv.textColor + '">' + item.gsv.name + '</span>' +
-//                        '</div>';
-//                    txt = new TxtOverlay(new google.maps.LatLng(markers[0].getPosition().lat(),  markers[0].getPosition().lng()), customTxt, "customBox", map);
-//                }
+
                 var div = document.createElement('div');
                 div.style.color = item.gsv.textColor;
                 div.innerHTML = item.gsv.name + ' - %TT ' + item.totalSales + '/' + item.capacity + '=' +  item.percent  + "%";
                 legend.appendChild(div);
-//                var myTitle = document.createElement('h3');
-//                myTitle.style.color = item.gsv.textColor;
-//                myTitle.innerHTML = item.gsv.name + ' - %TT ' + item.totalSales + '/' + item.capacity + '=' +  item.percent  + "%";
-//                var myTextDiv = document.createElement('div');
-//                myTextDiv.appendChild(myTitle);
-//                map.controls[google.maps.ControlPosition.BOTTOM_LEFT].push(myTextDiv);
 
                 var customTxt =
-                    '<div class="customBox" style="font-size:' + item.gsv.fontSize + 'px; color:' + item.gsv.textColor + '">' +
+                    '<div class="customBox" style="display:none; font-size:' + item.gsv.fontSize + 'px; color:' + item.gsv.textColor + '">' +
                         '<span class="data_gsv" style="font-size:' + item.gsv.fontSize + 'px; color:' + item.gsv.textColor + '">%TT ' + item.totalSales + '/' + item.capacity + '=' +  item.percent + '%</span>' +
                     '<span class="info_user_gsv" style="font-size:' + item.gsv.fontSize + 'px; color:' + item.gsv.textColor + '">' + item.gsv.name + '</span>' +
                     '</div>';
@@ -902,6 +930,11 @@
             var myTextDiv = document.createElement('div');
             myTextDiv.appendChild(myTitle);
             map.controls[google.maps.ControlPosition.BOTTOM_CENTER].push(myTextDiv);
+
+            var button = document.createElement('div');
+            button.innerHTML ='<button id="swift" class="btn btn-primary">Full mode</button>';
+            map.controls[google.maps.ControlPosition.BOTTOM_LEFT].push(button);
+
         }
         function TxtOverlay(pos, txt, cls, map) {
             // Now initialize all properties.
@@ -1082,7 +1115,7 @@
                 '<td>' +
                 '<select id="choose_product">';
             $.map(list_products, function (product) {
-                tableSales += '<option value="' + product.code + '">' + product.name + '</option>'
+                tableSales += '<option value="' + product.code + '">' + product.code + ' - ' + product.name + '</option>'
             });
             tableSales += '</select>' +
                 '</td>' +
@@ -1101,6 +1134,7 @@
                 position: 'bottom_left',
                 content: button,
             });
+            listSelectProducts = [];
             $.each(list_products, function( index, value ) {
                 listSelectProducts.push(value);
             });
@@ -1218,12 +1252,14 @@
                 $('.gsv').show();
                 $('.gdv').show();
                 $('.address').show();
+                $('.customBox').show();
             }
             else {
                 $(this).text('Full Mode');
                 $('.gsv').hide();
                 $('.gdv').hide();
                 $('.address').hide();
+                $('.customBox').hide();
             }
         });
 

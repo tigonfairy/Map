@@ -78,10 +78,17 @@
                                 <div class="row">
                                     <div class="col-md-10" style="margin-bottom:10px">
                                         <div class="form-group">
-                                            <label class="control-label col-md-3">Thời gian</label>
+                                            <label class="control-label col-md-3">Thời gian bắt đầu</label>
                                             <div class="col-md-8">
-                                                <input type="text" name ="month"  class="form-control monthPicker month-export" value="" />
-                                                <span id="month-export" class="error-import" style="color:red;"></span>
+                                                <input type="text" name="startMonth"  class="form-control monthPicker startMonth-export" value="" />
+                                                <span id="startMonth" class="error-import" style="color:red;"></span>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label col-md-3">Thời gian kết thúc</label>
+                                            <div class="col-md-8">
+                                                <input type="text" name="endMonth"  class="form-control monthPicker endMonth-export" value="" />
+                                                <span id="endMonth" class="error-import" style="color:red;"></span>
                                             </div>
                                         </div>
                                     </div>
@@ -221,11 +228,16 @@
             });
         });
         $('#export').on('click',function(e){
-           var month =  $('.month-export').val();
-           if(month == '') {
+           var startMonth =  $('.startMonth-export').val();
+           if(startMonth == '') {
                e.preventDefault();
-               $('#month-export').text('Vui lòng chọn tháng để export');
+               $('#startMonth').text('Vui lòng chọn tháng bắt đầu để export');
            }
+            var endMonth =  $('.endMonth-export').val();
+            if(endMonth == '') {
+                e.preventDefault();
+                $('#endMonth').text('Vui lòng chọn tháng kết thúc để export');
+            }
 
         });
 
