@@ -18,6 +18,8 @@ class AddColumn2Agents extends Migration
             $table->dropColumn('pgdkd');
             $table->dropColumn('tv');
             $table->dropColumn('gsv');
+        });
+        Schema::table('agents', function (Blueprint $table) {
             $table->integer('gdv')->default(0);
             $table->integer('pgdkd')->default(0);
             $table->integer('tv')->default(0);
