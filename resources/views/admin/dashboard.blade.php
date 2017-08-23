@@ -708,8 +708,6 @@
 
             var list_products = data.listProducts;
 
-
-
             var tableSales = '<table class="table table-striped table-bordered table-products" cellspacing="0" width="100%" id="data-table">' +
                 '<thead>' +
                 '<tr>' +
@@ -743,7 +741,6 @@
             $.each(list_products, function( index, value ) {
                 listSelectProducts.push(value);
             });
-
 
 
             var tableSales =
@@ -806,6 +803,7 @@
                 fullscreenControl: true,
             };
             var map = new google.maps.Map(document.getElementById("map"), options);
+
             $.map(data.locations, function (location, index) {
                 var item = location.area;
                 var c = item.coordinates;
@@ -835,6 +833,7 @@
                 }
             });
             var legend = document.getElementById('legend');
+
             $.map(data.result, function (item) {
                 var agents = item.agents;
                 var markers = [];
@@ -921,21 +920,63 @@
                 marker.addListener('click', function() {
                     infowindow.open(map, marker);
                 });
-
             });
 
-            var myTitle = document.createElement('h3');
+            var list_products = data.listProducts;
+
+            var tableSales = '<table class="table table-striped table-bordered table-products" cellspacing="0" width="100%" id="data-table">' +
+                '<thead>' +
+                '<tr>' +
+                '<th>Tên Sản phẩm</th>' +
+                '<th>Mã Sản phẩm</th>' +
+                '<th>Sản lượng</th>'+
+                '<th>Dung lượng</th>'+
+                '</tr>' +
+                '</thead>'+
+                '<tbody>' +
+                '<tr>' +
+                '<td>' +
+                '<select id="choose_product">';
+
+            $.map(list_products, function (product) {
+                tableSales += '<option value="' + product.code + '">' + product.code + ' - ' + product.name + '</option>'
+            });
+
+            tableSales += '</select>' +
+                '</td>' +
+                '<td id="code">' + list_products[0].code +'</td>'+
+                '<td id="totalSales">' + list_products[0].totalSales +'</td>'+
+                '<td id="capacity">' + list_products[0].capacity +'</td>' +
+                '</tr>' +
+                '</tbody>' +
+                '</table>';
+
+            listSelectProducts = [];
+            $.each(list_products, function( index, value ) {
+                listSelectProducts.push(value);
+            });
+
+            // products table
+            var table = document.createElement('div');
+            table.innerHTML = tableSales;
+            map.controls[google.maps.ControlPosition.TOP_LEFT].push(table);
+
+            // info total
+            var info = '<h3 id="data" >' + data.user.name + ' - %TT ' + data.totalSales + '/' + data.capacity + '=' +  data.percent  + '%' + '</h3>'
+            var myTitle = document.createElement('div');
             myTitle.style.color = data.user.textColor;
-            myTitle.innerHTML = data.user.name + ' - %TT ' + data.totalSales + '/' + data.capacity + '=' +  data.percent  + "%";
+            myTitle.innerHTML = info;
             var myTextDiv = document.createElement('div');
             myTextDiv.appendChild(myTitle);
             map.controls[google.maps.ControlPosition.BOTTOM_CENTER].push(myTextDiv);
 
+            //button compact mode
             var button = document.createElement('div');
             button.innerHTML ='<button id="swift" class="btn btn-primary">Full mode</button>';
             map.controls[google.maps.ControlPosition.BOTTOM_LEFT].push(button);
 
         }
+
         function TxtOverlay(pos, txt, cls, map) {
             // Now initialize all properties.
             this.pos = pos;
