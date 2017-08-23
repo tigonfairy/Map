@@ -110,39 +110,9 @@ class ImportAgent
                         $agentError[] = $code;
                         continue;
                     }
-                    //gan cap bac cho agent
-
-                    $user1 = User::
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                        $attribute = 0;
+                    $attribute = 0;
                     $config = [];
                     if (file_exists(public_path().'/config/config.json')) {
                         $config = json_decode(file_get_contents(public_path().'/config/config.json'),true);
@@ -196,6 +166,106 @@ class ImportAgent
                         'rank' => $rank,
                         'icon' => $icon
                     ];
+
+                    //gan cap bac cho agent
+
+                    $user = User::find($manager_id);
+                    if($user->position == User::SALE_ADMIN) {
+                        $data['pgdkd'] = $manager_id;
+                    }
+                    if($user->position == User::GĐV) {
+                        $data['gdv'] = $manager_id;
+                    }
+                    if($user->position == User::TV) {
+                        $data['tv'] = $manager_id;
+                        $user2 = $user->manager;
+                        if($user2 and $user2->position == User::GĐV) {
+                            $data['gdv'] = $user2->id;
+                            if($user2->manager->position == User::SALE_ADMIN) {
+                                $data['pgdkd'] = $user2->manager->id;
+                            }
+                        }
+                        if($user2 and $user2->position == User::SALE_ADMIN) {
+                            $data['pgdkd'] = $user2->id;
+                        }
+                    }
+                    if($user->position == User::GSV) {
+                        $data['gsv'] = $manager_id;
+                        $user2 = $user->manager;
+                        if($user2 and $user2->position == User::SALE_ADMIN) {
+                            $data['pgdkd'] = $user2->id;
+                        }
+                        if($user2 and $user2->position == User::GĐV) {
+                            $data['gdv'] = $user2->id;
+                            if($user2->manager->position == User::SALE_ADMIN) {
+                                $data['pgdkd'] = $user2->manager->id;
+                            }
+                        }
+                        if($user2 and $user2->position == User::TV) {
+                            $data['tv'] = $user2->id;
+
+                            $user2 = $user2->manager;
+                            if($user2 and $user2->position == User::GĐV) {
+                                $data['gdv'] = $user2->id;
+                                if($user2->manager->position == User::SALE_ADMIN) {
+                                    $data['pgdkd'] = $user2->manager->id;
+                                }
+                            }
+                            if($user2 and $user2->position == User::SALE_ADMIN) {
+                                $data['pgdkd'] = $user2->id;
+                            }
+                        }
+                    }
+                    if($user->position == User::NVKD) {
+                        $user2 = $user->manager;
+                        if($user2 and $user2->position == User::GSV) {
+                            $data['gsv'] = $user2->id;
+                            $user2 = $user2->manager;
+                            if($user2 and $user2->position == User::SALE_ADMIN) {
+                                $data['pgdkd'] = $user2->id;
+                            }
+                            if($user2 and $user2->position == User::GĐV) {
+                                $data['gdv'] = $user2->id;
+                                if($user2->manager->position == User::SALE_ADMIN) {
+                                    $data['pgdkd'] = $user2->manager->id;
+                                }
+                            }
+                            if($user2 and $user2->position == User::TV) {
+                                $data['tv'] = $user2->id;
+
+                                $user2 = $user2->manager;
+                                if($user2 and $user2->position == User::GĐV) {
+                                    $data['gdv'] = $user2->id;
+                                    if($user2->manager->position == User::SALE_ADMIN) {
+                                        $data['pgdkd'] = $user2->manager->id;
+                                    }
+                                }
+                                if($user2 and $user2->position == User::SALE_ADMIN) {
+                                    $data['pgdkd'] = $user2->id;
+                                }
+                            }
+                        }
+
+                        if($user2 and $user2->position == User::TV) {
+                            $data['tv'] = $user2->id;
+                            $user2 = $user2->manager;
+                            if($user2 and $user2->position == User::GĐV) {
+                                $data['gdv'] = $user2->id;
+                                if($user2->manager->position == User::SALE_ADMIN) {
+                                    $data['pgdkd'] = $user2->manager->id;
+                                }
+                            }
+                            if($user2 and $user2->position == User::SALE_ADMIN) {
+                                $data['pgdkd'] = $user2->id;
+                            }
+                        }
+                    }
+
+
+
+                    //
+
+
                     $agent->update($data);
 
 
