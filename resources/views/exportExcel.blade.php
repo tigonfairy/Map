@@ -112,7 +112,11 @@ $index = 0;
                             <td>{{$gdv->name}}</td>
                             <td>{{$gdv->code}}</td>
                             {{--dung luong vung--}}
+<<<<<<< HEAD
                             @php $dlv = \App\Models\SaleAgent::where('month','>=',$startMonth)->where('month','<=',$endMonth)->groupBy('agent_id', 'month')->get();
+=======
+                            @php $dlv = \App\Models\SaleAgent::where('month','>=',$startMonth)->where('month','<=',$endMonth)->groupBy('agent_id')->get();
+>>>>>>> 9309346bcd37b7eba38bb660b2510a799858bd20
                             dd($dlv);
                             @endphp
                             <td></td>
