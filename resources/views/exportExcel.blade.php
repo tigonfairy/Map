@@ -36,7 +36,7 @@
 </head>
 <body>
 
-@php $data = [];
+@php $datas = [];
 $index = 0;
 
 @endphp
@@ -66,7 +66,7 @@ $index = 0;
                     <th align="center" valign="middle" width="10">{{$p->code}}</th>
                 @endforeach
             @endif
-            @php $data[] = [
+            @php $datas[] = [
                 'group' => $group->id,
                 'product' => $array
             ]; @endphp
@@ -102,9 +102,10 @@ $index = 0;
     @if($gdvs->count())
            @foreach($gdvs as $key => $gdv)
                 @php
-                    $agents = \App\Models\Agent::where('gdv',$gdv->id)->get()->pluck('id')->toArray();
+                    $agents = \App\Models\Agent::where('gdv',$gdv->id)->count();
                 @endphp
-                @if(count($agents))
+                @if($agents)
+                        {{--in ra gdv--}}
                         <tr>
                             <td></td>
                             <td></td>
@@ -128,7 +129,79 @@ $index = 0;
                             <td>{{$sltt}}</td>
 
 
+                            {{--nhom san pham--}}
+                            @foreach($datas as $data)
+                                @php $group = $data['group'];
+                                    $products = $data['product'];
+                                $val = 0;
+                                $string = '';
+                                @endphp
+
+                                @foreach($products as $product)
+                                    @php $sltt =  \App\Models\SaleAgent::where('month','>=',$startMonth)->where('month','<=',$endMonth)
+                                         ->join('agents','agents.id', '=' ,'sale_agents.agent_id')->where('agents.gdv',$gdv->id)->where('product_id',$product)
+                                ->get()->sum('sales_real');
+                                    $val += $sltt;
+                                    $string .= '<td>'.$sltt.'</td>';
+                                    @endphp
+                                @endforeach
+                                <td>{{$val}}</td>
+                                {!! $string  !!}
+                            @endforeach
                         </tr>
+
+                    {{--in ra dai ly--}}
+                        @php $agents = \App\Models\Agent::where('gdv',$gdv->id)->where("tv",0)->where('gsv',0)->whereHas('user',function($query) {
+                            $query->whereIn('position',[\App\Models\User::NVKD,\App\Models\User::GĐV]);
+                        })->get();
+
+                        @endphp
+                        @foreach($agents as $agent)
+                            <tr>
+                                <td>{{++$index}}</td>
+                                <td>{{$agent->code}}</td>
+                                <td>{{$agent->name}}</td>
+                                <td>{{($agent->user) ? $agent->user->name : ''}}</td>
+                                <td>{{($agent->user) ? $agent->user->code : ''}}</td>
+                                @php $dlv = \App\Models\SaleAgent::where('month','>=',$startMonth)->where('month','<=',$endMonth)
+                                ->groupBy('agent_id','month')->where('agent_id',$agent->id)
+                                ->get()->sum('capacity'); @endphp
+                                <td>{{$dlv}}</td>
+                                @php $slkh = \App\Models\SaleAgent::where('month','>=',$startMonth)->where('month','<=',$endMonth)
+                                ->groupBy('agent_id','month')->where('agent_id',$agent->id)
+                                ->get()->sum('sales_plan');@endphp
+                                <td>{{$slkh}}</td>
+                                @php $sltt =  \App\Models\SaleAgent::where('month','>=',$startMonth)->where('month','<=',$endMonth)
+                                    ->where('agent_id',$agent->id)
+                                ->get()->sum('sales_real');@endphp
+                                <td>{{$sltt}}</td>
+
+
+                                {{--nhom san pham--}}
+                                @foreach($datas as $data)
+                                    @php $group = $data['group'];
+                                    $products = $data['product'];
+                                $val = 0;
+                                $string = '';
+                                    @endphp
+
+                                    @foreach($products as $product)
+                                        @php $sltt =  \App\Models\SaleAgent::where('month','>=',$startMonth)->where('month','<=',$endMonth)
+                                         ->where('agent_id',$agent->id)->where('product_id',$product)
+                                ->get()->sum('sales_real');
+                                    $val += $sltt;
+                                    $string .= '<td>'.$sltt.'</td>';
+                                        @endphp
+                                    @endforeach
+                                    <td>{{$val}}</td>
+                                    {!! $string  !!}
+                                @endforeach
+
+                            </tr>
+                    @endforeach
+
+
+
 
                 @endif
 
