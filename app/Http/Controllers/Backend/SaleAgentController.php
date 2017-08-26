@@ -156,12 +156,15 @@ class SaleAgentController extends AdminController
         } else {
             $startMonth = $request->input('startMonth');
             $endMonth = $request->input('endMonth');
-            $groupProduct = GroupProduct::orderBy('created_at','desc')->get();
-            return view('exportExcel',compact('groupProduct','startMonth','endMonth'));
-//            $this->dispatch(new ExportAgent( $startMonth,$endMonth));
-//            return redirect()->back()->with('success','Export trong quá trình chạy.Vui lòng chờ thông báo để tải file');
+//            $groupProduct = GroupProduct::orderBy('created_at','desc')->get();
+//            return view('exportExcel',compact('groupProduct','startMonth','endMonth'));
+            $this->dispatch(new ExportAgent( $startMonth,$endMonth));
+            return redirect()->back()->with('success','Export trong quá trình chạy.Vui lòng chờ thông báo để tải file');
         }
 
+
+    }
+    public function exportTienDo(Request $request) {
 
     }
 }

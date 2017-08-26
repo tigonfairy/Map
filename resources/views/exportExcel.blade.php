@@ -46,7 +46,7 @@
             background-color: blue;
         }
         .gsv{
-            background-color: #00aaaa;
+            background-color: #0000cc;
         }
     </style>
 </head>
@@ -132,10 +132,9 @@ $index = 0;
                     {{--dung luong vung--}}
 
                     @php
-
                          $dlv = \App\Models\SaleAgent::where('month','>=',$startMonth)->where('month','<=',$endMonth)
                                                             ->groupBy('agent_id','month')->join('agents','agents.id', '=' ,'sale_agents.agent_id')->where('agents.gdv',$gdv->id)
-                                                            ->get()->sum('capacity');@endphp
+                                                            ->get()->sum('capacity');
                     @endphp
                     <td>{{$dlv}}</td>
 
