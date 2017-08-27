@@ -133,7 +133,7 @@
                                         <div class="form-group ">
                                             <label class="control-label col-md-3">Thời gian bắt đầu</label>
                                             <div class="col-md-8">
-                                                <input type="text" name="startMonthTD"  class="form-control startMonthTD" value="" />
+                                                <input type="text" name="startMonth"  class="form-control startMonthTD" value="" />
                                                 <span id="startMonthTD" class="error-import" style="color:red;"></span>
                                             </div>
                                             <div class="clearfix"></div>
@@ -141,7 +141,7 @@
                                         <div class="form-group ">
                                             <label class="control-label col-md-3">Thời gian kết thúc</label>
                                             <div class="col-md-8">
-                                                <input type="text" name="endMonthTD"  class="form-control endMonthTD" value="" />
+                                                <input type="text" name="endMonth"  class="form-control endMonthTD" value="" />
                                                 <span id="endMonthTD" class="error-import" style="color:red;"></span>
                                             </div>
                                             <div class="clearfix"></div>
@@ -275,10 +275,12 @@
             dateFormat: 'mm-yy',
             onClose: function(dateText, inst) {
                 var month = $("#ui-datepicker-div .ui-datepicker-month :selected").val();
+                console.log(month);
                 var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val();
                 $(this).datepicker('setDate', new Date(year, month, 1));
                 dt.draw();
                 $(".endMonthTD").datepicker("option", "minDate", new Date(year, month, 1));
+                $(".endMonthTD").datepicker("option", "maxDate",  new Date(year, 11, 1));
             }
         });
         $('.endMonthTD').datepicker( {
@@ -291,15 +293,43 @@
                 var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val();
                 $(this).datepicker('setDate', new Date(year, month, 1));
                 dt.draw();
-
-                var startMonth = $('.startMonthTD').val();
-                alert(startMonth);
-
-
+                checkType();
             }
         });
 
+        function checkType() {
+            var startMonth = $('.startMonthTD').val();
+            var endMonth = $('.endMonthTD').val();
+            if(startMonth && endMonth) {
+                var startYear = startMonth.substring(3,7);
+                var endYear = endMonth.substring(3,7);
+                startMonth = startMonth.substring(0,2);
+                endMonth = endMonth.substring(0,2);
+            }
+            $('.icheck').prop("disabled", true);
+            $('.icheck').removeAttr('checked');
 
+            if(startYear != endYear) {
+                $('#canam').prop('disabled',false);
+                return;
+            } else {
+                if( (endMonth-startMonth) <= 3) {
+                    if(endMonth <= 3 ||(3<=startMonth && endMonth <=6) || (6<startMonth && endMonth <=9) || (9 < startMonth && endMonth <=12)) {
+                        $('.icheck').prop("disabled", false);
+                        return;
+                    }
+                }
+                if(3 < (endMonth - startMonth) <= 6) {
+                    if(endMonth <=6 ||(6<startMonth && endMonth <= 12)) {
+                        $('#nuanam').prop("disabled", false);
+                        $('#canam').prop("disabled", false);
+                        return;
+                    }
+                }
+                $('#canam').prop("disabled", false);
+            }
+
+        }
         $("#import").on("click", function () {
             $("div#divLoading").addClass('show');
             $('.error-import').text('');
@@ -353,18 +383,13 @@
                 e.preventDefault();
                 $('#endMonthTD').text('Vui lòng chọn tháng kết thúc để export');
             }
-            if(startMonth && endMonth) {
-                var startYear = startMonth.substring(3,7);
-                var endYear = endMonth.substring(3,7);
-                startMonth = startMonth.substring(0,2);
-                endMonth = endMonth.substring(0,2);
-            }
 
             var radio = $('input[name=type]:checked').val();
             if(radio == undefined) {
                 e.preventDefault();
+                $('#typeTD').text('Vui lòng chọn loại để export');
+
             }
-            e.preventDefault();
         });
 
 

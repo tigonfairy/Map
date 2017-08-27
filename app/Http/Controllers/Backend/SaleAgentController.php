@@ -12,7 +12,9 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Validator;
 use App\Jobs\ImportDataAgent;
+use App\Jobs\ExportTD;
 use Excel;
+
 class SaleAgentController extends AdminController
 {
 
@@ -146,25 +148,66 @@ class SaleAgentController extends AdminController
         return response()->json($response);
     }
     public function exportExcelDataAgent(Request $request) {
-        $validator = Validator::make($request->all(), [
+       $this->validate($request, [
             'startMonth' => 'required',
             'endMonth' => 'required'
         ]);
-        if($validator->fails()) {
-            $response['status'] = 'fails';
-            $response['errors'] = $validator->errors();
-        } else {
+
             $startMonth = $request->input('startMonth');
             $endMonth = $request->input('endMonth');
-//            $groupProduct = GroupProduct::orderBy('created_at','desc')->get();
-//            return view('exportExcel',compact('groupProduct','startMonth','endMonth'));
             $this->dispatch(new ExportAgent( $startMonth,$endMonth));
             return redirect()->back()->with('success','Export trong quá trình chạy.Vui lòng chờ thông báo để tải file');
-        }
+
 
 
     }
     public function exportTienDo(Request $request) {
+        $this->validate($request, [
+            'startMonth' => 'required',
+            'endMonth' => 'required',
+            'type' => 'required'
+        ]);
+        $startMonth = $request->input('startMonth');
+        $endMonth = $request->input('endMonth');
+        $year = substr($startMonth,3,7);
+        $type = $request->input('type');
+        $startTD = $startMonth;
+        $endTD = $endMonth;
+
+        if($type == 1) {
+            if($endMonth <= '03-'.$year ) {
+                $startTD = '01-'.$year;
+                $endTD = '03-'.$year;
+            }
+            if($endMonth <= '06-'.$year ) {
+                $startTD = '04-'.$year;
+                $endTD = '06-'.$year;
+            }
+            if($endMonth <= '09-'.$year ) {
+                $startTD = '07-'.$year;
+                $endTD = '09-'.$year;
+            }
+            if($endMonth <= '12-'.$year ) {
+                $startTD = '10-'.$year;
+                $endTD = '12-'.$year;
+            }
+        }
+        if($type== 2) {
+            if($endMonth <= '06-'.$year ) {
+                $startTD = '01-'.$year;
+                $endTD = '06-'.$year;
+            }
+            if($endMonth <= '12-'.$year ) {
+                $startTD = '07-'.$year;
+                $endTD = '12-'.$year;
+            }
+        }
+        if($type == 3) {
+            $startTD = '01-'.$year;
+            $endTD = '12-'.$year;
+        }
+        $this->dispatch(new ExportTD( $startMonth,$endMonth,$startTD,$endTD,$type));
+        return redirect()->back()->with('success','Export tiến độ trong quá trình chạy.Vui lòng chờ thông báo để tải file');
 
     }
 }
