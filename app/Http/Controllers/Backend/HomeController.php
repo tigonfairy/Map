@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Backend;
 
+use App\Jobs\ExportDashboard;
 use App\Models\Agent;
 use App\Models\Area;
 use App\Models\User;
@@ -158,7 +159,24 @@ class HomeController extends AdminController
 
             return Response::json(['chart' =>$chartData,'table' => $chartData ,'title' =>'tổng sản lượng đến tháng '.$month ],200);
         }
+    }
 
 
+
+
+    public function export(Request $request ) {
+        $this->validate($request, [
+            'startMonth' => 'required',
+            'endMonth' => 'required',
+            'type' => 'required',
+            'user' => 'required'
+        ]);
+        $startMonth = $request->input('startMonth');
+        $endMonth = $request->input('endMonth');
+        $type = $request->input('type');
+        $user = $request->input('user');
+//        return view('exportDashboard',compact('startMonth','endMonth','type','user'));
+        $this->dispatch(new ExportDashboard( $startMonth,$endMonth,$type,$user));
+        return redirect()->back()->with('success','Export trong quá trình chạy.Vui lòng chờ thông báo để tải file');
     }
 }

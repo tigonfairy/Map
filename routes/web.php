@@ -46,6 +46,7 @@ Route::group(['middleware' => ['auth','language'],
         });
 
         Route::get('/', ['as' => 'dashboard', 'uses' => 'HomeController@dashboard']);
+        Route::post('/export', ['as' => 'export', 'uses' => 'HomeController@export']);
         Route::get('/home', ['as' => 'dashboard', 'uses' => 'HomeController@dashboard']);
         Route::post('/d', ['as' => 'chart', 'uses' => 'HomeController@chartDashboard']);
 
