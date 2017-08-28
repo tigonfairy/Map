@@ -1111,9 +1111,7 @@ class MapController extends AdminController
     }
 
     public function getDatatables() {
-        if (auth()->user()->roles->first()['id'] != 1) {
-            abort(403);
-        }
+
         return AddressGeojson::getDatatables();
     }
 

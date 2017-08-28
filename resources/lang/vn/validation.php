@@ -119,7 +119,8 @@ return [
         'name' => 'Tên',
         'phone' => 'Số điện thoại',
         'capacity' => 'Dung lượng vùng',
-        'month' => 'Tháng'
+        'month' => 'Tháng',
+        'type' => 'Loại'
     ],
 
 ];

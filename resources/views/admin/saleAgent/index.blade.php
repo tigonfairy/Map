@@ -1,6 +1,11 @@
 @extends('admin')
 
 @section('content')
+    <style>
+        .blockMonth {
+            margin-bottom: 20px;
+        }
+    </style>
     <!-- Page header -->
     <div class="page-header">
         <div class="page-header-content">
@@ -13,7 +18,8 @@
                     <a href="{{route('Admin::saleAgent@add')}}" class="btn btn-primary"><i class="icon-add"></i> Thêm dữ liệu cho đại lý</a>
                     <a href="#import-product" class="btn btn-info" data-toggle="modal" id="btn-system-product">Thêm doanh số từ Excel</a>
                     <a href="{{asset('data_agent.xlsx')}}" class="btn btn-success"  id="btn-system-product">Mẫu</a>
-                    <a href="#export-product" class="btn btn-info" data-toggle="modal">Export Excel</a>
+                    <a href="#export-product" class="btn btn-info" data-toggle="modal">Export doanh số lũy kế</a>
+                    <a href="#export-tien-do" class="btn btn-info" data-toggle="modal">Export doanh số Tiến độ</a>
                 </div>
             </div>
 
@@ -83,6 +89,7 @@
                                                 <input type="text" name="startMonth"  class="form-control monthPicker startMonth-export" value="" />
                                                 <span id="startMonth" class="error-import" style="color:red;"></span>
                                             </div>
+                                            <div class="clearfix"></div>
                                         </div>
                                         <div class="form-group">
                                             <label class="control-label col-md-3">Thời gian kết thúc</label>
@@ -90,6 +97,7 @@
                                                 <input type="text" name="endMonth"  class="form-control monthPicker endMonth-export" value="" />
                                                 <span id="endMonth" class="error-import" style="color:red;"></span>
                                             </div>
+                                            <div class="clearfix"></div>
                                         </div>
                                     </div>
 
@@ -107,6 +115,70 @@
                 </div>
                 <!-- /.modal-dialog -->
             </div>
+
+
+            <div class="modal fade bs-modal-lg" id="export-tien-do" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                            <h4 class="modal-title">Export doanh số tiến độ</h4>
+                        </div>
+                        <form method="POST" action="{{ route('Admin::saleAgent@exportTienDo') }}"
+                              enctype="multipart/form-data" id="import_form">
+                            {{ csrf_field() }}
+                            <div class="modal-body">
+                                <div class="row">
+                                    <div class="col-md-10" style="margin-bottom:10px">
+                                        <div class="form-group ">
+                                            <label class="control-label col-md-3">Thời gian bắt đầu</label>
+                                            <div class="col-md-8">
+                                                <input type="text" name="startMonth"  class="form-control startMonthTD" value="" />
+                                                <span id="startMonthTD" class="error-import" style="color:red;"></span>
+                                            </div>
+                                            <div class="clearfix"></div>
+                                        </div>
+                                        <div class="form-group ">
+                                            <label class="control-label col-md-3">Thời gian kết thúc</label>
+                                            <div class="col-md-8">
+                                                <input type="text" name="endMonth"  class="form-control endMonthTD" value="" />
+                                                <span id="endMonthTD" class="error-import" style="color:red;"></span>
+                                            </div>
+                                            <div class="clearfix"></div>
+                                        </div>
+                                        <div class="form-group ">
+                                            <label class="control-label col-md-3">Loại thời gian</label>
+                                            <div class="col-md-8">
+                                                <div class="form-group">
+                                                    <div class="input-group">
+                                                        <div class="icheck-inline">
+                                                            <label><input type="radio" name="type" class="icheck" id="theoquy" value="1" disabled>Theo quý</label>
+                                                            <label><input type="radio" name="type" class="icheck" id="nuanam" value="2" disabled> Nửa năm </label>
+                                                            <label><input type="radio" name="type" class="icheck" id="canam" value="3" disabled>Cả năm</label>
+                                                        </div>
+                                                    </div>
+                                                    <span id="typeTD" class="error-import" style="color:red;"></span>
+                                                </div>
+                                            </div>
+                                            <div class="clearfix"></div>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn dark btn-outline" data-dismiss="modal">Đóng</button>
+                                <button type="submit" class="btn green" id="exportTD">Export</button>
+                            </div>
+                        </form>
+                    </div>
+                    <!-- /.modal-content -->
+                </div>
+                <!-- /.modal-dialog -->
+            </div>
+
         </div>
     </div>
 
@@ -196,8 +268,68 @@
                 dt.draw();
             }
         });
+        $('.startMonthTD').datepicker( {
+            changeMonth: true,
+            changeYear: true,
+            showButtonPanel: true,
+            dateFormat: 'mm-yy',
+            onClose: function(dateText, inst) {
+                var month = $("#ui-datepicker-div .ui-datepicker-month :selected").val();
+                console.log(month);
+                var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val();
+                $(this).datepicker('setDate', new Date(year, month, 1));
+                dt.draw();
+                $(".endMonthTD").datepicker("option", "minDate", new Date(year, month, 1));
+                $(".endMonthTD").datepicker("option", "maxDate",  new Date(year, 11, 1));
+            }
+        });
+        $('.endMonthTD').datepicker( {
+            changeMonth: true,
+            changeYear: true,
+            showButtonPanel: true,
+            dateFormat: 'mm-yy',
+            onClose: function(dateText, inst) {
+                var month = $("#ui-datepicker-div .ui-datepicker-month :selected").val();
+                var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val();
+                $(this).datepicker('setDate', new Date(year, month, 1));
+                dt.draw();
+                checkType();
+            }
+        });
 
+        function checkType() {
+            var startMonth = $('.startMonthTD').val();
+            var endMonth = $('.endMonthTD').val();
+            if(startMonth && endMonth) {
+                var startYear = startMonth.substring(3,7);
+                var endYear = endMonth.substring(3,7);
+                startMonth = startMonth.substring(0,2);
+                endMonth = endMonth.substring(0,2);
+            }
+            $('.icheck').prop("disabled", true);
+            $('.icheck').removeAttr('checked');
 
+            if(startYear != endYear) {
+                $('#canam').prop('disabled',false);
+                return;
+            } else {
+                if( (endMonth-startMonth) <= 3) {
+                    if(endMonth <= 3 ||(3<=startMonth && endMonth <=6) || (6<startMonth && endMonth <=9) || (9 < startMonth && endMonth <=12)) {
+                        $('.icheck').prop("disabled", false);
+                        return;
+                    }
+                }
+                if(3 < (endMonth - startMonth) <= 6) {
+                    if(endMonth <=6 ||(6<startMonth && endMonth <= 12)) {
+                        $('#nuanam').prop("disabled", false);
+                        $('#canam').prop("disabled", false);
+                        return;
+                    }
+                }
+                $('#canam').prop("disabled", false);
+            }
+
+        }
         $("#import").on("click", function () {
             $("div#divLoading").addClass('show');
             $('.error-import').text('');
@@ -240,6 +372,28 @@
             }
 
         });
+        $('#exportTD').on('click',function(e){
+            var startMonth =  $('.startMonthTD').val();
+            if(startMonth == '') {
+                e.preventDefault();
+                $('#startMonthTD').text('Vui lòng chọn tháng bắt đầu để export');
+            }
+            var endMonth =  $('.endMonthTD').val();
+            if(endMonth == '') {
+                e.preventDefault();
+                $('#endMonthTD').text('Vui lòng chọn tháng kết thúc để export');
+            }
+
+            var radio = $('input[name=type]:checked').val();
+            if(radio == undefined) {
+                e.preventDefault();
+                $('#typeTD').text('Vui lòng chọn loại để export');
+
+            }
+        });
+
+
+
 
     } );
 
