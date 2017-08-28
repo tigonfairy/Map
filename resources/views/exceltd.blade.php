@@ -431,19 +431,13 @@ $index = 0;
                                 <td>{{$gsv->code}}</td>
                                 {{--dung luong vung--}}
 
-<<<<<<< HEAD
-                                @php $dlv = \App\Models\SaleAgent::where('month','>=',$startMonth)->where('month','<=',$endMonth)
-                                                        ->groupBy('agent_id','month')->join('agents','agents.id', '=' ,'sale_agents.agent_id')->where('agents.gsv',$gsv->id)
-                                                        ->get()->sum('capacity');@endphp
-                                <td>{{$dlv}}</td>
-                                @php $slkh = \App\Models\SaleAgent::where('month','>=',$startMonth)->where('month','<=',$endMonth)
-=======
+
                                 @php $dlv = \App\Models\SaleAgent::where('month','>=',$startTD)->where('month','<=',$endTD)
                                                         ->groupBy('agent_id','month')->join('agents','agents.id', '=' ,'sale_agents.agent_id')->where('agents.gsv',$gsv->id)
                                                         ->get()->sum('capacity');@endphp
                                 <td>{{$dlv}}</td>
                                 @php $slkh = \App\Models\SaleAgent::where('month','>=',$startTD)->where('month','<=',$endTD)
->>>>>>> ee95850a0c1e24e5e86c5a1d33b48819ffa6dea1
+
                                                             ->groupBy('agent_id','month')->join('agents','agents.id', '=' ,'sale_agents.agent_id')->where('agents.gsv',$gsv->id)
                                                             ->get()->sum('sales_plan');@endphp
                                 <td>{{$slkh}}</td>
@@ -482,19 +476,13 @@ $index = 0;
                                     <td>{{$agent->name}}</td>
                                     <td>{{($agent->user) ? $agent->user->name : ''}}</td>
                                     <td>{{($agent->user) ? $agent->user->code : ''}}</td>
-<<<<<<< HEAD
-                                    @php $dlv = \App\Models\SaleAgent::where('month','>=',$startMonth)->where('month','<=',$endMonth)
-                                                    ->groupBy('agent_id','month')->where('agent_id',$agent->id)
-                                                    ->get()->sum('capacity'); @endphp
-                                    <td>{{$dlv}}</td>
-                                    @php $slkh = \App\Models\SaleAgent::where('month','>=',$startMonth)->where('month','<=',$endMonth)
-=======
+
                                     @php $dlv = \App\Models\SaleAgent::where('month','>=',$startTD)->where('month','<=',$endTD)
                                                     ->groupBy('agent_id','month')->where('agent_id',$agent->id)
                                                     ->get()->sum('capacity'); @endphp
                                     <td>{{$dlv}}</td>
                                     @php $slkh = \App\Models\SaleAgent::where('month','>=',$startTD)->where('month','<=',$endTD)
->>>>>>> ee95850a0c1e24e5e86c5a1d33b48819ffa6dea1
+
                                 ->groupBy('agent_id','month')->where('agent_id',$agent->id)->get()->sum('sales_plan');@endphp
                                     <td>{{$slkh}}</td>
                                     @php $sltt =  \App\Models\SaleAgent::where('month','>=',$startMonth)->where('month','<=',$endMonth)
