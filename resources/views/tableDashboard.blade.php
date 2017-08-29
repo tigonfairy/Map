@@ -48,7 +48,7 @@
     </style>
 </head>
 <body>
-<table>
+<table class="table table-striped table-bordered" cellspacing="0" width="100%">
     @if($type == 1)
         @php $agent = \App\Models\Agent::find($user);@endphp
         <tr class="title">
@@ -63,7 +63,7 @@
 
         @php
         if($type != 1){
-            $manager = \App\Models\User::find($user);
+            $manager = \App\Models\User::find($id);
         }
             $nvkd = null;
             $gsv = null;
@@ -207,7 +207,7 @@
         <tr class="thang">
             <td></td>
             <td colspan="2">
-                Sản lượng đại lý /GS vùng /Giám đốc vùng TỪ {{$startMonth}} ĐẾN {{$endMonth}}
+                Sản lượng đại lý /GS vùng /Giám đốc vùng Tháng {{$startMonth}}
             </td>
             <td></td>
         </tr>
