@@ -640,33 +640,49 @@ class MapController extends AdminController
             }
 
             $totalSales = 0;
-            $saleProducts = 0;
+
             $listProducts = [];
             $capacity = 0;
 
-            $productParents = Product::getParent();
+            $groupProduct = \App\Models\GroupProduct::orderBy('created_at','desc')->get();
 
-            foreach ($productParents as $product) {
-                foreach ($product->getChildren as $p) {
-                    if (isset($p->code)) {
-                        $sales = SaleAgent::where('agent_id', $agent->id)->where('product_id', $p->id)->where('month', $month)->select('sales_real', 'capacity')->first();
-                        if ($sales) {
-                            $saleProducts += $sales->sales_real;
-                            $capacity = $sales->capacity;
-                            $listProducts[] = [
-                                'id' => $p->id,
-                                'name' => $p->code . ' - ' . $p->name_vn,
-                                'code' => $p->code,
-                                'totalSales' => $sales->sales_real,
-                                'percent' => round($sales->sales_real / $capacity, 2),
-                                'capacity' => $capacity
-                            ];
+            if (count($groupProduct) > 0) {
+                foreach ($groupProduct as $group) {
+                    $array = [];
+                    $slGroup = 0;
+                    $products = $group->product()->where('level',1)->orderBy('created_at','desc')->get();
+                    if (count($products) > 0) {
+                        foreach ($products as $product) {
+                            $sales = SaleAgent::where('agent_id', $agent->id)->where('product_id', $product->id)->where('month', $month)->select('sales_real', 'capacity')->first();
+                            if ($sales) {
+                                $slGroup += $sales->sales_real;
+                                $capacity = $sales->capacity;
+                                $array[] = [
+                                    'id' => $product->id,
+                                    'name' => $product->code,
+                                    'code' => $product->code,
+                                    'totalSales' => $sales->sales_real,
+                                    'percent' => round($sales->sales_real / $capacity, 2),
+                                    'capacity' => $capacity
+                                ];
+                            }
                         }
                     }
+
+                    $listProducts[] = [
+                                'id' => $group->id,
+                                'name' => $group->name_vn,
+                                'code' => $group->name_vn,
+                                'totalSales' => $slGroup,
+                                'percent' => round($slGroup / $capacity, 2),
+                                'capacity' => $capacity,
+                                'listProducts' => $array,
+                    ];
+
+                    $totalSales += $slGroup;
                 }
-                $totalSales += $saleProducts;
-                $saleProducts = 0;
             }
+
             $capacity = $capacity == 0 ? 1 : $capacity;
             $listProducts[] = [
                 'id' => 0,
@@ -677,17 +693,25 @@ class MapController extends AdminController
                 'capacity' => $capacity
             ];
 
-            $user = $agent->user;
-            $gsv = $user->manager;
-            $gdv = $gsv->manager;
+            // table data
+            $type = 1;
+            $user = $agent->id;
+            $startMonth = $month;
+            $endMonth = $month;
+            $table = view('tableDashboard', compact('type', 'user', 'startMonth', 'endMonth'))->render();
+
+            $nvkd = $agent->user;
+            $gsv = $nvkd->manager;
+            $gdv = $nvkd->manager;
 
             return response()->json([
                 'capacity' => $capacity,
-                'user' => $user,
+                'user' => $nvkd,
                 'gsv' => $gsv,
                 'gdv' => $gdv,
                 'agents' => $agent,
-                'listProducts' => $listProducts
+                'listProducts' => $listProducts,
+                'table' => $table
             ]);
         }
 
@@ -750,19 +774,50 @@ class MapController extends AdminController
 
             $agentIds = $agents->pluck('id')->toArray();
 
-            $dataProducts = SaleAgent::join('products', 'sale_agents.product_id', '=', 'products.id')->whereIn('agent_id', $agentIds)->where('month', $month)->groupBy('sale_agents.product_id')
-                ->selectRaw('sum(sales_real) as sum, sale_agents.product_id, products.name_vn, products.code')->get();
+            $groupProduct = \App\Models\GroupProduct::orderBy('created_at','desc')->get();
 
-            foreach ($dataProducts as $product) {
-                $listProducts[] = [
-                    'id' => $product->product_id,
-                    'name' => $product->name_vn,
-                    'code' => $product->code,
-                    'totalSales' => $product->sum,
-                    'percent' => round($product->sum / $capacity, 2),
-                    'capacity' => $capacity
-                ];
+            if (count($groupProduct) > 0) {
+                foreach ($groupProduct as $group) {
+                    $array = [];
+                    $slGroup = 0;
+                    $products = $group->product()->where('level',1)->orderBy('created_at','desc')->get();
+                    if (count($products) > 0) {
+                        foreach ($products as $product) {
+                            $sales = SaleAgent::join('products', 'sale_agents.product_id', '=', 'products.id')->whereIn('agent_id', $agentIds)->where('month', $month)
+                                ->where('sale_agents.product_id', $product->id)->selectRaw('sum(sales_real) as sum, sale_agents.product_id, products.name_vn, products.code')->first();
+                            if ($sales) {
+                                $slGroup += $sales->sum;
+
+                                $array[] = [
+                                    'id' => $product->id,
+                                    'name' => $product->code,
+                                    'code' => $product->code,
+                                    'totalSales' => $sales->sum,
+                                    'percent' => round($sales->sum / $capacity, 2),
+                                    'capacity' => $capacity
+                                ];
+                            }
+                        }
+                    }
+
+                    $listProducts[] = [
+                        'id' => $group->id,
+                        'name' => $group->name_vn,
+                        'code' => $group->name_vn,
+                        'totalSales' => $slGroup,
+                        'percent' => round($slGroup / $capacity, 2),
+                        'capacity' => $capacity,
+                        'listProducts' => $array,
+                    ];
+                }
             }
+
+            // table data
+            $type = 2;
+            $id = $user->id;
+            $startMonth = $month;
+            $endMonth = $month;
+            $table = view('tableDashboard', compact('type', 'id', 'startMonth', 'endMonth'))->render();
 
             return response()->json([
                 'user' => $user,
@@ -772,7 +827,8 @@ class MapController extends AdminController
                 'totalSales' => $totalSales,
                 'capacity' => $capacity,
                 'percent' => round($totalSales / $capacity, 2),
-                'listProducts' => $listProducts
+                'listProducts' => $listProducts,
+                'table' => $table
             ]);
         }
 
@@ -846,19 +902,50 @@ class MapController extends AdminController
 
             $agentIds = $agents->pluck('id')->toArray();
 
-            $dataProducts = SaleAgent::join('products', 'sale_agents.product_id', '=', 'products.id')->whereIn('agent_id', $agentIds)->where('month', $month)->groupBy('sale_agents.product_id')
-                ->selectRaw('sum(sales_real) as sum, sale_agents.product_id, products.name_vn, products.code')->get();
+            $groupProduct = \App\Models\GroupProduct::orderBy('created_at','desc')->get();
 
-            foreach ($dataProducts as $product) {
-                $listProducts[] = [
-                    'id' => $product->product_id,
-                    'name' => $product->name_vn,
-                    'code' => $product->code,
-                    'totalSales' => $product->sum,
-                    'percent' => round($product->sum / $capacity, 2),
-                    'capacity' => $capacity
-                ];
+            if (count($groupProduct) > 0) {
+                foreach ($groupProduct as $group) {
+                    $array = [];
+                    $slGroup = 0;
+                    $products = $group->product()->where('level',1)->orderBy('created_at','desc')->get();
+                    if (count($products) > 0) {
+                        foreach ($products as $product) {
+                            $sales = SaleAgent::join('products', 'sale_agents.product_id', '=', 'products.id')->whereIn('agent_id', $agentIds)->where('month', $month)
+                                ->where('sale_agents.product_id', $product->id)->selectRaw('sum(sales_real) as sum, sale_agents.product_id, products.name_vn, products.code')->first();
+                            if ($sales) {
+                                $slGroup += $sales->sum;
+
+                                $array[] = [
+                                    'id' => $product->id,
+                                    'name' => $product->code,
+                                    'code' => $product->code,
+                                    'totalSales' => $sales->sum,
+                                    'percent' => round($sales->sum / $capacity, 2),
+                                    'capacity' => $capacity
+                                ];
+                            }
+                        }
+                    }
+
+                    $listProducts[] = [
+                        'id' => $group->id,
+                        'name' => $group->name_vn,
+                        'code' => $group->name_vn,
+                        'totalSales' => $slGroup,
+                        'percent' => round($slGroup / $capacity, 2),
+                        'capacity' => $capacity,
+                        'listProducts' => $array,
+                    ];
+                }
             }
+
+            // table data
+            $type = 3;
+            $id = $userTv->id;
+            $startMonth = $month;
+            $endMonth = $month;
+            $table = view('tableDashboard', compact('type', 'id', 'startMonth', 'endMonth'))->render();
 
             return response()->json([
                 'user' => $userTv,
@@ -868,7 +955,8 @@ class MapController extends AdminController
                 'totalSales' => $totalSales,
                 'capacity' => $capacity,
                 'percent' => round($totalSales / $capacity, 2),
-                'listProducts' => $listProducts
+                'listProducts' => $listProducts,
+                'table' => $table
             ]);
         }
 
@@ -994,19 +1082,50 @@ class MapController extends AdminController
                 'capacity' => $capacity
             ];
 
-            $dataProducts = SaleAgent::join('products', 'sale_agents.product_id', '=', 'products.id')->whereIn('agent_id', $agentIds)->where('month', $month)->groupBy('sale_agents.product_id')
-                ->selectRaw('sum(sales_real) as sum, sale_agents.product_id, products.name_vn, products.code')->get();
+            $groupProduct = \App\Models\GroupProduct::orderBy('created_at','desc')->get();
 
-            foreach ($dataProducts as $product) {
-                $listProducts[] = [
-                    'id' => $product->product_id,
-                    'name' => $product->name_vn,
-                    'code' => $product->code,
-                    'totalSales' => $product->sum,
-                    'percent' => round($product->sum / $capacity, 2),
-                    'capacity' => $capacity
-                ];
+            if (count($groupProduct) > 0) {
+                foreach ($groupProduct as $group) {
+                    $array = [];
+                    $slGroup = 0;
+                    $products = $group->product()->where('level',1)->orderBy('created_at','desc')->get();
+                    if (count($products) > 0) {
+                        foreach ($products as $product) {
+                            $sales = SaleAgent::join('products', 'sale_agents.product_id', '=', 'products.id')->whereIn('agent_id', $agentIds)->where('month', $month)
+                                ->where('sale_agents.product_id', $product->id)->selectRaw('sum(sales_real) as sum, sale_agents.product_id, products.name_vn, products.code')->first();
+                            if ($sales) {
+                                $slGroup += $sales->sum;
+
+                                $array[] = [
+                                    'id' => $product->id,
+                                    'name' => $product->code,
+                                    'code' => $product->code,
+                                    'totalSales' => $sales->sum,
+                                    'percent' => round($sales->sum / $capacity, 2),
+                                    'capacity' => $capacity
+                                ];
+                            }
+                        }
+                    }
+
+                    $listProducts[] = [
+                        'id' => $group->id,
+                        'name' => $group->name_vn,
+                        'code' => $group->name_vn,
+                        'totalSales' => $slGroup,
+                        'percent' => round($slGroup / $capacity, 2),
+                        'capacity' => $capacity,
+                        'listProducts' => $array,
+                    ];
+                }
             }
+
+            // table data
+            $type = 4;
+            $id = $userGdv->id;
+            $startMonth = $month;
+            $endMonth = $month;
+            $table = view('tableDashboard', compact('type', 'id', 'startMonth', 'endMonth'))->render();
 
             return response()->json([
                 'user' => $userGdv,
@@ -1017,7 +1136,8 @@ class MapController extends AdminController
                 'totalSales' => $totalSaleGDV,
                 'capacity' => $capacity,
                 'percent' => round($totalSaleGDV / $capacity, 2),
-                'listProducts' => $listProducts
+                'listProducts' => $listProducts,
+                'table' => $table
             ]);
         }
 

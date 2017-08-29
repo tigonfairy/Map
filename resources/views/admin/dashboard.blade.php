@@ -100,6 +100,22 @@
         #legend img {
             vertical-align: middle;
         }
+
+        #legend2 {
+            font-family: Arial, sans-serif;
+            background: #fff;
+            padding: 10px;
+            margin: 10px;
+        }
+
+        #legend2 h3 {
+            margin-top: 0;
+        }
+
+        #legend2 img {
+            vertical-align: middle;
+        }
+
     </style>
 
     <!-- BEGIN PAGE HEADER-->
@@ -260,6 +276,7 @@
             <div class="portlet-body">
                 <div id="map" style=" width: 100% ;height: 500px"></div>
                 <div id="legend"></div>
+                <div id="legend2"></div>
             </div>
         </div>
     </div>
@@ -541,26 +558,9 @@
                         }
                     )
                 }
-                if (data.table) {
-                    var table = data.table;
-                    var string = '<table class="table table-striped table-bordered" cellspacing="0" width="100%">' +
-                        ' <thead> <tr> <th>Sản phẩm</th> <th>Doanh số</th></tr></thead><tbody>';
-                    table.forEach(function (value) {
-                        string += '<tr>';
-                        string += '<td>';
-                        string += value.name;
-                        string += '</td>';
-                        string += '<td>';
-                        string += value.y;
-                        string += '</td>';
-                        string += '</tr>';
-                    });
-                    string += '</tbody></table>';
-                    $('#tableData').html(string);
-                }
             },
             error: function (err) {
-                console.log(err);
+                console.log(err);cais
                 alert('Lỗi, hãy thử lại sau');
             }
         });
@@ -595,24 +595,6 @@
                                 data: data.chart
                             }
                         )
-                    }
-                    if (data.table) {
-                        $('#tableData').html('');
-                        var table = data.table;
-                        var string = '<table class="table table-striped table-bordered" cellspacing="0" width="100%">' +
-                            ' <thead> <tr> <th>Sản phẩm</th> <th>Doanh số</th></tr></thead><tbody>';
-                        table.forEach(function (value) {
-                            string += '<tr>';
-                            string += '<td>';
-                            string += value.name;
-                            string += '</td>';
-                            string += '<td>';
-                            string += value.y;
-                            string += '</td>';
-                            string += '</tr>';
-                        });
-                        string += '</tbody></table>';
-                        $('#tableData').html(string);
                     }
                 },
                 error: function (err) {
@@ -752,7 +734,7 @@
 
         function getListGSV(type) {
             if(type == 0) {
-                $("#type_search").val('agents');
+                $("#type_search").val('gsv');
                 var that = $(".data_search");
             } else {
                 var that = $('.dataExport');
@@ -790,7 +772,7 @@
 
         function getListTV(type) {
             if(type == 0) {
-                $("#type_search").val('agents');
+                $("#type_search").val('tv');
                 var that = $(".data_search");
             } else {
                 var that = $('.dataExport');
@@ -866,13 +848,14 @@
                 postion = 'GS';
             }
 
+            var listAgents = '<div id="legend">';
             $.map(data.listAgents, function (item) {
                 var agent = item.agent;
                 var user = agent.user;
                 var contentString = '<div class="info" style="font-size:' + user.fontSize + 'px; color:' + user.textColor + '">' +
                     '<h5 class="address" style="display:none; font-size:' + user.fontSize + 'px; color:' + user.textColor + '">' + agent.name + ' - ' + agent.address + '</h5>' +
                     '<div class="user_data" style="font-size:' + user.fontSize + 'px; color:' + user.textColor + '">' +
-                    '<p class="data" style="font-size:' + user.fontSize + 'px; color:' + user.textColor + '">%TT ' + item.totalSales + '/' + item.capacity + '=' + item.percent + '%</p>' +
+                    '<p class="data" style="font-size:' + user.fontSize + 'px; color:' + user.textColor + '">%TT ' + numberWithCommas(item.totalSales) + '/' + numberWithCommas(item.capacity) + '=' + item.percent + '%</p>' +
                     '<ul class="info_user" style="font-size:' + user.fontSize + 'px; color:' + user.textColor + '">' +
                     '<li> NVKD:' + user.name + '</li>' +
                     '<li class="gsv" style="display: none; font-size:' + user.fontSize + 'px; color:' + user.textColor + '">' + postion + ':' + data.user.name + '</li>' +
@@ -899,6 +882,13 @@
                         infoWindow.open(map.map);
                     }
                 });
+                listAgents += '<div><p class="" style="font-size:' + user.fontSize + 'px; color:' + user.textColor + '">'  + agent.name + ' %TT ' + item.totalSales + '/' + numberWithCommas(item.capacity) + '=' + numberWithCommas(item.percent) + '%</p><br></div>';
+            });
+
+            listAgents+= '</div>';
+            map.addControl({
+                position: 'bottom_right',
+                content: listAgents,
             });
 
             var list_products = data.listProducts;
@@ -917,13 +907,19 @@
                 '<td>' +
                 '<select id="choose_product">';
             $.map(list_products, function (product) {
-                tableSales += '<option value="' + product.code + '">' + product.code + ' - ' + product.name + '</option>'
+                tableSales += '<option style="font-weight: bold" value="' + product.code + '">' + product.name + '</option>';
+                var productChildren = product.listProducts;
+
+                $.map(productChildren, function (productChild) {
+                    tableSales += '<option value="' + productChild.code + '">' + productChild.name + '</option>';
+                });
+
             });
             tableSales += '</select>' +
                 '</td>' +
                 '<td id="code">' + list_products[0].code + '</td>' +
-                '<td id="totalSales">' + list_products[0].totalSales + '</td>' +
-                '<td id="capacity">' + list_products[0].capacity + '</td>' +
+                '<td id="totalSales">' + numberWithCommas(list_products[0].totalSales) + '</td>' +
+                '<td id="capacity">' + numberWithCommas(list_products[0].capacity) + '</td>' +
                 '</tr>' +
                 '</tbody>' +
                 '</table>';
@@ -935,6 +931,10 @@
             listSelectProducts = [];
             $.each(list_products, function (index, value) {
                 listSelectProducts.push(value);
+                var productChildren = value.listProducts;
+                $.each(productChildren, function (index, val) {
+                    listSelectProducts.push(val);
+                });
             });
 
 
@@ -942,7 +942,7 @@
                 '<div class="info_gsv" style="font-size:' + data.user.fontSize + 'px; color:' + data.user.textColor + '" >' +
                 '<h3 style="font-size:' + data.user.fontSize + 'px; color:' + data.user.textColor + '">' + area_name + '</h3>' +
                 '<div class="user_data_gsv" style="font-size:' + data.user.fontSize + 'px; color:' + data.user.textColor + '">' +
-                '<p class="data_gsv" id="data" style="font-size:' + data.user.fontSize + 'px; color:' + data.user.textColor + '">%TT ' + data.totalSales + '/' + data.capacity + '=' + data.percent + '%</p>' +
+                '<p class="data_gsv" id="data" style="font-size:' + data.user.fontSize + 'px; color:' + data.user.textColor + '">%TT ' + numberWithCommas(data.totalSales) + '/' + numberWithCommas(data.capacity) + '=' + data.percent + '%</p>' +
                 '<ul class="info_user_gsv" style="font-size:' + data.user.fontSize + 'px; color:' + data.user.textColor + '">' +
                 '<li>' + postion + ':' + data.user.name + '</li>' +
                 '<li class="gdv" style="display: none; font-size:' + data.user.fontSize + 'px; color:' + data.user.textColor + '"> GĐ :' + data.director + '</li>' +
@@ -950,14 +950,19 @@
                 '</div>' +
                 '</div>';
             map.addControl({
-                position: 'bottom_right',
+                position: 'bottom_center',
                 content: tableSales,
             });
+
+            if (data.table) {
+                $('#tableData').html('');
+                $('#tableData').html(data.table);
+            }
         }
 
         function getListGDV(type) {
             if(type == 0) {
-                $("#type_search").val('agents');
+                $("#type_search").val('gdv');
                 var that = $(".data_search");
             } else {
                 var that = $('.dataExport');
@@ -1033,7 +1038,7 @@
                     polygonArray[item.id] = polygon;
                 }
             });
-            var legend = document.getElementById('legend');
+            var legend = document.getElementById('legend2');
 
             $.map(data.result, function (item) {
                 var agents = item.agents;
@@ -1049,7 +1054,7 @@
                     var contentString = '<div class="info" style="font-size:' + agent.user.fontSize + 'px; color:' + agent.user.textColor + '">' +
                         '<h5 class="address" style="font-size:' + agent.user.fontSize + 'px; color:' + agent.user.textColor + '">' + agent.name + ' - ' + agent.address + '</h5>' +
                         '<div class="user_data" style="font-size:' + agent.user.fontSize + 'px; color:' + agent.user.textColor + '">' +
-                        '<p class="data" id="data" style="font-size:' + agent.user.fontSize + 'px; color:' + agent.user.textColor + '">%TT ' + agent.totalSales + '/' + agent.capacity + '=' + agent.percent + '%</p>' +
+                        '<p class="data" id="data" style="font-size:' + agent.user.fontSize + 'px; color:' + agent.user.textColor + '">%TT ' + numberWithCommas(agent.totalSales) + '/' + numberWithCommas(agent.capacity) + '=' + agent.percent + '%</p>' +
                         '<ul class="info_user" style="font-size:' + agent.user.fontSize + 'px; color:' + agent.user.textColor + '">' +
                         '<li> NVKD:' + agent.user.name + '</li>' +
                         '</ul>' +
@@ -1077,12 +1082,13 @@
 
                 var div = document.createElement('div');
                 div.style.color = item.gsv.textColor;
-                div.innerHTML = item.gsv.name + ' - %TT ' + item.totalSales + '/' + item.capacity + '=' + item.percent + "%";
+                div.innerHTML = item.gsv.name + ' - %TT ' + numberWithCommas(item.totalSales) + '/' + numberWithCommas(item.capacity) + '=' + item.percent + "%";
+
                 legend.appendChild(div);
 
                 var customTxt =
                     '<div class="customBox" style="display:none; font-size:' + item.gsv.fontSize + 'px; color:' + item.gsv.textColor + '">' +
-                    '<span class="data_gsv" style="font-size:' + item.gsv.fontSize + 'px; color:' + item.gsv.textColor + '">%TT ' + item.totalSales + '/' + item.capacity + '=' + item.percent + '%</span>' +
+                    '<span class="data_gsv" style="font-size:' + item.gsv.fontSize + 'px; color:' + item.gsv.textColor + '">%TT ' + numberWithCommas(item.totalSales) + '/' + numberWithCommas(item.capacity) + '=' + item.percent + '%</span>' +
                     '<span class="info_user_gsv" style="font-size:' + item.gsv.fontSize + 'px; color:' + item.gsv.textColor + '">' + item.gsv.name + '</span>' +
                     '</div>';
                 txt = new TxtOverlay(new google.maps.LatLng(markers[0].getPosition().lat(), markers[0].getPosition().lng()), customTxt, "customBox", map);
@@ -1098,7 +1104,7 @@
                 var contentString = '<div class="info" style="font-size:' + item.gsv.fontSize + 'px; color:' + item.gsv.textColor + '">' +
                     '<h5 class="address" style="font-size:' + item.gsv.fontSize + 'px; color:' + item.gsv.textColor + '">' + agent.name + ' - ' + agent.address + '</h5>' +
                     '<div class="user_data" style="font-size:' + item.gsv.fontSize + 'px; color:' + item.gsv.textColor + '">' +
-                    '<p class="data" id="data" style="font-size:' + item.gsv.fontSize + 'px; color:' + item.gsv.textColor + '">%TT ' + item.totalSales + '/' + item.capacity + '=' + item.percent + '%</p>' +
+                    '<p class="data" id="data" style="font-size:' + item.gsv.fontSize + 'px; color:' + item.gsv.textColor + '">%TT ' + numberWithCommas(item.totalSales) + '/' + numberWithCommas(item.capacity) + '=' + item.percent + '%</p>' +
                     '<ul class="info_user" style="font-size:' + item.gsv.fontSize + 'px; color:' + item.gsv.textColor + '">' +
                     '<li>' + item.gsv.name + '</li>' +
                     '</ul>' +
@@ -1124,6 +1130,7 @@
             });
 
             var list_products = data.listProducts;
+            console.log(list_products);
 
             var tableSales = '<table class="table table-striped table-bordered table-products" cellspacing="0" width="100%" id="data-table">' +
                 '<thead>' +
@@ -1140,14 +1147,20 @@
                 '<select id="choose_product">';
 
             $.map(list_products, function (product) {
-                tableSales += '<option value="' + product.code + '">' + product.code + ' - ' + product.name + '</option>'
+                tableSales += '<option style="font-weight: bold" value="' + product.code + '">' + product.name + '</option>';
+                var productChildren = product.listProducts;
+
+                $.map(productChildren, function (productChild) {
+                    tableSales += '<option value="' + productChild.code + '">' + productChild.name + '</option>';
+                });
+
             });
 
             tableSales += '</select>' +
                 '</td>' +
                 '<td id="code">' + list_products[0].code + '</td>' +
-                '<td id="totalSales">' + list_products[0].totalSales + '</td>' +
-                '<td id="capacity">' + list_products[0].capacity + '</td>' +
+                '<td id="totalSales">' + numberWithCommas(list_products[0].totalSales) + '</td>' +
+                '<td id="capacity">' + numberWithCommas(list_products[0].capacity) + '</td>' +
                 '</tr>' +
                 '</tbody>' +
                 '</table>';
@@ -1155,6 +1168,10 @@
             listSelectProducts = [];
             $.each(list_products, function (index, value) {
                 listSelectProducts.push(value);
+                var productChildren = value.listProducts;
+                $.each(productChildren, function (index, val) {
+                    listSelectProducts.push(val);
+                });
             });
 
             // products table
@@ -1163,7 +1180,7 @@
             map.controls[google.maps.ControlPosition.TOP_LEFT].push(table);
 
             // info total
-            var info = '<h3 id="data" >' + data.user.name + ' - %TT ' + data.totalSales + '/' + data.capacity + '=' + data.percent + '%' + '</h3>'
+            var info = '<h3 id="data" >' + data.user.name + ' - %TT ' + numberWithCommas(data.totalSales) + '/' + numberWithCommas(data.capacity) + '=' + data.percent + '%' + '</h3>'
             var myTitle = document.createElement('div');
             myTitle.style.color = data.user.textColor;
             myTitle.innerHTML = info;
@@ -1176,6 +1193,10 @@
             button.innerHTML = '<button id="swift" class="btn btn-primary">Full mode</button>';
             map.controls[google.maps.ControlPosition.BOTTOM_LEFT].push(button);
 
+            if (data.table) {
+                $('#tableData').html('');
+                $('#tableData').html(data.table);
+            }
         }
 
         function TxtOverlay(pos, txt, cls, map) {
@@ -1315,7 +1336,7 @@
             var contentString = '<div class="info" style="font-size:' + user.fontSize + 'px; color:' + user.textColor + '">' +
                 '<h5 class="address" style="display:none; font-size:' + user.fontSize + 'px; color:' + user.textColor + '">' + data.agents.name + ' - ' + data.agents.address + '</h5>' +
                 '<div class="user_data" style="font-size:' + user.fontSize + 'px; color:' + user.textColor + '">' +
-                '<p class="data" id="data" style="font-size:' + user.fontSize + 'px; color:' + user.textColor + '">%' + list_products[0].code + ' ' + list_products[0].totalSales + '/' + list_products[0].capacity + '=' + list_products[0].percent + '%</p>' +
+                '<p class="data" id="data" style="font-size:' + user.fontSize + 'px; color:' + user.textColor + '">%' + list_products[0].code + ' ' + numberWithCommas(list_products[0].totalSales) + '/' + numberWithCommas(list_products[0].capacity) + '=' + list_products[0].percent + '%</p>' +
                 '<ul class="info_user" style="font-size:' + user.fontSize + 'px; color:' + user.textColor + '">' +
                 '<li> NVKD:' + user.name + '</li>' +
                 '<li class="gsv" style="display:none; font-size:' + user.fontSize + 'px; color:' + user.textColor + '">' + postion + ':' + data.gsv.name + '</li>' +
@@ -1364,13 +1385,19 @@
                 '<td>' +
                 '<select id="choose_product">';
             $.map(list_products, function (product) {
-                tableSales += '<option value="' + product.code + '">' + product.code + ' - ' + product.name + '</option>'
+                tableSales += '<option style="font-weight: bold" value="' + product.code + '">' + product.name + '</option>';
+                var productChildren = product.listProducts;
+
+                $.map(productChildren, function (productChild) {
+                        tableSales += '<option value="' + productChild.code + '">' + productChild.name + '</option>';
+                });
+
             });
             tableSales += '</select>' +
                 '</td>' +
                 '<td id="code">' + list_products[0].code + '</td>' +
-                '<td id="totalSales">' + list_products[0].totalSales + '</td>' +
-                '<td id="capacity">' + list_products[0].capacity + '</td>' +
+                '<td id="totalSales">' + numberWithCommas(list_products[0].totalSales) + '</td>' +
+                '<td id="capacity">' + numberWithCommas(list_products[0].capacity) + '</td>' +
                 '</tr>' +
                 '</tbody>' +
                 '</table>';
@@ -1386,7 +1413,16 @@
             listSelectProducts = [];
             $.each(list_products, function (index, value) {
                 listSelectProducts.push(value);
+                var productChildren = value.listProducts;
+                $.each(productChildren, function (index, val) {
+                        listSelectProducts.push(val);
+                });
             });
+
+            if (data.table) {
+                $('#tableData').html('');
+                $('#tableData').html(data.table);
+            }
         }
 
         function showDataSaleAdmin(data) {
@@ -1434,8 +1470,8 @@
 
                 var agents = item.agents;
                 var markers = [];
+                var legend = document.getElementById('legend');
                 $.map(agents, function (agent) {
-
                     var latLng = new google.maps.LatLng(agent.lat,
                         agent.lng);
                     var image = "";
@@ -1446,7 +1482,7 @@
                     var contentString = '<div class="info" style="font-size:' + agent.user.fontSize + 'px; color:' + agent.user.textColor + '">' +
                         '<h5 class="address" style="font-size:' + agent.user.fontSize + 'px; color:' + agent.user.textColor + '">' + agent.name + ' - ' + agent.address + '</h5>' +
                         '<div class="user_data" style="font-size:' + agent.user.fontSize + 'px; color:' + agent.user.textColor + '">' +
-                        '<p class="data" id="data" style="font-size:' + agent.user.fontSize + 'px; color:' + agent.user.textColor + '">%TT ' + agent.totalSales + '/' + agent.capacity + '=' + agent.percent + '%</p>' +
+                        '<p class="data" id="data" style="font-size:' + agent.user.fontSize + 'px; color:' + agent.user.textColor + '">%TT ' + numberWithCommas(agent.totalSales) + '/' + numberWithCommas(agent.capacity) + '=' + agent.percent + '%</p>' +
                         '<ul class="info_user" style="font-size:' + agent.user.fontSize + 'px; color:' + agent.user.textColor + '">' +
                         '<li>' + agent.user.name + '</li>' +
                         '</ul>' +
@@ -1475,11 +1511,17 @@
 
                 var customTxt =
                     '<div class="customBox" style="font-size:' + item.gdv.fontSize + 'px; color:' + item.gdv.textColor + '">' +
-                    '<span style="font-size:' + item.gdv.fontSize + 'px; color:' + item.gdv.textColor + '">%TT ' + item.totalSales + '/' + numberWithCommas(item.capacity) + '=' + item.percent + '%</span>' +
                     '<span style="font-size:' + item.gdv.fontSize + 'px; color:' + item.gdv.textColor + '">' + item.gdv.name + '</span>' +
                     '</div>';
                 txt = new TxtOverlay(new google.maps.LatLng(markers[0].getPosition().lat(), markers[0].getPosition().lng()), customTxt, "customBox", map);
+
+                var div = document.createElement('div');
+                div.style.color = item.gdv.textColor;
+                div.innerHTML = item.gdv.name + ' - %TT ' + numberWithCommas(item.totalSales) + '/' + numberWithCommas(item.capacity) + '=' + item.percent + "%";
+                legend.appendChild(div);
             });
+
+            map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(legend);
         }
 
 
@@ -1490,8 +1532,8 @@
             });
             var item = data[0];
             $("#code").text(item.code);
-            $("#totalSales").text(item.totalSales);
-            $("#capacity").text(item.capacity);
+            $("#totalSales").text(numberWithCommas(item.totalSales));
+            $("#capacity").text(numberWithCommas(item.capacity));
             $("#data").text('%' + item.code + ' ' + item.totalSales + '/' + item.capacity + '=' + item.percent + '%');
         });
         $(document).on('click', '#swift', function () {
