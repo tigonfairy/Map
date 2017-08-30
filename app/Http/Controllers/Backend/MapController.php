@@ -640,10 +640,9 @@ class MapController extends AdminController
             }
 
             $totalSales = 0;
-
             $listProducts = [];
             $capacity = 0;
-
+            $listCodes = [];
             $groupProduct = \App\Models\GroupProduct::orderBy('created_at','desc')->get();
 
             if (count($groupProduct) > 0) {
@@ -665,6 +664,7 @@ class MapController extends AdminController
                                     'percent' => round($sales->sales_real / $capacity, 2),
                                     'capacity' => $capacity
                                 ];
+                                $listCodes[] = $product->code;
                             }
                         }
                     }
@@ -690,7 +690,8 @@ class MapController extends AdminController
                 'code' => 'Tổng sản lượng',
                 'totalSales' => $totalSales,
                 'percent' => round($totalSales / $capacity, 2),
-                'capacity' => $capacity
+                'capacity' => $capacity,
+
             ];
 
             // table data
@@ -704,6 +705,8 @@ class MapController extends AdminController
             $gsv = $nvkd->manager;
             $gdv = $nvkd->manager;
 
+            array_unique($listCodes);
+
             return response()->json([
                 'capacity' => $capacity,
                 'user' => $nvkd,
@@ -711,7 +714,8 @@ class MapController extends AdminController
                 'gdv' => $gdv,
                 'agents' => $agent,
                 'listProducts' => $listProducts,
-                'table' => $table
+                'table' => $table,
+                'listCodes' => $listCodes
             ]);
         }
 
@@ -773,7 +777,7 @@ class MapController extends AdminController
             ];
 
             $agentIds = $agents->pluck('id')->toArray();
-
+            $listCodes = [];
             $groupProduct = \App\Models\GroupProduct::orderBy('created_at','desc')->get();
 
             if (count($groupProduct) > 0) {
@@ -796,6 +800,8 @@ class MapController extends AdminController
                                     'percent' => round($sales->sum / $capacity, 2),
                                     'capacity' => $capacity
                                 ];
+
+                                $listCodes[] = $product->code;
                             }
                         }
                     }
@@ -819,6 +825,7 @@ class MapController extends AdminController
             $endMonth = $month;
             $table = view('tableDashboard', compact('type', 'id', 'startMonth', 'endMonth'))->render();
 
+            array_unique($listCodes);
             return response()->json([
                 'user' => $user,
                 'director' => $userParentName,
@@ -828,7 +835,8 @@ class MapController extends AdminController
                 'capacity' => $capacity,
                 'percent' => round($totalSales / $capacity, 2),
                 'listProducts' => $listProducts,
-                'table' => $table
+                'table' => $table,
+                'listCodes' => $listCodes
             ]);
         }
 
@@ -901,7 +909,7 @@ class MapController extends AdminController
             ];
 
             $agentIds = $agents->pluck('id')->toArray();
-
+            $listCodes = [];
             $groupProduct = \App\Models\GroupProduct::orderBy('created_at','desc')->get();
 
             if (count($groupProduct) > 0) {
@@ -924,6 +932,7 @@ class MapController extends AdminController
                                     'percent' => round($sales->sum / $capacity, 2),
                                     'capacity' => $capacity
                                 ];
+                                $listCodes[] = $product->code;
                             }
                         }
                     }
@@ -947,6 +956,8 @@ class MapController extends AdminController
             $endMonth = $month;
             $table = view('tableDashboard', compact('type', 'id', 'startMonth', 'endMonth'))->render();
 
+            array_unique($listCodes);
+
             return response()->json([
                 'user' => $userTv,
                 'director' => $userParentName,
@@ -956,7 +967,8 @@ class MapController extends AdminController
                 'capacity' => $capacity,
                 'percent' => round($totalSales / $capacity, 2),
                 'listProducts' => $listProducts,
-                'table' => $table
+                'table' => $table,
+                'listCodes' => $listCodes
             ]);
         }
 
@@ -1083,7 +1095,7 @@ class MapController extends AdminController
             ];
 
             $groupProduct = \App\Models\GroupProduct::orderBy('created_at','desc')->get();
-
+            $listCodes = [];
             if (count($groupProduct) > 0) {
                 foreach ($groupProduct as $group) {
                     $array = [];
@@ -1104,6 +1116,8 @@ class MapController extends AdminController
                                     'percent' => round($sales->sum / $capacity, 2),
                                     'capacity' => $capacity
                                 ];
+
+                                $listCodes[] = $product->code;
                             }
                         }
                     }
@@ -1127,6 +1141,8 @@ class MapController extends AdminController
             $endMonth = $month;
             $table = view('tableDashboard', compact('type', 'id', 'startMonth', 'endMonth'))->render();
 
+            array_unique($listCodes);
+
             return response()->json([
                 'user' => $userGdv,
                 'result' => $data,
@@ -1137,7 +1153,8 @@ class MapController extends AdminController
                 'capacity' => $capacity,
                 'percent' => round($totalSaleGDV / $capacity, 2),
                 'listProducts' => $listProducts,
-                'table' => $table
+                'table' => $table,
+                'listCodes' => $listCodes
             ]);
         }
 
