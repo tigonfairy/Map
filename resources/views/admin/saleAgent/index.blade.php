@@ -10,16 +10,16 @@
     <div class="page-header">
         <div class="page-header-content">
             <div class="page-title">
-                <h2>Danh sách dữ liệu của đại lý</h2>
+                <h2>{{trans('saleAgent.listDataAgent')}}</h2>
             </div>
 
             <div class="heading-elements">
                 <div class="heading-btn-group">
-                    <a href="{{route('Admin::saleAgent@add')}}" class="btn btn-primary"><i class="icon-add"></i> Thêm dữ liệu cho đại lý</a>
-                    <a href="#import-product" class="btn btn-info" data-toggle="modal" id="btn-system-product">Thêm doanh số từ Excel</a>
-                    <a href="{{asset('data_agent.xlsx')}}" class="btn btn-success"  id="btn-system-product">Mẫu</a>
-                    <a href="#export-product" class="btn btn-info" data-toggle="modal">Export doanh số lũy kế</a>
-                    <a href="#export-tien-do" class="btn btn-info" data-toggle="modal">Export doanh số Tiến độ</a>
+                    <a href="{{route('Admin::saleAgent@add')}}" class="btn btn-primary"><i class="icon-add"></i> {{trans('saleAgent.addDataAgent')}}</a>
+                    <a href="#import-product" class="btn btn-info" data-toggle="modal" id="btn-system-product">{{trans('saleAgent.saleExcel')}}</a>
+                    <a href="{{asset('data_agent.xlsx')}}" class="btn btn-success"  id="btn-system-product">{{trans('saleAgent.example')}}</a>
+                    <a href="#export-product" class="btn btn-info" data-toggle="modal">{{trans('saleAgent.exportCumulativeSale')}}</a>
+                    <a href="#export-tien-do" class="btn btn-info" data-toggle="modal">{{trans('saleAgent.exportProcessSale')}}</a>
                 </div>
             </div>
 
@@ -29,7 +29,7 @@
                     <div class="modal-content">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-                            <h4 class="modal-title">Thêm doanh số cho đại lý bằng Excel</h4>
+                            <h4 class="modal-title">{{trans('saleAgent.saleExcel')}}</h4>
                         </div>
                         <form method="POST" action="{{ route('Admin::saleAgent@importExcelDataAgent') }}"
                               enctype="multipart/form-data" id="import_form">
@@ -38,7 +38,7 @@
                                 <div class="row">
                                     <div class="col-md-10" style="margin-bottom:10px">
                                         <div class="form-group">
-                                            <label class="control-label col-md-3">Thời gian</label>
+                                            <label class="control-label col-md-3">{{trans('saleAgent.time')}}</label>
                                             <div class="col-md-8">
                                                 <input type="text" name ="month" class="form-control monthPicker" value="" />
                                                 <span id="month" class="error-import" style="color:red;"></span>
@@ -60,7 +60,7 @@
 
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn dark btn-outline" data-dismiss="modal">Đóng</button>
+                                <button type="button" class="btn dark btn-outline" data-dismiss="modal">{{trans('saleAgent.close')}}</button>
                                 <button type="button" class="btn green" id="import">Import</button>
                             </div>
                         </form>
@@ -75,7 +75,7 @@
                     <div class="modal-content">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-                            <h4 class="modal-title">Export Excel</h4>
+                            <h4 class="modal-title">{{trans('saleAgent.exportCumulativeSale')}}</h4>
                         </div>
                         <form method="POST" action="{{ route('Admin::saleAgent@exportExcelDataAgent') }}"
                               enctype="multipart/form-data" id="import_form">
@@ -84,7 +84,7 @@
                                 <div class="row">
                                     <div class="col-md-10" style="margin-bottom:10px">
                                         <div class="form-group">
-                                            <label class="control-label col-md-3">Thời gian bắt đầu</label>
+                                            <label class="control-label col-md-3">{{trans('saleAgent.startTime')}}</label>
                                             <div class="col-md-8">
                                                 <input type="text" name="startMonth"  class="form-control monthPicker startMonth-export" value="" />
                                                 <span id="startMonth" class="error-import" style="color:red;"></span>
@@ -92,7 +92,7 @@
                                             <div class="clearfix"></div>
                                         </div>
                                         <div class="form-group">
-                                            <label class="control-label col-md-3">Thời gian kết thúc</label>
+                                            <label class="control-label col-md-3">{{trans('saleAgent.endTime')}}</label>
                                             <div class="col-md-8">
                                                 <input type="text" name="endMonth"  class="form-control monthPicker endMonth-export" value="" />
                                                 <span id="endMonth" class="error-import" style="color:red;"></span>
@@ -106,7 +106,7 @@
 
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn dark btn-outline" data-dismiss="modal">Đóng</button>
+                                <button type="button" class="btn dark btn-outline" data-dismiss="modal">{{trans('saleAgent.close')}}</button>
                                 <button type="submit" class="btn green" id="export">Export</button>
                             </div>
                         </form>
@@ -122,7 +122,7 @@
                     <div class="modal-content">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-                            <h4 class="modal-title">Export doanh số tiến độ</h4>
+                            <h4 class="modal-title">{{trans('saleAgent.exportProcessSale')}}</h4>
                         </div>
                         <form method="POST" action="{{ route('Admin::saleAgent@exportTienDo') }}"
                               enctype="multipart/form-data" id="import_form">
@@ -131,7 +131,7 @@
                                 <div class="row">
                                     <div class="col-md-10" style="margin-bottom:10px">
                                         <div class="form-group ">
-                                            <label class="control-label col-md-3">Thời gian bắt đầu</label>
+                                            <label class="control-label col-md-3">{{trans('saleAgent.startTime')}}</label>
                                             <div class="col-md-8">
                                                 <input type="text" name="startMonth"  class="form-control startMonthTD" value="" />
                                                 <span id="startMonthTD" class="error-import" style="color:red;"></span>
@@ -139,7 +139,7 @@
                                             <div class="clearfix"></div>
                                         </div>
                                         <div class="form-group ">
-                                            <label class="control-label col-md-3">Thời gian kết thúc</label>
+                                            <label class="control-label col-md-3">{{trans('saleAgent.endTime')}}</label>
                                             <div class="col-md-8">
                                                 <input type="text" name="endMonth"  class="form-control endMonthTD" value="" />
                                                 <span id="endMonthTD" class="error-import" style="color:red;"></span>
@@ -147,14 +147,14 @@
                                             <div class="clearfix"></div>
                                         </div>
                                         <div class="form-group ">
-                                            <label class="control-label col-md-3">Loại thời gian</label>
+                                            <label class="control-label col-md-3">{{trans('saleAgent.typeTime')}}</label>
                                             <div class="col-md-8">
                                                 <div class="form-group">
                                                     <div class="input-group">
                                                         <div class="icheck-inline">
-                                                            <label><input type="radio" name="type" class="icheck" id="theoquy" value="1" disabled>Theo quý</label>
-                                                            <label><input type="radio" name="type" class="icheck" id="nuanam" value="2" disabled> Nửa năm </label>
-                                                            <label><input type="radio" name="type" class="icheck" id="canam" value="3" disabled>Cả năm</label>
+                                                            <label><input type="radio" name="type" class="icheck" id="theoquy" value="1" disabled>{{trans('saleAgent.precious')}}</label>
+                                                            <label><input type="radio" name="type" class="icheck" id="nuanam" value="2" disabled> {{trans('saleAgent.halfYear')}} </label>
+                                                            <label><input type="radio" name="type" class="icheck" id="canam" value="3" disabled>{{trans('saleAgent.year')}}</label>
                                                         </div>
                                                     </div>
                                                     <span id="typeTD" class="error-import" style="color:red;"></span>
@@ -169,7 +169,7 @@
 
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn dark btn-outline" data-dismiss="modal">Đóng</button>
+                                <button type="button" class="btn dark btn-outline" data-dismiss="modal">{{trans('saleAgent.close')}}</button>
                                 <button type="submit" class="btn green" id="exportTD">Export</button>
                             </div>
                         </form>
@@ -193,8 +193,8 @@
                 <thead>
                 <tr>
                     <th>ID</th>
-                    <th>Đại lý</th>
-                    <th>Thời gian</th>
+                    <th>{{trans('saleAgent.agent')}}</th>
+                    <th>{{trans('saleAgent.time')}}</th>
                     <th>Action</th>
                 </tr>
                 </thead>

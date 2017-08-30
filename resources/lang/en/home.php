@@ -58,7 +58,7 @@ return [
     'total_sale_plan' => 'Total of sale plan',
     'managerArea' => 'Manager Area',
     'placeholderSearchName' => 'Enter name to search',
-    'config' => 'Config',
+    'config' => 'Setting',
     'active' => 'Active',
     'inactive' => 'Inactive',
     'nameVN' => 'Name By Vietnamese',
@@ -69,8 +69,14 @@ return [
     'address' => 'Address',
     'rank' => 'Rank',
     'attribute' => 'Attribute',
-    'configInterface' => 'Config display',
+    'configInterface' => 'Setting display',
     'fontSize' => 'Font Size',
-    'textColor' => 'Text color'
-
+    'textColor' => 'Text color',
+    'dataManager' => 'Data manager',
+    'listSaleAgent' => 'List sale agent',
+    'addSaleAgent' => 'Add sale agent',
+    'addAgentExcel' => 'Add agent from excel',
+    'example' => 'Example',
+    'exportAgentExcel' => 'Export excel',
+    'close' => 'Close'
 ];

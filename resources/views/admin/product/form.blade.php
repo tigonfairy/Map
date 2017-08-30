@@ -9,7 +9,7 @@
         <a href="" class="btn btn-link">
           <i class="icon-arrow-left8"></i>
         </a>
-        {{ isset($product) ? 'Sửa Sản Phẩm ' : 'Thêm Sản Phẩm' }}
+        {{ isset($product) ? trans('product.editProduct') : trans('product.addProduct') }}
       </h2>
     </div>
   </div>
@@ -77,7 +77,7 @@
                       <select class="form-control" name="parent_id">
                           <option value="0"> Chọn nhóm sản phẩm </option>
                           @foreach($group_products as $group_product)
-                          <option value="{{ $group_product->id }}" {!! @$product->id == $group_product->id ? 'selected=selected' : '' !!}>{{ $group_product->name }}</option>
+                          <option value="{{ $group_product->id }}" {!! @$product->id == $group_product->id ? 'selected=selected' : '' !!}>{{ $group_product->name_vn }}</option>
                           @endforeach
                       </select>
                       @if ($errors->has('parent_id'))

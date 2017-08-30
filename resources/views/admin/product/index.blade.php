@@ -12,9 +12,8 @@
                 <div class="heading-btn-group">
                     <a href="{{route('Admin::product@add')}}" class="btn btn-primary"><i class="icon-add"></i> {!! trans('home.create') . ' ' . trans('home.Product') !!}</a>
 
-                    <a href="#import-product" class="btn btn-info" data-toggle="modal" id="btn-system-product">Thêm sản
-                        phẩm từ Excel</a>
-                    <a href="{{asset('product_example.xlsx')}}" class="btn btn-success"  id="btn-system-product">Mẫu</a>
+                    <a href="#import-product" class="btn btn-info" data-toggle="modal" id="btn-system-product">{{trans('product.addProductExcel')}}</a>
+                    <a href="{{asset('product_example.xlsx')}}" class="btn btn-success"  id="btn-system-product">{{trans('product.example')}}</a>
                     <a href="{{route('Admin::product@export')}}" class="btn btn-info" >Export excel</a>
                 </div>
             </div>
@@ -24,7 +23,7 @@
                     <div class="modal-content">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-                            <h4 class="modal-title">Thêm sản phẩm bằng Excel</h4>
+                            <h4 class="modal-title">{{trans('product.addProductExcel')}}</h4>
                         </div>
                         <form method="POST" action="{{ route('Admin::product@importExcel') }}"
                               enctype="multipart/form-data" id="import_form">
@@ -46,7 +45,7 @@
 
                             </div>
                             <div class="modal-footer">
-                                <button type="button" class="btn dark btn-outline" data-dismiss="modal">Đóng</button>
+                                <button type="button" class="btn dark btn-outline" data-dismiss="modal">{{trans('product.close')}}</button>
                                 <button type="button" class="btn green" id = "import">Import</button>
                             </div>
                         </form>

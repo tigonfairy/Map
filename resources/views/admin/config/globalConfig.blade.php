@@ -35,7 +35,7 @@
                                     <table class="table table-striped table-bordered" cellspacing="0" width="100%">
                                         <thead>
 
-                                        <th>{{trans('home.position')}}</th>
+                                        <th>{{trans('config.position')}}</th>
                                         <th>{{trans('home.textColor')}}</th>
                                         <th>{{trans('home.fontSize')}}</th>
 

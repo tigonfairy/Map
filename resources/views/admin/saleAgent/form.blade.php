@@ -5,7 +5,7 @@
     <div class="page-header">
         <div class="page-header-content">
             <div class="page-title">
-                <h2>{{ isset($saleAgent) ? 'Sửa Dữ liệu đại lý ' : 'Thêm Dữ liệu đại lý' }}</h2>
+                <h2>{{ isset($saleAgent) ? trans('saleAgent.editDataAgent') : trans('saleAgent.addDataAgent') }}</h2>
             </div>
 
         </div>
@@ -29,10 +29,10 @@
                             @endif
                             <!---------- Agent ID------------>
                                 <div class="form-group {{ $errors->has('agent_id') ? 'has-error has-feedback' : '' }}">
-                                    <label for="name" class="control-label text-semibold">Đại lý</label>
+                                    <label for="name" class="control-label text-semibold">{{trans('saleAgent.agent')}}</label>
                                     <i class="icon-question4 text-muted text-size-mini cursor-pointer js-help-icon" data-content="Đại lý"></i>
                                     <select name="agent_id" class="agents" {{ isset($saleAgent) ?  "disabled=disabled" : "" }}>
-                                        <option value="">-- Chọn đại lý --</option>
+                                        <option value="">-- {{trans('home.select')}} --</option>
                                         @foreach($agents as $key => $value)
                                             <option value="{{ $value->id }}" {{ $value->id == @$saleAgent[0]->agent_id ? "selected=selected" : ""}}>{{ $value->name }}</option>
                                         @endforeach
@@ -47,7 +47,7 @@
 
                                 <!---------- Thời gian ------------>
                                 <div class="form-group {{ $errors->has('month') ? 'has-error has-feedback' : '' }}">
-                                    <label for="name" class="control-label text-semibold">Thời gian</label>
+                                    <label for="name" class="control-label text-semibold">{{trans('saleAgent.time')}}</label>
                                     <i class="icon-question4 text-muted text-size-mini cursor-pointer js-help-icon" data-content="Thời gian"></i>
                                     <input type="text" id="month" name="month" class="form-control monthPicker" value="{{ old('month') ?: @$saleAgent[0]->month }}" @if(isset($saleAgent)) disabled @endif />
                                     @if(isset($saleAgent))
@@ -61,7 +61,7 @@
                                     @endif
                                 </div>
                                 <div class="form-group {{ $errors->has('capacity') ? 'has-error has-feedback' : '' }}">
-                                    <label for="name" class="control-label text-semibold">Dung lượng vùng</label>
+                                    <label for="name" class="control-label text-semibold">{{trans('saleAgent.areaCapacity')}}</label>
                                     <i class="icon-question4 text-muted text-size-mini cursor-pointer js-help-icon" data-content="Thời gian"></i>
                                     <input type="number" id="capacity" name="capacity" class="form-control" value="{{ old('capacity') ?: @$saleAgent[0]->capacity }}" />
                                     @if ($errors->has('capacity'))
@@ -72,7 +72,7 @@
                                     @endif
                                 </div>
                                 <div class="form-group {{ $errors->has('sales_plan') ? 'has-error has-feedback' : '' }}">
-                                    <label for="name" class="control-label text-semibold">Doanh số kế hoạch</label>
+                                    <label for="name" class="control-label text-semibold">{{trans('saleAgent.salePlan')}}</label>
                                     <i class="icon-question4 text-muted text-size-mini cursor-pointer js-help-icon" data-content="Thời gian"></i>
                                     <input type="number" id="sales_plan" name="sales_plan" class="form-control" value="{{ old('sales_plan') ?: @$saleAgent[0]->sales_plan }}" />
                                     @if ($errors->has('sales_plan'))
@@ -90,8 +90,8 @@
                                     <table class="table table-striped table-bordered" cellspacing="0" width="100%">
                                         <thead>
                                         <th>Code</th>
-                                        <th>Tên sản phẩm</th>
-                                        <th>Doanh số thực tế</th>
+                                        <th>{{trans('saleAgent.nameProduct')}}</th>
+                                        <th>{{trans('saleAgent.saleReal')}}</th>
                                         </thead>
 
                                         <tbody>
@@ -108,7 +108,7 @@
                                 </div>
 
                                 <div class="text-right">
-                                    <button type="submit" class="btn btn-primary">{{ isset($saleAgent) ? 'Cập nhật' : 'Thêm mới' }}</button>
+                                    <button type="submit" class="btn btn-primary">{{ isset($saleAgent) ? trans('saleAgent.update') : trans('saleAgent.add') }}</button>
                                 </div>
                             </form>
                         </div>

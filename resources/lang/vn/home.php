@@ -14,7 +14,7 @@ return array(
     */
 
     'Map' => 'Bản Đồ',
-    'Dashboard' => 'Quản trị',
+    'Dashboard' => 'Bảng theo dõi',
     'Product' => 'Sản phẩm',
     'managerMap' => 'Quản lý bản đồ',
     'addLocation' => 'Thêm vùng địa lý',
@@ -71,5 +71,12 @@ return array(
     'attribute' => 'Thuộc tính',
     'configInterface' => 'Cấu hình giao diện',
     'fontSize' => 'Cỡ chữ',
-    'textColor' => 'Màu chữ'
+    'textColor' => 'Màu chữ',
+    'dataManager' => 'Quản lý dữ liệu',
+    'listSaleAgent' => 'Danh sách doanh số',
+    'addSaleAgent' => 'Thêm doanh số cho đại lý',
+    'addAgentExcel' => 'Thêm đại lý từ excel',
+    'example' => 'Mẫu',
+    'exportAgentExcel' => 'Export đại lý',
+    'close' => 'Đóng'
 );

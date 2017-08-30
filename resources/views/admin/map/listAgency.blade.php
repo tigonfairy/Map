@@ -11,9 +11,9 @@
             <div class="heading-elements">
                 <div class="heading-btn-group">
                     <a href="{{route('Admin::map@addAgency')}}" class="btn btn-primary"><i class="icon-add"></i> {{ trans('home.create_agency') }}</a>
-                    <a href="#import-user" class="btn btn-info" data-toggle="modal" id="btn-system-product">Thêm đại lý từ Excel</a>
-                    <a href="{{asset('agent_example.xlsx')}}" class="btn btn-success"  id="btn-system-product">Mẫu</a>
-                    <a href="{{route('Admin::map@exportAgency')}}" class="btn btn-info" >Export Excel</a>
+                    <a href="#import-user" class="btn btn-info" data-toggle="modal" id="btn-system-product">{{trans('home.addAgentExcel')}}</a>
+                    <a href="{{asset('agent_example.xlsx')}}" class="btn btn-success"  id="btn-system-product">{{trans('home.example')}}</a>
+                    <a href="{{route('Admin::map@exportAgency')}}" class="btn btn-info" >{{trans('home.exportAgentExcel')}}</a>
                 </div>
             </div>
         </div>
@@ -26,7 +26,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-                    <h4 class="modal-title">Thêm đại lý bằng Excel</h4>
+                    <h4 class="modal-title">{{trans('home.addAgentExcel')}}</h4>
                 </div>
                 <form method="POST" action="{{ route('Admin::map@importExcelAgent') }}"
                       enctype="multipart/form-data" id="import_form">
@@ -48,7 +48,7 @@
 
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn dark btn-outline" data-dismiss="modal">Đóng</button>
+                        <button type="button" class="btn dark btn-outline" data-dismiss="modal">{{trans('home.close')}}</button>
                         <button type="button" class="btn green" id = "import">Import</button>
                     </div>
                 </form>
