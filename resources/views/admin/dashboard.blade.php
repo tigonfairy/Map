@@ -118,12 +118,6 @@
 
     </style>
 
-    <!-- BEGIN PAGE HEADER-->
-    <!-- BEGIN PAGE TITLE-->
-    <h1 class="page-title"> Admin Dashboard</h1>
-    <!-- END PAGE TITLE-->
-    <!-- END PAGE HEADER-->
-
     <div class="row">
         <div class="portlet light ">
             <div class="row">
@@ -709,7 +703,7 @@
                     });
                     var button = '<button id="swift" class="btn btn-primary">Full mode</button>';
                     map.addControl({
-                        position: 'bottom_left',
+                        position: 'top_left',
                         content: button,
                     });
 
@@ -887,7 +881,7 @@
 
             listAgents+= '</div>';
             map.addControl({
-                position: 'bottom_right',
+                position: 'top_right',
                 content: listAgents,
             });
 
@@ -928,6 +922,16 @@
                 content: tableSales,
             });
 
+            var listCodes = '<div style="background-color: white"><h3>Sản phẩm đang bán</h3><span>';
+            $.map(data.listCodes, function (code) {
+                listCodes +=  code + ' , ';
+            });
+            listCodes += '</span></div>';
+            map.addControl({
+                position: 'bottom_right',
+                content: listCodes,
+            });
+
             listSelectProducts = [];
             $.each(list_products, function (index, value) {
                 listSelectProducts.push(value);
@@ -950,7 +954,7 @@
                 '</div>' +
                 '</div>';
             map.addControl({
-                position: 'bottom_center',
+                position: 'top_center',
                 content: tableSales,
             });
 
@@ -1130,7 +1134,6 @@
             });
 
             var list_products = data.listProducts;
-            console.log(list_products);
 
             var tableSales = '<table class="table table-striped table-bordered table-products" cellspacing="0" width="100%" id="data-table">' +
                 '<thead>' +
@@ -1179,6 +1182,18 @@
             table.innerHTML = tableSales;
             map.controls[google.maps.ControlPosition.TOP_LEFT].push(table);
 
+            // products code
+            var listCodes = '<div style="background-color: white"><h3>Sản phẩm đang bán</h3><span>';
+            $.map(data.listCodes, function (code) {
+                listCodes +=  code + ' , ';
+            });
+            listCodes += '</span></div>';
+
+            var codes = document.createElement('div');
+            codes.innerHTML = listCodes;
+            map.controls[google.maps.ControlPosition.BOTTOM_CENTER].push(codes);
+
+
             // info total
             var info = '<h3 id="data" >' + data.user.name + ' - %TT ' + numberWithCommas(data.totalSales) + '/' + numberWithCommas(data.capacity) + '=' + data.percent + '%' + '</h3>'
             var myTitle = document.createElement('div');
@@ -1186,12 +1201,12 @@
             myTitle.innerHTML = info;
             var myTextDiv = document.createElement('div');
             myTextDiv.appendChild(myTitle);
-            map.controls[google.maps.ControlPosition.BOTTOM_CENTER].push(myTextDiv);
+            map.controls[google.maps.ControlPosition.TOP_CENTER].push(myTextDiv);
 
             //button compact mode
             var button = document.createElement('div');
             button.innerHTML = '<button id="swift" class="btn btn-primary">Full mode</button>';
-            map.controls[google.maps.ControlPosition.BOTTOM_LEFT].push(button);
+            map.controls[google.maps.ControlPosition.TOP_RIGHT].push(button);
 
             if (data.table) {
                 $('#tableData').html('');
@@ -1401,15 +1416,29 @@
                 '</tr>' +
                 '</tbody>' +
                 '</table>';
+
             map.addControl({
                 position: 'top_left',
                 content: tableSales,
             });
+
             var button = '<button id="swift" class="btn btn-primary">Full mode</button>';
             map.addControl({
-                position: 'bottom_left',
+                position: 'top_right',
                 content: button,
             });
+
+            var listCodes = '<div style="background-color: white"><h3>Sản phẩm đang bán</h3><span>';
+            $.map(data.listCodes, function (code) {
+                listCodes +=  code + ' , ';
+            });
+            listCodes += '</span></div>';
+            map.addControl({
+                position: 'bottom_right',
+                content: listCodes,
+            });
+
+
             listSelectProducts = [];
             $.each(list_products, function (index, value) {
                 listSelectProducts.push(value);
@@ -1423,6 +1452,8 @@
                 $('#tableData').html('');
                 $('#tableData').html(data.table);
             }
+
+
         }
 
         function showDataSaleAdmin(data) {
