@@ -129,6 +129,7 @@
                             <select class="search_type form-control">
                                 <option value="">-- Chọn loại {{ trans('home.search') }} --</option>
                                 <option value="1">Theo đại lý</option>
+                                <option value="5">Theo nhân viên kinh doanh</option>
                                 @if($user->position != \App\Models\User::GSV)
                                     <option value="2">Theo giám sát vùng</option>
                                 @endif
@@ -200,6 +201,7 @@
                                                 <select name="type" class="typeExport form-control">
                                                     <option value="">-- Chọn loại {{ trans('home.search') }} --</option>
                                                     <option value="1">Theo đại lý</option>
+                                                    <option value="5">Theo nhân viên kinh doanh</option>
                                                     @if($user->position != \App\Models\User::GSV)
                                                         <option value="2">Theo giám sát vùng</option>
                                                     @endif
@@ -677,6 +679,8 @@
                 getListTV(1);
             } else if (search_type == 4) {
                 getListGDV(1);
+            } else if (search_type == 5) {
+                getListNVKD(1);
             }
         });
 
@@ -1001,7 +1005,44 @@
                 }
             });
         }
+        function getListNVKD(type) {
 
+            if(type == 0) {
+                $("#type_search").val('nvkd');
+                var that = $(".data_search");
+            } else {
+                var that = $('.dataExport');
+            }
+
+            that.select2({
+                'placeholder': "{{'-- '. trans('home.select'). ' '. trans('home.manager') .' --'}}",
+                ajax: {
+                    url: "{{route('Admin::Api::sale@getListNVKD')}}",
+                    dataType: 'json',
+                    delay: 500,
+                    data: function (params) {
+                        var queryParameters = {
+                            q: params.term
+                        }
+                        return queryParameters;
+                    },
+                    processResults: function (data, page) {
+                        return {
+                            results: $.map(data, function (item) {
+                                return {
+                                    text: item.name,
+                                    id: item.id,
+                                }
+                            })
+                        };
+                    },
+                    dropdownCssClass: "bigdrop", // apply css that makes the dropdown taller
+                    escapeMarkup: function (m) {
+                        return m;
+                    }
+                }
+            });
+        }
         function showDataSaleGDV(data) {
             var polygonArray = [];
             var position = '';
