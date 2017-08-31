@@ -6,6 +6,7 @@
         <div class="page-header-content">
             <div class="page-title">
                 <h2>{{  trans('home.configInterface') }}</h2>
+                <a href="{{route('Admin::config@globalEnable')}}"><button class="btn btn-primary">{{trans('home.globalEnable')}}</button></a>
             </div>
 
         </div>

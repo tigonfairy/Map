@@ -74,8 +74,8 @@
 
                                 <th>Name</th>
                                 <th>CBD</th>
-                                <th>Maxgreen</th>
-                                <th>Maxgro</th>
+                                <th>MaxGreen</th>
+                                <th>MaxGrO</th>
                                 <th>Group</th>
                                 <th>Created_At</th>
                                 <th>Action</th>

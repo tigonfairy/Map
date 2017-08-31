@@ -78,5 +78,6 @@ return [
     'addAgentExcel' => 'Add agent from excel',
     'example' => 'Example',
     'exportAgentExcel' => 'Export excel',
-    'close' => 'Close'
+    'close' => 'Close',
+    'globalEnable' => 'GLOBAL ENABLE'
 ];

@@ -78,5 +78,6 @@ return array(
     'addAgentExcel' => 'Thêm đại lý từ excel',
     'example' => 'Mẫu',
     'exportAgentExcel' => 'Export đại lý',
-    'close' => 'Đóng'
+    'close' => 'Đóng',
+    'globalEnable' => 'GLOBAL ENABLE'
 );
