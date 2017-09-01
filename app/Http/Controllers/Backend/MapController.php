@@ -669,6 +669,8 @@ class MapController extends AdminController
                         }
                     }
 
+                    $capacity = $capacity == 0 ? 1 : $capacity;
+
                     $listProducts[] = [
                                 'id' => $group->id,
                                 'name' => $group->name_vn,
@@ -1212,7 +1214,7 @@ class MapController extends AdminController
                                 $saleAgents += $sale->sales_real;
                                 $capacity = isset($sale->capacity) ?  $sale->capacity : 1;
                             }
-                            $capacity = $capacity == 0 ? 1 : $capacity;
+                            $capacity = isset($capacity) ? $capacity : 1;
                             $listAgents[] = [
                                 'agent' => $agent,
                                 'totalSales' => $saleAgents,

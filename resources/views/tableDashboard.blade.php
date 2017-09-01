@@ -198,9 +198,9 @@
 
         <tr class="title">
             <td>Tổng dung lượng vùng</td>
-            <td>{{$dlv}}</td>
+            <td>{{number_format($dlv)}}</td>
             <td>Tổng sản lượng kế hoạch</td>
-            <td>{{$slkh}}</td>
+            <td>{{number_format($slkh)}}</td>
         </tr>
 
 
@@ -263,7 +263,7 @@
                                  $string .= '<tr style="text-align: left">';
                         $string .= '<td>'.$product->code.'</td>';
                         $string .= '<td colspan="2">'.$product->name_vn.'</td>';
-                        $string .= '<td >'.$sltt.'</td>';
+                        $string .= '<td >'.number_format($sltt).'</td>';
                         $string .= '</tr>';
                                 }
 
@@ -273,7 +273,7 @@
                     <tr style="text-align: center" class="group_product">
                         <td>{{$group->code}}</td>
                         <td colspan="2">{{$group->name_vn}}</td>
-                        <td>{{$slGroup}}</td>
+                        <td>{{number_format($slGroup)}}</td>
                     </tr>
                         {!! $string !!}
                         @endif
