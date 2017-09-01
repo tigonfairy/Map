@@ -44,7 +44,7 @@
             {{--</li>--}}
             {{--</ul>--}}
             {{--</li>--}}
-
+            @if(auth()->user()->position == \App\Models\User::ADMIN)
             <li class="nav-item">
                 <a href="javascript:;" class="nav-link nav-toggle">
                     <i class="fa fa-database"></i>
@@ -107,7 +107,8 @@
 
                 </ul>
             </li>
-
+            @endif
+            @if(auth()->user()->position == \App\Models\User::ADMIN)
             <li class="nav-item">
                 <a href="javascript:;" class="nav-link nav-toggle">
                     <i class="fa fa-map-o"></i>
@@ -160,9 +161,9 @@
                 </ul>
             </li>
 
+            @endif
 
-
-
+            @if(auth()->user()->position == \App\Models\User::ADMIN)
             <li class="nav-item">
                 <a href="javascript:;" class="nav-link nav-toggle">
                     <i class="icon-settings"></i>
@@ -187,7 +188,7 @@
                     </li>
                 </ul>
             </li>
-
+            @endif
         </ul>
         <!-- END SIDEBAR MENU -->
         <!-- END SIDEBAR MENU -->
