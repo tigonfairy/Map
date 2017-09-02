@@ -671,6 +671,10 @@
 
         $(".typeExport").change(function () {
             var search_type = $(this).val();
+<<<<<<< HEAD
+            console.log(search_type);
+=======
+>>>>>>> 7feb217f61f296eb572a7c997c41ed3805319b3a
             if (search_type == 1) {
                 getListAgents(1);
             } else if (search_type == 2) {
