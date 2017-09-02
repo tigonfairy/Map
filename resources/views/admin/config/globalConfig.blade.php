@@ -6,6 +6,7 @@
         <div class="page-header-content">
             <div class="page-title">
                 <h2>{{  trans('home.configInterface') }}</h2>
+                <a href="{{route('Admin::config@globalEnable')}}"><button class="btn btn-primary">{{trans('home.globalEnable')}}</button></a>
             </div>
 
         </div>
@@ -35,7 +36,7 @@
                                     <table class="table table-striped table-bordered" cellspacing="0" width="100%">
                                         <thead>
 
-                                        <th>{{trans('home.position')}}</th>
+                                        <th>{{trans('config.position')}}</th>
                                         <th>{{trans('home.textColor')}}</th>
                                         <th>{{trans('home.fontSize')}}</th>
 

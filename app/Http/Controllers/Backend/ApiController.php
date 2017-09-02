@@ -74,6 +74,15 @@ class ApiController extends AdminController
         $users = $users->orderBy('id','desc')->limit(50)->get();
         return $users;
     }
+    public function getListNVKD(Request $request){
+        $users = User::where('position', User::NVKD);
+
+        if($request->input('q')){
+            $users = $users->where('name','like','%'.$request->input('q').'%');
+        }
+        $users = $users->orderBy('id','desc')->limit(50)->get();
+        return $users;
+    }
 
     public function getListTV(Request $request){
 

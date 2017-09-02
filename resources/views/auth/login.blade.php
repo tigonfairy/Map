@@ -49,7 +49,7 @@
       <div class="login-content">
         <h1>LOGIN</h1>
         <p>Vui lòng đăng nhập vào hệ thống</p>
-        <form class="form-horizontal" role="form" method="POST" action="{{ url('/login') }}">
+        <form class="form-horizontal" role="form" method="POST" id="register-form" action="{{ url('/login') }}">
           {{ csrf_field() }}
           <div class="alert alert-danger display-hide">
             <button class="close" data-close="alert"></button>
@@ -96,7 +96,7 @@
 
           <div class="col-xs-7 bs-reset">
             <div class="login-copyright text-right">
-              <p>Copyright &copy; Keenthemes 2015</p>
+              {{--<p>Copyright &copy; Keenthemes 2015</p>--}}
             </div>
           </div>
         </div>
@@ -107,6 +107,7 @@
     </div>
   </div>
 </div>
+
 <!-- END : LOGIN PAGE 5-2 -->
 <!--[if lt IE 9]>
 <script src="../assets/global/plugins/respond.min.js"></script>
@@ -130,7 +131,15 @@
 <script src="../assets/pages/scripts/login-5.min.js" type="text/javascript"></script>
 <script src='https://www.google.com/recaptcha/api.js'></script>
 
+<script type="text/javascript">
+    $('input[type=password]').keypress(function(e) {
+        if(e.which == 10 || e.which == 13) {
+            $('#register-form').submit();
+        }
+    });
 
+
+</script>
 </body>
 
 

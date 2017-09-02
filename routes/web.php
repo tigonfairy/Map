@@ -35,6 +35,7 @@ Route::group(['middleware' => ['auth','language'],
                 Route::get('/get-truong-vung', ['as' => 'getListTV', 'uses' => 'ApiController@getListTV']);
                 Route::get('/get-list-agents', ['as' => 'getListAgents', 'uses' => 'ApiController@getListAgents']);
                 Route::get('/get-giam-doc-vung', ['as' => 'getListGDV', 'uses' => 'ApiController@getListGDV']);
+                Route::get('/get-nhan-vien-kinh-doanh', ['as' => 'getListNVKD', 'uses' => 'ApiController@getListNVKD']);
             });
 
             Route::group([
@@ -46,6 +47,7 @@ Route::group(['middleware' => ['auth','language'],
         });
 
         Route::get('/', ['as' => 'dashboard', 'uses' => 'HomeController@dashboard']);
+        Route::post('/export', ['as' => 'export', 'uses' => 'HomeController@export']);
         Route::get('/home', ['as' => 'dashboard', 'uses' => 'HomeController@dashboard']);
         Route::post('/d', ['as' => 'chart', 'uses' => 'HomeController@chartDashboard']);
 
@@ -208,6 +210,7 @@ Route::group(['middleware' => ['auth','language'],
             Route::post('/store', ['as' => 'store', 'uses' => 'ConfigController@store']);
 
             Route::get('/global-config', ['as' => 'globalConfig', 'uses' => 'ConfigController@globalConfig']);
+            Route::get('/global-enable', ['as' => 'globalEnable', 'uses' => 'ConfigController@globalEnable']);
             Route::post('/global-config', ['as' => 'globalConfig', 'uses' => 'ConfigController@postGlobalConfig']);
         });
 

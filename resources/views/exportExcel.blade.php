@@ -39,14 +39,22 @@
         table.ht-table-data .ht-highlight {
             /*color: #333;*/
         }
-        .gdv {
-            background-color: red;
+        .gdv td {
+            background-color: #FFC000;
         }
-        .tv {
-            background-color: blue;
+        .tv td{
+            background-color: #FFE699;
         }
-        .gsv{
-            background-color: #0000cc;
+        .gsv td{
+            background-color: #FFE699;
+        }
+        .title th {
+            background-color: #404040;
+            color : #E2D966;
+            border-bottom: 1px solid #404040;
+        }
+        .nhomsp {
+            background-color: #FFE699;
         }
     </style>
 </head>
@@ -59,7 +67,7 @@ $index = 0;
 
 <table class="ht-table-data" border="1">
     <thead>
-    <tr>
+    <tr class="title">
         <th rowspan="2" align="center" valign="middle" width="10">STT</th>
         <th rowspan="2" align="center" valign="middle" width="20">Mã đại lý</th>
         <th rowspan="2" align="center" valign="middle" width="30">Tên đại lý</th>
@@ -89,12 +97,12 @@ $index = 0;
         @endforeach
 
     </tr>
-    <tr>
-        {{--<th></th>--}}
-        {{--<th></th>--}}
-        {{--<th></th>--}}
-        {{--<th></th>--}}
-        {{--<th></th>--}}
+    <tr  class="title">
+        <th></th>
+        <th></th>
+        <th></th>
+        <th></th>
+        <th></th>
         <th align="center" valign="middle" width="10">Dung lượng vùng</th>
         <th align="center" valign="middle" width="10">Tổng sản lượng kế hoạch</th>
         <th align="center" valign="middle" width="10">Tổng sản lượng thực tế</th>
@@ -164,7 +172,7 @@ $index = 0;
                                     $string .= '<td>'.$sltt.'</td>';
                             @endphp
                         @endforeach
-                        <td>{{$val}}</td>
+                        <td class="nhomsp">{{$val}}</td>
                         {!! $string  !!}
                     @endforeach
                 </tr>
@@ -212,7 +220,7 @@ $index = 0;
                                     $string .= '<td>'.$sltt.'</td>';
                                 @endphp
                             @endforeach
-                            <td>{{$val}}</td>
+                            <td class="nhomsp">{{$val}}</td>
                             {!! $string  !!}
                         @endforeach
 
@@ -263,7 +271,7 @@ $index = 0;
                                             $string .= '<td>'.$sltt.'</td>';
                                         @endphp
                                     @endforeach
-                                    <td>{{$val}}</td>
+                                    <td class="nhomsp">{{$val}}</td>
                                     {!! $string  !!}
                                 @endforeach
                             </tr>
@@ -305,7 +313,7 @@ $index = 0;
                                     $string .= '<td>'.$sltt.'</td>';
                                             @endphp
                                         @endforeach
-                                        <td>{{$val}}</td>
+                                        <td class="nhomsp">{{$val}}</td>
                                         {!! $string  !!}
                                     @endforeach
 
@@ -356,7 +364,7 @@ $index = 0;
                                                         $string .= '<td>'.$sltt.'</td>';
                                                     @endphp
                                                 @endforeach
-                                                <td>{{$val}}</td>
+                                                <td class="nhomsp">{{$val}}</td>
                                                 {!! $string  !!}
                                             @endforeach
                                         </tr>
@@ -396,7 +404,7 @@ $index = 0;
                                     $string .= '<td>'.$sltt.'</td>';
                                                         @endphp
                                                     @endforeach
-                                                    <td>{{$val}}</td>
+                                                    <td class="nhomsp">{{$val}}</td>
                                                     {!! $string  !!}
                                                 @endforeach
 
@@ -460,7 +468,7 @@ $index = 0;
                                                         $string .= '<td>'.$sltt.'</td>';
                                         @endphp
                                     @endforeach
-                                    <td>{{$val}}</td>
+                                    <td class="nhomsp">{{$val}}</td>
                                     {!! $string  !!}
                                 @endforeach
                             </tr>
@@ -500,7 +508,7 @@ $index = 0;
                                     $string .= '<td>'.$sltt.'</td>';
                                             @endphp
                                         @endforeach
-                                        <td>{{$val}}</td>
+                                        <td class="nhomsp">{{$val}}</td>
                                         {!! $string  !!}
                                     @endforeach
 

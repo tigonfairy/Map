@@ -44,11 +44,11 @@
             {{--</li>--}}
             {{--</ul>--}}
             {{--</li>--}}
-
+            @if(auth()->user()->position == \App\Models\User::ADMIN)
             <li class="nav-item">
                 <a href="javascript:;" class="nav-link nav-toggle">
                     <i class="fa fa-database"></i>
-                    <span class="title">DATA MANAGE</span>
+                    <span class="title">{{trans('home.dataManager')}}</span>
                     <span class="arrow"></span>
                 </a>
                 <ul class="sub-menu">
@@ -56,7 +56,7 @@
                     <li class="nav-item  ">
                         <a href="{{route('Admin::saleAgent@index')}}" class="nav-link nav-toggle">
                             <i class="icon-settings"></i>
-                            <span class="title">Danh sách Doanh số</span>
+                            <span class="title">{{trans('home.listSaleAgent')}}</span>
                             <span class="arrow"></span>
                         </a>
                     </li>
@@ -64,7 +64,7 @@
                     <li class="nav-item  ">
                         <a href="{{route('Admin::saleAgent@add')}}" class="nav-link nav-toggle">
                             <i class="icon-settings"></i>
-                            <span class="title">Thêm Doanh Số cho Đại lý</span>
+                            <span class="title">{{trans('home.addSaleAgent')}}</span>
                             <span class="arrow"></span>
                         </a>
                     </li>
@@ -107,7 +107,8 @@
 
                 </ul>
             </li>
-
+            @endif
+            @if(auth()->user()->position == \App\Models\User::ADMIN)
             <li class="nav-item">
                 <a href="javascript:;" class="nav-link nav-toggle">
                     <i class="fa fa-map-o"></i>
@@ -149,20 +150,20 @@
                     </li>
 
 
-                    <li class="nav-item  ">
-                        <a href="{{route('Admin::map@search')}}" class="nav-link nav-toggle">
-                            <i class="icon-settings"></i>
-                            <span class="title">{{ trans('home.search') }}</span>
-                            <span class="arrow"></span>
-                        </a>
-                    </li>
+                    {{--<li class="nav-item  ">--}}
+                        {{--<a href="{{route('Admin::map@search')}}" class="nav-link nav-toggle">--}}
+                            {{--<i class="icon-settings"></i>--}}
+                            {{--<span class="title">{{ trans('home.search') }}</span>--}}
+                            {{--<span class="arrow"></span>--}}
+                        {{--</a>--}}
+                    {{--</li>--}}
 
                 </ul>
             </li>
 
+            @endif
 
-
-
+            @if(auth()->user()->position == \App\Models\User::ADMIN)
             <li class="nav-item">
                 <a href="javascript:;" class="nav-link nav-toggle">
                     <i class="icon-settings"></i>
@@ -187,7 +188,7 @@
                     </li>
                 </ul>
             </li>
-
+            @endif
         </ul>
         <!-- END SIDEBAR MENU -->
         <!-- END SIDEBAR MENU -->

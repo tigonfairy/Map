@@ -78,4 +78,13 @@ class Product extends Model
     public function getChildren() {
        return $this->hasMany(Product::class, 'product_id','id');
     }
+    public function getNameAttribute() {
+         $raw_locale = \Session::get('locale');
+                    if($raw_locale != null and $raw_locale == 'en') {
+                        if($this->attributes['name_en']) {
+                            return $this->attributes['name_en'];
+                        }
+                    }
+        return $this->attributes['name_vn'];
+    }
 }

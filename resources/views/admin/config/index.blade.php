@@ -30,7 +30,7 @@
                         <form method="POST" action="{{  route('Admin::config@store') }}" enctype="multipart/form-data">
                             {{ csrf_field() }}
                             <div class="form-group {{ $errors->has('repassword') ? 'has-error has-feedback' : '' }}">
-                                <label for="name" class="control-label text-semibold">Số lần nhập sai mật khẩu</label>
+                                <label for="name" class="control-label text-semibold">{{trans('config.numberIncorrectPassword')}}</label>
                                 <i class="icon-question4 text-muted text-size-mini cursor-pointer js-help-icon" data-content="Số lần nhập sai mật khẩu"></i>
                                 <input type="number" id="repassword" name="repassword" class="form-control" value="{{ isset($config['repassword']) ? $config['repassword'] : '' }}" />
                                 @if ($errors->has('repassword'))
@@ -42,10 +42,10 @@
                             </div>
 
                             <div class="form-group {{ $errors->has('recaptcha') ? 'has-error has-feedback' : '' }}">
-                                <label for="name" class="control-label text-semibold">Có nhập captcha khi đăng nhập</label>
+                                <label for="name" class="control-label text-semibold">{{trans('config.captcha')}}</label>
                                 <i class="icon-question4 text-muted text-size-mini cursor-pointer js-help-icon" data-content="Số lần nhập sai mật khẩu"></i>
                                 <select name="recaptcha" class="form-control">
-                                    <option value="">-- Chọn trạng thái --</option>
+                                    <option value="">-- {{trans('config.select')}} --</option>
                                     <option value="1" {{ (isset($config['recaptcha']) && $config['recaptcha'] == 1) ? 'selected=selected' : '' }}>Có</option>
                                     <option value="2" {{ (isset($config['recaptcha']) && $config['recaptcha'] == 2) ? 'selected=selected' : '' }}>Không</option>
                                 </select>
@@ -58,44 +58,9 @@
                             </div>
 
 
-
-                            {{--<div class="form-group {{ $errors->has('textColor') ? 'has-error has-feedback' : '' }}">--}}
-                                {{--<label class="control-label col-md-3">Màu chữ</label>--}}
-
-                                    {{--<div class="input-group color colorpicker-default form-control"--}}
-                                         {{--data-color="{{isset($config['textColor']) ? $config['textColor'] : '#FF0000'}}"--}}
-                                         {{--data-color-format="rgba">--}}
-                                        {{--<input type="text" class="form-control"--}}
-                                               {{--value="{{isset($config['textColor']) ? $config['textColor'] : '#FF0000'}}"--}}
-                                               {{--name="textColor">--}}
-                                        {{--<span class="input-group-btn">--}}
-                                                    {{--<button class="btn default" type="button"><i--}}
-                                                                {{--style="background-color: {{isset($area) ? $area->border_color : '#3865a8'}};"></i>&nbsp;</button>--}}
-                                                {{--</span>--}}
-                                    {{--</div>--}}
-                                {{--@if ($errors->has('textColor'))--}}
-                                    {{--<div class="form-control-feedback">--}}
-                                        {{--<i class="icon-notification2"></i>--}}
-                                    {{--</div>--}}
-                                    {{--<div class="help-block">{{ $errors->first('textColor') }}</div>--}}
-                                {{--@endif--}}
-                            {{--</div>--}}
-                            {{--<div class="form-group {{ $errors->has('fontSize') ? 'has-error has-feedback' : '' }}">--}}
-                                {{--<label for="name" class="control-label text-semibold">Phông chữ hiển thị trên map</label>--}}
-                                {{--<i class="icon-question4 text-muted text-size-mini cursor-pointer js-help-icon" data-content=""></i>--}}
-                                {{--<input type="number" id="fontSize" name="fontSize" class="form-control" value="{{ isset($config['fontSize']) ? $config['fontSize'] : 15 }}" />--}}
-                                {{--@if ($errors->has('fontSize'))--}}
-                                    {{--<div class="form-control-feedback">--}}
-                                        {{--<i class="icon-notification2"></i>--}}
-                                    {{--</div>--}}
-                                    {{--<div class="help-block">{{ $errors->first('fontSize') }}</div>--}}
-                                {{--@endif--}}
-                            {{--</div>--}}
-
-
                             {{--set up đại lý--}}
                             <div class="form-group {{ $errors->has('agent_diamond') ? 'has-error has-feedback' : '' }}">
-                                <label for="name" class="control-label text-semibold">Đại lý kim cương</label>
+                                <label for="name" class="control-label text-semibold">{{trans('config.agentDiamond')}}</label>
                                 @if( isset($config['agent_diamond']) and ($config['agent_diamond']))
                                     <img src="{{$config['agent_diamond']}}" style="width: 100px;height: 100px" alt="">
                                 @endif
@@ -110,7 +75,7 @@
                             </div>
 
                             <div class="form-group {{ $errors->has('agent_gold') ? 'has-error has-feedback' : '' }}">
-                                <label for="name" class="control-label text-semibold">Đại lý vàng</label>
+                                <label for="name" class="control-label text-semibold">{{trans('config.agentGold')}}</label>
                                 @if( isset($config['agent_gold']) and ($config['agent_gold']))
                                     <img src="{{$config['agent_gold']}}" style="width: 100px;height: 100px" alt="">
                                 @endif
@@ -126,7 +91,7 @@
 
 
                             <div class="form-group {{ $errors->has('agent_silver') ? 'has-error has-feedback' : '' }}">
-                                <label for="name" class="control-label text-semibold">Đại lý bạc</label>
+                                <label for="name" class="control-label text-semibold">{{trans('config.agentSilver')}}</label>
                                 @if( isset($config['agent_silver']) and ($config['agent_silver']))
                                     <img src="{{$config['agent_silver']}}" style="width: 100px;height: 100px" alt="">
                                 @endif
@@ -141,7 +106,7 @@
                             </div>
 
                             <div class="form-group {{ $errors->has('agent_unclassified') ? 'has-error has-feedback' : '' }}">
-                                <label for="name" class="control-label text-semibold">Đại lý chưa phân hạng</label>
+                                <label for="name" class="control-label text-semibold">{{trans('config.agentUnclassified')}}</label>
                                 @if( isset($config['agent_unclassified']) and ($config['agent_unclassified']))
                                     <img src="{{$config['agent_unclassified']}}" style="width: 100px;height: 100px" alt="">
                                 @endif
@@ -155,7 +120,7 @@
                                 @endif
                             </div>
                             <div class="form-group {{ $errors->has('agent_rival') ? 'has-error has-feedback' : '' }}">
-                                <label for="name" class="control-label text-semibold">Đại lý đối thủ</label>
+                                <label for="name" class="control-label text-semibold">{{trans('config.agentRival')}}</label>
                                 @if( isset($config['agent_rival']) and ($config['agent_rival']))
                                     <img src="{{$config['agent_rival']}}" style="width: 100px;height: 100px" alt="">
                                 @endif
