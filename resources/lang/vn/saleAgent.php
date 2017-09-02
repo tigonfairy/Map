@@ -34,7 +34,10 @@ return array(
     'salePlan' => 'Doanh số kế hoạch',
     'nameProduct' => 'Tên sản phẩm',
     'saleReal' => 'Doanh số thực tế',
-    'add' => 'Thêm mới',
-    'update' => 'Cập nhật'
+    'add' => 'Thêm',
+    'update' => 'Cập nhật',
+    'product' => 'Sản phẩm',
+    'addProduct' => 'Thêm mới sản phẩm'
+
 
 );

@@ -34,5 +34,7 @@ return [
     'nameProduct' => 'Product name',
     'saleReal' => 'Real sale',
     'add' => 'Add',
-    'update' => 'Update'
+    'update' => 'Update',
+    'product' => 'Product',
+    'addProduct' => 'Add new product'
 ];
