@@ -37,7 +37,8 @@ return array(
     'add' => 'Thêm',
     'update' => 'Cập nhật',
     'product' => 'Sản phẩm',
-    'addProduct' => 'Thêm mới sản phẩm'
+    'addProduct' => 'Thêm mới sản phẩm',
+    'selectedProduct' => 'Vui lòng chọn sản phẩm'
 
 
 );

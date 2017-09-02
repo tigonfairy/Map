@@ -36,5 +36,6 @@ return [
     'add' => 'Add',
     'update' => 'Update',
     'product' => 'Product',
-    'addProduct' => 'Add new product'
+    'addProduct' => 'Add new product',
+    'selectedProduct' => 'Selecte product'
 ];

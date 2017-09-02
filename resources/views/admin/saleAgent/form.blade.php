@@ -85,7 +85,7 @@
 
 
                                 <!---------- Type of Product - Doanh số kế hoạch - Doanh số thực tế ------------>
-                                <a href="#add-product" class="btn btn-info" data-toggle="modal">{{trans('saleAgent.add')}}</a>
+                                <a href="#add-product" class="btn btn-info" data-toggle="modal">{{trans('saleAgent.addProduct')}}</a>
 
                                 <div class="form-group">
                                     <table class="table table-striped table-bordered" cellspacing="0" width="100%">
@@ -93,17 +93,26 @@
                                         <th>Code</th>
                                         <th>{{trans('saleAgent.nameProduct')}}</th>
                                         <th>{{trans('saleAgent.saleReal')}}</th>
+                                        <th>Action</th>
                                         </thead>
 
-                                        <tbody>
-                                        @foreach($products as $key => $value)
-                                            <tr>
-                                                <input type="hidden" name="product_id[]" value="{{ $value->id }}" />
-                                                <td>{{ $value->code }}</td>
-                                                <td>{{  $value->name_vn}}</td>
-                                                <td><input type="text"  id="sales_real" name="sales_real[]" class="form-control" value="{{ @$saleAgent[$key]->product_id == $value->id ? @$saleAgent[$key]->sales_real : 0 }}" /></td>
-                                            </tr>
-                                        @endforeach
+                                        <tbody id="list-product">
+                                        @if(isset($saleAgent))
+                                            @foreach($saleAgent as $key => $sale)
+                                                @php
+                                                    $product = $sale->product;
+                                               @endphp
+                                                @if($product)
+                                                <tr class="{{$product->id}}">
+                                                    <input type="hidden" name="product_id[]" value="{{ $product->id }}" />
+                                                    <td>{{ $product->code }}</td>
+                                                    <td>{{  $product->name}}</td>
+                                                    <td><input type="text"  name="sales_real[]" class="form-control" value="{{$sale->sales_real}}" /></td>
+                                                    <td><button class="btn-remove btn btn-danger">Remove</button></td>
+                                                </tr>
+                                                @endif
+                                            @endforeach
+                                        @endif
                                         </tbody>
                                     </table>
                                 </div>
@@ -122,7 +131,7 @@
         </div>
 
 
-        <div class="modal fade bs-modal-lg" id="add-product" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal fade bs-modal-lg" id="add-product"  role="dialog" aria-hidden="true">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -139,6 +148,7 @@
                                         <label class="control-label col-md-3">{{trans('saleAgent.product')}}</label>
                                         <div class="col-md-8">
                                             <select  class="products form-control" style="width:100%">
+                                                <option value="">{{trans('saleAgent.selectedProduct')}}</option>
                                                 @foreach($products as $product)
                                                 <option value="{{$product->id}}" data-code="{{$product->code}}" data-name="{{$product->name}}">{{$product->name}}-{{$product->code}}</option>
                                                     @endforeach
@@ -154,7 +164,7 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn dark btn-outline" data-dismiss="modal">{{trans('saleAgent.close')}}</button>
-                            <button type="button" class="btn green" id="import">{{trans('saleAgent.add')}}</button>
+                            <button type="button" class="btn green" id="addProduct">{{trans('saleAgent.add')}}</button>
                         </div>
                     </form>
                 </div>
@@ -185,6 +195,39 @@
                         $(this).datepicker('setDate', new Date(year, month, 1));
                     }
                 });
+                $(document).on('click','.btn-remove',function(e){
+                    $(this).parent().parent().remove();
+                    e.preventDefault();
+                });
+
+                $('#addProduct').click(function(e){
+                    var selected =$('.products').find(":selected");
+                    var code = selected.attr('data-code');
+                    var id = selected.val();
+                    var name = selected.attr('data-name');
+                    if(id == '') {
+                        $('#add-product').modal('hide');
+                        return;
+                    }
+                    if($('.'+id).length <= 0) {
+                        var template = '<tr class="'+id+'">';
+                                template += '<input type="hidden" name="product_id[]" value="'+id+'" />';
+                        template+='<td>'+code+'</td>';
+                        template+='<td>'+name+'</td>';
+                        template+='<td><input type="text"  name="sales_real[]" class="form-control" value="0" /></td>';
+                        template+='<td><button class="btn-remove btn btn-danger">Remove</button></td>';
+                        template+='</tr>';
+                        $('#list-product').prepend(template);
+                        $('#add-product').modal('hide');
+                    } else {
+                        var html = $('#list-product').find('.'+id).clone();
+                        $('.'+id).remove();
+                        $('#list-product').prepend(html);
+                        $('#add-product').modal('hide');
+                    }
+
+                });
+
             });
         </script>
     @endpush
