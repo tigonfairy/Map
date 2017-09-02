@@ -198,9 +198,15 @@
 
         <tr class="title">
             <td>Tổng dung lượng vùng</td>
+<<<<<<< HEAD
             <td>{{number_format($dlv)}}</td>
             <td>Tổng sản lượng kế hoạch</td>
             <td>{{number_format($slkh)}}</td>
+=======
+            <td>{{$dlv}}</td>
+            <td>Tổng sản lượng kế hoạch</td>
+            <td>{{$slkh}}</td>
+>>>>>>> 7feb217f61f296eb572a7c997c41ed3805319b3a
         </tr>
 
 
@@ -263,7 +269,11 @@
                                  $string .= '<tr style="text-align: left">';
                         $string .= '<td>'.$product->code.'</td>';
                         $string .= '<td colspan="2">'.$product->name_vn.'</td>';
+<<<<<<< HEAD
                         $string .= '<td >'.number_format($sltt).'</td>';
+=======
+                        $string .= '<td >'.$sltt.'</td>';
+>>>>>>> 7feb217f61f296eb572a7c997c41ed3805319b3a
                         $string .= '</tr>';
                                 }
 
@@ -273,7 +283,11 @@
                     <tr style="text-align: center" class="group_product">
                         <td>{{$group->code}}</td>
                         <td colspan="2">{{$group->name_vn}}</td>
+<<<<<<< HEAD
                         <td>{{number_format($slGroup)}}</td>
+=======
+                        <td>{{$slGroup}}</td>
+>>>>>>> 7feb217f61f296eb572a7c997c41ed3805319b3a
                     </tr>
                         {!! $string !!}
                         @endif

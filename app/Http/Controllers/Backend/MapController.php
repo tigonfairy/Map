@@ -671,6 +671,7 @@ class MapController extends AdminController
 
                     $capacity = $capacity == 0 ? 1 : $capacity;
 
+
                     $listProducts[] = [
                                 'id' => $group->id,
                                 'name' => $group->name_vn,

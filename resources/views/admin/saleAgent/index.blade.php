@@ -193,8 +193,8 @@
                 <thead>
                 <tr>
                     <th>ID</th>
-                    <th>Đại lý</th>
-                    <th>Thời gian</th>
+                    <th>{{trans('saleAgent.agent')}}</th>
+                    <th>{{trans('saleAgent.time')}}</th>
                     <th>Action</th>
                 </tr>
                 </thead>

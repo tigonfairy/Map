@@ -48,7 +48,7 @@
 
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn dark btn-outline" data-dismiss="modal">Đóng</button>
+                        <button type="button" class="btn dark btn-outline" data-dismiss="modal">{{trans('home.close')}}</button>
                         <button type="button" class="btn green" id = "import">Import</button>
                     </div>
                 </form>
