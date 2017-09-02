@@ -55,7 +55,7 @@ class SaleAgentController extends AdminController
         $capacity = request('capacity',0);
         $sales_plan = request('sales_plan',0);
         $sales_real = request('sales_real');
-
+        SaleAgent::where('agent_id', request('agent_id'))->where('month',request('month'))->delete();
         foreach ($product_ids as $key => $product_id) {
             $agent = SaleAgent::firstOrCreate([
                 'agent_id' => request('agent_id'),
@@ -93,7 +93,7 @@ class SaleAgentController extends AdminController
         $sales_plan = request('sales_plan');
         $sales_real = request('sales_real');
 
-
+        SaleAgent::where('agent_id',$agentId)->where('month',request('month'))->delete();
 
         if (count($sales_real)) {
             foreach ($product_ids as $key => $product_id) {
