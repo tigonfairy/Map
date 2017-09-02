@@ -157,6 +157,8 @@ Route::group(['middleware' => ['auth','language'],
             Route::get('/{agentId}/{month}/edit', ['as' => 'edit', 'uses' => 'SaleAgentController@edit']);
             Route::match(['put', 'patch'], '/{id}', ['as' => 'update', 'uses' => 'SaleAgentController@update']);
             Route::get('/{agentId}/{month}/delete', ['as' => 'delete', 'uses' => 'SaleAgentController@delete']);
+            Route::get('/filter', ['as' => 'filter', 'uses' => 'SaleAgentController@filter']);
+            Route::get('/data-filter', ['as' => 'dataFilter', 'uses' => 'SaleAgentController@dataFilter']);
 
             Route::post('/import-excel-data-agent', ['as' => 'importExcelDataAgent', 'uses' => 'SaleAgentController@importExcelDataAgent']);
             Route::post('/export-excel-data-agent', ['as' => 'exportExcelDataAgent', 'uses' => 'SaleAgentController@exportExcelDataAgent']);
