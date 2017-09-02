@@ -85,6 +85,7 @@
 
 
                                 <!---------- Type of Product - Doanh số kế hoạch - Doanh số thực tế ------------>
+                                <a href="#add-product" class="btn btn-info" data-toggle="modal">{{trans('saleAgent.add')}}</a>
 
                                 <div class="form-group">
                                     <table class="table table-striped table-bordered" cellspacing="0" width="100%">
@@ -120,6 +121,48 @@
             <!-- /main content -->
         </div>
 
+
+        <div class="modal fade bs-modal-lg" id="add-product" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                        <h4 class="modal-title">{{trans('saleAgent.addProduct')}}</h4>
+                    </div>
+                    <form method="POST" action="{{ route('Admin::saleAgent@importExcelDataAgent') }}"
+                          enctype="multipart/form-data" id="import_form">
+                        {{ csrf_field() }}
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-md-10" style="margin-bottom:10px">
+                                    <div class="form-group">
+                                        <label class="control-label col-md-3">{{trans('saleAgent.product')}}</label>
+                                        <div class="col-md-8">
+                                            <select  class="products form-control" style="width:100%">
+                                                @foreach($products as $product)
+                                                <option value="{{$product->id}}" data-code="{{$product->code}}" data-name="{{$product->name}}">{{$product->name}}-{{$product->code}}</option>
+                                                    @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                            </div>
+
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn dark btn-outline" data-dismiss="modal">{{trans('saleAgent.close')}}</button>
+                            <button type="button" class="btn green" id="import">{{trans('saleAgent.add')}}</button>
+                        </div>
+                    </form>
+                </div>
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+        </div>
+
         <!-- /page container -->
         @endsection
         @push('scripts')
@@ -129,6 +172,7 @@
 
             $(document).ready(function () {
                 $('.agents').select2();
+                $('.products').select2();
 
                 $('.monthPicker').datepicker( {
                     changeMonth: true,
