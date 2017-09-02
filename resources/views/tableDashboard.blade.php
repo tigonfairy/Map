@@ -198,21 +198,9 @@
 
         <tr class="title">
             <td>Tổng dung lượng vùng</td>
-<<<<<<< HEAD
             <td>{{number_format($dlv)}}</td>
             <td>Tổng sản lượng kế hoạch</td>
             <td>{{number_format($slkh)}}</td>
-=======
-<<<<<<< HEAD
-            <td>{{number_format($dlv)}}</td>
-            <td>Tổng sản lượng kế hoạch</td>
-            <td>{{number_format($slkh)}}</td>
-=======
-            <td>{{$dlv}}</td>
-            <td>Tổng sản lượng kế hoạch</td>
-            <td>{{$slkh}}</td>
->>>>>>> 7feb217f61f296eb572a7c997c41ed3805319b3a
->>>>>>> c93895fbfe175da1ff5a6d4334c04e891cc15889
         </tr>
 
 
