@@ -63,6 +63,43 @@
         <div class="portlet light">
             <div class="portlet-title">
                 <div class="caption">
+                    <span class="caption-subject bold uppercase font-dark">Lọc</span>
+                </div>
+                <div class="portlet-body">
+                    <div class="portlet-body">
+                        <table class="table table-striped table-bordered table-products" cellspacing="0" width="100%" id="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Phân loại</th>
+                                    <th>Sản phẩm</th>
+                                    <th>Sản lượng</th>
+                                    <th>Dung lượng</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <select class="type_filter form-control">
+                                            <option value="1">Theo tổng</option>
+                                            <option value="2">Theo nhóm</option>
+                                            <option value="3">Theo mã sản phảm</option>
+                                        </select>
+                                    </td>
+                                    <td id="value_filter"></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="portlet light">
+            <div class="portlet-title">
+                <div class="caption">
                     <span class="caption-subject bold uppercase font-dark">Bảng doanh số</span>
                 </div>
             </div>
