@@ -368,7 +368,6 @@
                         url: '{{ route('Admin::notification@getNotification') }}',
                         data: since ? {since: since} : {limit: maxItemShow}
                     }).then(function (response) {
-                        console.log(response);
                         var unreadCount = response.metadata.unreadCount;
                         $('#count_notification').text((unreadCount > 0 ? unreadCount : ''));
                         var data = response.data.reverse();

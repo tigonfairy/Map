@@ -294,8 +294,6 @@ class SaleAgentController extends AdminController
             $table = view('tableDashboard', compact('type', 'user', 'startMonth', 'endMonth'))->render();
 
 
-            return response()->json([
-                'table' => $table,
 
             $nvkd = $agent->user;
             $gsv = $nvkd->manager;
@@ -853,4 +851,19 @@ class SaleAgentController extends AdminController
 
         }
     }
+
+
+
+
+
+
+    public function matrixFilter(Request $request) {
+        $data = $request->all();
+        $type = $request->input('type_data_search');
+        $manager_id = $request->input('data_search');
+        $startMonth = $request->input('startMonth');
+        $endMonth = $request->input('endMonth');
+        return view('admin.saleAgent.matrix',compact('type','manager_id','startMonth','endMonth'))->render();
+    }
+
 }
