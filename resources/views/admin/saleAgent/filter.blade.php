@@ -63,6 +63,7 @@
         <div class="portlet light">
             <div class="portlet-title">
                 <div class="caption">
+<<<<<<< HEAD
                     <span class="caption-subject bold uppercase font-dark">Lọc</span>
                 </div>
                 <div class="portlet-body">
@@ -100,6 +101,8 @@
         <div class="portlet light">
             <div class="portlet-title">
                 <div class="caption">
+=======
+>>>>>>> 42a1b984b3b816b8dea72f0f14a8fda6341fe169
                     <span class="caption-subject bold uppercase font-dark">Bảng doanh số</span>
                 </div>
             </div>
