@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Backend;
 
 use App\Jobs\ExportAgent;
 use App\Models\Agent;
-use App\Models\GroupProduct;
+use App\Models\User;
 use App\Models\Product;
 use App\Models\SaleAgent;
 use Illuminate\Http\Request;
@@ -55,7 +55,7 @@ class SaleAgentController extends AdminController
         $capacity = request('capacity',0);
         $sales_plan = request('sales_plan',0);
         $sales_real = request('sales_real');
-
+        SaleAgent::where('agent_id', request('agent_id'))->where('month',request('month'))->delete();
         foreach ($product_ids as $key => $product_id) {
             $agent = SaleAgent::firstOrCreate([
                 'agent_id' => request('agent_id'),
@@ -93,7 +93,7 @@ class SaleAgentController extends AdminController
         $sales_plan = request('sales_plan');
         $sales_real = request('sales_real');
 
-
+        SaleAgent::where('agent_id',$agentId)->where('month',request('month'))->delete();
 
         if (count($sales_real)) {
             foreach ($product_ids as $key => $product_id) {
@@ -209,5 +209,165 @@ class SaleAgentController extends AdminController
         $this->dispatch(new ExportTD( $startMonth,$endMonth,$startTD,$endTD,$type));
         return redirect()->back()->with('success','Export tiến độ trong quá trình chạy.Vui lòng chờ thông báo để tải file');
 
+    }
+
+    public function filter()
+    {
+        $user = auth()->user();
+        return view('admin.saleAgent.filter', compact('user'));
+    }
+
+    public function dataFilter(Request $request)
+    {
+
+        $typeSearch =$request->input('type_search');
+        $dataSearch = $request->has('data_search') ? $request->input('data_search') : 0;
+        $startMonth = $request->input('startMonth');
+        $endMonth = $request->input('endMonth');
+
+        if ($typeSearch == 'agents') {
+
+            $agent = Agent::findOrFail($dataSearch);
+
+            // table data
+            $type = 1;
+            $user = $agent->id;
+
+            $table = view('tableDashboard', compact('type', 'user', 'startMonth', 'endMonth'))->render();
+
+            return response()->json([
+                'table' => $table,
+            ]);
+        }
+
+        if ($typeSearch == 'gsv') {
+            $user = User::findOrFail($dataSearch);
+
+            // table data
+            $type = 2;
+            $id = $user->id;
+
+            $table = view('tableDashboard', compact('type', 'id', 'startMonth', 'endMonth'))->render();
+
+            return response()->json([
+                'table' => $table,
+            ]);
+        }
+
+        if ($typeSearch == 'tv') {
+
+
+            $userTv = User::findOrFail($dataSearch);
+
+            // table data
+            $type = 3;
+            $id = $userTv->id;
+            $table = view('tableDashboard', compact('type', 'id', 'startMonth', 'endMonth'))->render();
+
+            return response()->json([
+                'table' => $table,
+            ]);
+        }
+
+        if ($typeSearch == 'gdv') {
+            $userGdv = User::findOrFail($dataSearch);
+
+            // table data
+            $type = 4;
+            $id = $userGdv->id;
+            $table = view('tableDashboard', compact('type', 'id', 'startMonth', 'endMonth'))->render();
+
+            return response()->json([
+                'table' => $table,
+            ]);
+        }
+
+        if ($typeSearch == 'admin') {
+            $userGDVs = User::where('position', User::GĐV)->get();
+            $data = [];
+            $locations = [];
+
+            foreach ($userGDVs as $gdv) {
+                $totalSaleGDV = 0;
+                $listAgents = [];
+                foreach ($gdv->owners as $user) {
+                    $totalSaleGSV = 0;
+                    if ($user->position == User::GSV) { // gsv
+                        if (count($user->owners) > 0) {
+                            foreach ($user->owners as $u1) {
+                                $listIds[] = $u1->id;
+                            }
+                        }
+                    } else if ($user->position == User::TV) {
+                        if (count($user->owners) > 0) {
+                            foreach ($user->owners as $u2) {
+                                if (count($u2->owners) > 0) {
+                                    foreach ($u2->owners as $u3) {
+                                        $listIds[] = $u3->id;
+                                    }
+                                }
+                                $listIds[] = $u2->id;
+                            }
+                        }
+                    }
+                    $listIds[] = $user->id;
+
+                    // area
+                    $areas = $user->area()->get();
+
+                    foreach ($areas as $key => $area) {
+                        foreach ($area->address as $k => $address) {
+                            $locations[] = [
+                                'border_color' => $area->border_color,
+                                'background_color' => $area->background_color,
+                                'area' => $address
+                            ];
+                        }
+                    }
+                }
+
+                $listIds[] = $gdv->id;
+                $agents = Agent::whereIn('manager_id', $listIds)->with('user')->get();
+                $saleAgents = 0;
+                foreach ($agents as $agent) {
+                    $sales = SaleAgent::where('agent_id', $agent->id)->where('month','>=',$startMonth)->where('month','<=',$endMonth)->select('sales_real', 'capacity')->get();
+
+                    foreach ($sales as $sale) {
+                        $saleAgents += $sale->sales_real;
+                        $capacity = isset($sale->capacity) ?  $sale->capacity : 1;
+                    }
+                    $capacity = isset($capacity) ? $capacity : 1;
+                    $listAgents[] = [
+                        'agent' => $agent,
+                        'totalSales' => $saleAgents,
+                        'capacity' => $capacity,
+                        'percent' => round($saleAgents / $capacity, 2)
+                    ];
+
+                    $totalSaleGSV += $saleAgents;
+                    $agent->totalSales = $saleAgents;
+                    $agent->capacity = $capacity;
+                    $agent->percent = round($saleAgents / $capacity, 2);
+                    $saleAgents = 0;
+                }
+                $listIds = [];
+                $totalSaleGDV += $totalSaleGSV;
+
+                $data[] = [
+                    'gdv' => $gdv,
+                    'agents' => $agents,
+                    'totalSales' => $totalSaleGDV,
+                    'capacity' => $capacity,
+                    'percent' => round($totalSaleGDV / $capacity, 2)
+                ];
+
+            }
+
+            return response()->json([
+                'result' => $data,
+                'locations' => $locations,
+            ]);
+
+        }
     }
 }

@@ -62,9 +62,9 @@
                     </li>
 
                     <li class="nav-item  ">
-                        <a href="{{route('Admin::saleAgent@add')}}" class="nav-link nav-toggle">
+                        <a href="{{route('Admin::saleAgent@filter')}}" class="nav-link nav-toggle">
                             <i class="icon-settings"></i>
-                            <span class="title">{{trans('home.addSaleAgent')}}</span>
+                            <span class="title">Lọc dữ liệu</span>
                             <span class="arrow"></span>
                         </a>
                     </li>
