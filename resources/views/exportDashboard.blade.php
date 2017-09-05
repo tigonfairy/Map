@@ -157,6 +157,7 @@
         @endif
 
         @php
+        $string = '';
             if($type == 1) {
 
                 $dlv = \App\Models\SaleAgent::where('month','>=',$startMonth)->where('month','<=',$endMonth)
@@ -165,9 +166,10 @@
                  $slkh = \App\Models\SaleAgent::where('month','>=',$startMonth)->where('month','<=',$endMonth)
                                     ->groupBy('agent_id','month')->where('agent_id',$user)
                                     ->get()->sum('sales_plan');
+                                    $string = 'Đại lý';
                }
                 if($type == 2) {
-
+                    $string = 'GS vùng';
                 $dlv = \App\Models\SaleAgent::where('month','>=',$startMonth)->where('month','<=',$endMonth)
                                                    ->groupBy('agent_id','month')->join('agents','agents.id', '=' ,'sale_agents.agent_id')->where('agents.gsv',$manager->id)
                                                    ->get()->sum('capacity');
@@ -176,7 +178,7 @@
                                     ->get()->sum('sales_plan');
                 }
               if($type == 3) {
-
+ $string = 'Trưởng vùng';
                 $dlv = \App\Models\SaleAgent::where('month','>=',$startMonth)->where('month','<=',$endMonth)
                                                    ->groupBy('agent_id','month')->join('agents','agents.id', '=' ,'sale_agents.agent_id')->where('agents.tv',$manager->id)
                                                    ->get()->sum('capacity');
@@ -185,7 +187,7 @@
                                     ->get()->sum('sales_plan');
                 }
               if($type == 4) {
-
+ $string = 'GĐ vùng';
                 $dlv = \App\Models\SaleAgent::where('month','>=',$startMonth)->where('month','<=',$endMonth)
                                                    ->groupBy('agent_id','month')->join('agents','agents.id', '=' ,'sale_agents.agent_id')->where('agents.gdv',$manager->id)
                                                    ->get()->sum('capacity');
@@ -194,7 +196,7 @@
                                     ->get()->sum('sales_plan');
                 }
            if($type == 5) {
-
+ $string = 'NVKD';
                 $dlv = \App\Models\SaleAgent::where('month','>=',$startMonth)->where('month','<=',$endMonth)
                                                    ->groupBy('agent_id','month')->join('agents','agents.id', '=' ,'sale_agents.agent_id')->where('agents.manager_id',$manager->id)
                                                    ->get()->sum('capacity');
@@ -278,7 +280,7 @@
                                          ->join('agents','agents.id', '=' ,'sale_agents.agent_id')->where('agents.gdv',$manager->id)->where('product_id',$product->id)
                                 ->get()->sum('sales_real');
                             }
-                             if($type == 4) {
+                             if($type == 5) {
                                 $sltt =  \App\Models\SaleAgent::where('month','>=',$startMonth)->where('month','<=',$endMonth)
                                          ->join('agents','agents.id', '=' ,'sale_agents.agent_id')->where('agents.manager_id',$manager->id)->where('product_id',$product->id)
                                 ->get()->sum('sales_real');

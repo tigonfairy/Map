@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Backend;
 
 use App\Jobs\ExportAgent;
 use App\Models\Agent;
-use App\Models\GroupProduct;
+use App\Models\User;
 use App\Models\Product;
 use App\Models\SaleAgent;
 use Illuminate\Http\Request;
@@ -14,6 +14,7 @@ use Validator;
 use App\Jobs\ImportDataAgent;
 use App\Jobs\ExportTD;
 use Excel;
+use DB;
 
 class SaleAgentController extends AdminController
 {
@@ -229,10 +230,20 @@ class SaleAgentController extends AdminController
 
             $agent = Agent::findOrFail($dataSearch);
 
+            // table data
+            $type = 1;
+            $user = $agent->id;
+            $table = view('tableDashboard', compact('type', 'user', 'startMonth', 'endMonth'))->render();
+
+            // xu ly filter
             $totalSales = 0;
+            $totalCBD = 0;
+            $totalMaxGreen = 0;
+            $totalMaxGro = 0;
             $listProducts = [];
+            $listGroups = [];
+            $listTotals = [];
             $capacity = 0;
-            $listCodes = [];
             $groupProduct = \App\Models\GroupProduct::orderBy('created_at','desc')->get();
 
             if (count($groupProduct) > 0) {
@@ -242,204 +253,313 @@ class SaleAgentController extends AdminController
                     $products = $group->product()->where('level',1)->orderBy('created_at','desc')->get();
                     if (count($products) > 0) {
                         foreach ($products as $product) {
-                            $sales = SaleAgent::where('agent_id', $agent->id)->where('product_id', $product->id)->where('month','>=',$startMonth)->where('month','<=',$endMonth)->select('sales_real', 'capacity')->first();
-                            if ($sales) {
+                            $sales = SaleAgent::where('agent_id', $agent->id)->where('product_id', $product->id)->where('month', '>=', $startMonth)->where('month', '<=', $endMonth)->select(DB::raw("SUM(sales_real) as sales_real"), "capacity")->first();
+
+                            if (!is_null($sales->sales_real)) {
                                 $slGroup += $sales->sales_real;
                                 $capacity = $sales->capacity;
-                                $array[] = [
+
+                                $listProducts[] = [
                                     'id' => $product->id,
                                     'name' => $product->code,
                                     'code' => $product->code,
                                     'totalSales' => $sales->sales_real,
-                                    'percent' => round($sales->sales_real / $capacity, 2),
-                                    'capacity' => $capacity
+                                    'capacity' => $capacity,
+                                    'type' => 'product'
                                 ];
-                                $listCodes[] = $product->code;
+
+                                if ($product->name_code == 'cbd') {
+                                    $totalCBD += $sales->sales_real;
+                                } else if($product->name_code == 'maxgreen') {
+                                    $totalMaxGreen += $sales->sales_real;
+                                } else if($product->name_code == 'maxgro') {
+                                    $totalMaxGro += $sales->sales_real;
+                                }
                             }
+
+
                         }
                     }
 
-                    $capacity = $capacity == 0 ? 1 : $capacity;
-
-                    $listProducts[] = [
+                    $listGroups[] = [
                         'id' => $group->id,
                         'name' => $group->name_vn,
                         'code' => $group->name_vn,
                         'totalSales' => $slGroup,
-                        'percent' => round($slGroup / $capacity, 2),
                         'capacity' => $capacity,
                         'listProducts' => $array,
+                        'type' => 'group'
                     ];
 
                     $totalSales += $slGroup;
                 }
             }
 
-            $capacity = $capacity == 0 ? 1 : $capacity;
-            $listProducts[] = [
+            $listTotals[] = [
                 'id' => 0,
                 'name' => 'Tổng sản lượng',
                 'code' => 'Tổng sản lượng',
                 'totalSales' => $totalSales,
-                'percent' => round($totalSales / $capacity, 2),
                 'capacity' => $capacity,
-
+                'type' => 'total'
             ];
 
-            // table data
-            $type = 1;
-            $user = $agent->id;
-
-            $table = view('tableDashboard', compact('type', 'user', 'startMonth', 'endMonth'))->render();
-
-            $nvkd = $agent->user;
-            $gsv = $nvkd->manager;
-            $gdv = $nvkd->manager;
-
-            array_unique($listCodes);
+            $listTotals[] = [
+                'id' => 0,
+                'name' => 'Tổng sản lượng CBD',
+                'code' => 'Tổng sản lượng CBD',
+                'totalSales' => $totalCBD,
+                'capacity' => $capacity,
+                'type' => 'total'
+            ];
+            $listTotals[] = [
+                'id' => 0,
+                'name' => 'Tổng sản lượng MaxGreen',
+                'code' => 'Tổng sản lượng MaxGreen',
+                'totalSales' => $totalMaxGreen,
+                'capacity' => $capacity,
+                'type' => 'total'
+            ];
+            $listTotals[] = [
+                'id' => 0,
+                'name' => 'Tổng sản lượng MaxGro',
+                'code' => 'Tổng sản lượng MaxGro',
+                'totalSales' => $totalMaxGro,
+                'capacity' => $capacity,
+                'type' => 'total'
+            ];
 
             return response()->json([
-                'capacity' => $capacity,
-                'user' => $nvkd,
-                'gsv' => $gsv,
-                'gdv' => $gdv,
-                'agents' => $agent,
-                'listProducts' => $listProducts,
                 'table' => $table,
-                'listCodes' => $listCodes
+                'listProducts' => $listProducts,
+                'listGroups' => $listGroups,
+                'listTotals' => $listTotals,
+            ]);
+        }
+
+        if ($typeSearch == 'nvkd') {
+            $user = User::findOrFail($dataSearch);
+            // table data
+            $type = 5;
+            $id = $user->id;
+            $table = view('tableDashboard', compact('type', 'id', 'startMonth', 'endMonth'))->render();
+
+            // xu ly filter
+            $agentIds = Agent::where('manager_id', $user->id)->with('user')->pluck('id')->all();
+            $totalSales = 0;
+            $totalCBD = 0;
+            $totalMaxGreen = 0;
+            $totalMaxGro = 0;
+            $listProducts = [];
+            $listGroups = [];
+            $listTotals = [];
+            $capacity = 0;
+            $groupProduct = \App\Models\GroupProduct::orderBy('created_at','desc')->get();
+
+            if (count($groupProduct) > 0) {
+                foreach ($groupProduct as $group) {
+                    $slGroup = 0;
+                    $products = $group->product()->where('level',1)->orderBy('created_at','desc')->get();
+                    if (count($products) > 0) {
+                        foreach ($products as $product) {
+                            $sales = SaleAgent::join('products', 'sale_agents.product_id', '=', 'products.id')->whereIn('agent_id', $agentIds)->where('month', '>=', $startMonth)->where('month', '<=', $endMonth)
+                                ->where('sale_agents.product_id', $product->id)->selectRaw('sum(sales_real) as sum, sale_agents.capacity ')->first();
+                            if (!is_null($sales->sum)) {
+                                $slGroup += $sales->sum;
+                                $capacity = $sales->capacity;
+                                $listProducts[] = [
+                                    'id' => $product->id,
+                                    'name' => $product->code,
+                                    'code' => $product->code,
+                                    'totalSales' => $sales->sum,
+                                    'capacity' => $capacity
+                                ];
+
+                                if ($product->name_code == 'cbd') {
+                                    $totalCBD += $sales->sum;
+                                } else if($product->name_code == 'maxgreen') {
+                                    $totalMaxGreen += $sales->sum;
+                                } else if($product->name_code == 'maxgro') {
+                                    $totalMaxGro += $sales->sum;
+                                }
+                            }
+                        }
+                    }
+
+                    $listGroups[] = [
+                        'id' => $group->id,
+                        'name' => $group->name_vn,
+                        'code' => $group->name_vn,
+                        'totalSales' => $slGroup,
+                        'capacity' => $capacity,
+                    ];
+                    $totalSales += $slGroup;
+                }
+            }
+
+            $listTotals[] = [
+                'id' => 0,
+                'name' => 'Tổng sản lượng',
+                'code' => 'Tổng sản lượng',
+                'totalSales' => $totalSales,
+                'capacity' => $capacity,
+                'type' => 'total'
+            ];
+
+            $listTotals[] = [
+                'id' => 0,
+                'name' => 'Tổng sản lượng CBD',
+                'code' => 'Tổng sản lượng CBD',
+                'totalSales' => $totalCBD,
+                'capacity' => $capacity,
+                'type' => 'total'
+            ];
+            $listTotals[] = [
+                'id' => 0,
+                'name' => 'Tổng sản lượng MaxGreen',
+                'code' => 'Tổng sản lượng MaxGreen',
+                'totalSales' => $totalMaxGreen,
+                'capacity' => $capacity,
+                'type' => 'total'
+            ];
+            $listTotals[] = [
+                'id' => 0,
+                'name' => 'Tổng sản lượng MaxGro',
+                'code' => 'Tổng sản lượng MaxGro',
+                'totalSales' => $totalMaxGro,
+                'capacity' => $capacity,
+                'type' => 'total'
+            ];
+
+            return response()->json([
+                'table' => $table,
+                'listProducts' => $listProducts,
+                'listGroups' => $listGroups,
+                'listTotals' => $listTotals,
             ]);
         }
 
         if ($typeSearch == 'gsv') {
 
-            $totalSales = 0;
-            $saleAgents = 0;
-            $listAgents = [];
-            $capacity = 0;
-
             $user = User::findOrFail($dataSearch);
-            $userParentName = $user->manager->name;
-
-            $userOwns = $user->owners()->get();
-            $userOwns->push($user);
-            $listIds = $userOwns->pluck('id')->toArray();
-
-            $areas = $user->area()->get();
-
-            $locations = [];
-            foreach ($areas as $key => $area) {
-                foreach ($area->address as $k => $address) {
-                    $locations[] = [
-                        'border_color' => $area->border_color,
-                        'background_color' => $area->background_color,
-                        'area' => $address
-                    ];
-                }
-            }
-
-            $agents = Agent::whereIn('manager_id', $listIds)->with('user')->get();
-
-            foreach ($agents as $agent) {
-
-                $sales = SaleAgent::where('agent_id', $agent->id)->where('month','>=',$startMonth)->where('month','<=',$endMonth)->select('sales_real', 'capacity')->get();
-                foreach ($sales as $sale) {
-                    $saleAgents += $sale->sales_real;
-                    $capacity = $sale->capacity;
-                }
-                $capacity = $capacity == 0 ? 1 : $capacity;
-                $listAgents[] = [
-                    'agent' => $agent,
-                    'totalSales' => $saleAgents,
-                    'capacity' => $capacity,
-                    'percent' => round($saleAgents / $capacity, 2)
-                ];
-                $totalSales += $saleAgents;
-                $saleAgents = 0;
-            }
-
-            // xử lý product
-            $listProducts[] = [
-                'id' => 0,
-                'name' => 'Tổng sản lượng',
-                'code' => 'Tổng sản lượng',
-                'totalSales' => $totalSales,
-                'percent' => round($totalSales / $capacity, 2),
-                'capacity' => $capacity
-            ];
-
-            $agentIds = $agents->pluck('id')->toArray();
-            $listCodes = [];
-            $groupProduct = \App\Models\GroupProduct::orderBy('created_at','desc')->get();
-
-            if (count($groupProduct) > 0) {
-                foreach ($groupProduct as $group) {
-                    $array = [];
-                    $slGroup = 0;
-                    $products = $group->product()->where('level',1)->orderBy('created_at','desc')->get();
-                    if (count($products) > 0) {
-                        foreach ($products as $product) {
-                            $sales = SaleAgent::join('products', 'sale_agents.product_id', '=', 'products.id')->whereIn('agent_id', $agentIds)->where('month','>=',$startMonth)->where('month','<=',$endMonth)
-                                ->where('sale_agents.product_id', $product->id)->selectRaw('sum(sales_real) as sum, sale_agents.product_id, products.name_vn, products.code')->first();
-                            if ($sales) {
-                                $slGroup += $sales->sum;
-
-                                $array[] = [
-                                    'id' => $product->id,
-                                    'name' => $product->code,
-                                    'code' => $product->code,
-                                    'totalSales' => $sales->sum,
-                                    'percent' => round($sales->sum / $capacity, 2),
-                                    'capacity' => $capacity
-                                ];
-
-                                $listCodes[] = $product->code;
-                            }
-                        }
-                    }
-
-                    $listProducts[] = [
-                        'id' => $group->id,
-                        'name' => $group->name_vn,
-                        'code' => $group->name_vn,
-                        'totalSales' => $slGroup,
-                        'percent' => round($slGroup / $capacity, 2),
-                        'capacity' => $capacity,
-                        'listProducts' => $array,
-                    ];
-                }
-            }
 
             // table data
             $type = 2;
             $id = $user->id;
-
             $table = view('tableDashboard', compact('type', 'id', 'startMonth', 'endMonth'))->render();
 
-            array_unique($listCodes);
-            return response()->json([
-                'user' => $user,
-                'director' => $userParentName,
-                'locations' => $locations,
-                'listAgents' => $listAgents,
+            // xu ly filter
+            $userOwns = $user->owners()->get();
+            $userOwns->push($user);
+            $listIds = $userOwns->pluck('id')->toArray();
+            $agentIds = Agent::whereIn('manager_id', $listIds)->pluck('id')->all();
+
+            $totalSales = 0;
+            $totalCBD = 0;
+            $totalMaxGreen = 0;
+            $totalMaxGro = 0;
+            $listProducts = [];
+            $listGroups = [];
+            $listTotals = [];
+            $capacity = 0;
+            $groupProduct = \App\Models\GroupProduct::orderBy('created_at','desc')->get();
+
+            if (count($groupProduct) > 0) {
+                foreach ($groupProduct as $group) {
+                    $slGroup = 0;
+                    $products = $group->product()->where('level',1)->orderBy('created_at','desc')->get();
+                    if (count($products) > 0) {
+                        foreach ($products as $product) {
+                            $sales = SaleAgent::join('products', 'sale_agents.product_id', '=', 'products.id')->whereIn('agent_id', $agentIds)->where('month', '>=', $startMonth)->where('month', '<=', $endMonth)
+                                ->where('sale_agents.product_id', $product->id)->selectRaw('sum(sales_real) as sum, sale_agents.capacity ')->first();
+                            if (!is_null($sales->sum)) {
+                                $slGroup += $sales->sum;
+                                $capacity = $sales->capacity;
+                                $listProducts[] = [
+                                    'id' => $product->id,
+                                    'name' => $product->code,
+                                    'code' => $product->code,
+                                    'totalSales' => $sales->sum,
+                                    'capacity' => $capacity
+                                ];
+
+                                if ($product->name_code == 'cbd') {
+                                    $totalCBD += $sales->sum;
+                                } else if($product->name_code == 'maxgreen') {
+                                    $totalMaxGreen += $sales->sum;
+                                } else if($product->name_code == 'maxgro') {
+                                    $totalMaxGro += $sales->sum;
+                                }
+                            }
+                        }
+                    }
+
+                    $listGroups[] = [
+                        'id' => $group->id,
+                        'name' => $group->name_vn,
+                        'code' => $group->name_vn,
+                        'totalSales' => $slGroup,
+                        'capacity' => $capacity,
+                    ];
+                    $totalSales += $slGroup;
+                }
+            }
+
+            $listTotals[] = [
+                'id' => 0,
+                'name' => 'Tổng sản lượng',
+                'code' => 'Tổng sản lượng',
                 'totalSales' => $totalSales,
                 'capacity' => $capacity,
-                'percent' => round($totalSales / $capacity, 2),
-                'listProducts' => $listProducts,
+                'type' => 'total'
+            ];
+
+            $listTotals[] = [
+                'id' => 0,
+                'name' => 'Tổng sản lượng CBD',
+                'code' => 'Tổng sản lượng CBD',
+                'totalSales' => $totalCBD,
+                'capacity' => $capacity,
+                'type' => 'total'
+            ];
+            $listTotals[] = [
+                'id' => 0,
+                'name' => 'Tổng sản lượng MaxGreen',
+                'code' => 'Tổng sản lượng MaxGreen',
+                'totalSales' => $totalMaxGreen,
+                'capacity' => $capacity,
+                'type' => 'total'
+            ];
+            $listTotals[] = [
+                'id' => 0,
+                'name' => 'Tổng sản lượng MaxGro',
+                'code' => 'Tổng sản lượng MaxGro',
+                'totalSales' => $totalMaxGro,
+                'capacity' => $capacity,
+                'type' => 'total'
+            ];
+
+            return response()->json([
                 'table' => $table,
-                'listCodes' => $listCodes
+                'listProducts' => $listProducts,
+                'listGroups' => $listGroups,
+                'listTotals' => $listTotals,
             ]);
         }
 
         if ($typeSearch == 'tv') {
 
-            $totalSales = 0;
-            $saleAgents = 0;
-            $listAgents = [];
-            $capacity = 0;
 
             $userTv = User::findOrFail($dataSearch);
-            $userParentName = $userTv->manager->name;
 
+
+            // table data
+            $type = 3;
+            $id = $userTv->id;
+            $table = view('tableDashboard', compact('type', 'id', 'startMonth', 'endMonth'))->render();
+
+            // xu ly filter
+            $userTv = User::findOrFail($dataSearch);
             $userOwns = $userTv->owners()->get();
             foreach ($userOwns as $u) {
                 if (count($u->owners) > 0) {
@@ -453,123 +573,111 @@ class SaleAgentController extends AdminController
             $userOwns->push($userTv);
 
             $listIds = $userOwns->pluck('id')->toArray();
+            $agentIds = Agent::whereIn('manager_id', $listIds)->pluck('id')->all();
 
-            $areas = $userTv->area()->get();
-
-            $locations = [];
-            foreach ($areas as $key => $area) {
-                foreach ($area->address as $k => $address) {
-                    $locations[] = [
-                        'border_color' => $area->border_color,
-                        'background_color' => $area->background_color,
-                        'area' => $address
-                    ];
-                }
-            }
-
-            $agents = Agent::whereIn('manager_id', $listIds)->with('user')->get();
-
-            foreach ($agents as $agent) {
-
-                $sales = SaleAgent::where('agent_id', $agent->id)->where('month','>=',$startMonth)->where('month','<=',$endMonth)->select('sales_real', 'capacity')->get();
-
-                foreach ($sales as $sale) {
-                    $saleAgents += $sale->sales_real;
-                    $capacity = isset($sale->capacity) ?  $sale->capacity : 1;
-                }
-                $capacity = $capacity == 0 ? 1 : $capacity;
-                $listAgents[] = [
-                    'agent' => $agent,
-                    'totalSales' => $saleAgents,
-                    'capacity' => $capacity,
-                    'percent' => round($saleAgents / $capacity, 2)
-                ];
-                $totalSales += $saleAgents;
-                $saleAgents = 0;
-            }
-
-            // xử lý product
-            $listProducts[] = [
-                'id' => 0,
-                'name' => 'Tổng sản lượng',
-                'code' => 'Tổng sản lượng',
-                'totalSales' => $totalSales,
-                'percent' => round($totalSales / $capacity, 2),
-                'capacity' => $capacity
-            ];
-
-            $agentIds = $agents->pluck('id')->toArray();
-            $listCodes = [];
+            $totalSales = 0;
+            $totalCBD = 0;
+            $totalMaxGreen = 0;
+            $totalMaxGro = 0;
+            $listProducts = [];
+            $listGroups = [];
+            $listTotals = [];
+            $capacity = 0;
             $groupProduct = \App\Models\GroupProduct::orderBy('created_at','desc')->get();
 
             if (count($groupProduct) > 0) {
                 foreach ($groupProduct as $group) {
-                    $array = [];
                     $slGroup = 0;
                     $products = $group->product()->where('level',1)->orderBy('created_at','desc')->get();
                     if (count($products) > 0) {
                         foreach ($products as $product) {
-                            $sales = SaleAgent::join('products', 'sale_agents.product_id', '=', 'products.id')->whereIn('agent_id', $agentIds)->where('month','>=',$startMonth)->where('month','<=',$endMonth)
-                                ->where('sale_agents.product_id', $product->id)->selectRaw('sum(sales_real) as sum, sale_agents.product_id, products.name_vn, products.code')->first();
-                            if ($sales) {
+                            $sales = SaleAgent::join('products', 'sale_agents.product_id', '=', 'products.id')->whereIn('agent_id', $agentIds)->where('month', '>=', $startMonth)->where('month', '<=', $endMonth)
+                                ->where('sale_agents.product_id', $product->id)->selectRaw('sum(sales_real) as sum, sale_agents.capacity ')->first();
+                            if (!is_null($sales->sum)) {
                                 $slGroup += $sales->sum;
-
-                                $array[] = [
+                                $capacity = $sales->capacity;
+                                $listProducts[] = [
                                     'id' => $product->id,
                                     'name' => $product->code,
                                     'code' => $product->code,
                                     'totalSales' => $sales->sum,
-                                    'percent' => round($sales->sum / $capacity, 2),
                                     'capacity' => $capacity
                                 ];
-                                $listCodes[] = $product->code;
+
+                                if ($product->name_code == 'cbd') {
+                                    $totalCBD += $sales->sum;
+                                } else if($product->name_code == 'maxgreen') {
+                                    $totalMaxGreen += $sales->sum;
+                                } else if($product->name_code == 'maxgro') {
+                                    $totalMaxGro += $sales->sum;
+                                }
                             }
                         }
                     }
 
-                    $listProducts[] = [
+                    $listGroups[] = [
                         'id' => $group->id,
                         'name' => $group->name_vn,
                         'code' => $group->name_vn,
                         'totalSales' => $slGroup,
-                        'percent' => round($slGroup / $capacity, 2),
                         'capacity' => $capacity,
-                        'listProducts' => $array,
                     ];
+                    $totalSales += $slGroup;
                 }
             }
 
-            // table data
-            $type = 3;
-            $id = $userTv->id;
-            $table = view('tableDashboard', compact('type', 'id', 'startMonth', 'endMonth'))->render();
-
-            array_unique($listCodes);
-
-            return response()->json([
-                'user' => $userTv,
-                'director' => $userParentName,
-                'locations' => $locations,
-                'listAgents' => $listAgents,
+            $listTotals[] = [
+                'id' => 0,
+                'name' => 'Tổng sản lượng',
+                'code' => 'Tổng sản lượng',
                 'totalSales' => $totalSales,
                 'capacity' => $capacity,
-                'percent' => round($totalSales / $capacity, 2),
-                'listProducts' => $listProducts,
+                'type' => 'total'
+            ];
+
+            $listTotals[] = [
+                'id' => 0,
+                'name' => 'Tổng sản lượng CBD',
+                'code' => 'Tổng sản lượng CBD',
+                'totalSales' => $totalCBD,
+                'capacity' => $capacity,
+                'type' => 'total'
+            ];
+            $listTotals[] = [
+                'id' => 0,
+                'name' => 'Tổng sản lượng MaxGreen',
+                'code' => 'Tổng sản lượng MaxGreen',
+                'totalSales' => $totalMaxGreen,
+                'capacity' => $capacity,
+                'type' => 'total'
+            ];
+            $listTotals[] = [
+                'id' => 0,
+                'name' => 'Tổng sản lượng MaxGro',
+                'code' => 'Tổng sản lượng MaxGro',
+                'totalSales' => $totalMaxGro,
+                'capacity' => $capacity,
+                'type' => 'total'
+            ];
+
+            return response()->json([
                 'table' => $table,
-                'listCodes' => $listCodes
+                'listProducts' => $listProducts,
+                'listGroups' => $listGroups,
+                'listTotals' => $listTotals,
             ]);
         }
 
         if ($typeSearch == 'gdv') {
-            $totalSaleGSV = 0;
-            $totalSaleGDV = 0;
-            $saleAgents = 0;
-            $listAgents = [];
-            $capacity = 0;
-            $data = [];
-            $dataGdv = [];
-            $locations = [];
-            $agentIds = [];
+
+            $userGdv = User::findOrFail($dataSearch);
+
+            // table data
+            $type = 4;
+            $id = $userGdv->id;
+            $table = view('tableDashboard', compact('type', 'id', 'startMonth', 'endMonth'))->render();
+
+            // xu ly filter
             $userGdv = User::findOrFail($dataSearch);
             $userGSV = $userGdv->owners()->get();
 
@@ -593,247 +701,112 @@ class SaleAgentController extends AdminController
                     }
                 }
                 $listIds[] = $user->id;
-
-                $agents = Agent::whereIn('manager_id', $listIds)->with('user')->get();
-
-                foreach ($agents->pluck('id')->toArray() as $agentId) {
-                    $agentIds[] = $agentId;
-                }
-
-                foreach ($agents as $agent) {
-
-                    $sales = SaleAgent::where('agent_id', $agent->id)->where('month','>=',$startMonth)->where('month','<=',$endMonth)->select('sales_real', 'capacity')->get();
-                    foreach ($sales as $sale) {
-                        $saleAgents += $sale->sales_real;
-                        $capacity = isset($sale->capacity) ?  $sale->capacity : 1;
-                    }
-                    $capacity = $capacity == 0 ? 1 : $capacity;
-                    $listAgents[] = [
-                        'agent' => $agent,
-                        'totalSales' => $saleAgents,
-                        'capacity' => $capacity,
-                        'percent' => round($saleAgents / $capacity, 2)
-                    ];
-                    $totalSaleGSV += $saleAgents;
-                    $agent->totalSales = $saleAgents;
-                    $agent->capacity = $capacity;
-                    $agent->percent = round($saleAgents / $capacity, 2);
-                    $saleAgents = 0;
-                }
-                $listIds = [];
-                $totalSaleGDV += $totalSaleGSV;
-                $data[] = [
-                    'gsv' => $user,
-                    'agents' => $agents,
-                    'totalSales' => $totalSaleGSV,
-                    'capacity' => $capacity,
-                    'percent' => round($totalSaleGSV / $capacity, 2)
-                ];
-                $totalSaleGSV = 0;
-                // area
-                $areas = $user->area()->get();
-                foreach ($areas as $key => $area) {
-                    foreach ($area->address as $k => $address) {
-                        $locations[] = [
-                            'border_color' => $area->border_color,
-                            'background_color' => $area->background_color,
-                            'area' => $address
-                        ];
-                    }
-                }
             }
+            $listIds[] = $userGdv->id;
 
-            $agents = Agent::where('manager_id', $userGdv->id)->with('user')->get();
-            if (count($agents) > 0) {
-                foreach ($agents as $agent) {
-                    $sales = SaleAgent::where('agent_id', $agent->id)->where('month','>=',$startMonth)->where('month','<=',$endMonth)->select('sales_real', 'capacity')->get();
-                    $saleAgents = 0;
-                    foreach ($sales as $sale) {
-                        $saleAgents += $sale->sales_real;
-                        $capacity = isset($sale->capacity) ? $sale->capacity : 1;
-                    }
-                    $capacity = $capacity == 0 ? 1 : $capacity;
-                    $agent->totalSales = $saleAgents;
-                    $agent->capacity = $capacity;
-                    $agent->percent = round($saleAgents / $capacity, 2);
+            $agentIds = Agent::whereIn('manager_id', $listIds)->pluck('id')->all();
 
-                    $dataGdv[] = [
-                        'gsv' => $userGdv,
-                        'agents' => $agent,
-                        'totalSales' => $saleAgents,
-                        'capacity' => $capacity,
-                        'percent' => round($saleAgents / $capacity, 2)
-                    ];
-                    $totalSaleGDV += $saleAgents;
-                }
-            }
-
-            foreach ($agents->pluck('id')->toArray() as $agentId) {
-                $agentIds[] = $agentId;
-            }
-
-            // xử lý product
-            $listProducts[] = [
-                'id' => 0,
-                'name' => 'Tổng sản lượng',
-                'code' => 'Tổng sản lượng',
-                'totalSales' => $totalSaleGDV,
-                'percent' => round($totalSaleGDV / $capacity, 2),
-                'capacity' => $capacity
-            ];
-
+            $totalSales = 0;
+            $totalCBD = 0;
+            $totalMaxGreen = 0;
+            $totalMaxGro = 0;
+            $listProducts = [];
+            $listGroups = [];
+            $listTotals = [];
+            $capacity = 0;
             $groupProduct = \App\Models\GroupProduct::orderBy('created_at','desc')->get();
-            $listCodes = [];
+
             if (count($groupProduct) > 0) {
                 foreach ($groupProduct as $group) {
-                    $array = [];
                     $slGroup = 0;
                     $products = $group->product()->where('level',1)->orderBy('created_at','desc')->get();
                     if (count($products) > 0) {
                         foreach ($products as $product) {
-                            $sales = SaleAgent::join('products', 'sale_agents.product_id', '=', 'products.id')->whereIn('agent_id', $agentIds)->where('month','>=',$startMonth)->where('month','<=',$endMonth)
-                                ->where('sale_agents.product_id', $product->id)->selectRaw('sum(sales_real) as sum, sale_agents.product_id, products.name_vn, products.code')->first();
-                            if ($sales) {
+                            $sales = SaleAgent::join('products', 'sale_agents.product_id', '=', 'products.id')->whereIn('agent_id', $agentIds)->where('month', '>=', $startMonth)->where('month', '<=', $endMonth)
+                                ->where('sale_agents.product_id', $product->id)->selectRaw('sum(sales_real) as sum, sale_agents.capacity ')->first();
+                            if (!is_null($sales->sum)) {
                                 $slGroup += $sales->sum;
-
-                                $array[] = [
+                                $capacity = $sales->capacity;
+                                $listProducts[] = [
                                     'id' => $product->id,
                                     'name' => $product->code,
                                     'code' => $product->code,
                                     'totalSales' => $sales->sum,
-                                    'percent' => round($sales->sum / $capacity, 2),
                                     'capacity' => $capacity
                                 ];
 
-                                $listCodes[] = $product->code;
+                                if ($product->name_code == 'cbd') {
+                                    $totalCBD += $sales->sum;
+                                } else if($product->name_code == 'maxgreen') {
+                                    $totalMaxGreen += $sales->sum;
+                                } else if($product->name_code == 'maxgro') {
+                                    $totalMaxGro += $sales->sum;
+                                }
                             }
                         }
                     }
 
-                    $listProducts[] = [
+                    $listGroups[] = [
                         'id' => $group->id,
                         'name' => $group->name_vn,
                         'code' => $group->name_vn,
                         'totalSales' => $slGroup,
-                        'percent' => round($slGroup / $capacity, 2),
                         'capacity' => $capacity,
-                        'listProducts' => $array,
                     ];
+                    $totalSales += $slGroup;
                 }
             }
 
-            // table data
-            $type = 4;
-            $id = $userGdv->id;
-            $table = view('tableDashboard', compact('type', 'id', 'startMonth', 'endMonth'))->render();
-
-            array_unique($listCodes);
-
-            return response()->json([
-                'user' => $userGdv,
-                'result' => $data,
-                'resultGdv' => $dataGdv,
-                'locations' => $locations,
-                'listAgents' => $listAgents,
-                'totalSales' => $totalSaleGDV,
+            $listTotals[] = [
+                'id' => 0,
+                'name' => 'Tổng sản lượng',
+                'code' => 'Tổng sản lượng',
+                'totalSales' => $totalSales,
                 'capacity' => $capacity,
-                'percent' => round($totalSaleGDV / $capacity, 2),
-                'listProducts' => $listProducts,
-                'table' => $table,
-                'listCodes' => $listCodes
-            ]);
-        }
+                'type' => 'total'
+            ];
 
-        if ($typeSearch == 'admin') {
-            $userGDVs = User::where('position', User::GĐV)->get();
-            $data = [];
-            $locations = [];
-
-            foreach ($userGDVs as $gdv) {
-                $totalSaleGDV = 0;
-                $listAgents = [];
-                foreach ($gdv->owners as $user) {
-                    $totalSaleGSV = 0;
-                    if ($user->position == User::GSV) { // gsv
-                        if (count($user->owners) > 0) {
-                            foreach ($user->owners as $u1) {
-                                $listIds[] = $u1->id;
-                            }
-                        }
-                    } else if ($user->position == User::TV) {
-                        if (count($user->owners) > 0) {
-                            foreach ($user->owners as $u2) {
-                                if (count($u2->owners) > 0) {
-                                    foreach ($u2->owners as $u3) {
-                                        $listIds[] = $u3->id;
-                                    }
-                                }
-                                $listIds[] = $u2->id;
-                            }
-                        }
-                    }
-                    $listIds[] = $user->id;
-
-                    // area
-                    $areas = $user->area()->get();
-
-                    foreach ($areas as $key => $area) {
-                        foreach ($area->address as $k => $address) {
-                            $locations[] = [
-                                'border_color' => $area->border_color,
-                                'background_color' => $area->background_color,
-                                'area' => $address
-                            ];
-                        }
-                    }
-                }
-
-                $listIds[] = $gdv->id;
-                $agents = Agent::whereIn('manager_id', $listIds)->with('user')->get();
-                $saleAgents = 0;
-                foreach ($agents as $agent) {
-                    $sales = SaleAgent::where('agent_id', $agent->id)->where('month','>=',$startMonth)->where('month','<=',$endMonth)->select('sales_real', 'capacity')->get();
-
-                    foreach ($sales as $sale) {
-                        $saleAgents += $sale->sales_real;
-                        $capacity = isset($sale->capacity) ?  $sale->capacity : 1;
-                    }
-                    $capacity = isset($capacity) ? $capacity : 1;
-                    $listAgents[] = [
-                        'agent' => $agent,
-                        'totalSales' => $saleAgents,
-                        'capacity' => $capacity,
-                        'percent' => round($saleAgents / $capacity, 2)
-                    ];
-
-                    $totalSaleGSV += $saleAgents;
-                    $agent->totalSales = $saleAgents;
-                    $agent->capacity = $capacity;
-                    $agent->percent = round($saleAgents / $capacity, 2);
-                    $saleAgents = 0;
-                }
-                $listIds = [];
-                $totalSaleGDV += $totalSaleGSV;
-
-                $data[] = [
-                    'gdv' => $gdv,
-                    'agents' => $agents,
-                    'totalSales' => $totalSaleGDV,
-                    'capacity' => $capacity,
-                    'percent' => round($totalSaleGDV / $capacity, 2)
-                ];
-
-            }
+            $listTotals[] = [
+                'id' => 0,
+                'name' => 'Tổng sản lượng CBD',
+                'code' => 'Tổng sản lượng CBD',
+                'totalSales' => $totalCBD,
+                'capacity' => $capacity,
+                'type' => 'total'
+            ];
+            $listTotals[] = [
+                'id' => 0,
+                'name' => 'Tổng sản lượng MaxGreen',
+                'code' => 'Tổng sản lượng MaxGreen',
+                'totalSales' => $totalMaxGreen,
+                'capacity' => $capacity,
+                'type' => 'total'
+            ];
+            $listTotals[] = [
+                'id' => 0,
+                'name' => 'Tổng sản lượng MaxGro',
+                'code' => 'Tổng sản lượng MaxGro',
+                'totalSales' => $totalMaxGro,
+                'capacity' => $capacity,
+                'type' => 'total'
+            ];
 
             return response()->json([
-                'result' => $data,
-                'locations' => $locations,
+                'table' => $table,
+                'listProducts' => $listProducts,
+                'listGroups' => $listGroups,
+                'listTotals' => $listTotals,
             ]);
-
         }
     }
+
     public function matrixFilter(Request $request) {
         $data = $request->all();
-        dd($data);
+        $type = $request->input('type_data_search');
+        $manager_id = $request->input('data_search');
+        $startMonth = $request->input('startMonth');
+        $endMonth = $request->input('endMonth');
+        return view('admin.saleAgent.matrix',compact('type','manager_id','startMonth','endMonth'))->render();
     }
+
 }

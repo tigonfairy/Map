@@ -1,5 +1,11 @@
 @extends('admin')
 @section('content')
+    <style>
+        .matrixData {
+            width: 100%;
+            overflow-x:auto ;
+        }
+    </style>
     <div class="row">
         <div class="portlet light ">
             <div class="row">
@@ -34,8 +40,6 @@
                     @endif
 
                         <div class="col-md-2">
-
-
                                 <input type="text" name="startMonth"  class="form-control startMonth" value="" placeholder="Thời gian bắt đầu" />
                                 <span id="startMonth" class="error-import" style="color:red;"></span>
                             <div class="clearfix"></div>
@@ -60,6 +64,47 @@
             </div>
         </div>
 
+        <div class="portlet light" id="filter" style="display: none;">
+            <div class="portlet-title">
+                <div class="caption">
+                    <span class="caption-subject bold uppercase font-dark">Lọc</span>
+                </div>
+                <div class="portlet-body">
+                    <div class="portlet-body">
+                        <table class="table table-striped table-bordered table-products" cellspacing="0" width="100%" id="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Phân loại</th>
+                                    <th>Sản phẩm</th>
+                                    <th>Sản lượng</th>
+                                    <th>Dung lượng</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <select class="type_filter form-control">
+                                            <option value="">-- Chọn loại {{ trans('home.search') }} --</option>
+                                            <option value="1">Theo tổng</option>
+                                            <option value="2">Theo nhóm</option>
+                                            <option value="3">Theo mã sản phảm</option>
+                                        </select>
+                                    </td>
+                                    <td id="">
+                                        <select name="value_filter" class="value_filter form-control" id="locations"
+                                                style="width:100%">
+                                        </select>
+                                    </td>
+                                    <td id="totalSales"></td>
+                                    <td id="capacity"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div class="portlet light">
             <div class="portlet-title">
                 <div class="caption">
@@ -73,7 +118,10 @@
             </div>
         </div>
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> e478877916616c0ff8cf133050b02f042d00dfcf
         <div class="portlet light">
             <div class="portlet-title">
                 <div class="caption">
@@ -82,7 +130,11 @@
             </div>
             <div class="portlet-body">
                 <div class="portlet-body">
+<<<<<<< HEAD
                     <div id="maxTable"></div>
+=======
+                    <div id="matrixData"></div>
+>>>>>>> e478877916616c0ff8cf133050b02f042d00dfcf
                 </div>
             </div>
         </div>
@@ -99,12 +151,12 @@
         dateFormat: 'mm-yy',
         onClose: function(dateText, inst) {
             var month = $("#ui-datepicker-div .ui-datepicker-month :selected").val();
-            console.log(month);
             var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val();
             $(this).datepicker('setDate', new Date(year, month, 1));
 
             $(".endMonth").datepicker("option", "minDate", new Date(year, month, 1));
             $(".endMonth").datepicker("option", "maxDate",  new Date(year, 11, 1));
+            $(".endMonth").datepicker('setDate', new Date(year, month, 1));
         }
     });
     $('.endMonth').datepicker( {
@@ -122,6 +174,7 @@
 
     $(document).ready(function () {
 
+        // search
         $(".search_type").change(function () {
             var search_type = $(this).val();
             if (search_type == 1) {
@@ -132,6 +185,8 @@
                 getListTV(0);
             } else if (search_type == 4) {
                 getListGDV(0);
+            } else if (search_type == 5) {
+                getListNVKD(0);
             }
         });
 
@@ -172,7 +227,6 @@
                 }
             });
         }
-
         function getListGSV(type) {
             if(type == 0) {
                 $("#type_search").val('gsv');
@@ -210,7 +264,6 @@
                 }
             });
         }
-
         function getListTV(type) {
             if(type == 0) {
                 $("#type_search").val('tv');
@@ -248,7 +301,6 @@
                 }
             });
         }
-
         function getListGDV(type) {
             if(type == 0) {
                 $("#type_search").val('gdv');
@@ -325,6 +377,10 @@
             });
         }
 
+        var listTotals = [];
+        var listGroups = [];
+        var listProducts = [];
+        var listSelectProducts = [];
         $('#geocoding_form').submit(function (e) {
             e.preventDefault();
             var type_search = $("#type_search").val();
@@ -335,6 +391,23 @@
                 data: $('#geocoding_form').serialize(),
                 cache: false,
                 success: function (data) {
+                    $("#filter").show();
+                    listTotals = data.listTotals;
+                    listGroups = data.listGroups;
+                    listProducts = data.listProducts;
+
+                    // gộp các mảng
+                    listSelectProducts = [];
+                    $.each(listTotals, function (index, value) {
+                        listSelectProducts.push(value);
+                    });
+                    $.each(listGroups, function (index, value) {
+                        listSelectProducts.push(value);
+                    });
+                    $.each(listProducts, function (index, value) {
+                        listSelectProducts.push(value);
+                    });
+
 
                     if (data.table) {
                         $('#tableData').html('');
@@ -349,14 +422,54 @@
                 data: $('#geocoding_form').serialize(),
                 cache: false,
                 success: function (data) {
-
-                    if (data.table) {
-                        $('#maxTable').html('');
-                        $('#maxTable').html(data.table);
+                    if (data) {
+                        $('#matrixData').html('');
+                        $('#matrixData').html(data);
                     }
                 }
             });
         });
+
+        // filter
+        $(document).on("change", ".type_filter", function () {
+            var search_type = $(this).val();
+            $("#totalSales").text('');
+            $("#capacity").text('');
+            if (search_type == 1) {
+                getValueFilter(listTotals);
+            } else if (search_type == 2) {
+                getValueFilter(listGroups);
+            } else if (search_type == 3) {
+                getValueFilter(listProducts);
+            }
+
+        });
+
+        function getValueFilter(listProducts) {
+            var string = '<option value="">-- Chọn giá trị lọc -- </option>';
+            $.map(listProducts, function (product) {
+                string += '<option  value="' + product.code + '">' + product.name + '</option>';
+            });
+            $(".value_filter").html(string);
+
+        }
+
+
+        $(document).on('change', '.value_filter', function () {
+            var code = $(this).val();
+            var data = $.grep(listSelectProducts, function (e) {
+                return e.code == code;
+            });
+            var item = data[0];
+            $("#totalSales").text(numberWithCommas(item.totalSales));
+            $("#capacity").text(numberWithCommas(item.capacity));
+        });
+
+        function numberWithCommas(x) {
+            var parts = x.toString().split(".");
+            parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+            return parts.join(".");
+        }
     });
 </script>
 @endpush

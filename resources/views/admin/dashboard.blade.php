@@ -666,6 +666,8 @@
                 getListTV(0);
             } else if (search_type == 4) {
                 getListGDV(0);
+            } else if (search_type == 5) {
+                getListNVKD(0);
             }
         });
 
@@ -723,6 +725,9 @@
                     }
                     if (type_search == 'gdv') {
                         showDataSaleGDV(data);
+                    }
+                    if (type_search == 'nvkd') {
+                        showDataSaleNVKD(data);
                     }
                 }
             });
@@ -968,43 +973,6 @@
             }
         }
 
-        function getListGDV(type) {
-            if(type == 0) {
-                $("#type_search").val('gdv');
-                var that = $(".data_search");
-            } else {
-                var that = $('.dataExport');
-            }
-
-            that.select2({
-                'placeholder': "{{'-- '. trans('home.select'). ' '. trans('home.manager') .' --'}}",
-                ajax: {
-                    url: "{{route('Admin::Api::sale@getListGDV')}}",
-                    dataType: 'json',
-                    delay: 500,
-                    data: function (params) {
-                        var queryParameters = {
-                            q: params.term
-                        }
-                        return queryParameters;
-                    },
-                    processResults: function (data, page) {
-                        return {
-                            results: $.map(data, function (item) {
-                                return {
-                                    text: item.name,
-                                    id: item.id,
-                                }
-                            })
-                        };
-                    },
-                    dropdownCssClass: "bigdrop", // apply css that makes the dropdown taller
-                    escapeMarkup: function (m) {
-                        return m;
-                    }
-                }
-            });
-        }
         function getListNVKD(type) {
 
             if(type == 0) {
@@ -1043,6 +1011,208 @@
                 }
             });
         }
+
+        function showDataSaleNVKD(data) {
+            var area_name = '';
+            var polygonArray = [];
+
+            $.map(data.locations, function (location, index) {
+                var item = location.area;
+                var c = item.coordinates;
+                var coordinate = JSON.parse(c);
+                var border_color = location.border_color;
+                var background_color = location.background_color;
+                if (coordinate) {
+                    var bounds = new google.maps.LatLngBounds();
+                    for (i = 0; i < coordinate.length; i++) {
+                        var c = coordinate[i];
+                        bounds.extend(new google.maps.LatLng(c[0], c[1]));
+                    }
+                    var path = coordinate;
+//                    map.setCenter(bounds.getCenter().lat(), bounds.getCenter().lng());
+                    polygon = map.drawPolygon({
+                        paths: path,
+                        strokeColor: border_color,
+                        strokeOpacity: 1,
+                        strokeWeight: 1,
+                        fillColor: background_color,
+                        fillOpacity: 0.4,
+                    });
+                    polygonArray[item.id] = polygon;
+                }
+                area_name += item.name;
+                if (index < data.locations.length - 1) {
+                    area_name += '-';
+                }
+            });
+
+            var postion = '';
+            console.log(data.userParent);
+            if (data.userParent.position == 3) {
+                postion = 'TV';
+            } else {
+                postion = 'GS';
+            }
+
+            var listAgents = '<div id="legend">';
+            $.map(data.listAgents, function (item) {
+                var agent = item.agent;
+                var user = agent.user;
+                var contentString = '<div class="info" style="font-size:' + user.fontSize + 'px; color:' + user.textColor + '">' +
+                    '<h5 class="address" style="display:none; font-size:' + user.fontSize + 'px; color:' + user.textColor + '">' + agent.name + ' - ' + agent.address + '</h5>' +
+                    '<div class="user_data" style="font-size:' + user.fontSize + 'px; color:' + user.textColor + '">' +
+                    '<p class="data" style="font-size:' + user.fontSize + 'px; color:' + user.textColor + '">%TT ' + numberWithCommas(item.totalSales) + '/' + numberWithCommas(item.capacity) + '=' + item.percent + '%</p>' +
+                    '<ul class="info_user" style="font-size:' + user.fontSize + 'px; color:' + user.textColor + '">' +
+                    '<li> NVKD:' + user.name + '</li>' +
+                    '<li class="gsv" style="display: none; font-size:' + user.fontSize + 'px; color:' + user.textColor + '">' + postion + ':' + data.userParent.name + '</li>' +
+                    '</ul>' +
+                    '</div>' +
+                    '</div>';
+                var infoWindow = new google.maps.InfoWindow({
+                    content: contentString
+                });
+                var image = "";
+                if (agent.icon != "") {
+                    image = 'http://' + window.location.hostname + '/' + agent.icon;
+                }
+
+                var marker = map.addMarker({
+                    lat: agent.lat,
+                    lng: agent.lng,
+                    title: agent.name,
+                    icon: image,
+                    infoWindow: infoWindow,
+                    click: function (e) {
+                        infoWindow.setPosition({lat: e.position.lat(), lng: e.position.lng()});
+                        infoWindow.open(map.map);
+                    }
+                });
+                listAgents += '<div><p class="" style="font-size:' + user.fontSize + 'px; color:' + user.textColor + '">'  + agent.name + ' %TT ' + item.totalSales + '/' + numberWithCommas(item.capacity) + '=' + numberWithCommas(item.percent) + '%</p><br></div>';
+            });
+
+            listAgents+= '</div>';
+            map.addControl({
+                position: 'top_right',
+                content: listAgents,
+            });
+
+            var list_products = data.listProducts;
+
+            var tableSales = '<table class="table table-striped table-bordered table-products" cellspacing="0" width="100%" id="data-table">' +
+                '<thead>' +
+                '<tr>' +
+                '<th>Tên Sản phẩm</th>' +
+                '<th>Mã Sản phẩm</th>' +
+                '<th>Sản lượng</th>' +
+                '<th>Dung lượng</th>' +
+                '</tr>' +
+                '</thead>' +
+                '<tbody>' +
+                '<tr>' +
+                '<td>' +
+                '<select id="choose_product">';
+            $.map(list_products, function (product) {
+                tableSales += '<option style="font-weight: bold" value="' + product.code + '">' + product.name + '</option>';
+                var productChildren = product.listProducts;
+
+                $.map(productChildren, function (productChild) {
+                    tableSales += '<option value="' + productChild.code + '">' + productChild.name + '</option>';
+                });
+
+            });
+            tableSales += '</select>' +
+                '</td>' +
+                '<td id="code">' + list_products[0].code + '</td>' +
+                '<td id="totalSales">' + numberWithCommas(list_products[0].totalSales) + '</td>' +
+                '<td id="capacity">' + numberWithCommas(list_products[0].capacity) + '</td>' +
+                '</tr>' +
+                '</tbody>' +
+                '</table>';
+            map.addControl({
+                position: 'top_left',
+                content: tableSales,
+            });
+
+            var listCodes = '<div style="background-color: white"><h3>Sản phẩm đang bán</h3><span>';
+            $.map(data.listCodes, function (code) {
+                listCodes +=  code + ' , ';
+            });
+            listCodes += '</span></div>';
+            map.addControl({
+                position: 'bottom_right',
+                content: listCodes,
+            });
+
+            listSelectProducts = [];
+            $.each(list_products, function (index, value) {
+                listSelectProducts.push(value);
+                var productChildren = value.listProducts;
+                $.each(productChildren, function (index, val) {
+                    listSelectProducts.push(val);
+                });
+            });
+
+
+            var tableSales =
+                '<div class="info_gsv" style="font-size:' + data.user.fontSize + 'px; color:' + data.user.textColor + '" >' +
+                '<h3 style="font-size:' + data.user.fontSize + 'px; color:' + data.user.textColor + '">' + area_name + '</h3>' +
+                '<div class="user_data_gsv" style="font-size:' + data.user.fontSize + 'px; color:' + data.user.textColor + '">' +
+                '<p class="data_gsv" id="data" style="font-size:' + data.user.fontSize + 'px; color:' + data.user.textColor + '">%TT ' + numberWithCommas(data.totalSales) + '/' + numberWithCommas(data.capacity) + '=' + data.percent + '%</p>' +
+                '<ul class="info_user_gsv" style="font-size:' + data.user.fontSize + 'px; color:' + data.user.textColor + '">' +
+                '<li>' + postion + ':' + data.user.name + '</li>' +
+                '<li class="gdv" style="display: none; font-size:' + data.user.fontSize + 'px; color:' + data.user.textColor + '"> GĐ :' + data.director + '</li>' +
+                '</ul>' +
+                '</div>' +
+                '</div>';
+            map.addControl({
+                position: 'top_center',
+                content: tableSales,
+            });
+
+//            if (data.table) {
+//                $('#tableData').html('');
+//                $('#tableData').html(data.table);
+//            }
+        }
+
+        function getListGDV(type) {
+            if(type == 0) {
+                $("#type_search").val('gdv');
+                var that = $(".data_search");
+            } else {
+                var that = $('.dataExport');
+            }
+
+            that.select2({
+                'placeholder': "{{'-- '. trans('home.select'). ' '. trans('home.manager') .' --'}}",
+                ajax: {
+                    url: "{{route('Admin::Api::sale@getListGDV')}}",
+                    dataType: 'json',
+                    delay: 500,
+                    data: function (params) {
+                        var queryParameters = {
+                            q: params.term
+                        }
+                        return queryParameters;
+                    },
+                    processResults: function (data, page) {
+                        return {
+                            results: $.map(data, function (item) {
+                                return {
+                                    text: item.name,
+                                    id: item.id,
+                                }
+                            })
+                        };
+                    },
+                    dropdownCssClass: "bigdrop", // apply css that makes the dropdown taller
+                    escapeMarkup: function (m) {
+                        return m;
+                    }
+                }
+            });
+        }
+
         function showDataSaleGDV(data) {
             var polygonArray = [];
             var position = '';
