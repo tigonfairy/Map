@@ -75,11 +75,65 @@ class ApiController extends AdminController
         return $users;
     }
     public function getListNVKD(Request $request){
+        $account = auth()->user();
         $users = User::where('position', User::NVKD);
 
         if($request->input('q')){
             $users = $users->where('name','like','%'.$request->input('q').'%');
         }
+
+        if ($account->position == User::GSV) {
+
+            $userOwns = $account->owners()->get();
+            $userOwns->push($account);
+            $listIds = $userOwns->pluck('id')->toArray();
+            $users->whereIn('id', $listIds);
+        } else if ($account->position == User::TV) {
+            $userOwns = $account->owners()->get();
+            foreach ($userOwns as $user) {
+                if (count($user->owners) > 0) {
+                    foreach ($user->owners as $u) {
+                        $userOwns->push($u);
+                    }
+                } else {
+                    $userOwns->push($user);
+                }
+            }
+            $userOwns->push($account);
+
+            $listIds = $userOwns->pluck('id')->toArray();
+
+            $users->whereIn('id', $listIds);
+
+        } else if ($account->position == User::GĐV) {
+            $userGSV = $account->owners()->get();
+
+            $listIds = [];
+            foreach ($userGSV as $user) {
+                if ($user->position == User::GSV) { // gsv
+                    if (count($user->owners) > 0) {
+
+                        foreach ($user->owners as $us) {
+                            $listIds[] = $us->id;
+                        }
+                    }
+                } else if ($user->position == User::TV) { // tv
+                    if (count($user->owners) > 0) {
+                        foreach ($user->owners as $u) {
+                            if (count($u->owners) > 0) {
+                                $listIds = $u->owners->pluck('id')->toArray();
+                            }
+                            $listIds[] = $u->id;
+                        }
+                    }
+                }
+                $listIds[] = $user->id;
+            }
+
+            $users->whereIn('id', $listIds);
+
+        }
+
         $users = $users->orderBy('id','desc')->limit(50)->get();
         return $users;
     }
