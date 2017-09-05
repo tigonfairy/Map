@@ -264,7 +264,7 @@
                                          ->join('agents','agents.id', '=' ,'sale_agents.agent_id')->where('agents.gdv',$manager->id)->where('product_id',$product->id)
                                 ->get()->sum('sales_real');
                             }
-                             if($type == 4) {
+                             if($type == 5) {
                                 $sltt =  \App\Models\SaleAgent::where('month','>=',$startMonth)->where('month','<=',$endMonth)
                                          ->join('agents','agents.id', '=' ,'sale_agents.agent_id')->where('agents.manager_id',$manager->id)->where('product_id',$product->id)
                                 ->get()->sum('sales_real');
