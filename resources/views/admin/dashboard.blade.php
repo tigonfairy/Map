@@ -983,7 +983,7 @@
             }
 
             that.select2({
-                'placeholder': "{{'-- '. trans('home.select'). ' '. trans('home.manager') .' --'}}",
+                'placeholder': "{{'-- Chọn nhân viên kinh doanh --'}}",
                 ajax: {
                     url: "{{route('Admin::Api::sale@getListNVKD')}}",
                     dataType: 'json',
@@ -1087,7 +1087,7 @@
                         infoWindow.open(map.map);
                     }
                 });
-                listAgents += '<div><p class="" style="font-size:' + user.fontSize + 'px; color:' + user.textColor + '">'  + agent.name + ' %TT ' + item.totalSales + '/' + numberWithCommas(item.capacity) + '=' + numberWithCommas(item.percent) + '%</p><br></div>';
+                listAgents += '<div><p class="" style="font-size:' + user.fontSize + 'px; color:' + user.textColor + '">'  + agent.name + ' %TT ' + numberWithCommas(item.totalSales) + '/' + numberWithCommas(item.capacity) + '=' + numberWithCommas(item.percent) + '%</p><br></div>';
             });
 
             listAgents+= '</div>';

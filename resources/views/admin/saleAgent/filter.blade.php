@@ -1,9 +1,9 @@
 @extends('admin')
 @section('content')
     <style>
-        .matrixData {
+        #matrixData {
             width: 100%;
-            overflow-x:auto ;
+            overflow-x:auto !important;
         }
     </style>
     <div class="row">
@@ -340,7 +340,7 @@
             }
 
             that.select2({
-                'placeholder': "{{'-- '. trans('home.select'). ' '. trans('home.manager') .' --'}}",
+                'placeholder': "{{'-- Chọn nhân viên kinh doanh --'}}",
                 ajax: {
                     url: "{{route('Admin::Api::sale@getListNVKD')}}",
                     dataType: 'json',
