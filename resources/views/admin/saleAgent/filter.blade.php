@@ -8,7 +8,7 @@
 
                     @if($user->position != \App\Models\User::NVKD)
                         <div class="col-md-2">
-                            <select class="search_type form-control">
+                            <select class="search_type form-control" name="type_data_search">
                                 <option value="">-- Chọn loại {{ trans('home.search') }} --</option>
                                 <option value="1">Theo đại lý</option>
                                 <option value="5">Theo nhân viên kinh doanh</option>
@@ -69,6 +69,20 @@
             <div class="portlet-body">
                 <div class="portlet-body">
                     <div id="tableData"></div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="portlet light">
+            <div class="portlet-title">
+                <div class="caption">
+                    <span class="caption-subject bold uppercase font-dark">Matrix</span>
+                </div>
+            </div>
+            <div class="portlet-body">
+                <div class="portlet-body">
+                    <div id="maxTable"></div>
                 </div>
             </div>
         </div>
@@ -325,6 +339,20 @@
                     if (data.table) {
                         $('#tableData').html('');
                         $('#tableData').html(data.table);
+                    }
+                }
+            });
+
+            $.ajax({
+                type: "GET",
+                url: "{{ route('Admin::saleAgent@matrixFilter') }}",
+                data: $('#geocoding_form').serialize(),
+                cache: false,
+                success: function (data) {
+
+                    if (data.table) {
+                        $('#maxTable').html('');
+                        $('#maxTable').html(data.table);
                     }
                 }
             });

@@ -832,4 +832,8 @@ class SaleAgentController extends AdminController
 
         }
     }
+    public function matrixFilter(Request $request) {
+        $data = $request->all();
+        dd($data);
+    }
 }
