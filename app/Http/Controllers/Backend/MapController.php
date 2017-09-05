@@ -692,7 +692,7 @@ class MapController extends AdminController
 
             // table data
             $type = 1;
-            $user = $agent->id;
+            $user = $agent->manager_id;
             $startMonth = $month;
             $endMonth = $month;
             $table = view('tableDashboard', compact('type', 'user', 'startMonth', 'endMonth'))->render();
