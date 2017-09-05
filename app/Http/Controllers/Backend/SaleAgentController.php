@@ -234,14 +234,16 @@ class SaleAgentController extends AdminController
             $user = $agent->id;
 
             $table = view('tableDashboard', compact('type', 'user', 'startMonth', 'endMonth'))->render();
-
             return response()->json([
                 'table' => $table,
+
             ]);
         }
 
         if ($typeSearch == 'gsv') {
+
             $user = User::findOrFail($dataSearch);
+
 
             // table data
             $type = 2;
@@ -259,6 +261,7 @@ class SaleAgentController extends AdminController
 
             $userTv = User::findOrFail($dataSearch);
 
+
             // table data
             $type = 3;
             $id = $userTv->id;
@@ -266,10 +269,12 @@ class SaleAgentController extends AdminController
 
             return response()->json([
                 'table' => $table,
+
             ]);
         }
 
         if ($typeSearch == 'gdv') {
+
             $userGdv = User::findOrFail($dataSearch);
 
             // table data
@@ -279,6 +284,7 @@ class SaleAgentController extends AdminController
 
             return response()->json([
                 'table' => $table,
+
             ]);
         }
 
@@ -370,4 +376,19 @@ class SaleAgentController extends AdminController
 
         }
     }
+
+
+
+
+
+
+    public function matrixFilter(Request $request) {
+        $data = $request->all();
+        $type = $request->input('type_data_search');
+        $manager_id = $request->input('data_search');
+        $startMonth = $request->input('startMonth');
+        $endMonth = $request->input('endMonth');
+        return view('admin.saleAgent.matrix',compact('type','manager_id','startMonth','endMonth'))->render();
+    }
+
 }
