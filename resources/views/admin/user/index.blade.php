@@ -120,6 +120,7 @@
             autoWidth: false,
             processing: true,
             serverSide: true,
+//            searching: false,
             "pageLength": 10,
             ajax: {
                 url: '{!! route('Admin::user@datatables') !!}',
@@ -129,12 +130,26 @@
             },
             columns: [
                 {data: 'code', name: 'code'},
-                {data: 'email', name: 'email'},
+                {data: 'email', name: 'email',searchable:true},
                 {data: 'position', name: 'position'},
                 {data: 'manager', name: 'manager'},
                 {data: 'created_at', name: 'created_at'},
                 {data: 'action', name: 'action', orderable: false, searchable: false}
-            ]
+            ],
+
+                initComplete: function () {
+                    this.api().columns().every(function () {
+
+
+                        var column = this;
+                        var input = document.createElement("input");
+                        input.className = "form-control form-filter input-sm";
+                        $(input).appendTo($(column.header()))
+                                .on('keyup', function () {
+                                    column.search($(this).val(), false, false, true).draw();
+                                });
+                    });
+        }
         });
 
         $("#import").on("click", function () {

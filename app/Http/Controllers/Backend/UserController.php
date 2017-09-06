@@ -10,6 +10,7 @@ use App\Models\Permission;
 use Validator;
 use App\Jobs\ImportUser;
 use Excel;
+use Datatables;
 class UserController extends AdminController
 {
 
@@ -110,20 +111,30 @@ class UserController extends AdminController
 
     public function delete($id)
     {
-        if (auth()->user()->roles->first()['id'] == 3) {
-            abort(403);
-        }
+
         $user = User::findOrFail($id);
         $user->delete();
         return redirect()->route('Admin::user@index')->with('success', 'Đã xoá thành công');
     }
 
-    public function getDatatables()
+    public function getDatatables(Request $request)
     {
-        if (auth()->user()->roles->first()['id'] == 3) {
-            abort(403);
-        }
-        return User::getDatatables();
+
+        $users = User::select('*');
+
+        return Datatables::eloquent($users)
+            ->editColumn('position', function ($model) {
+                return User::$positionTexts[$model->position];
+            })
+            ->addColumn('manager', function ($model) {
+                if($model->manager) {
+                    return $model->manager->code;
+                }
+                return '';
+
+            })
+            ->addColumn('action', 'admin.user.datatables.action')
+            ->make(true);
     }
     public function getAccountPosition(Request $request) {
         $position = $request->input('position');
