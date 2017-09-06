@@ -637,7 +637,8 @@
             data: {
                 type_search: type_search,
                 data_search: '{{  $user->id }}',
-                month: '{{ $month }}',
+                startMonth: '{{ $month }}',
+                endMonth: '{{ $month }}',
             },
             cache: false,
             success: function (data) {

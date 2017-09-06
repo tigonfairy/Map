@@ -1268,6 +1268,7 @@ class MapController extends AdminController
         }
 
         if ($typeSearch == 'admin') {
+
             $userGDVs = User::where('position', User::GĐV)->get();
             $data = [];
             $locations = [];
