@@ -254,7 +254,6 @@ class SaleAgentController extends AdminController
                     if (count($products) > 0) {
                         foreach ($products as $product) {
                             $sales = SaleAgent::where('agent_id', $agent->id)->where('product_id', $product->id)->where('month', '>=', $startMonth)->where('month', '<=', $endMonth)->select(DB::raw("SUM(sales_real) as sales_real"), "capacity")->first();
-
                             if (!is_null($sales->sales_real)) {
                                 $slGroup += $sales->sales_real;
                                 $capacity = $sales->capacity;
