@@ -214,7 +214,23 @@
             <td>{{$slkh}}</td>
         </tr>
 
-
+        @php $string = '';
+        if($type == 1) {
+            $string = 'Đại lý';
+        }
+        if($type == 2) {
+        $string = 'GS vùng';
+        }
+        if($type == 3) {
+            $string = 'Trưởng vùng';
+        }
+        if($type==4) {
+        $string = 'Giám đốc vùng';
+        }
+        if($type==5) {
+        $string = 'NVKD';
+        }
+        @endphp
         <tr class="thang">
             <td></td>
             <td colspan="2">
@@ -264,7 +280,7 @@
                                          ->join('agents','agents.id', '=' ,'sale_agents.agent_id')->where('agents.gdv',$manager->id)->where('product_id',$product->id)
                                 ->get()->sum('sales_real');
                             }
-                             if($type == 4) {
+                             if($type == 5) {
                                 $sltt =  \App\Models\SaleAgent::where('month','>=',$startMonth)->where('month','<=',$endMonth)
                                          ->join('agents','agents.id', '=' ,'sale_agents.agent_id')->where('agents.manager_id',$manager->id)->where('product_id',$product->id)
                                 ->get()->sum('sales_real');

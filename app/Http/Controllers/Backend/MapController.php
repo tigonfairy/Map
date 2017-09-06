@@ -633,7 +633,7 @@ class MapController extends AdminController
         $dataSearch = $request->has('data_search') ? $request->input('data_search') : 0;
         $startMonth = $request->input('startMonth');
         $endMonth = $request->input('endMonth');
-        
+
         if ($typeSearch == 'agents') {
 
             $agent = Agent::findOrFail($dataSearch);

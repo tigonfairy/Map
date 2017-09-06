@@ -193,7 +193,11 @@
                                     ->groupBy('agent_id','month')->join('agents','agents.id', '=' ,'sale_agents.agent_id')->where('agents.gdv',$manager->id)
                                     ->get()->sum('sales_plan');
                 }
+<<<<<<< HEAD
         
+=======
+
+>>>>>>> 603529854b360767a9433797488ecd4525f58ffd
         if($type == 5) {
  $string = 'NVKD';
                 $dlv = \App\Models\SaleAgent::where('month','>=',$startMonth)->where('month','<=',$endMonth)

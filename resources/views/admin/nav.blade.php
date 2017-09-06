@@ -108,7 +108,7 @@
 
                 </ul>
             </li>
-          
+
             @if(auth()->user()->position == \App\Models\User::ADMIN)
             <li class="nav-item">
                 <a href="javascript:;" class="nav-link nav-toggle">

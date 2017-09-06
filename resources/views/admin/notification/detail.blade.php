@@ -27,7 +27,7 @@
 
     <div class="page-container">
         <!-- Page content -->
-
+    @include('admin.flash')
         <div class="content-wrapper">
 
             <div class="col-md-6 col-md-offset-3">

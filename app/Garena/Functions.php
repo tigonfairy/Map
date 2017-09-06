@@ -59,7 +59,7 @@ class Functions
                 ->join('agents','agents.id', '=' ,'sale_agents.agent_id')->where('agents.manager_id',$id_manager)->where('product_id',$id)
                 ->get()->sum('sales_real');
         }
-       
+
         return $sltt;
 
     }
