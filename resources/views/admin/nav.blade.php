@@ -44,7 +44,7 @@
             {{--</li>--}}
             {{--</ul>--}}
             {{--</li>--}}
-            @if(auth()->user()->position == \App\Models\User::ADMIN)
+
             <li class="nav-item">
                 <a href="javascript:;" class="nav-link nav-toggle">
                     <i class="fa fa-database"></i>
@@ -52,7 +52,7 @@
                     <span class="arrow"></span>
                 </a>
                 <ul class="sub-menu">
-
+                    @if(auth()->user()->position == \App\Models\User::ADMIN)
                     <li class="nav-item  ">
                         <a href="{{route('Admin::saleAgent@index')}}" class="nav-link nav-toggle">
                             <i class="icon-settings"></i>
@@ -60,7 +60,7 @@
                             <span class="arrow"></span>
                         </a>
                     </li>
-
+                    @endif
                     <li class="nav-item  ">
                         <a href="{{route('Admin::saleAgent@filter')}}" class="nav-link nav-toggle">
                             <i class="icon-settings"></i>
@@ -68,7 +68,7 @@
                             <span class="arrow"></span>
                         </a>
                     </li>
-
+                        @if(auth()->user()->position == \App\Models\User::ADMIN)
                     <li class="nav-item  ">
                         <a href="{{route('Admin::group_product@index')}}" class="nav-link nav-toggle">
                             <i class="icon-settings"></i>
@@ -76,6 +76,7 @@
                             <span class="arrow"></span>
                         </a>
                     </li>
+
                     <li class="nav-item  ">
                         <a href="{{route('Admin::product@index')}}" class="nav-link nav-toggle">
                             <i class="icon-settings"></i>
@@ -90,7 +91,7 @@
                             <span class="title">{{ trans('home.listAccount') }}</span>
                         </a>
                     </li>
-
+                        @endif
                     {{--<li class="nav-item  ">--}}
                         {{--<a href="{{route('Admin::role@index')}}" class="nav-link">--}}
                             {{--<i class="icon-lock"></i>--}}
@@ -107,7 +108,7 @@
 
                 </ul>
             </li>
-            @endif
+
             @if(auth()->user()->position == \App\Models\User::ADMIN)
             <li class="nav-item">
                 <a href="javascript:;" class="nav-link nav-toggle">

@@ -64,7 +64,7 @@
             </div>
         </div>
 
-        <div class="portlet light" id="filter" style="display: none;">
+        <div class="portlet light filter"  style="display: none;">
             <div class="portlet-title">
                 <div class="caption">
                     <span class="caption-subject bold uppercase font-dark">Lọc</span>
@@ -81,22 +81,8 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>
-                                        <select class="type_filter form-control">
-                                            <option value="">-- Chọn loại {{ trans('home.search') }} --</option>
-                                            <option value="1">Theo tổng</option>
-                                            <option value="2">Theo nhóm</option>
-                                            <option value="3">Theo mã sản phảm</option>
-                                        </select>
-                                    </td>
-                                    <td id="">
-                                        <select name="value_filter" class="value_filter form-control" id="locations"
-                                                style="width:100%">
-                                        </select>
-                                    </td>
-                                    <td id="totalSales"></td>
-                                    <td id="capacity"></td>
+                                <tr id="filter">
+
                                 </tr>
                             </tbody>
                         </table>
@@ -118,10 +104,6 @@
             </div>
         </div>
 
-<<<<<<< HEAD
-
-=======
->>>>>>> e478877916616c0ff8cf133050b02f042d00dfcf
         <div class="portlet light">
             <div class="portlet-title">
                 <div class="caption">
@@ -130,11 +112,8 @@
             </div>
             <div class="portlet-body">
                 <div class="portlet-body">
-<<<<<<< HEAD
                     <div id="maxTable"></div>
-=======
                     <div id="matrixData"></div>
->>>>>>> e478877916616c0ff8cf133050b02f042d00dfcf
                 </div>
             </div>
         </div>
@@ -391,7 +370,20 @@
                 data: $('#geocoding_form').serialize(),
                 cache: false,
                 success: function (data) {
-                    $("#filter").show();
+                    $(".filter").show();
+                    $("#filter").html('<td><select class="type_filter form-control">' +
+                        '<option value="">-- Chọn loại tìm kiếm --</option>' +
+                    '<option value="1">Theo tổng</option>' +
+                    '<option value="2">Theo nhóm</option>' +
+                    '<option value="3">Theo mã sản phảm</option>' +
+                    '</select>' +
+                    '</td>' +
+                    '<td id="">' +
+                       '<select name="value_filter" class="value_filter form-control" id="locations">' +
+                        '</select>' +
+                    '</td>' +
+                    '<td id="totalSales"></td>' +
+                    '<td id="capacity"></td>');
                     listTotals = data.listTotals;
                     listGroups = data.listGroups;
                     listProducts = data.listProducts;
@@ -466,9 +458,9 @@
         });
 
         function numberWithCommas(x) {
-            var parts = x.toString().split(".");
-            parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-            return parts.join(".");
+            var parts = x.toString().split(",");
+            parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            return parts.join(",");
         }
     });
 </script>

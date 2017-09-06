@@ -466,7 +466,10 @@ class MapController extends AdminController
         }
         if(isset($data['attribute']) and $data['attribute'] == Agent::agentRival) {
             $data['icon'] = (isset($config['agent_rival'])) ? $config['agent_rival'] : null;
+        }
 
+        if(isset($data['attribute']) and $data['attribute'] == Agent::agentNew) {
+            $data['icon'] = (isset($config['agent_unclassified'])) ? $config['agent_unclassified'] : null;
         }
 
 
@@ -628,9 +631,10 @@ class MapController extends AdminController
 
         $typeSearch =$request->input('type_search');
         $dataSearch = $request->has('data_search') ? $request->input('data_search') : 0;
-        $month = $request->input('month');
+        $startMonth = $request->input('startMonth');
+        $endMonth = $request->input('endMonth');
 
-        if ($typeSearch == 'agents' || $typeSearch == '') {
+        if ($typeSearch == 'agents') {
 
             $agent = Agent::findOrFail($dataSearch);
 
@@ -647,8 +651,8 @@ class MapController extends AdminController
                     $products = $group->product()->where('level',1)->orderBy('created_at','desc')->get();
                     if (count($products) > 0) {
                         foreach ($products as $product) {
-                            $sales = SaleAgent::where('agent_id', $agent->id)->where('product_id', $product->id)->where('month', $month)->select('sales_real', 'capacity')->first();
-                            if ($sales) {
+                            $sales = SaleAgent::where('agent_id', $agent->id)->where('product_id', $product->id)->where('month', '>=', $startMonth)->where('month', '<=', $endMonth)->select(DB::raw("SUM(sales_real) as sales_real"), "capacity")->first();
+                            if (!is_null($sales->sales_real)) {
                                 $slGroup += $sales->sales_real;
                                 $capacity = $sales->capacity;
                                 $array[] = [
@@ -664,8 +668,6 @@ class MapController extends AdminController
                         }
                     }
 
-                    $capacity = $capacity == 0 ? 1 : $capacity;
-
                     $listProducts[] = [
                                 'id' => $group->id,
                                 'name' => $group->name_vn,
@@ -680,7 +682,6 @@ class MapController extends AdminController
                 }
             }
 
-            $capacity = $capacity == 0 ? 1 : $capacity;
             $listProducts[] = [
                 'id' => 0,
                 'name' => 'Tổng sản lượng',
@@ -692,9 +693,8 @@ class MapController extends AdminController
 
             // table data
             $type = 1;
-            $user = $agent->manager_id;
-            $startMonth = $month;
-            $endMonth = $month;
+            $user = $agent->id;
+
             $table = view('tableDashboard', compact('type', 'user', 'startMonth', 'endMonth'))->render();
 
             $nvkd = $agent->user;
@@ -715,19 +715,18 @@ class MapController extends AdminController
             ]);
         }
 
-        if ($typeSearch == 'nvkd') {
+        if ($typeSearch == 'nvkd' || $typeSearch == '') {
 
             $totalSales = 0;
             $saleAgents = 0;
             $listAgents = [];
             $capacity = 0;
 
-            if ($dataSearch != 0 && $typeSearch == 'nvkd') {
+            if ($dataSearch != 0) {
                     $user = User::findOrFail($dataSearch);
             } else {
-                    $user = auth()->user();
+                $user = auth()->user();
             }
-
 
             $userParent = $user->manager;
             $areas = $userParent->area()->get();
@@ -747,7 +746,7 @@ class MapController extends AdminController
 
             foreach ($agents as $agent) {
 
-                $sales = SaleAgent::where('agent_id', $agent->id)->where('month', $month)->select('sales_real', 'capacity')->get();
+                $sales = SaleAgent::where('agent_id', $agent->id)->where('month', '>=', $startMonth)->where('month', '<=', $endMonth)->select('sales_real', 'capacity')->get();
                 foreach ($sales as $sale) {
                     $saleAgents += $sale->sales_real;
                     $capacity = $sale->capacity;
@@ -784,7 +783,7 @@ class MapController extends AdminController
                     $products = $group->product()->where('level',1)->orderBy('created_at','desc')->get();
                     if (count($products) > 0) {
                         foreach ($products as $product) {
-                            $sales = SaleAgent::join('products', 'sale_agents.product_id', '=', 'products.id')->whereIn('agent_id', $agentIds)->where('month', $month)
+                            $sales = SaleAgent::join('products', 'sale_agents.product_id', '=', 'products.id')->whereIn('agent_id', $agentIds)->where('month', '>=', $startMonth)->where('month', '<=', $endMonth)
                                 ->where('sale_agents.product_id', $product->id)->selectRaw('sum(sales_real) as sum, sale_agents.product_id, products.name_vn, products.code')->first();
                             if ($sales) {
                                 $slGroup += $sales->sum;
@@ -815,6 +814,12 @@ class MapController extends AdminController
                 }
             }
 
+            // table data
+            $type = 5;
+            $id = $user->id;
+
+            $table = view('tableDashboard', compact('type', 'id', 'startMonth', 'endMonth'))->render();
+
             return response()->json([
                 'user' => $user,
                 'userParent' => $userParent,
@@ -824,7 +829,8 @@ class MapController extends AdminController
                 'capacity' => $capacity,
                 'percent' => round($totalSales / $capacity, 2),
                 'listProducts' => $listProducts,
-                'listCodes' => $listCodes
+                'listCodes' => $listCodes,
+                'table' => $table
             ]);
         }
 
@@ -859,7 +865,7 @@ class MapController extends AdminController
 
             foreach ($agents as $agent) {
 
-                $sales = SaleAgent::where('agent_id', $agent->id)->where('month', $month)->select('sales_real', 'capacity')->get();
+                $sales = SaleAgent::where('agent_id', $agent->id)->where('month', '>=', $startMonth)->where('month', '<=', $endMonth)->select('sales_real', 'capacity')->get();
                 foreach ($sales as $sale) {
                     $saleAgents += $sale->sales_real;
                     $capacity = $sale->capacity;
@@ -896,7 +902,7 @@ class MapController extends AdminController
                     $products = $group->product()->where('level',1)->orderBy('created_at','desc')->get();
                     if (count($products) > 0) {
                         foreach ($products as $product) {
-                            $sales = SaleAgent::join('products', 'sale_agents.product_id', '=', 'products.id')->whereIn('agent_id', $agentIds)->where('month', $month)
+                            $sales = SaleAgent::join('products', 'sale_agents.product_id', '=', 'products.id')->whereIn('agent_id', $agentIds)->where('month', '>=', $startMonth)->where('month', '<=', $endMonth)
                                 ->where('sale_agents.product_id', $product->id)->selectRaw('sum(sales_real) as sum, sale_agents.product_id, products.name_vn, products.code')->first();
                             if ($sales) {
                                 $slGroup += $sales->sum;
@@ -930,8 +936,6 @@ class MapController extends AdminController
             // table data
             $type = 2;
             $id = $user->id;
-            $startMonth = $month;
-            $endMonth = $month;
             $table = view('tableDashboard', compact('type', 'id', 'startMonth', 'endMonth'))->render();
 
             array_unique($listCodes);
@@ -990,7 +994,7 @@ class MapController extends AdminController
 
             foreach ($agents as $agent) {
 
-                $sales = SaleAgent::where('agent_id', $agent->id)->where('month', $month)->select('sales_real', 'capacity')->get();
+                $sales = SaleAgent::where('agent_id', $agent->id)->where('month', '>=', $startMonth)->where('month', '<=', $endMonth)->select('sales_real', 'capacity')->get();
 
                 foreach ($sales as $sale) {
                     $saleAgents += $sale->sales_real;
@@ -1028,7 +1032,7 @@ class MapController extends AdminController
                     $products = $group->product()->where('level',1)->orderBy('created_at','desc')->get();
                     if (count($products) > 0) {
                         foreach ($products as $product) {
-                            $sales = SaleAgent::join('products', 'sale_agents.product_id', '=', 'products.id')->whereIn('agent_id', $agentIds)->where('month', $month)
+                            $sales = SaleAgent::join('products', 'sale_agents.product_id', '=', 'products.id')->whereIn('agent_id', $agentIds)->where('month', '>=', $startMonth)->where('month', '<=', $endMonth)
                                 ->where('sale_agents.product_id', $product->id)->selectRaw('sum(sales_real) as sum, sale_agents.product_id, products.name_vn, products.code')->first();
                             if ($sales) {
                                 $slGroup += $sales->sum;
@@ -1061,8 +1065,6 @@ class MapController extends AdminController
             // table data
             $type = 3;
             $id = $userTv->id;
-            $startMonth = $month;
-            $endMonth = $month;
             $table = view('tableDashboard', compact('type', 'id', 'startMonth', 'endMonth'))->render();
 
             array_unique($listCodes);
@@ -1123,7 +1125,7 @@ class MapController extends AdminController
 
                 foreach ($agents as $agent) {
 
-                    $sales = SaleAgent::where('agent_id', $agent->id)->where('month', $month)->select('sales_real', 'capacity')->get();
+                    $sales = SaleAgent::where('agent_id', $agent->id)->where('month', '>=', $startMonth)->where('month', '<=', $endMonth)->select('sales_real', 'capacity')->get();
                     foreach ($sales as $sale) {
                         $saleAgents += $sale->sales_real;
                         $capacity = isset($sale->capacity) ?  $sale->capacity : 1;
@@ -1167,7 +1169,7 @@ class MapController extends AdminController
             $agents = Agent::where('manager_id', $userGdv->id)->with('user')->get();
             if (count($agents) > 0) {
                 foreach ($agents as $agent) {
-                    $sales = SaleAgent::where('agent_id', $agent->id)->where('month', $month)->select('sales_real', 'capacity')->get();
+                    $sales = SaleAgent::where('agent_id', $agent->id)->where('month', '>=', $startMonth)->where('month', '<=', $endMonth)->select('sales_real', 'capacity')->get();
                     $saleAgents = 0;
                     foreach ($sales as $sale) {
                         $saleAgents += $sale->sales_real;
@@ -1212,7 +1214,7 @@ class MapController extends AdminController
                     $products = $group->product()->where('level',1)->orderBy('created_at','desc')->get();
                     if (count($products) > 0) {
                         foreach ($products as $product) {
-                            $sales = SaleAgent::join('products', 'sale_agents.product_id', '=', 'products.id')->whereIn('agent_id', $agentIds)->where('month', $month)
+                            $sales = SaleAgent::join('products', 'sale_agents.product_id', '=', 'products.id')->whereIn('agent_id', $agentIds)->where('month', '>=', $startMonth)->where('month', '<=', $endMonth)
                                 ->where('sale_agents.product_id', $product->id)->selectRaw('sum(sales_real) as sum, sale_agents.product_id, products.name_vn, products.code')->first();
                             if ($sales) {
                                 $slGroup += $sales->sum;
@@ -1246,8 +1248,6 @@ class MapController extends AdminController
             // table data
             $type = 4;
             $id = $userGdv->id;
-            $startMonth = $month;
-            $endMonth = $month;
             $table = view('tableDashboard', compact('type', 'id', 'startMonth', 'endMonth'))->render();
 
             array_unique($listCodes);
@@ -1315,7 +1315,7 @@ class MapController extends AdminController
                         $agents = Agent::whereIn('manager_id', $listIds)->with('user')->get();
                         $saleAgents = 0;
                         foreach ($agents as $agent) {
-                            $sales = SaleAgent::where('agent_id', $agent->id)->where('month', $month)->select('sales_real', 'capacity')->get();
+                            $sales = SaleAgent::where('agent_id', $agent->id)->where('month', '>=', $startMonth)->where('month', '<=', $endMonth)->select('sales_real', 'capacity')->get();
 
                             foreach ($sales as $sale) {
                                 $saleAgents += $sale->sales_real;

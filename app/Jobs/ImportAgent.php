@@ -164,6 +164,10 @@ class ImportAgent
                         $icon = (isset($config['agent_rival'])) ? $config['agent_rival'] : null;
                     }
 
+                    if($attribute == Agent::agentNew) {
+                        $icon =  (isset($config['agent_unclassified'])) ? $config['agent_unclassified'] : null;
+                    }
+
 
                     $agent = Agent::firstOrCreate(['code' => $code]);
                     $data = [

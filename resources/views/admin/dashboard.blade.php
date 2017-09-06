@@ -149,32 +149,51 @@
                             </select>
                         </div>
 
-                        <div class="col-md-2">
-                            <input type="text" id="month" name="month" class="form-control monthPicker col-md-9"
-                                   value="{{ old('month') ?: $month }}"/>
-                        </div>
+
+
+                            <div class="col-md-2">
+                                <input type="text" name="startMonth"  class="form-control startMonth" value="{{ old('startMonth') ?: $month }}" placeholder="Thời gian bắt đầu"/>
+
+                            </div>
+
+
+                            <div class="col-md-2">
+                                <input type="text" name="endMonth"  class="form-control endMonth" value="{{ old('endMonth') ?: $month }}" placeholder="Thời gian kết  thúc"/>
+
+                            </div>
+
 
                         <div class="col-md-2">
                             <button type="submit" class="btn btn-info">{{ trans('home.search') }}</button>
                         </div>
                     @else
 
-                        <div class="col-md-3">
-                            <input type="text" id="month" name="month" class="form-control monthPicker col-md-9"
-                                   value="{{ old('month') ?: $month }}"/>
-                        </div>
+                        {{--<div class="col-md-3">--}}
 
-                        <div class="col-md-9">
+
+
+                            <div class="col-md-2">
+                                <input type="text" name="startMonth"  class="form-control startMonth" value="{{ old('startMonth') ?: $month }}" placeholder="Thời gian bắt đầu"/>
+
+                            </div>
+
+
+                            <div class="col-md-2">
+                                <input type="text" name="endMonth"  class="form-control endMonth" value="{{ old('endMonth') ?: $month }}" placeholder="Thời gian kết  thúc"/>
+
+                            </div>
+
+
+
+                        <div class="col-md-2">
                             <button type="submit" class="btn btn-info">{{ trans('home.search') }}</button>
                         </div>
 
                     @endif
-                    @if($user->position == \App\Models\User::ADMIN)
-                        <div class="col-md-2">
-                            <a href="#export-product" class="btn btn-info" data-toggle="modal">Export excel</a>
-                        </div>
 
-                    @endif
+                    <div class="col-md-2">
+                        <a href="#export-product" class="btn btn-info" data-toggle="modal">Export excel</a>
+                    </div>
                 </form>
 
                 <div class="clearfix"></div>
@@ -198,6 +217,7 @@
                                         <div class="form-group">
                                             <label class="control-label col-md-3">Loại</label>
                                             <div class="col-md-8">
+
                                                 <select name="type" class="typeExport form-control">
                                                     <option value="">-- Chọn loại {{ trans('home.search') }} --</option>
                                                     <option value="1">Theo đại lý</option>
@@ -211,7 +231,6 @@
                                                     @if(($user->position != \App\Models\User::GĐV && $user->position != \App\Models\User::GSV && $user->position != \App\Models\User::TV))
                                                         <option value="4">Theo giám đốc vùng</option>
                                                     @endif
-
                                                 </select>
                                                 <span id="typeExport" class="error-import" style="color:red;"></span>
                                             </div>
@@ -399,33 +418,6 @@
             }
         });
 
-
-
-        $('#export').on('click',function(e){
-            var startMonth =  $('.startMonth-export').val();
-//            if(startMonth == '') {
-//                e.preventDefault();
-//                $('#startMonth').text('Vui lòng chọn tháng bắt đầu để export');
-//            }
-//            var endMonth =  $('.endMonth-export').val();
-//            if(endMonth == '') {
-//                e.preventDefault();
-//                $('#endMonth').text('Vui lòng chọn tháng kết thúc để export');
-//            }
-            var type = $('.typeExport option:selected').val();
-            if(type == '') {
-                e.preventDefault();
-                $('#typeExport').text('Vui lòng chọn loại để export');
-            }
-            var type1 = $('.dataExport option:selected').val();
-            if(type1 == undefined) {
-                e.preventDefault();
-                $('#humanExport').text('Vui lòng chọn quản lý để export');
-            }
-
-
-        });
-
         //chart cot
         Highcharts.chart('container', {
             chart: {
@@ -599,6 +591,31 @@
             });
         });
 
+        // export
+
+        $('#export').on('click',function(e){
+            var startMonth =  $('.startMonth-export').val();
+//            if(startMonth == '') {
+//                e.preventDefault();
+//                $('#startMonth').text('Vui lòng chọn tháng bắt đầu để export');
+//            }
+//            var endMonth =  $('.endMonth-export').val();
+//            if(endMonth == '') {
+//                e.preventDefault();
+//                $('#endMonth').text('Vui lòng chọn tháng kết thúc để export');
+//            }
+            var type = $('.typeExport option:selected').val();
+            if(type == '') {
+                e.preventDefault();
+                $('#typeExport').text('Vui lòng chọn loại để export');
+            }
+            var type1 = $('.dataExport option:selected').val();
+            if(type1 == undefined) {
+                e.preventDefault();
+                $('#humanExport').text('Vui lòng chọn quản lý để export');
+            }
+        });
+
         //map
         var type_search = '';
 
@@ -636,7 +653,7 @@
                 });
 
                 if (type_search == 'nvkd') {
-                    showDataAgents(data);
+                    showDataSaleNVKD(data);
                 }
                 if (type_search == 'gsv') {
                     showDataSales(data);
@@ -713,7 +730,7 @@
                         content: button,
                     });
 
-                    if (type_search == 'agents' || type_search === undefined || type_search == null || type_search.length <= 0) {
+                    if (type_search == 'agents') {
 
                         showDataAgents(data);
                     }
@@ -726,7 +743,7 @@
                     if (type_search == 'gdv') {
                         showDataSaleGDV(data);
                     }
-                    if (type_search == 'nvkd') {
+                    if (type_search == 'nvkd' || type_search === undefined || type_search == null || type_search.length <= 0) {
                         showDataSaleNVKD(data);
                     }
                 }
@@ -1047,7 +1064,7 @@
             });
 
             var postion = '';
-            console.log(data.userParent);
+
             if (data.userParent.position == 3) {
                 postion = 'TV';
             } else {
@@ -1169,10 +1186,10 @@
                 content: tableSales,
             });
 
-//            if (data.table) {
-//                $('#tableData').html('');
-//                $('#tableData').html(data.table);
-//            }
+            if (data.table) {
+                $('#tableData').html('');
+                $('#tableData').html(data.table);
+            }
         }
 
         function getListGDV(type) {
@@ -1797,9 +1814,9 @@
         });
 
         function numberWithCommas(x) {
-            var parts = x.toString().split(".");
-            parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-            return parts.join(".");
+            var parts = x.toString().split(",");
+            parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            return parts.join(",");
         }
     });
 </script>
