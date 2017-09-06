@@ -190,11 +190,10 @@
                         </div>
 
                     @endif
-                    @if($user->position == \App\Models\User::ADMIN)
-                        <div class="col-md-2">
-                            <a href="#export-product" class="btn btn-info" data-toggle="modal">Export excel</a>
-                        </div>
-                    @endif
+
+                    <div class="col-md-2">
+                        <a href="#export-product" class="btn btn-info" data-toggle="modal">Export excel</a>
+                    </div>
                 </form>
 
                 <div class="clearfix"></div>
@@ -218,6 +217,7 @@
                                         <div class="form-group">
                                             <label class="control-label col-md-3">Loại</label>
                                             <div class="col-md-8">
+
                                                 <select name="type" class="typeExport form-control">
                                                     <option value="">-- Chọn loại {{ trans('home.search') }} --</option>
                                                     <option value="1">Theo đại lý</option>
@@ -231,7 +231,6 @@
                                                     @if(($user->position != \App\Models\User::GĐV && $user->position != \App\Models\User::GSV && $user->position != \App\Models\User::TV))
                                                         <option value="4">Theo giám đốc vùng</option>
                                                     @endif
-
                                                 </select>
                                                 <span id="typeExport" class="error-import" style="color:red;"></span>
                                             </div>
@@ -419,33 +418,6 @@
             }
         });
 
-
-
-        $('#export').on('click',function(e){
-            var startMonth =  $('.startMonth-export').val();
-//            if(startMonth == '') {
-//                e.preventDefault();
-//                $('#startMonth').text('Vui lòng chọn tháng bắt đầu để export');
-//            }
-//            var endMonth =  $('.endMonth-export').val();
-//            if(endMonth == '') {
-//                e.preventDefault();
-//                $('#endMonth').text('Vui lòng chọn tháng kết thúc để export');
-//            }
-            var type = $('.typeExport option:selected').val();
-            if(type == '') {
-                e.preventDefault();
-                $('#typeExport').text('Vui lòng chọn loại để export');
-            }
-            var type1 = $('.dataExport option:selected').val();
-            if(type1 == undefined) {
-                e.preventDefault();
-                $('#humanExport').text('Vui lòng chọn quản lý để export');
-            }
-
-
-        });
-
         //chart cot
         Highcharts.chart('container', {
             chart: {
@@ -617,6 +589,31 @@
                     console.log(err);
                 }
             });
+        });
+
+        // export
+
+        $('#export').on('click',function(e){
+            var startMonth =  $('.startMonth-export').val();
+//            if(startMonth == '') {
+//                e.preventDefault();
+//                $('#startMonth').text('Vui lòng chọn tháng bắt đầu để export');
+//            }
+//            var endMonth =  $('.endMonth-export').val();
+//            if(endMonth == '') {
+//                e.preventDefault();
+//                $('#endMonth').text('Vui lòng chọn tháng kết thúc để export');
+//            }
+            var type = $('.typeExport option:selected').val();
+            if(type == '') {
+                e.preventDefault();
+                $('#typeExport').text('Vui lòng chọn loại để export');
+            }
+            var type1 = $('.dataExport option:selected').val();
+            if(type1 == undefined) {
+                e.preventDefault();
+                $('#humanExport').text('Vui lòng chọn quản lý để export');
+            }
         });
 
         //map

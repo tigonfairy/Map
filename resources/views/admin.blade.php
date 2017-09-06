@@ -124,12 +124,14 @@
     <div class="page-header navbar navbar-fixed-top">
         <!-- BEGIN HEADER INNER -->
         <div class="page-header-inner ">
+
             <!-- BEGIN LOGO -->
             <div class="page-logo">
 
                 <div class="menu-toggler sidebar-toggler">
                     <span></span>
                 </div>
+
             </div>
             <!-- END LOGO -->
             <!-- BEGIN RESPONSIVE MENU TOGGLER -->
@@ -137,6 +139,15 @@
                data-target=".navbar-collapse">
                 <span></span>
             </a>
+
+
+                        <a href="{{ url('/') }}" class="" style="display: inline-block; padding: 8px 8px ">
+                            <img alt="" class="img-circle " src="{{ url('images/hongha.png') }}"
+                                 style="height: 29px; width: 29px"/>
+                            <span style="display: inline-block; vertical-align: middle; color: white; padding: 3px 0 0 2px;"> {{ trans('home.company_name') }}</span>
+                        </a>
+
+
             <!-- END RESPONSIVE MENU TOGGLER -->
             <!-- BEGIN TOP NAVIGATION MENU -->
             <div class="top-menu">
@@ -238,7 +249,7 @@
     <!-- END CONTAINER -->
     <!-- BEGIN FOOTER -->
     <div class="page-footer">
-        <div class="page-footer-inner"> 2016 &copy; Admin Crawler Amazone
+        <div class="page-footer-inner"> <span style="display: inline-block; vertical-align: middle; color: white; padding: 3px 0 0 2px;"> {{ trans('home.company_name') }}</span>
 
         </div>
         <div class="scroll-to-top">

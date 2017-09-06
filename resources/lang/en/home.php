@@ -79,5 +79,6 @@ return [
     'example' => 'Example',
     'exportAgentExcel' => 'Export excel',
     'close' => 'Close',
-    'globalEnable' => 'GLOBAL ENABLE'
+    'globalEnable' => 'GLOBAL ENABLE',
+    'company_name' => 'HonghafeedJSC.,',
 ];

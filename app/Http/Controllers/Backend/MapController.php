@@ -466,7 +466,10 @@ class MapController extends AdminController
         }
         if(isset($data['attribute']) and $data['attribute'] == Agent::agentRival) {
             $data['icon'] = (isset($config['agent_rival'])) ? $config['agent_rival'] : null;
+        }
 
+        if(isset($data['attribute']) and $data['attribute'] == Agent::agentNew) {
+            $data['icon'] = (isset($config['agent_unclassified'])) ? $config['agent_unclassified'] : null;
         }
 
 

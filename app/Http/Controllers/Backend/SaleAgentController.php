@@ -336,8 +336,14 @@ class SaleAgentController extends AdminController
             ]);
         }
 
-        if ($typeSearch == 'nvkd') {
-            $user = User::findOrFail($dataSearch);
+        if ($typeSearch == 'nvkd' || $typeSearch == '') {
+
+            if ($dataSearch != 0) {
+                $user = User::findOrFail($dataSearch);
+            } else {
+                $user = auth()->user();
+            }
+
             // table data
             $type = 5;
             $id = $user->id;
@@ -803,6 +809,11 @@ class SaleAgentController extends AdminController
         $data = $request->all();
         $type = $request->input('type_data_search');
         $manager_id = $request->input('data_search');
+
+        if ($request->input('typeSearch') == '') {
+            $manager_id = auth()->user()->id;
+            $type = 5;
+        }
         $startMonth = $request->input('startMonth');
         $endMonth = $request->input('endMonth');
         return view('admin.saleAgent.matrix',compact('type','manager_id','startMonth','endMonth'))->render();

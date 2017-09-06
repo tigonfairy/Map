@@ -79,5 +79,6 @@ return array(
     'example' => 'Mẫu',
     'exportAgentExcel' => 'Export đại lý',
     'close' => 'Đóng',
-    'globalEnable' => 'GLOBAL ENABLE'
+    'globalEnable' => 'GLOBAL ENABLE',
+    'company_name' => 'Công ty cổ phần dinh dưỡng Hồng Hà',
 );
