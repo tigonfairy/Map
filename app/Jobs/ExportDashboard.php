@@ -17,6 +17,8 @@ use App\Models\GroupProduct;
 use App\Models\Product;
 use App\Models\User;
 use App\Models\Notification;
+use Illuminate\Support\Facades\Storage;
+
 class ExportDashboard
 //    implements ShouldQueue
 {
@@ -56,13 +58,13 @@ class ExportDashboard
         $endMonth = $this->endMonth;
         $type = $this->type;
         $user = $this->user;
-
+        $time = time().rand(1,99999);
 
         ob_end_clean();
         ob_start();
         $groupProduct = GroupProduct::orderBy('created_at','desc')->get();
 
-        Excel::create('doanh_so_san_pham_'.$startMonth.'_'.$endMonth, function ($excel) use ($groupProduct,$startMonth,$endMonth,$user,$type) {
+        $file = Excel::create('doanh_so_san_pham_'.$startMonth.'_'.$endMonth.'_'.$time, function ($excel) use ($groupProduct,$startMonth,$endMonth,$user,$type) {
 
             $excel->sheet('khach', function ($sheet) use ($groupProduct,$startMonth,$endMonth,$user,$type) {
                 $sheet->loadView('exportDashboard',['groupProduct' => $groupProduct
@@ -74,6 +76,15 @@ class ExportDashboard
                 ]);
             });
 
-        })->export('xlsx');
+        })->store('xls', false, true);
+
+//        $fileGet = Storage::get($file['full']);
+
+        $data['title'] = 'Link tải file export ở dashboard';
+        $data['content'] = [
+            'link' => $file['full']
+        ];
+        $data['unread'] = 1;
+        Notification::create($data);
     }
 }

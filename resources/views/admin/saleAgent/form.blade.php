@@ -107,7 +107,7 @@
                                                     <input type="hidden" name="product_id[]" value="{{ $product->id }}" />
                                                     <td>{{ $product->code }}</td>
                                                     <td>{{  $product->name}}</td>
-                                                    <td><input type="text"  name="sales_real[]" class="form-control" value="{{$sale->sales_real}}" /></td>
+                                                    <td><input type="number"  name="sales_real[]" class="form-control" value="{{$sale->sales_real}}" /></td>
                                                     <td><button class="btn-remove btn btn-danger">Remove</button></td>
                                                 </tr>
                                                 @endif
@@ -214,7 +214,7 @@
                                 template += '<input type="hidden" name="product_id[]" value="'+id+'" />';
                         template+='<td>'+code+'</td>';
                         template+='<td>'+name+'</td>';
-                        template+='<td><input type="text"  name="sales_real[]" class="form-control" value="0" /></td>';
+                        template+='<td><input type="number"  name="sales_real[]" class="form-control" value="0" /></td>';
                         template+='<td><button class="btn-remove btn btn-danger">Remove</button></td>';
                         template+='</tr>';
                         $('#list-product').prepend(template);

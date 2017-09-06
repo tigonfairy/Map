@@ -48,6 +48,7 @@ Route::group(['middleware' => ['auth','language'],
 
         Route::get('/', ['as' => 'dashboard', 'uses' => 'HomeController@dashboard']);
         Route::post('/export', ['as' => 'export', 'uses' => 'HomeController@export']);
+        Route::get('/link-file/{id}', ['as' => 'download', 'uses' => 'HomeController@download']);
         Route::get('/home', ['as' => 'dashboard', 'uses' => 'HomeController@dashboard']);
         Route::post('/d', ['as' => 'chart', 'uses' => 'HomeController@chartDashboard']);
 
