@@ -60,6 +60,14 @@
                             Mã đại lý mà địa chỉ không tìm thấy : {{$agent}}
                         </p>
                     @endif
+                    @if(isset($notification->content['link']))
+                        @php $link =$notification->content['link'];
+
+                        @endphp
+                        <p>
+                         link tải file: {{route('Admin::download',['id' => $notification->id])}}
+                        </p>
+                    @endif
 
                 </div>
 

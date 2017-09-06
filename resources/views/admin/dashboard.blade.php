@@ -126,7 +126,7 @@
 
                     @if($user->position != \App\Models\User::NVKD)
                         <div class="col-md-2">
-                            <select class="search_type form-control">
+                            <select class="search_type form-control" name="type_data_search">
                                 <option value="">-- Chọn loại {{ trans('home.search') }} --</option>
                                 <option value="1">Theo đại lý</option>
                                 <option value="5">Theo nhân viên kinh doanh</option>
@@ -140,41 +140,61 @@
                                     <option value="4">Theo giám đốc vùng</option>
                                 @endif
                             </select>
-
+                            <p id="type_date_search" style="color:red;"></p>
                         </div>
 
                         <div class="col-md-2">
-                            <select name="data_search" class="data_search form-control" id="locations"
+                            <select name="data_search" id="select_data_search" class="data_search form-control" id="locations"
                                     style="width:100%">
                             </select>
+                            <p id="date_search" style="color:red;"></p>
                         </div>
 
-                        <div class="col-md-2">
-                            <input type="text" id="month" name="month" class="form-control monthPicker col-md-9"
-                                   value="{{ old('month') ?: $month }}"/>
-                        </div>
+
+
+                            <div class="col-md-2">
+                                <input type="text" name="startMonth"  class="form-control startMonth" value="{{ old('startMonth') ?: $month }}" placeholder="Thời gian bắt đầu"/>
+                                <p id="startMonth" style="color:red;"></p>
+                            </div>
+
+
+                            <div class="col-md-2">
+                                <input type="text" name="endMonth"  class="form-control endMonth" value="{{ old('endMonth') ?: $month }}" placeholder="Thời gian kết  thúc"/>
+                                <p id="endMonth" style="color:red;"></p>
+                            </div>
+
 
                         <div class="col-md-2">
                             <button type="submit" class="btn btn-info">{{ trans('home.search') }}</button>
                         </div>
                     @else
 
-                        <div class="col-md-3">
-                            <input type="text" id="month" name="month" class="form-control monthPicker col-md-9"
-                                   value="{{ old('month') ?: $month }}"/>
-                        </div>
+                        {{--<div class="col-md-3">--}}
 
-                        <div class="col-md-9">
+
+
+                            <div class="col-md-2">
+                                <input type="text" name="startMonth"  class="form-control startMonth" value="{{ old('startMonth') ?: $month }}" placeholder="Thời gian bắt đầu"/>
+                                <p id="startMonth" style="color:red;"></p>
+                            </div>
+
+
+                            <div class="col-md-2">
+                                <input type="text" name="endMonth"  class="form-control endMonth" value="{{ old('endMonth') ?: $month }}" placeholder="Thời gian kết  thúc"/>
+                                <p id="endMonth" style="color:red;"></p>
+                            </div>
+
+
+
+                        <div class="col-md-2">
                             <button type="submit" class="btn btn-info">{{ trans('home.search') }}</button>
                         </div>
 
                     @endif
-                    @if($user->position == \App\Models\User::ADMIN)
-                        <div class="col-md-2">
-                            <a href="#export-product" class="btn btn-info" data-toggle="modal">Export excel</a>
-                        </div>
 
-                    @endif
+                    <div class="col-md-2">
+                        <a href="#" class="btn btn-info" id="exportDashboard" >Export excel</a>
+                    </div>
                 </form>
 
                 <div class="clearfix"></div>
@@ -182,89 +202,89 @@
 
 
 
-            <div class="modal fade bs-modal-lg" id="export-product" tabindex="-1" role="dialog" aria-hidden="true">
-                <div class="modal-dialog modal-lg">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
-                            <h4 class="modal-title">Export Excel</h4>
-                        </div>
-                        <form method="POST" action="{{ route('Admin::export') }}"
-                              enctype="multipart/form-data" id="import_form">
-                            {{ csrf_field() }}
-                            <div class="modal-body">
-                                <div class="row">
-                                    <div class="col-md-10" style="margin-bottom:10px">
-                                        <div class="form-group">
-                                            <label class="control-label col-md-3">Loại</label>
-                                            <div class="col-md-8">
-                                                <select name="type" class="typeExport form-control">
-                                                    <option value="">-- Chọn loại {{ trans('home.search') }} --</option>
-                                                    <option value="1">Theo đại lý</option>
-                                                    <option value="5">Theo nhân viên kinh doanh</option>
-                                                    @if($user->position != \App\Models\User::GSV)
-                                                        <option value="2">Theo giám sát vùng</option>
-                                                    @endif
-                                                    @if($user->position != \App\Models\User::TV && $user->position != \App\Models\User::GSV)
-                                                        <option value="3">Theo trưởng vùng</option>
-                                                    @endif
-                                                    @if(($user->position != \App\Models\User::GĐV && $user->position != \App\Models\User::GSV && $user->position != \App\Models\User::TV))
-                                                        <option value="4">Theo giám đốc vùng</option>
-                                                    @endif
+            {{--<div class="modal fade bs-modal-lg" id="export-product" tabindex="-1" role="dialog" aria-hidden="true">--}}
+                {{--<div class="modal-dialog modal-lg">--}}
+                    {{--<div class="modal-content">--}}
+                        {{--<div class="modal-header">--}}
+                            {{--<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>--}}
+                            {{--<h4 class="modal-title">Export Excel</h4>--}}
+                        {{--</div>--}}
+                        {{--<form method="POST" action="{{ route('Admin::export') }}"--}}
+                              {{--enctype="multipart/form-data" id="import_form">--}}
+                            {{--{{ csrf_field() }}--}}
+                            {{--<div class="modal-body">--}}
+                                {{--<div class="row">--}}
+                                    {{--<div class="col-md-10" style="margin-bottom:10px">--}}
+                                        {{--<div class="form-group">--}}
+                                            {{--<label class="control-label col-md-3">Loại</label>--}}
+                                            {{--<div class="col-md-8">--}}
 
-                                                </select>
-                                                <span id="typeExport" class="error-import" style="color:red;"></span>
-                                            </div>
-                                            <div class="clearfix"></div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label class="control-label col-md-3">Chọn nhân sự</label>
-                                            <div class="col-md-8">
-                                                <select name="user" class="dataExport form-control"
-                                                        style="width:100%">
-                                                </select>
+                                                {{--<select name="type" class="typeExport form-control">--}}
+                                                    {{--<option value="">-- Chọn loại {{ trans('home.search') }} --</option>--}}
+                                                    {{--<option value="1">Theo đại lý</option>--}}
+                                                    {{--<option value="5">Theo nhân viên kinh doanh</option>--}}
+                                                    {{--@if($user->position != \App\Models\User::GSV)--}}
+                                                        {{--<option value="2">Theo giám sát vùng</option>--}}
+                                                    {{--@endif--}}
+                                                    {{--@if($user->position != \App\Models\User::TV && $user->position != \App\Models\User::GSV)--}}
+                                                        {{--<option value="3">Theo trưởng vùng</option>--}}
+                                                    {{--@endif--}}
+                                                    {{--@if(($user->position != \App\Models\User::GĐV && $user->position != \App\Models\User::GSV && $user->position != \App\Models\User::TV))--}}
+                                                        {{--<option value="4">Theo giám đốc vùng</option>--}}
+                                                    {{--@endif--}}
+                                                {{--</select>--}}
+                                                {{--<span id="typeExport" class="error-import" style="color:red;"></span>--}}
+                                            {{--</div>--}}
+                                            {{--<div class="clearfix"></div>--}}
+                                        {{--</div>--}}
+                                        {{--<div class="form-group">--}}
+                                            {{--<label class="control-label col-md-3">Chọn nhân sự</label>--}}
+                                            {{--<div class="col-md-8">--}}
+                                                {{--<select name="user" class="dataExport form-control"--}}
+                                                        {{--style="width:100%">--}}
+                                                {{--</select>--}}
 
-                                                <span id="humanExport" class="error-import" style="color:red;"></span>
-                                            </div>
-                                            <div class="clearfix"></div>
-                                        </div>
-
-
+                                                {{--<span id="humanExport" class="error-import" style="color:red;"></span>--}}
+                                            {{--</div>--}}
+                                            {{--<div class="clearfix"></div>--}}
+                                        {{--</div>--}}
 
 
 
-                                        <div class="form-group">
-                                            <label class="control-label col-md-3">Thời gian bắt đầu</label>
-                                            <div class="col-md-8">
-                                                <input type="text" name="startMonth"  class="form-control startMonth" value="" />
-                                                <span id="startMonth" class="error-import" style="color:red;"></span>
-                                            </div>
-                                            <div class="clearfix"></div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label class="control-label col-md-3">Thời gian kết thúc</label>
-                                            <div class="col-md-8">
-                                                <input type="text" name="endMonth"  class="form-control endMonth" value="" />
-                                                <span id="endMonth" class="error-import" style="color:red;"></span>
-                                            </div>
-                                            <div class="clearfix"></div>
-                                        </div>
-                                    </div>
-
-                                </div>
 
 
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn dark btn-outline" data-dismiss="modal">Đóng</button>
-                                <button type="submit" class="btn green" id="export">Export</button>
-                            </div>
-                        </form>
-                    </div>
-                    <!-- /.modal-content -->
-                </div>
-                <!-- /.modal-dialog -->
-            </div>
+                                        {{--<div class="form-group">--}}
+                                            {{--<label class="control-label col-md-3">Thời gian bắt đầu</label>--}}
+                                            {{--<div class="col-md-8">--}}
+                                                {{--<input type="text" name="startMonth"  class="form-control startMonth" value="" />--}}
+                                                {{--<span id="startMonth" class="error-import" style="color:red;"></span>--}}
+                                            {{--</div>--}}
+                                            {{--<div class="clearfix"></div>--}}
+                                        {{--</div>--}}
+                                        {{--<div class="form-group">--}}
+                                            {{--<label class="control-label col-md-3">Thời gian kết thúc</label>--}}
+                                            {{--<div class="col-md-8">--}}
+                                                {{--<input type="text" name="endMonth"  class="form-control endMonth" value="" />--}}
+                                                {{--<span id="endMonth" class="error-import" style="color:red;"></span>--}}
+                                            {{--</div>--}}
+                                            {{--<div class="clearfix"></div>--}}
+                                        {{--</div>--}}
+                                    {{--</div>--}}
+
+                                {{--</div>--}}
+
+
+                            {{--</div>--}}
+                            {{--<div class="modal-footer">--}}
+                                {{--<button type="button" class="btn dark btn-outline" data-dismiss="modal">Đóng</button>--}}
+                                {{--<button type="submit" class="btn green" id="export">Export</button>--}}
+                            {{--</div>--}}
+                        {{--</form>--}}
+                    {{--</div>--}}
+                    {{--<!-- /.modal-content -->--}}
+                {{--</div>--}}
+                {{--<!-- /.modal-dialog -->--}}
+            {{--</div>--}}
 
 
 
@@ -371,6 +391,7 @@
 
             $(".endMonth").datepicker("option", "minDate", new Date(year, month, 1));
             $(".endMonth").datepicker("option", "maxDate",  new Date(year, 11, 1));
+            $('.endMonth').datepicker('setDate', new Date(year, month, 1));
         }
     });
     $('.endMonth').datepicker( {
@@ -397,33 +418,6 @@
                 var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val();
                 $(this).datepicker('setDate', new Date(year, month, 1));
             }
-        });
-
-
-
-        $('#export').on('click',function(e){
-            var startMonth =  $('.startMonth-export').val();
-//            if(startMonth == '') {
-//                e.preventDefault();
-//                $('#startMonth').text('Vui lòng chọn tháng bắt đầu để export');
-//            }
-//            var endMonth =  $('.endMonth-export').val();
-//            if(endMonth == '') {
-//                e.preventDefault();
-//                $('#endMonth').text('Vui lòng chọn tháng kết thúc để export');
-//            }
-            var type = $('.typeExport option:selected').val();
-            if(type == '') {
-                e.preventDefault();
-                $('#typeExport').text('Vui lòng chọn loại để export');
-            }
-            var type1 = $('.dataExport option:selected').val();
-            if(type1 == undefined) {
-                e.preventDefault();
-                $('#humanExport').text('Vui lòng chọn quản lý để export');
-            }
-
-
         });
 
         //chart cot
@@ -599,6 +593,68 @@
             });
         });
 
+        // export
+
+        $('#export').on('click',function(e){
+            var startMonth =  $('.startMonth-export').val();
+            var type = $('.typeExport option:selected').val();
+            if(type == '') {
+                e.preventDefault();
+                $('#typeExport').text('Vui lòng chọn loại để export');
+            }
+            var type1 = $('.dataExport option:selected').val();
+            if(type1 == undefined) {
+                e.preventDefault();
+                $('#humanExport').text('Vui lòng chọn quản lý để export');
+            }
+        });
+        $('#exportDashboard').click(function(e){
+            $('#type_date_search').text('');
+            $('#date_search').text('');
+            $('.startMonth').text('');
+            $('.endMonth').text('');
+//            e.preventDefault();
+            if($('.search_type').val() == '') {
+                $('#type_date_search').text('Vui lòng chọn loại search');
+            } else if($('#select_data_search').val() == null) {
+                $('#date_search').text('Vui lòng chọn đối tượng');
+            }else if($('.startMonth').val() == '') {
+                $('.startMonth').text('Vui lòng chọn thời gian bắt đầu');
+            } else if($('.endMonth').val() == '') {
+                $('.endMonth').text('Vui lòng chọn thời gian kết thúc');
+            } else {
+                $.ajax({
+                    method: "post",
+                    url: "{{route('Admin::export')}}",
+                data : $('#geocoding_form').serialize(),
+                    headers: {
+                        'X-CSRF-Token': "{{ csrf_token() }}"
+                    },
+                    dataType: 'json',
+                    success: function (data) {
+                        if(data.status == 1) {
+                            alert(data.message);
+                        }
+                        if(data.status == 0) {
+                            $.each(data.errors, function (index, value) {
+                                $("#" + index).text(value);
+                            });
+                        }
+                    },
+                    error: function (err) {
+                        console.log(err);
+                    }
+                });
+            }
+
+
+
+
+
+
+
+        });
+
         //map
         var type_search = '';
 
@@ -620,7 +676,8 @@
             data: {
                 type_search: type_search,
                 data_search: '{{  $user->id }}',
-                month: '{{ $month }}',
+                startMonth: '{{ $month }}',
+                endMonth: '{{ $month }}',
             },
             cache: false,
             success: function (data) {
@@ -636,7 +693,7 @@
                 });
 
                 if (type_search == 'nvkd') {
-                    showDataAgents(data);
+                    showDataSaleNVKD(data);
                 }
                 if (type_search == 'gsv') {
                     showDataSales(data);
@@ -666,6 +723,8 @@
                 getListTV(0);
             } else if (search_type == 4) {
                 getListGDV(0);
+            } else if (search_type == 5) {
+                getListNVKD(0);
             }
         });
 
@@ -711,7 +770,7 @@
                         content: button,
                     });
 
-                    if (type_search == 'agents' || type_search === undefined || type_search == null || type_search.length <= 0) {
+                    if (type_search == 'agents') {
 
                         showDataAgents(data);
                     }
@@ -723,6 +782,9 @@
                     }
                     if (type_search == 'gdv') {
                         showDataSaleGDV(data);
+                    }
+                    if (type_search == 'nvkd' || type_search === undefined || type_search == null || type_search.length <= 0) {
+                        showDataSaleNVKD(data);
                     }
                 }
             });
@@ -968,6 +1030,208 @@
             }
         }
 
+        function getListNVKD(type) {
+
+            if(type == 0) {
+                $("#type_search").val('nvkd');
+                var that = $(".data_search");
+            } else {
+                var that = $('.dataExport');
+            }
+
+            that.select2({
+                'placeholder': "{{'-- Chọn nhân viên kinh doanh --'}}",
+                ajax: {
+                    url: "{{route('Admin::Api::sale@getListNVKD')}}",
+                    dataType: 'json',
+                    delay: 500,
+                    data: function (params) {
+                        var queryParameters = {
+                            q: params.term
+                        }
+                        return queryParameters;
+                    },
+                    processResults: function (data, page) {
+                        return {
+                            results: $.map(data, function (item) {
+                                return {
+                                    text: item.name,
+                                    id: item.id,
+                                }
+                            })
+                        };
+                    },
+                    dropdownCssClass: "bigdrop", // apply css that makes the dropdown taller
+                    escapeMarkup: function (m) {
+                        return m;
+                    }
+                }
+            });
+        }
+
+        function showDataSaleNVKD(data) {
+            var area_name = '';
+            var polygonArray = [];
+
+            $.map(data.locations, function (location, index) {
+                var item = location.area;
+                var c = item.coordinates;
+                var coordinate = JSON.parse(c);
+                var border_color = location.border_color;
+                var background_color = location.background_color;
+                if (coordinate) {
+                    var bounds = new google.maps.LatLngBounds();
+                    for (i = 0; i < coordinate.length; i++) {
+                        var c = coordinate[i];
+                        bounds.extend(new google.maps.LatLng(c[0], c[1]));
+                    }
+                    var path = coordinate;
+//                    map.setCenter(bounds.getCenter().lat(), bounds.getCenter().lng());
+                    polygon = map.drawPolygon({
+                        paths: path,
+                        strokeColor: border_color,
+                        strokeOpacity: 1,
+                        strokeWeight: 1,
+                        fillColor: background_color,
+                        fillOpacity: 0.4,
+                    });
+                    polygonArray[item.id] = polygon;
+                }
+                area_name += item.name;
+                if (index < data.locations.length - 1) {
+                    area_name += '-';
+                }
+            });
+
+            var postion = '';
+
+            if (data.userParent.position == 3) {
+                postion = 'TV';
+            } else {
+                postion = 'GS';
+            }
+
+            var listAgents = '<div id="legend">';
+            $.map(data.listAgents, function (item) {
+                var agent = item.agent;
+                var user = agent.user;
+                var contentString = '<div class="info" style="font-size:' + user.fontSize + 'px; color:' + user.textColor + '">' +
+                    '<h5 class="address" style="display:none; font-size:' + user.fontSize + 'px; color:' + user.textColor + '">' + agent.name + ' - ' + agent.address + '</h5>' +
+                    '<div class="user_data" style="font-size:' + user.fontSize + 'px; color:' + user.textColor + '">' +
+                    '<p class="data" style="font-size:' + user.fontSize + 'px; color:' + user.textColor + '">%TT ' + numberWithCommas(item.totalSales) + '/' + numberWithCommas(item.capacity) + '=' + item.percent + '%</p>' +
+                    '<ul class="info_user" style="font-size:' + user.fontSize + 'px; color:' + user.textColor + '">' +
+                    '<li> NVKD:' + user.name + '</li>' +
+                    '<li class="gsv" style="display: none; font-size:' + user.fontSize + 'px; color:' + user.textColor + '">' + postion + ':' + data.userParent.name + '</li>' +
+                    '</ul>' +
+                    '</div>' +
+                    '</div>';
+                var infoWindow = new google.maps.InfoWindow({
+                    content: contentString
+                });
+                var image = "";
+                if (agent.icon != "") {
+                    image = 'http://' + window.location.hostname + '/' + agent.icon;
+                }
+
+                var marker = map.addMarker({
+                    lat: agent.lat,
+                    lng: agent.lng,
+                    title: agent.name,
+                    icon: image,
+                    infoWindow: infoWindow,
+                    click: function (e) {
+                        infoWindow.setPosition({lat: e.position.lat(), lng: e.position.lng()});
+                        infoWindow.open(map.map);
+                    }
+                });
+                listAgents += '<div><p class="" style="font-size:' + user.fontSize + 'px; color:' + user.textColor + '">'  + agent.name + ' %TT ' + numberWithCommas(item.totalSales) + '/' + numberWithCommas(item.capacity) + '=' + numberWithCommas(item.percent) + '%</p><br></div>';
+            });
+
+            listAgents+= '</div>';
+            map.addControl({
+                position: 'top_right',
+                content: listAgents,
+            });
+
+            var list_products = data.listProducts;
+
+            var tableSales = '<table class="table table-striped table-bordered table-products" cellspacing="0" width="100%" id="data-table">' +
+                '<thead>' +
+                '<tr>' +
+                '<th>Tên Sản phẩm</th>' +
+                '<th>Mã Sản phẩm</th>' +
+                '<th>Sản lượng</th>' +
+                '<th>Dung lượng</th>' +
+                '</tr>' +
+                '</thead>' +
+                '<tbody>' +
+                '<tr>' +
+                '<td>' +
+                '<select id="choose_product">';
+            $.map(list_products, function (product) {
+                tableSales += '<option style="font-weight: bold" value="' + product.code + '">' + product.name + '</option>';
+                var productChildren = product.listProducts;
+
+                $.map(productChildren, function (productChild) {
+                    tableSales += '<option value="' + productChild.code + '">' + productChild.name + '</option>';
+                });
+
+            });
+            tableSales += '</select>' +
+                '</td>' +
+                '<td id="code">' + list_products[0].code + '</td>' +
+                '<td id="totalSales">' + numberWithCommas(list_products[0].totalSales) + '</td>' +
+                '<td id="capacity">' + numberWithCommas(list_products[0].capacity) + '</td>' +
+                '</tr>' +
+                '</tbody>' +
+                '</table>';
+            map.addControl({
+                position: 'top_left',
+                content: tableSales,
+            });
+
+            var listCodes = '<div style="background-color: white"><h3>Sản phẩm đang bán</h3><span>';
+            $.map(data.listCodes, function (code) {
+                listCodes +=  code + ' , ';
+            });
+            listCodes += '</span></div>';
+            map.addControl({
+                position: 'bottom_right',
+                content: listCodes,
+            });
+
+            listSelectProducts = [];
+            $.each(list_products, function (index, value) {
+                listSelectProducts.push(value);
+                var productChildren = value.listProducts;
+                $.each(productChildren, function (index, val) {
+                    listSelectProducts.push(val);
+                });
+            });
+
+
+            var tableSales =
+                '<div class="info_gsv" style="font-size:' + data.user.fontSize + 'px; color:' + data.user.textColor + '" >' +
+                '<h3 style="font-size:' + data.user.fontSize + 'px; color:' + data.user.textColor + '">' + area_name + '</h3>' +
+                '<div class="user_data_gsv" style="font-size:' + data.user.fontSize + 'px; color:' + data.user.textColor + '">' +
+                '<p class="data_gsv" id="data" style="font-size:' + data.user.fontSize + 'px; color:' + data.user.textColor + '">%TT ' + numberWithCommas(data.totalSales) + '/' + numberWithCommas(data.capacity) + '=' + data.percent + '%</p>' +
+                '<ul class="info_user_gsv" style="font-size:' + data.user.fontSize + 'px; color:' + data.user.textColor + '">' +
+                '<li>' + postion + ':' + data.user.name + '</li>' +
+                '<li class="gdv" style="display: none; font-size:' + data.user.fontSize + 'px; color:' + data.user.textColor + '"> GĐ :' + data.director + '</li>' +
+                '</ul>' +
+                '</div>' +
+                '</div>';
+            map.addControl({
+                position: 'top_center',
+                content: tableSales,
+            });
+
+            if (data.table) {
+                $('#tableData').html('');
+                $('#tableData').html(data.table);
+            }
+        }
+
         function getListGDV(type) {
             if(type == 0) {
                 $("#type_search").val('gdv');
@@ -1005,44 +1269,7 @@
                 }
             });
         }
-        function getListNVKD(type) {
 
-            if(type == 0) {
-                $("#type_search").val('nvkd');
-                var that = $(".data_search");
-            } else {
-                var that = $('.dataExport');
-            }
-
-            that.select2({
-                'placeholder': "{{'-- '. trans('home.select'). ' '. trans('home.manager') .' --'}}",
-                ajax: {
-                    url: "{{route('Admin::Api::sale@getListNVKD')}}",
-                    dataType: 'json',
-                    delay: 500,
-                    data: function (params) {
-                        var queryParameters = {
-                            q: params.term
-                        }
-                        return queryParameters;
-                    },
-                    processResults: function (data, page) {
-                        return {
-                            results: $.map(data, function (item) {
-                                return {
-                                    text: item.name,
-                                    id: item.id,
-                                }
-                            })
-                        };
-                    },
-                    dropdownCssClass: "bigdrop", // apply css that makes the dropdown taller
-                    escapeMarkup: function (m) {
-                        return m;
-                    }
-                }
-            });
-        }
         function showDataSaleGDV(data) {
             var polygonArray = [];
             var position = '';
@@ -1627,9 +1854,9 @@
         });
 
         function numberWithCommas(x) {
-            var parts = x.toString().split(".");
-            parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-            return parts.join(".");
+            var parts = x.toString().split(",");
+            parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            return parts.join(",");
         }
     });
 </script>

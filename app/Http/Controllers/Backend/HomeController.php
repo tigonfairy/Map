@@ -6,11 +6,14 @@ use App\Jobs\ExportDashboard;
 use App\Models\Agent;
 use App\Models\Area;
 use App\Models\User;
+use App\Models\Notification;
 use Carbon\Carbon;
 use DB;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 use Response;
 use Illuminate\Http\Request;
-
+use Validator;
 class HomeController extends AdminController
 {
 
@@ -165,18 +168,33 @@ class HomeController extends AdminController
 
 
     public function export(Request $request ) {
-        $this->validate($request, [
+        $validator = Validator::make($request->all(), [
             'startMonth' => 'required',
             'endMonth' => 'required',
-            'type' => 'required',
-            'user' => 'required'
+            'type_data_search' => 'required',
+            'data_search' => 'required'
         ]);
+        if($validator->fails()) {
+
+            return Response::json(['status' => 0,'errors' => $validator->errors()],200);
+        }
         $startMonth = $request->input('startMonth');
         $endMonth = $request->input('endMonth');
-        $type = $request->input('type');
-        $user = $request->input('user');
+        $type = $request->input('type_data_search');
+        $user = $request->input('data_search');
 //        return view('exportDashboard',compact('startMonth','endMonth','type','user'));
         $this->dispatch(new ExportDashboard( $startMonth,$endMonth,$type,$user));
-        return redirect()->back()->with('success','Export trong quá trình chạy.Vui lòng chờ thông báo để tải file');
+        return Response::json(['status' => 1,'message' => 'Export trong quá trình chạy.Vui lòng chờ thông báo để tải file'],200);
+    }
+    public function download(Request $request,$id) {
+        $notification = Notification::findOrFail($id);
+
+         $link =$notification->content['link'];
+        if(File::exists($link)) {
+            return response()->download($link);
+        } else {
+            return redirect()->back()->with('error','File ko tồn tại');
+        }
+
     }
 }

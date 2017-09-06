@@ -48,6 +48,7 @@ Route::group(['middleware' => ['auth','language'],
 
         Route::get('/', ['as' => 'dashboard', 'uses' => 'HomeController@dashboard']);
         Route::post('/export', ['as' => 'export', 'uses' => 'HomeController@export']);
+        Route::get('/link-file/{id}', ['as' => 'download', 'uses' => 'HomeController@download']);
         Route::get('/home', ['as' => 'dashboard', 'uses' => 'HomeController@dashboard']);
         Route::post('/d', ['as' => 'chart', 'uses' => 'HomeController@chartDashboard']);
 
@@ -159,10 +160,7 @@ Route::group(['middleware' => ['auth','language'],
             Route::get('/{agentId}/{month}/delete', ['as' => 'delete', 'uses' => 'SaleAgentController@delete']);
             Route::get('/filter', ['as' => 'filter', 'uses' => 'SaleAgentController@filter']);
             Route::get('/data-filter', ['as' => 'dataFilter', 'uses' => 'SaleAgentController@dataFilter']);
-<<<<<<< HEAD
             Route::get('/matrix-filter', ['as' => 'matrixFilter', 'uses' => 'SaleAgentController@matrixFilter']);
-=======
->>>>>>> 42a1b984b3b816b8dea72f0f14a8fda6341fe169
 
 
             Route::post('/import-excel-data-agent', ['as' => 'importExcelDataAgent', 'uses' => 'SaleAgentController@importExcelDataAgent']);
