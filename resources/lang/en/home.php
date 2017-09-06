@@ -80,5 +80,5 @@ return [
     'exportAgentExcel' => 'Export excel',
     'close' => 'Close',
     'globalEnable' => 'GLOBAL ENABLE',
-    'company_name' => 'HonghafeedJSC.,',
+    'company_name' => 'Hong Ha Nutrition Joint Stock Company',
 ];
