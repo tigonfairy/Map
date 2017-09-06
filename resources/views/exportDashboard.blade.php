@@ -214,7 +214,23 @@
             <td>{{$slkh}}</td>
         </tr>
 
-
+        @php $string = '';
+        if($type == 1) {
+            $string = 'Đại lý';
+        }
+        if($type == 2) {
+        $string = 'GS vùng';
+        }
+        if($type == 3) {
+            $string = 'Trưởng vùng';
+        }
+        if($type==4) {
+        $string = 'Giám đốc vùng';
+        }
+        if($type==5) {
+        $string = 'NVKD';
+        }
+        @endphp
         <tr class="thang">
             <td></td>
             <td colspan="2">

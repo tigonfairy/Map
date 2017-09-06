@@ -162,7 +162,6 @@ Route::group(['middleware' => ['auth','language'],
             Route::get('/matrix-filter', ['as' => 'matrixFilter', 'uses' => 'SaleAgentController@matrixFilter']);
 
 
-
             Route::post('/import-excel-data-agent', ['as' => 'importExcelDataAgent', 'uses' => 'SaleAgentController@importExcelDataAgent']);
             Route::post('/export-excel-data-agent', ['as' => 'exportExcelDataAgent', 'uses' => 'SaleAgentController@exportExcelDataAgent']);
             Route::post('/export-excel-tien-do', ['as' => 'exportTienDo', 'uses' => 'SaleAgentController@exportTienDo']);

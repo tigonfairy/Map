@@ -104,6 +104,10 @@
             </div>
         </div>
 
+<<<<<<< HEAD
+
+=======
+>>>>>>> e478877916616c0ff8cf133050b02f042d00dfcf
         <div class="portlet light">
             <div class="portlet-title">
                 <div class="caption">
@@ -112,7 +116,11 @@
             </div>
             <div class="portlet-body">
                 <div class="portlet-body">
+<<<<<<< HEAD
+                    <div id="maxTable"></div>
+=======
                     <div id="matrixData"></div>
+>>>>>>> e478877916616c0ff8cf133050b02f042d00dfcf
                 </div>
             </div>
         </div>
@@ -433,6 +441,7 @@
             } else if (search_type == 3) {
                 getValueFilter(listProducts);
             }
+
         });
 
         function getValueFilter(listProducts) {

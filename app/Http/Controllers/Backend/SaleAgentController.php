@@ -807,4 +807,5 @@ class SaleAgentController extends AdminController
         $endMonth = $request->input('endMonth');
         return view('admin.saleAgent.matrix',compact('type','manager_id','startMonth','endMonth'))->render();
     }
+
 }
