@@ -27,7 +27,7 @@
 
     <div class="page-container">
         <!-- Page content -->
-
+    @include('admin.flash')
         <div class="content-wrapper">
 
             <div class="col-md-6 col-md-offset-3">
@@ -58,6 +58,14 @@
                         @endphp
                         <p>
                             Mã đại lý mà địa chỉ không tìm thấy : {{$agent}}
+                        </p>
+                    @endif
+                    @if(isset($notification->content['link']))
+                        @php $link =$notification->content['link'];
+
+                        @endphp
+                        <p>
+                         link tải file: {{route('Admin::download',['id' => $notification->id])}}
                         </p>
                     @endif
 
