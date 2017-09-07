@@ -33,13 +33,15 @@ class ExportTD
     protected $startTD ;
     protected $endTD ;
     protected $type ;
-    public function __construct($startMonth,$endMonth,$startTD,$endTD,$type)
+    protected $user_id ;
+    public function __construct($startMonth,$endMonth,$startTD,$endTD,$type,$user_id)
     {
         $this->startMonth = $startMonth;
         $this->endMonth = $endMonth;
         $this->startTD = $startTD;
         $this->endTD = $endTD;
         $this->type = $type;
+        $this->user_id = $user_id;
     }
 
     /**

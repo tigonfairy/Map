@@ -9,7 +9,8 @@ class Notification extends Model
 {
     protected $table = 'notifications';
     protected $fillable = [
-        'title', 'content', 'date_time', 'unread'
+        'title', 'content', 'date_time', 'unread',
+        'user_id'
     ];
     protected $casts = [
         'content' => 'array',

@@ -169,7 +169,7 @@ class UserController extends AdminController
             $file = request()->file('file');
             $filename = time() . '_' . mt_rand(1111, 9999) . '_' . $request->file('file')->getClientOriginalName();
             $request->file('file')->move(storage_path('app/import/users'), $filename);
-            $this->dispatch(new ImportUser( storage_path('app/import/users/' . $filename),$name));
+            $this->dispatch(new ImportUser( storage_path('app/import/users/' . $filename),$name,auth()->user()->id));
 
             flash()->success('Success!', 'User successfully updated.');
             $response['status'] = 'success';

@@ -140,7 +140,7 @@ class SaleAgentController extends AdminController
             $file = request()->file('file');
             $filename = $month.'_'.time() . '_' . mt_rand(1111, 9999) . '_' . $request->file('file')->getClientOriginalName();
             $request->file('file')->move(storage_path('app/import/products'), $filename);
-            $this->dispatch(new ImportDataAgent( storage_path('app/import/products/' . $filename),$month,$name));
+            $this->dispatch(new ImportDataAgent( storage_path('app/import/products/' . $filename),$month,$name,auth()->user()->id));
 
             flash()->success('Success!', 'Data successfully updated.');
             $response['status'] = 'success';
@@ -156,7 +156,7 @@ class SaleAgentController extends AdminController
 
             $startMonth = $request->input('startMonth');
             $endMonth = $request->input('endMonth');
-            $this->dispatch(new ExportAgent( $startMonth,$endMonth));
+            $this->dispatch(new ExportAgent( $startMonth,$endMonth,auth()->user()->id));
             return redirect()->back()->with('success','Export trong quá trình chạy.Vui lòng chờ thông báo để tải file');
 
 
@@ -207,7 +207,7 @@ class SaleAgentController extends AdminController
             $startTD = '01-'.$year;
             $endTD = '12-'.$year;
         }
-        $this->dispatch(new ExportTD( $startMonth,$endMonth,$startTD,$endTD,$type));
+        $this->dispatch(new ExportTD( $startMonth,$endMonth,$startTD,$endTD,$type,auth()->user()->id));
         return redirect()->back()->with('success','Export tiến độ trong quá trình chạy.Vui lòng chờ thông báo để tải file');
 
     }

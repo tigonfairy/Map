@@ -34,12 +34,14 @@ class ExportDashboard
     protected $endMonth ;
     protected $type ;
     protected $user ;
-    public function __construct($startMonth,$endMonth,$type,$user)
+    protected $account_id ;
+    public function __construct($startMonth,$endMonth,$type,$user,$account_id)
     {
         $this->startMonth = $startMonth;
         $this->endMonth = $endMonth;
         $this->type = $type;
         $this->user = $user;
+        $this->account_id = $account_id;
     }
 
     /**
@@ -84,6 +86,7 @@ class ExportDashboard
         $data['content'] = [
             'link' => $file['full']
         ];
+        $data['user_id'] =  $this->account_id;
         $data['unread'] = 1;
         Notification::create($data);
     }

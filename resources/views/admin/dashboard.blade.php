@@ -164,7 +164,7 @@
                             </div>
 
 
-                        <div class="col-md-2">
+                        <div class="col-md-1">
                             <button type="submit" class="btn btn-info">{{ trans('home.search') }}</button>
                         </div>
                     @else
@@ -186,7 +186,7 @@
 
 
 
-                        <div class="col-md-2">
+                        <div class="col-md-1">
                             <button type="submit" class="btn btn-info">{{ trans('home.search') }}</button>
                         </div>
 

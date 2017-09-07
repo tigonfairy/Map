@@ -11,9 +11,9 @@ class NotificationController extends AdminController
     public function getNotification(Request $request)
     {
 
-        $unreadCount = Notification::where('unread', 1)->count();
+        $unreadCount = Notification::where('unread', 1)->where('user_id',auth()->user()->id)->count();
 
-        $notifications = Notification::orderBy('created_at', 'desc');
+        $notifications = Notification::where('user_id',auth()->user()->id)->orderBy('created_at', 'desc');
 
         if ($request->has('since')) {
             $notifications = $notifications->where('created_at', '>=', Carbon::createFromTimeStamp((int) $request->input('since')));
@@ -40,7 +40,7 @@ class NotificationController extends AdminController
         return view('admin.notification.detail',compact('notification'));
     }
     public function getAll(){
-        $notifications = Notification::orderBy('created_at', 'desc')->paginate(5);
+        $notifications = Notification::where('user_id',auth()->user()->id)->orderBy('created_at', 'desc')->paginate(5);
         return view('admin.notification.list',compact('notifications'));
     }
 }

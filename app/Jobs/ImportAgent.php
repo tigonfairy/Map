@@ -31,10 +31,12 @@ class ImportAgent
     protected $config;
     protected $filepath ;
     protected $name ;
-    public function __construct($filepath,$name)
+    protected $user_id ;
+    public function __construct($filepath,$name,$user_id)
     {
         $this->filepath = $filepath;
         $this->name = $name;
+        $this->user_id = $user_id;
     }
 
     /**
@@ -304,6 +306,7 @@ class ImportAgent
                 'agentImport' => $agentError,
                 'notFound' => $notFound
             ];
+            $data['user_id'] = $this->user_id ;
             $data['unread'] = 1;
             Notification::create($data);
 
