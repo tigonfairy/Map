@@ -65,7 +65,7 @@
 
                         @endphp
                         <p>
-                         link tải file: {{route('Admin::download',['id' => $notification->id])}}
+                            Click <a href="{{route('Admin::download',['id' => $notification->id])}}">vào đây</a> để tải file
                         </p>
                     @endif
 

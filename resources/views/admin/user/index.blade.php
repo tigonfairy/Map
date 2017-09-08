@@ -1,6 +1,11 @@
 @extends('admin')
 
 @section('content')
+    <style>
+        .dataTables_filter {
+            display: none !important;
+        }
+    </style>
     <!-- Page header -->
     <div class="page-header">
         <div class="page-header-content">
@@ -130,9 +135,9 @@
             },
             columns: [
                 {data: 'code', name: 'code'},
-                {data: 'email', name: 'email',searchable:true},
+                {data: 'email', name: 'email'},
                 {data: 'position', name: 'position'},
-                {data: 'manager', name: 'manager'},
+                {data: 'manager', name: 'manager', orderable: false, searchable: false},
                 {data: 'created_at', name: 'created_at'},
                 {data: 'action', name: 'action', orderable: false, searchable: false}
             ],

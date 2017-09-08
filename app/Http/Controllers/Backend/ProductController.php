@@ -192,7 +192,7 @@ class ProductController extends AdminController
             $file = request()->file('file');
             $filename = time() . '_' . mt_rand(1111, 9999) . '_' . $request->file('file')->getClientOriginalName();
             $request->file('file')->move(storage_path('app/import/products'), $filename);
-            $this->dispatch(new ImportProduct( storage_path('app/import/products/' . $filename),$name));
+            $this->dispatch(new ImportProduct( storage_path('app/import/products/' . $filename),$name,auth()->user()->id));
 
             flash()->success('Success!', 'Product Supplier successfully updated.');
             $response['status'] = 'success';

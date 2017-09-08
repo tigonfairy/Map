@@ -30,10 +30,12 @@ class ExportAgent
 
     protected $startMonth ;
     protected $endMonth ;
-    public function __construct($startMonth,$endMonth)
+    protected $user_id ;
+    public function __construct($startMonth,$endMonth,$user_id)
     {
         $this->startMonth = $startMonth;
         $this->endMonth = $endMonth;
+        $this->user_id = $user_id;
     }
 
     /**

@@ -183,15 +183,18 @@ class HomeController extends AdminController
         $type = $request->input('type_data_search');
         $user = $request->input('data_search');
 //        return view('exportDashboard',compact('startMonth','endMonth','type','user'));
-        $this->dispatch(new ExportDashboard( $startMonth,$endMonth,$type,$user));
+        $this->dispatch(new ExportDashboard( $startMonth,$endMonth,$type,$user,auth()->user()->id));
         return Response::json(['status' => 1,'message' => 'Export trong quá trình chạy.Vui lòng chờ thông báo để tải file'],200);
     }
-    public function download(Request $request,$id) {
-        $notification = Notification::findOrFail($id);
+            public function download(Request $request,$id) {
+                $notification = Notification::where('id' ,$id)->where('user_id',auth()->user()->id)->first();
+                if(empty($notification)) {
+                    return redirect()->back()->with('error','Không thể tải file');
+                }
 
-         $link =$notification->content['link'];
-        if(File::exists($link)) {
-            return response()->download($link);
+                $link =$notification->content['link'];
+                if(File::exists($link)) {
+                    return response()->download($link);
         } else {
             return redirect()->back()->with('error','File ko tồn tại');
         }

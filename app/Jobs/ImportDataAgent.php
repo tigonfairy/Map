@@ -33,11 +33,13 @@ class ImportDataAgent
     protected $filepath ;
     protected $month ;
     protected $name ;
-    public function __construct($filepath,$month,$name)
+    protected $user_id ;
+    public function __construct($filepath,$month,$name,$user_id)
     {
         $this->month = $month;
         $this->filepath = $filepath;
         $this->name = $name;
+        $this->user_id = $user_id;
     }
 
     /**
@@ -101,6 +103,7 @@ class ImportDataAgent
             $data['content'] = [
                 'error' => $ex->getTraceAsString()
             ];
+            $data['user_id'] = $this->user_id;
             $data['unread'] = 1;
             Notification::create($data);
             return;
@@ -110,6 +113,7 @@ class ImportDataAgent
             $data['content'] = [
                 'agent' => $agentError
             ];
+            $data['user_id'] = $this->user_id;
             $data['unread'] = 1;
             Notification::create($data);
 
