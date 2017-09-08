@@ -107,7 +107,7 @@
                                                     <input type="hidden" name="product_id[]" value="{{ $product->id }}" />
                                                     <td>{{ $product->code }}</td>
                                                     <td>{{  $product->name}}</td>
-                                                    <td><input type="number"  name="sales_real[]" class="form-control" value="{{$sale->sales_real}}" /></td>
+                                                    <td><input type="number"  min="0" inputmode="numeric" pattern="[0-9]*" name="sales_real[]" class="form-control" value="{{$sale->sales_real}}" /></td>
                                                     <td><button class="btn-remove btn btn-danger">Remove</button></td>
                                                 </tr>
                                                 @endif
