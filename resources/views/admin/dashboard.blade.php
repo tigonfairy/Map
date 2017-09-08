@@ -646,13 +646,6 @@
                     }
                 });
             }
-
-
-
-
-
-
-
         });
 
         //map
@@ -766,7 +759,7 @@
                     });
                     var button = '<button id="swift" class="btn btn-primary">Full mode</button>';
                     map.addControl({
-                        position: 'top_left',
+                        position: 'top_right',
                         content: button,
                     });
 
@@ -942,7 +935,13 @@
                         infoWindow.open(map.map);
                     }
                 });
-                listAgents += '<div><p class="" style="font-size:' + user.fontSize + 'px; color:' + user.textColor + '">'  + agent.name + ' %TT ' + item.totalSales + '/' + numberWithCommas(item.capacity) + '=' + numberWithCommas(item.percent) + '%</p><br></div>';
+                var name = '';
+                if (agent.attribute == 1) {
+                    name =  agent.name + '<span style="color:red">(NEW)</sapn>';
+                } else {
+                    name = agent.name;
+                }
+                listAgents += '<div><p class="" style="font-size:' + user.fontSize + 'px; color:' + user.textColor + '">'  + name + ' %TT ' + item.totalSales + '/' + numberWithCommas(item.capacity) + '=' + numberWithCommas(item.percent) + '%</p><br></div>';
             });
 
             listAgents+= '</div>';
@@ -1144,7 +1143,13 @@
                         infoWindow.open(map.map);
                     }
                 });
-                listAgents += '<div><p class="" style="font-size:' + user.fontSize + 'px; color:' + user.textColor + '">'  + agent.name + ' %TT ' + numberWithCommas(item.totalSales) + '/' + numberWithCommas(item.capacity) + '=' + numberWithCommas(item.percent) + '%</p><br></div>';
+                var name = '';
+                if (agent.attribute == 1) {
+                    name =  agent.name + '<span style="color:red">(NEW)</sapn>';
+                } else {
+                    name = agent.name;
+                }
+                listAgents += '<div><p class="" style="font-size:' + user.fontSize + 'px; color:' + user.textColor + '">'  + name + ' %TT ' + item.totalSales + '/' + numberWithCommas(item.capacity) + '=' + numberWithCommas(item.percent) + '%</p><br></div>';
             });
 
             listAgents+= '</div>';
