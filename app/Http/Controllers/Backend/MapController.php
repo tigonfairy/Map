@@ -1272,7 +1272,7 @@ class MapController extends AdminController
             $userGDVs = User::where('position', User::GĐV)->get();
             $data = [];
             $locations = [];
-
+            $listAgentIds = [];
             foreach ($userGDVs as $gdv) {
                 $totalSaleGDV = 0;
                 $listAgents = [];
@@ -1316,6 +1316,7 @@ class MapController extends AdminController
                         $agents = Agent::whereIn('manager_id', $listIds)->with('user')->get();
                         $saleAgents = 0;
                         foreach ($agents as $agent) {
+                            $listAgentIds[] = $agent->id;
                             $sales = SaleAgent::where('agent_id', $agent->id)->where('month', '>=', $startMonth)->where('month', '<=', $endMonth)->select('sales_real', 'capacity')->get();
 
                             foreach ($sales as $sale) {
@@ -1349,9 +1350,13 @@ class MapController extends AdminController
 
                 }
 
+            // table data
+            $table = view('tableDashboardAdmin', compact( 'listAgentIds', 'startMonth', 'endMonth'))->render();
+
             return response()->json([
                 'result' => $data,
                 'locations' => $locations,
+                'table' => $table,
             ]);
 
         }

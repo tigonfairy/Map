@@ -86,8 +86,8 @@ class ImportDataAgent
 
                             } else {
                                 $saleAgent = SaleAgent::firstOrCreate(['agent_id' => $agent->id,'product_id' => $product->id]);
-                                $saleAgent->sales_plan = $sales_plan;
-                                $saleAgent->capacity = $capacity;
+                                $saleAgent->sales_plan = intval($sales_plan);
+                                $saleAgent->capacity = intval($capacity);
                                 $saleAgent->sales_real = intval($row[$k]);
                                 $saleAgent->month = $month;
                                 $saleAgent->save();
