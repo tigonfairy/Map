@@ -1826,6 +1826,11 @@
             });
 
             map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(legend);
+
+            if (data.table) {
+                $('#tableData').html('');
+                $('#tableData').html(data.table);
+            }
         }
 
 
