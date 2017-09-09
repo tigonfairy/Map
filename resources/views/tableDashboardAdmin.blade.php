@@ -99,7 +99,6 @@
                     @php $slGroup = 0 @endphp
                     @foreach($products as $product)
                         @php
-                            {
                                 $sltt =  \App\Models\SaleAgent::where('month','>=',$startMonth)->where('month','<=',$endMonth)
                                          ->join('agents','agents.id', '=' ,'sale_agents.agent_id')->whereIn('agents.id',$listAgentIds)->where('product_id',$product->id)
                                 ->get()->sum('sales_real');
@@ -124,13 +123,7 @@
                     </tr>
                         {!! $string !!}
                         @endif
-
-
-
-
-
             @endif
-
         @endforeach
     @endif
 </table>
