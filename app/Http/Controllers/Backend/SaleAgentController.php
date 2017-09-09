@@ -64,9 +64,9 @@ class SaleAgentController extends AdminController
                 'month' => request('month'),
             ]);
             $agent->update([
-                'sales_plan' => $sales_plan,
-                'sales_real' => $sales_real[$key] ? $sales_real[$key] : 0,
-                'capacity' => $capacity
+                'sales_plan' => intval($sales_plan),
+                'sales_real' => $sales_real[$key] ? intval($sales_real[$key]) : 0,
+                'capacity' => intval($capacity)
             ]);
         }
 
@@ -104,9 +104,9 @@ class SaleAgentController extends AdminController
                         'month' => request('month'),
                     ]);
                         $sale->update([
-                           'capacity' => $capacity,
-                            'sales_plan' => $sales_plan,
-                            'sales_real' => (isset($sales_real[$key])) ? $sales_real[$key] : 0
+                           'capacity' => intval($capacity),
+                            'sales_plan' => intval($sales_plan),
+                            'sales_real' => (isset($sales_real[$key])) ? intval($sales_real[$key]) : 0
                         ]);
             }
         }

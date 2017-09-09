@@ -123,7 +123,17 @@
                     </tr>
                         {!! $string !!}
                         @endif
+<<<<<<< HEAD
             @endif
+=======
+
+
+
+
+
+            @endif
+
+>>>>>>> 85bef5124b19aea4dc9d53ca4212b35e255f6189
         @endforeach
     @endif
 </table>
