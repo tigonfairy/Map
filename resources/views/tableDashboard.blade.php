@@ -162,9 +162,10 @@
                 $dlv = \App\Models\SaleAgent::where('month','>=',$startMonth)->where('month','<=',$endMonth)
                                                    ->groupBy('agent_id','month')->where('agent_id',$user)
                                                    ->get()->sum('capacity');
-                 $slkh = \App\Models\SaleAgent::where('month','>=',$startMonth)->where('month','<=',$endMonth)
+                $slkh = \App\Models\SaleAgent::where('month','>=',$startMonth)->where('month','<=',$endMonth)
                                     ->groupBy('agent_id','month')->where('agent_id',$user)
                                     ->get()->sum('sales_plan');
+
                }
                 if($type == 2) {
 
@@ -174,15 +175,18 @@
                  $slkh = \App\Models\SaleAgent::where('month','>=',$startMonth)->where('month','<=',$endMonth)
                                     ->groupBy('agent_id','month')->join('agents','agents.id', '=' ,'sale_agents.agent_id')->where('agents.gsv',$manager->id)
                                     ->get()->sum('sales_plan');
+
                 }
               if($type == 3) {
 
                 $dlv = \App\Models\SaleAgent::where('month','>=',$startMonth)->where('month','<=',$endMonth)
                                                    ->groupBy('agent_id','month')->join('agents','agents.id', '=' ,'sale_agents.agent_id')->where('agents.tv',$manager->id)
                                                    ->get()->sum('capacity');
-                 $slkh = \App\Models\SaleAgent::where('month','>=',$startMonth)->where('month','<=',$endMonth)
-                                    ->groupBy('agent_id','month')->join('agents','agents.id', '=' ,'sale_agents.agent_id')->where('agents.tv',$manager->id)
+                $slkh = \App\Models\SaleAgent::where('month','>=',$startMonth)->where('month','<=',$endMonth)
+                                    ->groupBy('agent_id','month')->join('agents','agents.id', '=' ,'sale_agents.agent_id')->where('agents.gdv',$manager->id)
                                     ->get()->sum('sales_plan');
+
+
                 }
               if($type == 4) {
 
@@ -192,6 +196,8 @@
                  $slkh = \App\Models\SaleAgent::where('month','>=',$startMonth)->where('month','<=',$endMonth)
                                     ->groupBy('agent_id','month')->join('agents','agents.id', '=' ,'sale_agents.agent_id')->where('agents.gdv',$manager->id)
                                     ->get()->sum('sales_plan');
+
+
                 }
         if($type == 5) {
  $string = 'NVKD';
@@ -201,6 +207,7 @@
                  $slkh = \App\Models\SaleAgent::where('month','>=',$startMonth)->where('month','<=',$endMonth)
                                     ->groupBy('agent_id','month')->join('agents','agents.id', '=' ,'sale_agents.agent_id')->where('agents.manager_id',$manager->id)
                                     ->get()->sum('sales_plan');
+
                 }
 
         @endphp
@@ -217,20 +224,28 @@
         <tr class="thang">
             <td></td>
             <td colspan="2">
+                @if($startMonth == $endMonth)
                 Sản lượng đại lý /GS vùng /Giám đốc vùng Tháng {{$startMonth}}
+                    @else
+                    Sản lượng đại lý /GS vùng /Giám đốc vùng Tháng {{$startMonth}} - {{ $endMonth }}
+                    @endif
             </td>
             <td></td>
         </tr>
 
 
-    <tr style="text-align: center" class="tieude">
-        <td>Mã số</td>
-        <td colspan="2">Sản phẩm</td>
-        <td>Sản lượng thực tế</td>
-    </tr>
+
+        <tr style="text-align: center" class="tieude">
+            <td>Mã số</td>
+            <td colspan="2">Sản phẩm</td>
+            <td>Sản lượng thực tế</td>
+        </tr>
+
+
     @php  $groupProduct = \App\Models\GroupProduct::orderBy('created_at','desc')->get();
     @endphp
     @if($groupProduct->count())
+            @php $slTotal = 0 @endphp
         @foreach($groupProduct as $group)
             @php
                 $array = [];
@@ -273,6 +288,7 @@
 
 
                                 $slGroup += $sltt;
+
                                 if($sltt ) {
                                  $string .= '<tr style="text-align: left">';
                         $string .= '<td>'.$product->code.'</td>';
@@ -281,9 +297,11 @@
                         $string .= '</tr>';
                                 }
 
+
                         @endphp
                     @endforeach
                     @if($slGroup > 0)
+
                     <tr style="text-align: center" class="group_product">
                         <td>{{$group->code}}</td>
                         <td colspan="2">{{$group->name_vn}}</td>
@@ -298,9 +316,14 @@
 
 
             @endif
-
+            @php   $slTotal += $slGroup; @endphp
         @endforeach
     @endif
+        <tr tyle="text-align: center" class="group_product">
+            <td></td>
+            <td colspan="2">Tổng sản lượng</td>
+            <td>{{number_format($slTotal)}}</td>
+        </tr>
 </table>
 </body>
 </html>

@@ -116,6 +116,14 @@
             vertical-align: middle;
         }
 
+        .table-products tr {
+            height: 50px;
+        }
+
+        .table-products tr th,td {
+            text-align: center;
+        }
+
     </style>
 
     <div class="row">
@@ -862,7 +870,7 @@
         }
 
         function showDataSales(data) {
-            var area_name = '';
+
             var polygonArray = [];
 
             $.map(data.locations, function (location, index) {
@@ -889,10 +897,7 @@
                     });
                     polygonArray[item.id] = polygon;
                 }
-                area_name += item.name;
-                if (index < data.locations.length - 1) {
-                    area_name += '-';
-                }
+
             });
             var postion = '';
             if (data.user.position == 3) {
@@ -941,7 +946,7 @@
                 } else {
                     name = agent.name;
                 }
-                listAgents += '<div><p class="" style="font-size:' + user.fontSize + 'px; color:' + user.textColor + '">'  + name + ' %TT ' + item.totalSales + '/' + numberWithCommas(item.capacity) + '=' + numberWithCommas(item.percent) + '%</p><br></div>';
+                listAgents += '<div><p class="" style="font-size:' + user.fontSize + 'px; color:' + user.textColor + '">'  + name + ' %TT ' + numberWithCommas(item.totalSales) + '/' + numberWithCommas(item.capacity) + '=' + numberWithCommas(item.percent) + '%</p><br></div>';
             });
 
             listAgents+= '</div>';
@@ -952,10 +957,9 @@
 
             var list_products = data.listProducts;
 
-            var tableSales = '<table class="table table-striped table-bordered table-products" cellspacing="0" width="100%" id="data-table">' +
+            var tableSales = '<table class="table-bordered table-products" cellspacing="0" width="100%" id="data-table">' +
                 '<thead>' +
                 '<tr>' +
-                '<th>Tên Sản phẩm</th>' +
                 '<th>Mã Sản phẩm</th>' +
                 '<th>Sản lượng</th>' +
                 '<th>Dung lượng</th>' +
@@ -976,7 +980,6 @@
             });
             tableSales += '</select>' +
                 '</td>' +
-                '<td id="code">' + list_products[0].code + '</td>' +
                 '<td id="totalSales">' + numberWithCommas(list_products[0].totalSales) + '</td>' +
                 '<td id="capacity">' + numberWithCommas(list_products[0].capacity) + '</td>' +
                 '</tr>' +
@@ -1009,7 +1012,7 @@
 
             var tableSales =
                 '<div class="info_gsv" style="font-size:' + data.user.fontSize + 'px; color:' + data.user.textColor + '" >' +
-                '<h3 style="font-size:' + data.user.fontSize + 'px; color:' + data.user.textColor + '">' + area_name + '</h3>' +
+                '<h3 style="font-size:' + data.user.fontSize + 'px; color:' + data.user.textColor + '">' + data.area_name + '</h3>' +
                 '<div class="user_data_gsv" style="font-size:' + data.user.fontSize + 'px; color:' + data.user.textColor + '">' +
                 '<p class="data_gsv" id="data" style="font-size:' + data.user.fontSize + 'px; color:' + data.user.textColor + '">%TT ' + numberWithCommas(data.totalSales) + '/' + numberWithCommas(data.capacity) + '=' + data.percent + '%</p>' +
                 '<ul class="info_user_gsv" style="font-size:' + data.user.fontSize + 'px; color:' + data.user.textColor + '">' +
@@ -1160,10 +1163,9 @@
 
             var list_products = data.listProducts;
 
-            var tableSales = '<table class="table table-striped table-bordered table-products" cellspacing="0" width="100%" id="data-table">' +
+            var tableSales = '<table class="table-bordered table-products" cellspacing="0" width="100%" id="data-table">' +
                 '<thead>' +
                 '<tr>' +
-                '<th>Tên Sản phẩm</th>' +
                 '<th>Mã Sản phẩm</th>' +
                 '<th>Sản lượng</th>' +
                 '<th>Dung lượng</th>' +
@@ -1184,7 +1186,6 @@
             });
             tableSales += '</select>' +
                 '</td>' +
-                '<td id="code">' + list_products[0].code + '</td>' +
                 '<td id="totalSales">' + numberWithCommas(list_products[0].totalSales) + '</td>' +
                 '<td id="capacity">' + numberWithCommas(list_products[0].capacity) + '</td>' +
                 '</tr>' +
@@ -1408,10 +1409,9 @@
 
             var list_products = data.listProducts;
 
-            var tableSales = '<table class="table table-striped table-bordered table-products" cellspacing="0" width="100%" id="data-table">' +
+            var tableSales = '<table class="table-bordered table-products" cellspacing="0" width="100%" id="data-table">' +
                 '<thead>' +
                 '<tr>' +
-                '<th>Tên Sản phẩm</th>' +
                 '<th>Mã Sản phẩm</th>' +
                 '<th>Sản lượng</th>' +
                 '<th>Dung lượng</th>' +
@@ -1434,8 +1434,7 @@
 
             tableSales += '</select>' +
                 '</td>' +
-                '<td id="code">' + list_products[0].code + '</td>' +
-                '<td id="totalSales">' + numberWithCommas(list_products[0].totalSales) + '</td>' +
+                '<td id="capacity">' + numberWithCommas(list_products[0].totalSales) + '</td>' +
                 '<td id="capacity">' + numberWithCommas(list_products[0].capacity) + '</td>' +
                 '</tr>' +
                 '</tbody>' +
@@ -1659,10 +1658,9 @@
                 '<h5>' + data.agents.name + '</h5>' +
                 '</div>'
             });
-            var tableSales = '<table class="table table-striped table-bordered table-products" cellspacing="0" width="100%" id="data-table">' +
+            var tableSales = '<table class="table-bordered table-products" cellspacing="0" width="100%" id="data-table">' +
                 '<thead>' +
                 '<tr>' +
-                '<th>Tên Sản phẩm</th>' +
                 '<th>Mã Sản phẩm</th>' +
                 '<th>Sản lượng</th>' +
                 '<th>Dung lượng</th>' +
@@ -1683,7 +1681,6 @@
             });
             tableSales += '</select>' +
                 '</td>' +
-                '<td id="code">' + list_products[0].code + '</td>' +
                 '<td id="totalSales">' + numberWithCommas(list_products[0].totalSales) + '</td>' +
                 '<td id="capacity">' + numberWithCommas(list_products[0].capacity) + '</td>' +
                 '</tr>' +
@@ -1822,6 +1819,7 @@
                 var div = document.createElement('div');
                 div.style.color = item.gdv.textColor;
                 div.innerHTML = item.gdv.name + ' - %TT ' + numberWithCommas(item.totalSales) + '/' + numberWithCommas(item.capacity) + '=' + item.percent + "%";
+
                 legend.appendChild(div);
             });
 

@@ -848,18 +848,18 @@ class MapController extends AdminController
             $userOwns->push($user);
             $listIds = $userOwns->pluck('id')->toArray();
 
-            $areas = $user->area()->get();
+            $areas = $user->area()->first();
 
             $locations = [];
-            foreach ($areas as $key => $area) {
-                foreach ($area->address as $k => $address) {
+
+                foreach ($areas->address as $k => $address) {
                     $locations[] = [
-                        'border_color' => $area->border_color,
-                        'background_color' => $area->background_color,
+                        'border_color' => $areas->border_color,
+                        'background_color' => $areas->background_color,
                         'area' => $address
                     ];
                 }
-            }
+
 
             $agents = Agent::whereIn('manager_id', $listIds)->with('user')->get();
 
@@ -949,7 +949,8 @@ class MapController extends AdminController
                 'percent' => round($totalSales / $capacity, 2),
                 'listProducts' => $listProducts,
                 'table' => $table,
-                'listCodes' => $listCodes
+                'listCodes' => $listCodes,
+                'area_name' => $areas->name
             ]);
         }
 
@@ -977,18 +978,18 @@ class MapController extends AdminController
 
             $listIds = $userOwns->pluck('id')->toArray();
 
-            $areas = $userTv->area()->get();
+            $areas = $userTv->area()->first();
 
             $locations = [];
-            foreach ($areas as $key => $area) {
-                foreach ($area->address as $k => $address) {
+
+                foreach ($areas->address as $k => $address) {
                     $locations[] = [
-                        'border_color' => $area->border_color,
-                        'background_color' => $area->background_color,
+                        'border_color' => $areas->border_color,
+                        'background_color' => $areas->background_color,
                         'area' => $address
                     ];
                 }
-            }
+
 
             $agents = Agent::whereIn('manager_id', $listIds)->with('user')->get();
 
@@ -1079,7 +1080,8 @@ class MapController extends AdminController
                 'percent' => round($totalSales / $capacity, 2),
                 'listProducts' => $listProducts,
                 'table' => $table,
-                'listCodes' => $listCodes
+                'listCodes' => $listCodes,
+                'area_name'=> $areas->name
             ]);
         }
 
