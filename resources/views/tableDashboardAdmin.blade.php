@@ -73,7 +73,11 @@
         <tr class="thang">
             <td></td>
             <td colspan="2">
-                Sản lượng đại lý /GS vùng /Giám đốc vùng Tháng {{$startMonth}}
+                @if($startMonth == $endMonth)
+                    Sản lượng đại lý /GS vùng /Giám đốc vùng Tháng {{$startMonth}}
+                @else
+                    Sản lượng đại lý /GS vùng /Giám đốc vùng Tháng {{$startMonth}} - {{ $endMonth }}
+                @endif
             </td>
             <td></td>
         </tr>
