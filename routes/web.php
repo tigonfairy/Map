@@ -56,6 +56,7 @@ Route::group(['middleware' => ['auth','language'],
         Route::post('/', ['as' => 'dashboard', 'uses' => 'HomeController@dashboard']);
         Route::post('/admin', ['as' => 'dashboard', 'uses' => 'HomeController@dashboard']);
 
+         Route::get('/draw',['as' => 'draw', 'uses' => 'HomeController@draw']);
         Route::group([
             'prefix' => 'users',
             'as' => 'user@',

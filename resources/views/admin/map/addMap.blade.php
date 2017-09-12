@@ -1,6 +1,11 @@
 @extends('admin')
 @section('content')
-
+    <style>
+        #map {
+            height: 500px;
+            width: 2000px;
+        }
+    </style>
     <!-- Page header -->
     <div class="page-header">
         <div class="page-header-content">
@@ -74,6 +79,7 @@
 @endsection
 @push('scripts_foot')
 <script type="text/javascript" src="https://maps.google.com/maps/api/js?key=AIzaSyDUMRn1pnBk97Zay94WiBbMgdVlBh_vwYs&libraries=drawing"></script>
+
 <script type="text/javascript" src="/js/gmaps.js"></script>
 <script type="text/javascript" src="/js/prettify.js"></script>
 @endpush
@@ -96,23 +102,6 @@
             zoom: 11,
             fullscreenControl:true
         });
-
-//        map.addListener('click', function (e) {
-//
-//            var ll = {lat: e.latLng.lat(), lng: e.latLng.lng()};
-//
-//            map.removeMarkers();
-//            markers = [];
-//            map.addMarker({
-//                lat: ll.lat,
-//                lng: ll.lng,
-//                title: 'Lima',
-//                click: function(e) {
-//                    alert('You clicked in this marker');
-//                }
-//            });
-//
-//        });
         $('#geocoding_form').submit(function(e){
             e.preventDefault();
             GMaps.geocode({
@@ -146,9 +135,9 @@
                         draggable: true
                     }
                 }});
+
             drawingManager.setMap(map.map);
 
-            // Add a listener for creating new shape event.
             google.maps.event.addListener(drawingManager, "overlaycomplete", function (event) {
                 var newShape = event.overlay;
                 newShape.type = event.type;
@@ -159,7 +148,7 @@
 
             });
 
-// add a listener for the drawing mode change event, delete any existing polygons
+
             google.maps.event.addListener(drawingManager, "drawingmode_changed", function () {
                 if (drawingManager.getDrawingMode() != null) {
                     for (var i = 0; i < shapes.length; i++) {
@@ -169,13 +158,12 @@
                 }
             });
 
-            // Add a listener for the "drag" event.
+
             google.maps.event.addListener(drawingManager, "overlaycomplete", function (event) {
                 overlayDragListener(event.overlay);
                 getPolygonCoords(event.overlay);
             });
 
-//        });
 
 
         function overlayDragListener(overlay) {
@@ -197,4 +185,6 @@
         }
     });
 </script>
+
+
 @endpush
