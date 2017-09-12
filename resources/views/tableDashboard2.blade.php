@@ -49,113 +49,6 @@
 </head>
 <body>
 <table class="table table-striped table-bordered" cellspacing="0" width="100%">
-    @if($type == 1)
-        @php $agent = \App\Models\Agent::find($user);@endphp
-        <tr class="title">
-            <td>Đại lý</td>
-            <td>{{$agent->name}}</td>
-            <td>Mã đại lý</td>
-            <td>{{$agent->code}}</td>
-        </tr>
-        @php $manager = $agent->user; @endphp
-    @endif
-
-
-        @php
-        if($type != 1){
-            $manager = \App\Models\User::find($id);
-        }
-            $nvkd = null;
-            $gsv = null;
-            $tv = null;
-            $gdv = null;
-                if($manager->position == \App\Models\User::NVKD) {
-                    $nvkd = $manager;
-                    if($nvkd->manager and $nvkd->manager->position == \App\Models\User::GSV) {
-                        $gsv = $nvkd->manager;
-                         if($gsv->manager and $gsv->manager->position == \App\Models\User::TV) {
-                            $tv = $gsv->manager;
-                            if($tv->manager and $tv->manager->position == \App\Models\User::GĐV) {
-                                $gdv = $gsv->manager;
-                            }
-                         }
-                          if($gsv->manager and $gsv->manager->position == \App\Models\User::GĐV) {
-                            $gdv = $gsv->manager;
-                         }
-                    }
-                    if($nvkd->manager and $nvkd->manager->position == \App\Models\User::TV) {
-                          $tv = $nvkd->manager;
-                              if($tv->manager and $tv->manager->position == \App\Models\User::GĐV) {
-                                $gdv = $tv->manager;
-                            }
-                    }
-                     if($nvkd->manager and $nvkd->manager->position == \App\Models\User::GĐV) {
-                        $gdv = $nvkd->manager;
-                       }
-
-                }
-                if($manager->position == \App\Models\User::GSV) {
-                            $gsv = $manager;
-
-                                 if($gsv->manager and $gsv->manager->position == \App\Models\User::TV) {
-                                    $tv = $gsv->manager;
-                                    if($tv->manager and $tv->manager->position == \App\Models\User::GĐV) {
-                                        $gdv = $gsv->manager;
-                                    }
-                                 }
-                                  if($gsv->manager and $gsv->manager->position == \App\Models\User::GĐV) {
-                                    $gdv = $gsv->manager;
-                                 }
-
-                }
-                  if($manager->position == \App\Models\User::TV) {
-                       $tv = $manager;
-                                      if($tv->manager and $tv->manager->position == \App\Models\User::GĐV) {
-                                        $gdv = $tv->manager;
-                                    }
-                  }
-                 if($manager->position == \App\Models\User::GĐV) {
-                         $gdv = $manager;
-                  }
-        @endphp
-
-        @if($nvkd)
-            <tr class="title">
-                <td>NVKD</td>
-                <td>{{$nvkd->name}}</td>
-                <td>Mã nhân viên</td>
-                <td>{{$nvkd->code}}</td>
-            </tr>
-
-        @endif
-        @if($gsv)
-            <tr class="title">
-                <td>Giám sát</td>
-                <td>{{$gsv->name}}</td>
-                <td>Mã nhân viên</td>
-                <td>{{$gsv->code}}</td>
-            </tr>
-
-        @endif
-        @if($tv)
-            <tr class="title">
-                <td>Trưởng vùng</td>
-                <td>{{$tv->name}}</td>
-                <td>Mã nhân viên</td>
-                <td>{{$tv->code}}</td>
-            </tr>
-
-        @endif
-        @if($gdv)
-            <tr class="title">
-                <td>Giám đốc vùng</td>
-                <td>{{$gdv->name}}</td>
-                <td>Mã nhân viên</td>
-                <td>{{$gdv->code}}</td>
-            </tr>
-
-        @endif
-
         @php
             if($type == 1) {
 
@@ -191,13 +84,9 @@
               if($type == 4) {
 
                 $dlv = \App\Models\SaleAgent::where('month','>=',$startMonth)->where('month','<=',$endMonth)
-                                                   ->groupBy('agent_id','month')->join('agents','agents.id', '=' ,'sale_agents.agent_id')->where('agents.gdv',$manager->id)
-                                                   ->get()->sum('capacity');
+                                                   ->join('agents','agents.id', '=' ,'sale_agents.agent_id')->get()->sum('capacity');
                  $slkh = \App\Models\SaleAgent::where('month','>=',$startMonth)->where('month','<=',$endMonth)
-                                    ->groupBy('agent_id','month')->join('agents','agents.id', '=' ,'sale_agents.agent_id')->where('agents.gdv',$manager->id)
-                                    ->get()->sum('sales_plan');
-
-
+                                    ->join('agents','agents.id', '=' ,'sale_agents.agent_id')->get()->sum('sales_plan');
                 }
         if($type == 5) {
  $string = 'NVKD';
@@ -225,9 +114,9 @@
             <td></td>
             <td colspan="2">
                 @if($startMonth == $endMonth)
-                Sản lượng đại lý /GS vùng /Giám đốc vùng Tháng {{$startMonth}}
+                Sản lượng Tháng {{$startMonth}}
                     @else
-                    Sản lượng đại lý /GS vùng /Giám đốc vùng Tháng {{$startMonth}} - {{ $endMonth }}
+                    Sản lượng Tháng {{$startMonth}} - {{ $endMonth }}
                     @endif
             </td>
             <td></td>
@@ -274,9 +163,7 @@
                                 ->get()->sum('sales_real');
                             }
                              if($type == 4) {
-                                $sltt =  \App\Models\SaleAgent::where('month','>=',$startMonth)->where('month','<=',$endMonth)
-                                         ->join('agents','agents.id', '=' ,'sale_agents.agent_id')->where('agents.gdv',$manager->id)->where('product_id',$product->id)
-                                ->get()->sum('sales_real');
+                                $sltt =  \App\Models\SaleAgent::where('month','>=',$startMonth)->where('month','<=',$endMonth)->groupBy('agent_id')->where('product_id',$product->id)->get()->sum('sales_real');
                             }
 
                             if($type == 5) {
