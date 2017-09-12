@@ -1845,7 +1845,7 @@
             $("#code").text(item.code);
             $("#totalSales").text(numberWithCommas(item.totalSales));
             $("#capacity").text(numberWithCommas(item.capacity));
-            $("#data").text('%' + item.code + ' ' + item.totalSales + '/' + item.capacity + '=' + item.percent + '%');
+            $("#data").text('%' + item.code + ' ' + numberWithCommas(item.totalSales) + '/' + numberWithCommas(item.capacity) + '=' + item.percent + '%');
         });
         $(document).on('click', '#swift', function () {
             var text = $(this).text();
