@@ -4,4 +4,4 @@
 vendor
 /.env
 /storage/app/import/*
-/storage/app/exports/*
+/storage/exports/*

@@ -200,4 +200,9 @@ class HomeController extends AdminController
         }
 
     }
+
+    public function guiSearch(Request $request) {
+        $agents = Agent::all();
+        return view('admin.guiSearch',compact('agents'));
+    }
 }

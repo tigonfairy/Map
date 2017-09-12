@@ -177,16 +177,20 @@
         @endsection
         @push('scripts')
         <script type="text/javascript">
+
             var map;
             var markers = [];
 
             $(document).on('keypress','input[type=number]',function(e){
 
                 var charCode = (e.which) ? e.which : e.keyCode;
-                console.log(charCode);
                 if (charCode > 31 && (charCode < 48 || charCode > 57)) {
                     return false;
                 }
+//                if((charCode >= 48 &&charCode <= 57) || (charCode >= 96 && charCode <= 105)) {
+//                    return true;
+//                }
+                return false;
             });
             $(document).ready(function () {
                 $('.agents').select2();
