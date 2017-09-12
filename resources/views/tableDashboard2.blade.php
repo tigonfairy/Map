@@ -147,31 +147,9 @@
                     @php $slGroup = 0 @endphp
                     @foreach($products as $product)
                         @php
-                            if($type == 1) {
-                             $sltt =  \App\Models\SaleAgent::where('month','>=',$startMonth)->where('month','<=',$endMonth)->where('product_id',$product->id)
-                            ->where('agent_id',$user)
-                                ->get()->sum('sales_real');
-                            }
-                            if($type == 2) {
-                                $sltt =  \App\Models\SaleAgent::where('month','>=',$startMonth)->where('month','<=',$endMonth)
-                                         ->join('agents','agents.id', '=' ,'sale_agents.agent_id')->where('agents.gsv',$manager->id)->where('product_id',$product->id)
-                                ->get()->sum('sales_real');
-                            }
-                             if($type == 3) {
-                                $sltt =  \App\Models\SaleAgent::where('month','>=',$startMonth)->where('month','<=',$endMonth)
-                                         ->join('agents','agents.id', '=' ,'sale_agents.agent_id')->where('agents.tv',$manager->id)->where('product_id',$product->id)
-                                ->get()->sum('sales_real');
-                            }
                              if($type == 4) {
-                                $sltt =  \App\Models\SaleAgent::where('month','>=',$startMonth)->where('month','<=',$endMonth)->groupBy('agent_id')->where('product_id',$product->id)->get()->sum('sales_real');
+                                $sltt =  \App\Models\SaleAgent::where('month','>=',$startMonth)->where('month','<=',$endMonth)->where('product_id',$product->id)->get()->sum('sales_real');
                             }
-
-                            if($type == 5) {
-                                $sltt =  \App\Models\SaleAgent::where('month','>=',$startMonth)->where('month','<=',$endMonth)
-                                         ->join('agents','agents.id', '=' ,'sale_agents.agent_id')->where('agents.manager_id',$manager->id)->where('product_id',$product->id)
-                                ->get()->sum('sales_real');
-                            }
-
 
 
                                 $slGroup += $sltt;
