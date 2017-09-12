@@ -1045,12 +1045,18 @@ class MapController extends AdminController
             $dataGdv = [];
             $locations = [];
             $agentIds = [];
-            $userGdv = User::findOrFail($dataSearch);
-            $userGSV = $userGdv->owners()->get();
 
-            $capacity = \App\Models\SaleAgent::where('month','>=',$startMonth)->where('month','<=',$endMonth)
-                ->groupBy('agent_id','month')->join('agents','agents.id', '=' ,'sale_agents.agent_id')->where('agents.gdv',$userGdv->id)
-                ->get()->sum('capacity');
+            if ($dataSearch != 0) {
+                $userGdv = User::findOrFail($dataSearch);
+                $userGSV = $userGdv->owners()->get();
+                $capacity = \App\Models\SaleAgent::where('month','>=',$startMonth)->where('month','<=',$endMonth)
+                    ->groupBy('agent_id','month')->join('agents','agents.id', '=' ,'sale_agents.agent_id')->where('agents.gdv',$userGdv->id)
+                    ->get()->sum('capacity');
+            } else {
+                $userGSV = User::where('position',  User::GSV)->orWhere('position', User::TV)->get();
+                $capacity = \App\Models\SaleAgent::where('month','>=',$startMonth)->where('month','<=',$endMonth)
+                    ->groupBy('agent_id','month')->join('agents','agents.id', '=' ,'sale_agents.agent_id')->get()->sum('capacity');
+            }
 
             foreach ($userGSV as $user) {
                 if ($user->position == User::GSV) { // gsv
@@ -1073,10 +1079,9 @@ class MapController extends AdminController
                 }
                 $listIds[] = $user->id;
                 $agents = Agent::whereIn('manager_id', $listIds)->with('user')->get();
-                foreach ($agents->pluck('id')->toArray() as $agentId) {
-                    $agentIds[] = $agentId;
-                }
+
                 foreach ($agents as $agent) {
+                    $agentIds[] = $agent->id;
                     $sales = SaleAgent::where('agent_id', $agent->id)->where('month', '>=', $startMonth)->where('month', '<=', $endMonth)->select('sales_real', 'capacity')->get();
                     foreach ($sales as $sale) {
                         $saleAgents += $sale->sales_real;
@@ -1116,9 +1121,20 @@ class MapController extends AdminController
                     }
                 }
             }
-            $agents = Agent::where('manager_id', $userGdv->id)->with('user')->get();
+
+            if ($dataSearch != 0 )
+            {
+                $agents = Agent::where('manager_id', $userGdv->id)->with('user')->get();
+            } else {
+                $userGDVIds = User::where('position', User::GĐV)->pluck('id')->toArray();
+
+                $agents = Agent::whereIn('manager_id', $userGDVIds)->with('user')->get();
+
+            }
+
             if (count($agents) > 0) {
                 foreach ($agents as $agent) {
+                    $agentIds[] = $agent->id;
                     $sales = SaleAgent::where('agent_id', $agent->id)->where('month', '>=', $startMonth)->where('month', '<=', $endMonth)->select('sales_real', 'capacity')->get();
                     $saleAgents = 0;
                     foreach ($sales as $sale) {
@@ -1129,7 +1145,7 @@ class MapController extends AdminController
                     $agent->capacity = $capacity;
                     $agent->percent = round(($saleAgents / $capacity) * 100, 2);
                     $dataGdv[] = [
-                        'gsv' => $userGdv,
+                        'gsv' => $agent->user->name,
                         'agents' => $agent,
                         'totalSales' => $saleAgents,
                         'capacity' => $capacity,
@@ -1138,9 +1154,7 @@ class MapController extends AdminController
                     $totalSaleGDV += $saleAgents;
                 }
             }
-            foreach ($agents->pluck('id')->toArray() as $agentId) {
-                $agentIds[] = $agentId;
-            }
+
             // xử lý product
             $listProducts[] = [
                 'id' => 0,
@@ -1188,11 +1202,16 @@ class MapController extends AdminController
             }
             // table data
             $type = 4;
-            $id = $userGdv->id;
-            $table = view('tableDashboard', compact('type', 'id', 'startMonth', 'endMonth'))->render();
+            if ($dataSearch != 0) {
+                $id = $userGdv->id;
+                $table = view('tableDashboard', compact('type', 'id', 'startMonth', 'endMonth'))->render();
+            } else {
+                $table = view('tableDashboard2', compact('type', 'startMonth', 'endMonth'))->render();
+            }
+
             array_unique($listCodes);
             return response()->json([
-                'user' => $userGdv,
+                'user' => $dataSearch != 0 ? $userGdv : '' ,
                 'result' => $data,
                 'resultGdv' => $dataGdv,
                 'locations' => $locations,
