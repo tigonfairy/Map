@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Storage;
 use Response;
 use Illuminate\Http\Request;
 use Validator;
+use App\Models\SaleAgent;
 class HomeController extends AdminController
 {
 
@@ -202,7 +203,19 @@ class HomeController extends AdminController
     }
 
     public function guiSearch(Request $request) {
-        $agents = Agent::all();
+
+        $lastMonth = DB::table('sale_agents')
+            ->select('*')->orderBy('month','desc')
+            ->first()->month;
+        $agents = Agent::selectRaw('sum(sale_agents.sales_real)  as sales_real,sale_agents.capacity,agents.*')
+            ->join('sale_agents','sale_agents.agent_id','=','agents.id')->where('sale_agents.month',$lastMonth)
+            ->groupBy('agents.id')->with('user')->get();
+
+
+
+
+
+
         return view('admin.guiSearch',compact('agents'));
     }
 }
