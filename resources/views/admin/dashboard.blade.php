@@ -1590,14 +1590,33 @@
                         return queryParameters;
                     },
                     processResults: function (data, page) {
-                        return {
-                            results: $.map(data.data, function (item) {
-                                return {
-                                    text: item.name,
-                                    id: item.id,
+                        var result = [
+                            {
+                                text:'All',
+                                id:'all'
+                            }
+                        ];
+                        data = data.data;
+                      for (var key in data) {
+
+                          result.push(
+                              {
+                                    text: data[key].name,
+                                    id: data[key].id,
                                 }
-                            })
-                        };
+                          );
+                      }
+                        return {
+                            results:result
+                        }
+//                        return {
+//                            results: $.map(data.data, function (item) {
+//                                return {
+//                                    text: item.name,
+//                                    id: item.id,
+//                                }
+//                            })
+//                        };
                     },
                     dropdownCssClass: "bigdrop", // apply css that makes the dropdown taller
                     escapeMarkup: function (m) {
@@ -1605,6 +1624,7 @@
                     }
                 }
             });
+
         }
 
         function showDataAgents(data) {
