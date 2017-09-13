@@ -1260,14 +1260,34 @@
                         return queryParameters;
                     },
                     processResults: function (data, page) {
-                        return {
-                            results: $.map(data, function (item) {
-                                return {
-                                    text: item.name,
+                        var result = [
+                            {
+                                text:'Tất cả',
+                                id:'0'
+                            }
+                        ];
+
+                        $.map(data, function (item) {
+                            result.push(
+                                {
+                                    text :item.name,
                                     id: item.id,
                                 }
-                            })
+                            )
+                        });
+
+                        return {
+                            results:result
                         };
+
+//                        return {
+//                            results: $.map(data, function (item) {
+//                                return {
+//                                    text: item.name,
+//                                    id: item.id,
+//                                }
+//                            })
+//                        };
                     },
                     dropdownCssClass: "bigdrop", // apply css that makes the dropdown taller
                     escapeMarkup: function (m) {
@@ -1590,33 +1610,15 @@
                         return queryParameters;
                     },
                     processResults: function (data, page) {
-                        var result = [
-                            {
-                                text:'All',
-                                id:'all'
-                            }
-                        ];
-                        data = data.data;
-                      for (var key in data) {
 
-                          result.push(
-                              {
-                                    text: data[key].name,
-                                    id: data[key].id,
-                                }
-                          );
-                      }
                         return {
-                            results:result
-                        }
-//                        return {
-//                            results: $.map(data.data, function (item) {
-//                                return {
-//                                    text: item.name,
-//                                    id: item.id,
-//                                }
-//                            })
-//                        };
+                            results: $.map(data.data, function (item) {
+                                return {
+                                    text: item.name,
+                                    id: item.id,
+                                }
+                            })
+                        };
                     },
                     dropdownCssClass: "bigdrop", // apply css that makes the dropdown taller
                     escapeMarkup: function (m) {
