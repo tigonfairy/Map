@@ -1242,6 +1242,7 @@
             if(type == 0) {
                 $("#type_search").val('gdv');
                 var that = $(".data_search");
+
             } else {
                 var that = $('.dataExport');
             }
@@ -1259,14 +1260,34 @@
                         return queryParameters;
                     },
                     processResults: function (data, page) {
-                        return {
-                            results: $.map(data, function (item) {
-                                return {
-                                    text: item.name,
+                        var result = [
+                            {
+                                text:'Tất cả',
+                                id:'0'
+                            }
+                        ];
+
+                        $.map(data, function (item) {
+                            result.push(
+                                {
+                                    text :item.name,
                                     id: item.id,
                                 }
-                            })
+                            )
+                        });
+
+                        return {
+                            results:result
                         };
+
+//                        return {
+//                            results: $.map(data, function (item) {
+//                                return {
+//                                    text: item.name,
+//                                    id: item.id,
+//                                }
+//                            })
+//                        };
                     },
                     dropdownCssClass: "bigdrop", // apply css that makes the dropdown taller
                     escapeMarkup: function (m) {
@@ -1274,6 +1295,9 @@
                     }
                 }
             });
+
+//            var option = new Option("Tất cả", "0", true, true);
+//            that.append(option).trigger('change');
         }
 
         function showDataSaleGDV(data) {
@@ -1362,7 +1386,7 @@
                 div.style.color = item.gsv.textColor;
                 div.innerHTML = item.gsv.name + ' - %TT ' + numberWithCommas(item.totalSales) + '/' + numberWithCommas(item.capacity) + '=' + item.percent + "%";
 
-                legend.appendChild(div);
+                legend.append(div);
 
                 var customTxt =
                     '<div class="customBox" style="display:none; font-size:' + item.gsv.fontSize + 'px; color:' + item.gsv.textColor + '">' +
@@ -1586,33 +1610,15 @@
                         return queryParameters;
                     },
                     processResults: function (data, page) {
-                        var result = [
-                            {
-                                text:'All',
-                                id:'all'
-                            }
-                        ];
-                        data = data.data;
-                      for (var key in data) {
 
-                          result.push(
-                              {
-                                    text: data[key].name,
-                                    id: data[key].id,
-                                }
-                          );
-                      }
                         return {
-                            results:result
-                        }
-//                        return {
-//                            results: $.map(data.data, function (item) {
-//                                return {
-//                                    text: item.name,
-//                                    id: item.id,
-//                                }
-//                            })
-//                        };
+                            results: $.map(data.data, function (item) {
+                                return {
+                                    text: item.name,
+                                    id: item.id,
+                                }
+                            })
+                        };
                     },
                     dropdownCssClass: "bigdrop", // apply css that makes the dropdown taller
                     escapeMarkup: function (m) {
