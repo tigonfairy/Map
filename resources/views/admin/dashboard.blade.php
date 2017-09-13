@@ -1242,6 +1242,7 @@
             if(type == 0) {
                 $("#type_search").val('gdv');
                 var that = $(".data_search");
+
             } else {
                 var that = $('.dataExport');
             }
@@ -1274,6 +1275,9 @@
                     }
                 }
             });
+
+//            var option = new Option("Tất cả", "0", true, true);
+//            that.append(option).trigger('change');
         }
 
         function showDataSaleGDV(data) {
@@ -1362,7 +1366,7 @@
                 div.style.color = item.gsv.textColor;
                 div.innerHTML = item.gsv.name + ' - %TT ' + numberWithCommas(item.totalSales) + '/' + numberWithCommas(item.capacity) + '=' + item.percent + "%";
 
-                legend.appendChild(div);
+                legend.append(div);
 
                 var customTxt =
                     '<div class="customBox" style="display:none; font-size:' + item.gsv.fontSize + 'px; color:' + item.gsv.textColor + '">' +
