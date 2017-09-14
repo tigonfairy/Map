@@ -133,7 +133,7 @@
                     <input type="hidden" name="type_search" value="" id="type_search"/>
 
                     @if($user->position != \App\Models\User::NVKD)
-                        <div class="col-md-2 col-sm-2">
+                        <div class="col-xs-2">
                             <select class="search_type form-control" name="type_data_search">
                                 <option value="">-- Chọn loại {{ trans('home.search') }} --</option>
                                 <option value="1">Theo đại lý</option>
@@ -151,7 +151,7 @@
                             <p id="type_date_search" style="color:red;"></p>
                         </div>
 
-                        <div class="col-md-2 col-sm-2">
+                        <div class="col-xs-2">
                             <select name="data_search" id="select_data_search" class="data_search form-control" id="locations">
                             </select>
                             <p id="date_search" style="color:red;"></p>
@@ -159,53 +159,53 @@
 
 
 
-                            <div class="col-md-2 col-sm-2">
+                            <div class="col-xs-2">
                                 <input type="text" name="startMonth"  class="form-control startMonth" value="{{ old('startMonth') ?: $month }}" placeholder="Thời gian bắt đầu"/>
                                 <p id="startMonth" style="color:red;"></p>
                             </div>
 
 
-                            <div class="col-md-2 col-sm-2">
+                            <div class="col-xs-2">
                                 <input type="text" name="endMonth"  class="form-control endMonth" value="{{ old('endMonth') ?: $month }}" placeholder="Thời gian kết  thúc"/>
                                 <p id="endMonth" style="color:red;"></p>
                             </div>
 
 
-                        <div class="col-md-1 col-sm-1">
+                        <div class="col-xs-1">
                             <button type="submit" class="btn btn-info">{{ trans('home.search') }}</button>
                         </div>
 
-                        <div class="col-md-1 col-sm-1">
+                        <div class="col-xs-1">
                             <a href="#" class="btn btn-info" id="exportDashboard" >Export excel</a>
                         </div>
                     @else
 
                         {{--<div class="col-md-3">--}}
 
-                            <div class="col-md-2 col-sm-2">
+                            <div class="col-xs-2">
                                 <input type="text" name="startMonth"  class="form-control startMonth" value="{{ old('startMonth') ?: $month }}" placeholder="Thời gian bắt đầu"/>
                                 <p id="startMonth" style="color:red;"></p>
                             </div>
 
 
-                            <div class="col-md-2 col-sm-2">
+                            <div class="col-xs-2">
                                 <input type="text" name="endMonth"  class="form-control endMonth" value="{{ old('endMonth') ?: $month }}" placeholder="Thời gian kết  thúc"/>
                                 <p id="endMonth" style="color:red;"></p>
                             </div>
 
 
 
-                        <div class="col-md-1 col-sm-1">
+                        <div class="col-xs-1">
                             <button type="submit" class="btn btn-info">{{ trans('home.search') }}</button>
                         </div>
 
-                        <div class="col-md-1 col-sm-1">
+                        <div class="col-xs-1">
                             <a href="#" class="btn btn-info" id="exportDashboard" >Export excel</a>
                         </div>
 
                     @endif
 
-                    <div class="col-md-1 col-sm-1">
+                    <div class="col-xs-1" style="margin-left:10px;">
                         <a href="#" class="btn btn-info" id="swift" >Full Mode</a>
                     </div>
                 </form>
@@ -248,20 +248,20 @@
                     </div>
                     <div class="clearfix" style="margin-bottom: 20px">
                         <div class="btn-group col-xs-12" data-toggle="buttons">
-                            <label class="btn btn-default active col-xs-6 col-md-3">
+                            <label class="btn btn-default active col-xs-6 col-md-6">
                                 <input type="radio" name="radio" class="toggle radioButton" value="1"> Tháng
                                 gần nhất
                             </label>
-                            <label class="btn btn-default col-xs-6 col-md-3">
+                            <label class="btn btn-default col-xs-6 col-md-6">
                                 <input type="radio" name="radio" class="toggle radioButton" value="2">Tháng có doanh
                                 số
                                 cao nhất
                             </label>
-                            <label class="btn  btn-default col-xs-6 col-md-3">
+                            <label class="btn  btn-default col-xs-6 col-md-6">
                                 <input type="radio" name="radio" class="toggle radioButton" value="3"> Trung bình
                                 tháng
                             </label>
-                            <label class="btn  btn-default col-xs-6 col-md-3">
+                            <label class="btn  btn-default col-xs-6 col-md-6">
                                 <input type="radio" name="radio" class="toggle radioButton" value="4">Tổng sản lượng
                             </label>
                         </div>
@@ -384,9 +384,9 @@
                 }
             },
             tooltip: {
-                headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+                headerFormat: '<span style="font-size:10px">{point.key:,.f}</span><table>',
                 pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-                '<td style="padding:0"><b>{point.y} </b></td></tr>',
+                '<td style="padding:0"><b>{point.y:.2f} </b></td></tr>',
                 footerFormat: '</table>',
                 shared: true,
                 useHTML: true
