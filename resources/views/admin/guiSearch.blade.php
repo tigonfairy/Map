@@ -139,6 +139,16 @@
                     });
 
 
+        var shapeOptions = {
+            strokeWeight: 1,
+            strokeOpacity: 1,
+            fillOpacity: 0.2,
+            editable: true,
+            draggable: true,
+            clickable: true,
+            strokeColor: '#3399FF',
+            fillColor: '#3399FF'
+        };
         var drawingManager = new google.maps.drawing.DrawingManager({
             drawingControl: true,
             drawingControlOptions: {
@@ -153,15 +163,22 @@
                     fillOpacity: 1,
                     strokeWeight: 1,
                     strokeColor: '#ff0000',
-                    clickable: false,
-                    editable: true
-                }
+                    clickable: true,
+                    editable: true,
+                    draggable: true
+                },
+                rectangleOptions: shapeOptions,
+                circleOptions: shapeOptions,
             }
         });
 
         drawingManager.setMap(map.map);
 
         google.maps.event.addListener(drawingManager, "overlaycomplete", function (event) {
+            for (var i = 0; i < shapes.length; i++) {
+                shapes[i].setMap(null);
+            }
+            shapes = [];
             var newShape = event.overlay;
             newShape.type = event.type;
             shapes.push(newShape);
@@ -214,7 +231,8 @@
         function getCircle(circle) {
 
             for (var j = 0; j < countAgent; j++) {
-                if (circle.getBounds().contains(new google.maps.LatLng( markers[j].position.lat() , markers[j].position.lng() ) )) {
+                var latLng = new google.maps.LatLng( markers[j].position.lat() , markers[j].position.lng() );
+                if (circle.getBounds().contains(latLng) && google.maps.geometry.spherical.computeDistanceBetween(circle.getCenter(), latLng) <= circle.getRadius()) {
                     markers[j].setVisible(true);
                     $('#'+j).show();
                 } else {
@@ -224,7 +242,6 @@
 
             }
             $('.search').hide();
-
         }
         function getRectangle(rectangle) {
 
