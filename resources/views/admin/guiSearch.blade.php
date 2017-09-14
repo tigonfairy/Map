@@ -22,17 +22,20 @@
             width: 100%;
             padding: 10px;
         }
-
+        .button-list {
+            left:  0px !important;
+            top: 70px !important;
+        }
     </style>
     <!-- Page header -->
-    <div class="page-header">
-        <div class="page-header-content">
-            <div class="page-title">
-                <h2>Gui Search</h2>
-            </div>
+    {{--<div class="page-header">--}}
+        {{--<div class="page-header-content">--}}
+            {{--<div class="page-title">--}}
+                {{--<h2>Gui Search</h2>--}}
+            {{--</div>--}}
 
-        </div>
-    </div>
+        {{--</div>--}}
+    {{--</div>--}}
     <!-- /page header -->
     <!-- Page container -->
     <div class="page-container">
@@ -40,7 +43,12 @@
 
         <!-- Main content -->
         <div class="content-wrapper">
+
             <div class="row">
+
+                <div class="col-md-1 col-sm-1">
+
+                </div>
                 <div class="col-md-12">
 
                     <div class="panel panel-flat">
@@ -83,12 +91,18 @@
             lat: 21.0277644,
             lng: 105.83415979999995,
             width: "100%",
-            height: '500px',
+            height: '600px',
             zoom: 11,
             streetViewControl: false,
+            mapTypeControl:false,
             fullscreenControl: true
         });
 
+        map.addControl({
+            position: 'top_left',
+            content:  '<a href="#" class="btn btn-info" id="swift" >Hide all</a>',
+            classes : 'button-list'
+        });
         var tableSales = '<div class="agent-info"><div class="search"><input type="text" class="search-input form-control" placeholder="Tìm kiếm đại lý"></div>';
 
                 @foreach($agents  as $key => $agent)
@@ -182,6 +196,7 @@
             var newShape = event.overlay;
             newShape.type = event.type;
             shapes.push(newShape);
+            $('.agent-info').show();
 //            if (drawingManager.getDrawingMode()) {
 //                drawingManager.setDrawingMode(null);
 //            }
@@ -196,6 +211,8 @@
                 shapes = [];
 //            }
             $('.search').show();
+            $('#swift').show();
+            $('.agent-info').show();
             $('.search-input').val('');
             for (var j = 0; j < countAgent; j++) {
                 markers[j].setVisible(true);
@@ -207,6 +224,9 @@
 
 
         google.maps.event.addListener(drawingManager, "overlaycomplete", function (event) {
+            $('#swift').hide();
+
+            $('.agent-info').show();
 //            overlayDragListener(event.overlay);
             if(event.type =='polygon') {
                 getPolygonCoords(event.overlay);
@@ -327,7 +347,26 @@
 
         });
 
+        $(document).on('click', '#swift', function () {
+            var text = $(this).text();
+            if (text == 'Show all') {
+                $(this).text('Hide all');
+                for (var i=0;i<infoWindows.length;i++) {
+                    infoWindows[i].close();
+                    markers[i].setVisible(true);
+                }
 
+                $('.agent-info').show();
+            }
+            else {
+                $(this).text('Show all');
+                for (var i=0;i<infoWindows.length;i++) {
+                    infoWindows[i].close();
+                    markers[i].setVisible(false);
+                }
+                $('.agent-info').hide();
+            }
+        });
     });
 
     function numberWithCommas(x) {
