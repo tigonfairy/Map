@@ -109,7 +109,7 @@
                 </ul>
             </li>
 
-            @if(auth()->user()->position == \App\Models\User::ADMIN)
+            @if(auth()->user()->position == \App\Models\User::ADMIN )
             <li class="nav-item">
                 <a href="javascript:;" class="nav-link nav-toggle">
                     <i class="fa fa-map-o"></i>
@@ -150,6 +150,13 @@
                         </a>
                     </li>
 
+                    <li class="nav-item  ">
+                        <a href="{{route('Admin::guiSearch')}}" class="nav-link nav-toggle">
+                            <i class="icon-settings"></i>
+                            <span class="title">Gui Search</span>
+                            <span class="arrow"></span>
+                        </a>
+                    </li>
 
                     {{--<li class="nav-item  ">--}}
                         {{--<a href="{{route('Admin::map@search')}}" class="nav-link nav-toggle">--}}

@@ -203,17 +203,15 @@ class HomeController extends AdminController
     }
 
     public function guiSearch(Request $request) {
-
+        if(auth()->user()->position != \App\Models\User::ADMIN and auth()->user()->position != \App\Models\User::SALE_ADMIN) {
+            abort(403);
+        }
         $lastMonth = DB::table('sale_agents')
             ->select('*')->orderBy('month','desc')
             ->first()->month;
         $agents = Agent::selectRaw('sum(sale_agents.sales_real)  as sales_real,sale_agents.capacity,agents.*')
             ->join('sale_agents','sale_agents.agent_id','=','agents.id')->where('sale_agents.month',$lastMonth)
             ->groupBy('agents.id')->with('user')->get();
-
-
-
-
 
 
         return view('admin.guiSearch',compact('agents'));

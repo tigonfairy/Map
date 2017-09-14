@@ -26,6 +26,10 @@
             left:  0px !important;
             top: 70px !important;
         }
+        .button-mode {
+            left:  0px !important;
+            top: 110px !important;
+        }
     </style>
     <!-- Page header -->
     {{--<div class="page-header">--}}
@@ -95,16 +99,116 @@
             zoom: 11,
             streetViewControl: false,
             mapTypeControl:false,
-            fullscreenControl: true
+            fullscreenControl: true,
+
         });
 
+        var darkmode = [
+                    {elementType: 'geometry', stylers: [{color: '#242f3e'}]},
+                    {elementType: 'labels.text.stroke', stylers: [{color: '#242f3e'}]},
+                    {elementType: 'labels.text.fill', stylers: [{color: '#746855'}]},
+                    {
+                        featureType: 'administrative.locality',
+                        elementType: 'labels.text.fill',
+                        stylers: [{color: '#d59563'}]
+                    },
+                    {
+                        featureType: 'poi',
+                        elementType: 'labels.text.fill',
+                        stylers: [{color: '#d59563'}]
+                    },
+                    {
+                        featureType: 'poi.park',
+                        elementType: 'geometry',
+                        stylers: [{color: '#263c3f'}]
+                    },
+                    {
+                        featureType: 'poi.park',
+                        elementType: 'labels.text.fill',
+                        stylers: [{color: '#6b9a76'}]
+                    },
+                    {
+                        featureType: 'road',
+                        elementType: 'geometry',
+                        stylers: [{color: '#38414e'}]
+                    },
+                    {
+                        featureType: 'road',
+                        elementType: 'geometry.stroke',
+                        stylers: [{color: '#212a37'}]
+                    },
+                    {
+                        featureType: 'road',
+                        elementType: 'labels.text.fill',
+                        stylers: [{color: '#9ca5b3'}]
+                    },
+                    {
+                        featureType: 'road.highway',
+                        elementType: 'geometry',
+                        stylers: [{color: '#746855'}]
+                    },
+                    {
+                        featureType: 'road.highway',
+                        elementType: 'geometry.stroke',
+                        stylers: [{color: '#1f2835'}]
+                    },
+                    {
+                        featureType: 'road.highway',
+                        elementType: 'labels.text.fill',
+                        stylers: [{color: '#f3d19c'}]
+                    },
+                    {
+                        featureType: 'transit',
+                        elementType: 'geometry',
+                        stylers: [{color: '#2f3948'}]
+                    },
+                    {
+                        featureType: 'transit.station',
+                        elementType: 'labels.text.fill',
+                        stylers: [{color: '#d59563'}]
+                    },
+                    {
+                        featureType: 'water',
+                        elementType: 'geometry',
+                        stylers: [{color: '#17263c'}]
+                    },
+                    {
+                        featureType: 'water',
+                        elementType: 'labels.text.fill',
+                        stylers: [{color: '#515c6d'}]
+                    },
+                    {
+                        featureType: 'water',
+                        elementType: 'labels.text.stroke',
+                        stylers: [{color: '#17263c'}]
+                    }
+                ]
+           ;
         map.addControl({
             position: 'top_left',
             content:  '<a href="#" class="btn btn-info" id="swift" >Hide all</a>',
             classes : 'button-list'
         });
-        var tableSales = '<div class="agent-info"><div class="search"><input type="text" class="search-input form-control" placeholder="Tìm kiếm đại lý"></div>';
+        map.addControl({
+            position: 'top_left',
+            content:  '<a href="#" class="btn btn-info" id="button-mode" >Dark mode</a>',
+            classes : 'button-mode'
+        });
 
+        $(document).on('click', '#button-mode', function () {
+            var text = $(this).text();
+            if (text == 'Dark mode') {
+                $(this).text('Night mode');
+                map.set('styles' ,darkmode);
+
+            }
+            else {
+                $(this).text('Dark mode');
+                map.set('styles' ,[]);
+
+            }
+        });
+        var tableSales = '<div class="agent-info"><div class="search"><input type="text" class="search-input form-control" placeholder="Tìm kiếm đại lý"></div>';
                 @foreach($agents  as $key => $agent)
                 @php
                     $image = '';
