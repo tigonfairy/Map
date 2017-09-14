@@ -153,7 +153,7 @@
                     <li class="nav-item  ">
                         <a href="{{route('Admin::guiSearch')}}" class="nav-link nav-toggle">
                             <i class="icon-settings"></i>
-                            <span class="title">Gui Search</span>
+                            <span class="title">{{ trans('home.search') }}</span>
                             <span class="arrow"></span>
                         </a>
                     </li>

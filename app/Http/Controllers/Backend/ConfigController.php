@@ -118,7 +118,7 @@ class ConfigController extends AdminController
         foreach (\App\Models\User::$positionTexts as $key => $value) {
             $config = Config::where('position_id',$key)->first();
             User::where('position',$key)->update([
-                    'textColor' => ($config and $config->textColor) ? $config->textColor : 12,
+                'textColor' => ($config and $config->textColor) ? $config->textColor : 12,
                 'fontSize' => ($config and $config->fontSize) ? $config->fontSize : '#000000'
             ]);
 

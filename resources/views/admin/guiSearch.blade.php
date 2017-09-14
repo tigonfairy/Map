@@ -198,7 +198,7 @@
         $(document).on('click', '#button-mode', function () {
             var text = $(this).text();
             if (text == 'Dark mode') {
-                $(this).text('Night mode');
+                $(this).text('Light mode');
                 map.set('styles' ,darkmode);
 
             }
