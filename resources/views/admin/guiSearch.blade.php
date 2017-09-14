@@ -5,6 +5,7 @@
             cursor: pointer;
             font-family: Roboto, Arial, sans-serif;
             font-size: 11px;
+            min-width: 250px;
             overflow-x: auto;
             max-height: 400px;
         }
@@ -16,6 +17,10 @@
         .table-list {
             box-shadow: none !important;
             top:30% !important;
+        }
+        .search-input {
+            width: 100%;
+            padding: 10px;
         }
 
     </style>
@@ -51,7 +56,6 @@
         </div>
         <!-- /main content -->
     </div>
-    <div id="legend2"></div>
     <!-- /page container -->
 @endsection
 @push('scripts_foot')
@@ -85,7 +89,7 @@
             fullscreenControl: true
         });
 
-        var tableSales = '<div class="agent-info">';
+        var tableSales = '<div class="agent-info"><div class="search"><input type="text" class="search-input form-control" placeholder="Tìm kiếm đại lý"></div>';
 
                 @foreach($agents  as $key => $agent)
                 @php
@@ -109,7 +113,9 @@
                             '</div>';
 
                 {{--tableSales+= '<p class="data" id="'+'{{$key}}'+'" style="font-size:' + '{{$agent->user->fontSize}}' + 'px; color:' + '{{$agent->user->textColor}}' + '">%TT ' + numberWithCommas('{{$sales_real}}') + '/' + numberWithCommas('{{$capacity}}') + '=' + '{{$percent}}' + '%</p>';--}}
-                tableSales+= '<div id="'+'{{$key}}'+'"><p class="" style="font-size:' +'{{$agent->user->fontSize}}' + 'px; color:' +'{{$agent->user->textColor}}' + '">'  + '{{$agent->name}}' + ' %TT ' + numberWithCommas('{{$sales_real}}')  + '/' + numberWithCommas('{{$capacity}}') + '=' +'{{$percent}}'+ '%</p></div>';
+                tableSales+= '<div id="'+'{{$key}}'+'" class="agent_detail" data-search="{{str_slug($agent->name)}},{{$agent->name}}" >' +
+                    '<p class="data-search-agent"  style="font-size:' +'{{$agent->user->fontSize}}' + 'px; color:' +'{{$agent->user->textColor}}' + '">'  + '{{$agent->name}}' + ' %TT ' + numberWithCommas('{{$sales_real}}')  + '/' + numberWithCommas('{{$capacity}}') + '=' +'{{$percent}}'+ '%</p></div>';
+
                     infoWindows['{{$key}}'] = new google.maps.InfoWindow({
                         content: contentString
                     });
@@ -138,7 +144,9 @@
             drawingControlOptions: {
                 position: google.maps.ControlPosition.TOP_CENTER,
                 drawingModes: [
-                    google.maps.drawing.OverlayType.POLYGON,
+                    google.maps.drawing.OverlayType.CIRCLE,
+                    google.maps.drawing.OverlayType.RECTANGLE,
+                    google.maps.drawing.OverlayType.POLYGON
                 ],
                 polygonOptions: {
                     fillColor: '#ffff00',
@@ -162,8 +170,6 @@
 //            }
 
         });
-
-
         google.maps.event.addListener(drawingManager, "drawingmode_changed", function () {
 
 //            if (drawingManager.getDrawingMode() != null) {
@@ -172,6 +178,8 @@
                 }
                 shapes = [];
 //            }
+            $('.search').show();
+            $('.search-input').val('');
             for (var j = 0; j < countAgent; j++) {
                 markers[j].setVisible(true);
                 $('#'+j).show();
@@ -182,21 +190,56 @@
 
 
         google.maps.event.addListener(drawingManager, "overlaycomplete", function (event) {
-            overlayDragListener(event.overlay);
-            getPolygonCoords(event.overlay);
+//            overlayDragListener(event.overlay);
+            if(event.type =='polygon') {
+                getPolygonCoords(event.overlay);
+            }
 
+            if(event.type =='circle') {
+                getCircle(event.overlay);
+            }
+            if(event.type == 'rectangle') {
+                getRectangle(event.overlay);
+            }
         });
 
+//        function overlayDragListener(overlay) {
+//            google.maps.event.addListener(overlay.getPath(), 'set_at', function (event) {
+//                $('#vertices').val(overlay.getPath().getArray());
+//            });
+//            google.maps.event.addListener(overlay.getPath(), 'insert_at', function (event) {
+//                $('#vertices').val(overlay.getPath().getArray());
+//            });
+//        }
+        function getCircle(circle) {
 
-        function overlayDragListener(overlay) {
-            google.maps.event.addListener(overlay.getPath(), 'set_at', function (event) {
-                $('#vertices').val(overlay.getPath().getArray());
-            });
-            google.maps.event.addListener(overlay.getPath(), 'insert_at', function (event) {
-                $('#vertices').val(overlay.getPath().getArray());
-            });
+            for (var j = 0; j < countAgent; j++) {
+                if (circle.getBounds().contains(new google.maps.LatLng( markers[j].position.lat() , markers[j].position.lng() ) )) {
+                    markers[j].setVisible(true);
+                    $('#'+j).show();
+                } else {
+                    $('#'+j).hide();
+                    markers[j].setVisible(false);
+                }
+
+            }
+            $('.search').hide();
+
         }
+        function getRectangle(rectangle) {
 
+            for (var j = 0; j < countAgent; j++) {
+                if (rectangle.getBounds().contains(new google.maps.LatLng( markers[j].position.lat() , markers[j].position.lng() ) )) {
+                    markers[j].setVisible(true);
+                    $('#'+j).show();
+                } else {
+                    $('#'+j).hide();
+                    markers[j].setVisible(false);
+                }
+
+            }
+            $('.search').hide();
+        }
         function getPolygonCoords(bermudaTriangle) {
             var len = bermudaTriangle.getPath().getLength();
             var test = [];
@@ -221,12 +264,51 @@
                 }
 
             }
-
-            $('#coordinates').val(JSON.stringify(test));
+            $('.search').hide();
+//            $('#coordinates').val(JSON.stringify(test));
         }
 
 
         //end in agent
+        $(document).on('click','.agent_detail',function(e) {
+            var id = $(this).attr('id');
+            var latLng = markers[id].getPosition();
+
+            map.setCenter(latLng.lat(),latLng.lng());
+            for (var i=0;i<infoWindows.length;i++) {
+                infoWindows[i].close();
+            }
+            infoWindows[id].setPosition({lat: latLng.lat(), lng: latLng.lng()});
+            infoWindows[id].open(map.map);
+        });
+
+
+
+        $(document).on('input','.search-input',function(){
+            var key = $(this).val();
+            var items = Array();
+            if(key == '') {
+                $('.agent_detail').show();
+            } else {
+                $('.agent_detail').hide();
+                var str = key.toLowerCase();
+                $('.agent_detail').each(function(){
+                    var title = $(this).attr('data-search');
+                    title=title.toLowerCase();
+                    var pos = title.search(str);
+                    if(pos >= 0){
+                        items.push($(this).attr('id'));
+                    }
+                });
+                if(items.length > 0 ){
+                    for (var i = 0; i < items.length; i++) {
+                        var id = items[i];
+                        $('#'+id).show();
+                    }
+                }
+            }
+
+        });
 
 
     });
