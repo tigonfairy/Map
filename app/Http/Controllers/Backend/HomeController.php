@@ -63,13 +63,13 @@ class HomeController extends AdminController
         }
 
         foreach ($products as $key => $product) {
-            $i = intval(explode('-',$product->month)[0]);
+            $i = intval(explode('-',$product->month)[0] - 1);
             $sales_real[$i] = intval($product->sales_real);
         }
 
         //end chart cot
 
-        return view('admin.dashboard', compact('month', 'sales_plan', 'sales_plan', 'sales_real', 'user'));
+        return view('admin.dashboard', compact('month', 'sales_plan', 'sales_real', 'user'));
     }
 
     public function chartDashboard(Request $request){

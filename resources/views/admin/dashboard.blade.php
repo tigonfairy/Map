@@ -133,7 +133,7 @@
                     <input type="hidden" name="type_search" value="" id="type_search"/>
 
                     @if($user->position != \App\Models\User::NVKD)
-                        <div class="col-md-2">
+                        <div class="col-md-2 col-sm-2">
                             <select class="search_type form-control" name="type_data_search">
                                 <option value="">-- Chọn loại {{ trans('home.search') }} --</option>
                                 <option value="1">Theo đại lý</option>
@@ -151,151 +151,69 @@
                             <p id="type_date_search" style="color:red;"></p>
                         </div>
 
-                        <div class="col-md-2">
-                            <select name="data_search" id="select_data_search" class="data_search form-control" id="locations"
-                                    style="width:100%">
+                        <div class="col-md-2 col-sm-2">
+                            <select name="data_search" id="select_data_search" class="data_search form-control" id="locations">
                             </select>
                             <p id="date_search" style="color:red;"></p>
                         </div>
 
 
 
-                            <div class="col-md-2">
+                            <div class="col-md-2 col-sm-2">
                                 <input type="text" name="startMonth"  class="form-control startMonth" value="{{ old('startMonth') ?: $month }}" placeholder="Thời gian bắt đầu"/>
                                 <p id="startMonth" style="color:red;"></p>
                             </div>
 
 
-                            <div class="col-md-2">
+                            <div class="col-md-2 col-sm-2">
                                 <input type="text" name="endMonth"  class="form-control endMonth" value="{{ old('endMonth') ?: $month }}" placeholder="Thời gian kết  thúc"/>
                                 <p id="endMonth" style="color:red;"></p>
                             </div>
 
 
-                        <div class="col-md-1">
+                        <div class="col-md-1 col-sm-1">
                             <button type="submit" class="btn btn-info">{{ trans('home.search') }}</button>
+                        </div>
+
+                        <div class="col-md-1 col-sm-1">
+                            <a href="#" class="btn btn-info" id="exportDashboard" >Export excel</a>
                         </div>
                     @else
 
                         {{--<div class="col-md-3">--}}
 
-
-
-                            <div class="col-md-2">
+                            <div class="col-md-2 col-sm-2">
                                 <input type="text" name="startMonth"  class="form-control startMonth" value="{{ old('startMonth') ?: $month }}" placeholder="Thời gian bắt đầu"/>
                                 <p id="startMonth" style="color:red;"></p>
                             </div>
 
 
-                            <div class="col-md-2">
+                            <div class="col-md-2 col-sm-2">
                                 <input type="text" name="endMonth"  class="form-control endMonth" value="{{ old('endMonth') ?: $month }}" placeholder="Thời gian kết  thúc"/>
                                 <p id="endMonth" style="color:red;"></p>
                             </div>
 
 
 
-                        <div class="col-md-1">
+                        <div class="col-md-1 col-sm-1">
                             <button type="submit" class="btn btn-info">{{ trans('home.search') }}</button>
+                        </div>
+
+                        <div class="col-md-1 col-sm-1">
+                            <a href="#" class="btn btn-info" id="exportDashboard" >Export excel</a>
                         </div>
 
                     @endif
 
-                    <div class="col-md-2">
-                        <a href="#" class="btn btn-info" id="exportDashboard" >Export excel</a>
+                    <div class="col-md-1 col-sm-1">
+                        <a href="#" class="btn btn-info" id="swift" >Full Mode</a>
                     </div>
                 </form>
 
+
+
                 <div class="clearfix"></div>
             </div>
-
-
-
-            {{--<div class="modal fade bs-modal-lg" id="export-product" tabindex="-1" role="dialog" aria-hidden="true">--}}
-                {{--<div class="modal-dialog modal-lg">--}}
-                    {{--<div class="modal-content">--}}
-                        {{--<div class="modal-header">--}}
-                            {{--<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>--}}
-                            {{--<h4 class="modal-title">Export Excel</h4>--}}
-                        {{--</div>--}}
-                        {{--<form method="POST" action="{{ route('Admin::export') }}"--}}
-                              {{--enctype="multipart/form-data" id="import_form">--}}
-                            {{--{{ csrf_field() }}--}}
-                            {{--<div class="modal-body">--}}
-                                {{--<div class="row">--}}
-                                    {{--<div class="col-md-10" style="margin-bottom:10px">--}}
-                                        {{--<div class="form-group">--}}
-                                            {{--<label class="control-label col-md-3">Loại</label>--}}
-                                            {{--<div class="col-md-8">--}}
-
-                                                {{--<select name="type" class="typeExport form-control">--}}
-                                                    {{--<option value="">-- Chọn loại {{ trans('home.search') }} --</option>--}}
-                                                    {{--<option value="1">Theo đại lý</option>--}}
-                                                    {{--<option value="5">Theo nhân viên kinh doanh</option>--}}
-                                                    {{--@if($user->position != \App\Models\User::GSV)--}}
-                                                        {{--<option value="2">Theo giám sát vùng</option>--}}
-                                                    {{--@endif--}}
-                                                    {{--@if($user->position != \App\Models\User::TV && $user->position != \App\Models\User::GSV)--}}
-                                                        {{--<option value="3">Theo trưởng vùng</option>--}}
-                                                    {{--@endif--}}
-                                                    {{--@if(($user->position != \App\Models\User::GĐV && $user->position != \App\Models\User::GSV && $user->position != \App\Models\User::TV))--}}
-                                                        {{--<option value="4">Theo giám đốc vùng</option>--}}
-                                                    {{--@endif--}}
-                                                {{--</select>--}}
-                                                {{--<span id="typeExport" class="error-import" style="color:red;"></span>--}}
-                                            {{--</div>--}}
-                                            {{--<div class="clearfix"></div>--}}
-                                        {{--</div>--}}
-                                        {{--<div class="form-group">--}}
-                                            {{--<label class="control-label col-md-3">Chọn nhân sự</label>--}}
-                                            {{--<div class="col-md-8">--}}
-                                                {{--<select name="user" class="dataExport form-control"--}}
-                                                        {{--style="width:100%">--}}
-                                                {{--</select>--}}
-
-                                                {{--<span id="humanExport" class="error-import" style="color:red;"></span>--}}
-                                            {{--</div>--}}
-                                            {{--<div class="clearfix"></div>--}}
-                                        {{--</div>--}}
-
-
-
-
-
-                                        {{--<div class="form-group">--}}
-                                            {{--<label class="control-label col-md-3">Thời gian bắt đầu</label>--}}
-                                            {{--<div class="col-md-8">--}}
-                                                {{--<input type="text" name="startMonth"  class="form-control startMonth" value="" />--}}
-                                                {{--<span id="startMonth" class="error-import" style="color:red;"></span>--}}
-                                            {{--</div>--}}
-                                            {{--<div class="clearfix"></div>--}}
-                                        {{--</div>--}}
-                                        {{--<div class="form-group">--}}
-                                            {{--<label class="control-label col-md-3">Thời gian kết thúc</label>--}}
-                                            {{--<div class="col-md-8">--}}
-                                                {{--<input type="text" name="endMonth"  class="form-control endMonth" value="" />--}}
-                                                {{--<span id="endMonth" class="error-import" style="color:red;"></span>--}}
-                                            {{--</div>--}}
-                                            {{--<div class="clearfix"></div>--}}
-                                        {{--</div>--}}
-                                    {{--</div>--}}
-
-                                {{--</div>--}}
-
-
-                            {{--</div>--}}
-                            {{--<div class="modal-footer">--}}
-                                {{--<button type="button" class="btn dark btn-outline" data-dismiss="modal">Đóng</button>--}}
-                                {{--<button type="submit" class="btn green" id="export">Export</button>--}}
-                            {{--</div>--}}
-                        {{--</form>--}}
-                    {{--</div>--}}
-                    {{--<!-- /.modal-content -->--}}
-                {{--</div>--}}
-                {{--<!-- /.modal-dialog -->--}}
-            {{--</div>--}}
-
-
-
 
             <div class="portlet-body">
                 <div id="map" style=" width: 100% ;height: 500px"></div>
@@ -716,6 +634,7 @@
 
         $(".search_type").change(function () {
             var search_type = $(this).val();
+            $(".data_search").val('');
             if (search_type == 1) {
                 getListAgents(0);
             } else if (search_type == 2) {
@@ -764,11 +683,6 @@
                         height: '500px',
                         zoom: 7,
                         fullscreenControl: true,
-                    });
-                    var button = '<button id="swift" class="btn btn-primary">Full mode</button>';
-                    map.addControl({
-                        position: 'top_right',
-                        content: button,
                     });
 
                     if (type_search == 'agents') {
@@ -990,7 +904,7 @@
                 content: tableSales,
             });
 
-            var listCodes = '<div style="background-color: white"><h3>Sản phẩm đang bán</h3><span>';
+            var listCodes = '<div style="background-color: white"><span>';
             $.map(data.listCodes, function (code) {
                 listCodes +=  code + ' , ';
             });
@@ -1152,7 +1066,7 @@
                 } else {
                     name = agent.name;
                 }
-                listAgents += '<div><p class="" style="font-size:' + user.fontSize + 'px; color:' + user.textColor + '">'  + name + ' %TT ' + item.totalSales + '/' + numberWithCommas(item.capacity) + '=' + numberWithCommas(item.percent) + '%</p><br></div>';
+                listAgents += '<div><p class="" style="font-size:' + user.fontSize + 'px; color:' + user.textColor + '">'  + name + ' %TT ' + numberWithCommas(item.totalSales) + '/' + numberWithCommas(item.capacity) + '=' + numberWithCommas(item.percent) + '%</p><br></div>';
             });
 
             listAgents+= '</div>';
@@ -1196,7 +1110,7 @@
                 content: tableSales,
             });
 
-            var listCodes = '<div style="background-color: white"><h3>Sản phẩm đang bán</h3><span>';
+            var listCodes = '<div style="background-color: white"><span>';
             $.map(data.listCodes, function (code) {
                 listCodes +=  code + ' , ';
             });
@@ -1479,7 +1393,7 @@
             map.controls[google.maps.ControlPosition.TOP_LEFT].push(table);
 
             // products code
-            var listCodes = '<div style="background-color: white"><h3>Sản phẩm đang bán</h3><span>';
+            var listCodes = '<div style="background-color: white"><span>';
             $.map(data.listCodes, function (code) {
                 listCodes +=  code + ' , ';
             });
@@ -1502,11 +1416,6 @@
             var myTextDiv = document.createElement('div');
             myTextDiv.appendChild(myTitle);
             map.controls[google.maps.ControlPosition.TOP_CENTER].push(myTextDiv);
-
-            //button compact mode
-            var button = document.createElement('div');
-            button.innerHTML = '<button id="swift" class="btn btn-primary">Full mode</button>';
-            map.controls[google.maps.ControlPosition.TOP_RIGHT].push(button);
 
             if (data.table) {
                 $('#tableData').html('');
@@ -1722,13 +1631,7 @@
                 content: tableSales,
             });
 
-            var button = '<button id="swift" class="btn btn-primary">Full mode</button>';
-            map.addControl({
-                position: 'top_right',
-                content: button,
-            });
-
-            var listCodes = '<div style="background-color: white"><h3>Sản phẩm đang bán</h3><span>';
+            var listCodes = '<div style="background-color: white"><span>';
             $.map(data.listCodes, function (code) {
                 listCodes +=  code + ' , ';
             });
