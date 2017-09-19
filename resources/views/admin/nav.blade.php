@@ -109,7 +109,7 @@
                 </ul>
             </li>
 
-            @if(auth()->user()->position == \App\Models\User::ADMIN )
+            @if(auth()->user()->position == \App\Models\User::ADMIN  || auth()->user()->position == \App\Models\User::SALE_ADMIN)
             <li class="nav-item">
                 <a href="javascript:;" class="nav-link nav-toggle">
                     <i class="fa fa-map-o"></i>

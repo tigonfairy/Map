@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Http\Requests\Request;
 use Auth;
 use Datatables;
 use Illuminate\Database\Eloquent\Model;
@@ -10,8 +11,9 @@ class Product extends Model
 {
     protected $fillable = ['name_vn','name_en','code','name_code','product_id','parent_id','level'
     ];
-    public static function getDatatables()
+    public static function getDatatables(Request $request)
     {
+
         $model = static::select([
             '*'
         ])->where('level',0);
