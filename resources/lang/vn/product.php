@@ -14,13 +14,8 @@ return [
     */
 
     'addProductExcel' => 'Thêm sản phẩm từ excel',
-<<<<<<< HEAD
-    'example' => 'Mẫu'
-=======
     'example' => 'Mẫu',
     'close' => 'Đóng',
     'addProduct' => 'Thêm sản phẩm',
     'editProduct' => 'Sửa sản phẩm'
->>>>>>> 7feb217f61f296eb572a7c997c41ed3805319b3a
-
 ];

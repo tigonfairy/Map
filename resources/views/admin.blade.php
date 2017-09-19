@@ -140,11 +140,11 @@
             </a>
 
 
-                        <a href="{{ url('/') }}" class="" style="display: inline-block; padding: 8px 8px ">
-                            <img alt="" class="img-circle " src="{{ url('images/hongha.png') }}"
-                                 style="height: 29px; width: 29px"/>
-                            <span style="display: inline-block; vertical-align: middle; color: white; padding: 3px 0 0 2px;"> {{ trans('home.company_name') }}</span>
-                        </a>
+                        {{--<a href="{{ url('/') }}" class="" style="display: inline-block; padding: 8px 8px ">--}}
+                            {{--<img alt="" class="img-circle " src="{{ url('images/hongha.png') }}"--}}
+                                 {{--style="height: 29px; width: 29px"/>--}}
+                            {{--<span style="display: inline-block; vertical-align: middle; color: white; padding: 3px 0 0 2px;"> {{ trans('home.company_name') }}</span>--}}
+                        {{--</a>--}}
 
 
             <!-- END RESPONSIVE MENU TOGGLER -->
