@@ -136,19 +136,19 @@
                 {data: 'action', name: 'action', orderable: false, searchable: false}
             ],
 
-//            initComplete: function () {
-//                this.api().columns().every(function () {
-//
-//
-//                    var column = this;
-//                    var input = document.createElement("input");
-//                    input.className = "form-control form-filter input-sm";
-//                    $(input).appendTo($(column.header()))
-//                        .on('keyup', function () {
-//                            column.search($(this).val(), false, false, true).draw();
-//                        });
-//                });
-//            }
+            initComplete: function () {
+                this.api().columns().every(function () {
+
+
+                    var column = this;
+                    var input = document.createElement("input");
+                    input.className = "form-control form-filter input-sm";
+                    $(input).appendTo($(column.header()))
+                        .on('keyup', function () {
+                            column.search($(this).val(), false, false, true).draw();
+                        });
+                });
+            }
         });
 
         $("#import").on("click", function () {
