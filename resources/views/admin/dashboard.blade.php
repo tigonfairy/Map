@@ -205,7 +205,7 @@
 
                     @endif
 
-                    <div class="col-xs-1" style="margin-left:10px;">
+                    <div class="col-xs-1" style="margin-left:40px; display: none">
                         <a href="#" class="btn btn-info" id="swift" >Full Mode</a>
                     </div>
                 </form>
@@ -315,9 +315,9 @@
             var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val();
             $(this).datepicker('setDate', new Date(year, month, 1));
 
-            $(".endMonth").datepicker("option", "minDate", new Date(year, month, 1));
-            $(".endMonth").datepicker("option", "maxDate",  new Date(year, 11, 1));
-            $('.endMonth').datepicker('setDate', new Date(year, month, 1));
+//            $(".endMonth").datepicker("option", "minDate", new Date(year, month, 1));
+//            $(".endMonth").datepicker("option", "maxDate",  new Date(year, 11, 1));
+//            $('.endMonth').datepicker('setDate', new Date(year, month, 1));
         }
     });
     $('.endMonth').datepicker( {
@@ -824,8 +824,14 @@
             $.map(data.listAgents, function (item) {
                 var agent = item.agent;
                 var user = agent.user;
+                var name = '';
+                if (agent.attribute == 1){
+                    name = agent.name + '<span style="color:red">(New)</span>';
+                } else {
+                    name = agent.name;
+                }
                 var contentString = '<div class="info" style="font-size:' + user.fontSize + 'px; color:' + user.textColor + '">' +
-                    '<h5 class="address" style="display:none; font-size:' + user.fontSize + 'px; color:' + user.textColor + '">' + agent.name + ' - ' + agent.address + '</h5>' +
+                    '<h5 class="address" style="display:none; font-size:' + user.fontSize + 'px; color:' + user.textColor + '">' + name + ' - ' + agent.address + '</h5>' +
                     '<div class="user_data" style="font-size:' + user.fontSize + 'px; color:' + user.textColor + '">' +
                     '<p class="data" style="font-size:' + user.fontSize + 'px; color:' + user.textColor + '">%TT ' + numberWithCommas(item.totalSales) + '/' + numberWithCommas(item.capacity) + '=' + item.percent + '%</p>' +
                     '<ul class="info_user" style="font-size:' + user.fontSize + 'px; color:' + user.textColor + '">' +
@@ -1031,8 +1037,14 @@
             $.map(data.listAgents, function (item) {
                 var agent = item.agent;
                 var user = agent.user;
+                var name = '';
+                if (agent.attribute == 1){
+                    name = agent.name + '<span style="color:red">(New)</span>';
+                } else {
+                    name = agent.name;
+                }
                 var contentString = '<div class="info" style="font-size:' + user.fontSize + 'px; color:' + user.textColor + '">' +
-                    '<h5 class="address" style="display:none; font-size:' + user.fontSize + 'px; color:' + user.textColor + '">' + agent.name + ' - ' + agent.address + '</h5>' +
+                    '<h5 class="address" style="display:none; font-size:' + user.fontSize + 'px; color:' + user.textColor + '">' + name + ' - ' + agent.address + '</h5>' +
                     '<div class="user_data" style="font-size:' + user.fontSize + 'px; color:' + user.textColor + '">' +
                     '<p class="data" style="font-size:' + user.fontSize + 'px; color:' + user.textColor + '">%TT ' + numberWithCommas(item.totalSales) + '/' + numberWithCommas(item.capacity) + '=' + item.percent + '%</p>' +
                     '<ul class="info_user" style="font-size:' + user.fontSize + 'px; color:' + user.textColor + '">' +
@@ -1210,8 +1222,6 @@
                 }
             });
 
-//            var option = new Option("Tất cả", "0", true, true);
-//            that.append(option).trigger('change');
         }
 
         function showDataSaleGDV(data) {
@@ -1254,7 +1264,8 @@
                     polygonArray[item.id] = polygon;
                 }
             });
-            var legend = document.getElementById('legend2');
+
+            var listGsv = '<div id="legend2">';
 
             $.map(data.result, function (item) {
                 var agents = item.agents;
@@ -1267,8 +1278,15 @@
                         image = 'http://' + window.location.hostname + '/' + agent.icon;
                     }
 
+                    var name = '';
+                    if (agent.attribute == 1){
+                        name = agent.name + '<span style="color:red">(New)</span>';
+                    } else {
+                        name = agent.name;
+                    }
+
                     var contentString = '<div class="info" style="font-size:' + agent.user.fontSize + 'px; color:' + agent.user.textColor + '">' +
-                        '<h5 class="address" style="font-size:' + agent.user.fontSize + 'px; color:' + agent.user.textColor + '">' + agent.name + ' - ' + agent.address + '</h5>' +
+                        '<h5 class="address" style="font-size:' + agent.user.fontSize + 'px; color:' + agent.user.textColor + '">' + name + ' - ' + agent.address + '</h5>' +
                         '<div class="user_data" style="font-size:' + agent.user.fontSize + 'px; color:' + agent.user.textColor + '">' +
                         '<p class="data" id="data" style="font-size:' + agent.user.fontSize + 'px; color:' + agent.user.textColor + '">%TT ' + numberWithCommas(agent.totalSales) + '/' + numberWithCommas(agent.capacity) + '=' + agent.percent + '%</p>' +
                         '<ul class="info_user" style="font-size:' + agent.user.fontSize + 'px; color:' + agent.user.textColor + '">' +
@@ -1296,11 +1314,7 @@
                     imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'
                 });
 
-                var div = document.createElement('div');
-                div.style.color = item.gsv.textColor;
-                div.innerHTML = item.gsv.name + ' - %TT ' + numberWithCommas(item.totalSales) + '/' + numberWithCommas(item.capacity) + '=' + item.percent + "%";
-
-                legend.append(div);
+                listGsv += '<div style="color:'+ item.gsv.textColor +'">'+ item.gsv.name + ' - %TT ' + numberWithCommas(item.totalSales) + '/' + numberWithCommas(item.capacity) + '=' + item.percent + '"%</div>'
 
                 var customTxt =
                     '<div class="customBox" style="display:none; font-size:' + item.gsv.fontSize + 'px; color:' + item.gsv.textColor + '">' +
@@ -1310,6 +1324,9 @@
                 txt = new TxtOverlay(new google.maps.LatLng(markers[0].getPosition().lat(), markers[0].getPosition().lng()), customTxt, "customBox", map);
             });
 
+            listGsv += '</div>';
+            var legend = document.createElement('div');
+            legend.innerHTML = listGsv;
             map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(legend);
 
             $.map(data.resultGdv, function (item) {
@@ -1558,9 +1575,15 @@
             } else {
                 postion = 'GS';
             }
+            var name = '';
+            if (data.agents.attribute == 1){
+                name = data.agents.name + '<span style="color:red">(New)</span>';
+            } else {
+                name = data.agents.name;
+            }
             // info cho 1 marker
             var contentString = '<div class="info" style="font-size:' + user.fontSize + 'px; color:' + user.textColor + '">' +
-                '<h5 class="address" style="display:none; font-size:' + user.fontSize + 'px; color:' + user.textColor + '">' + data.agents.name + ' - ' + data.agents.address + '</h5>' +
+                '<h5 class="address" style="display:none; font-size:' + user.fontSize + 'px; color:' + user.textColor + '">' + name + ' - ' + data.agents.address + '</h5>' +
                 '<div class="user_data" style="font-size:' + user.fontSize + 'px; color:' + user.textColor + '">' +
                 '<p class="data" id="data" style="font-size:' + user.fontSize + 'px; color:' + user.textColor + '">%' + list_products[0].code + ' ' + numberWithCommas(list_products[0].totalSales) + '/' + numberWithCommas(list_products[0].capacity) + '=' + list_products[0].percent + '%</p>' +
                 '<ul class="info_user" style="font-size:' + user.fontSize + 'px; color:' + user.textColor + '">' +
@@ -1713,8 +1736,16 @@
                         image = 'http://' + window.location.hostname + '/' + agent.icon;
                     }
 
+                    var name = '';
+
+                    if (agent.attribute == 1){
+                        name = agent.name + '<span style="color:red">(New)</span>';
+                    } else {
+                        name = agent.name;
+                    }
+
                     var contentString = '<div class="info" style="font-size:' + agent.user.fontSize + 'px; color:' + agent.user.textColor + '">' +
-                        '<h5 class="address" style="font-size:' + agent.user.fontSize + 'px; color:' + agent.user.textColor + '">' + agent.name + ' - ' + agent.address + '</h5>' +
+                        '<h5 class="address" style="font-size:' + agent.user.fontSize + 'px; color:' + agent.user.textColor + '">' + name + ' - ' + agent.address + '</h5>' +
                         '<div class="user_data" style="font-size:' + agent.user.fontSize + 'px; color:' + agent.user.textColor + '">' +
                         '<p class="data" id="data" style="font-size:' + agent.user.fontSize + 'px; color:' + agent.user.textColor + '">%TT ' + numberWithCommas(agent.totalSales) + '/' + numberWithCommas(agent.capacity) + '=' + agent.percent + '%</p>' +
                         '<ul class="info_user" style="font-size:' + agent.user.fontSize + 'px; color:' + agent.user.textColor + '">' +
