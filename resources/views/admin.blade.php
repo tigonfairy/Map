@@ -126,8 +126,6 @@
 
             <!-- BEGIN LOGO -->
             <div class="page-logo">
-                <a href="{{ url('/') }}">
-                    <img src="{{ url('images/hongha.png') }}" alt="logo" class="logo-default"/> </a>
                 <div class="menu-toggler sidebar-toggler">
                     <span></span>
                 </div>
