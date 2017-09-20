@@ -77,7 +77,7 @@ class HomeController extends AdminController
         // thang gan nhat
         $user = auth()->user();
         $year = Carbon::now()->year;
-        if($user->email == 'admin@gmail.com'){
+        if($user->email == 'admin@gmail.com' || $user->position == User::SALE_ADMIN){
             $area = Area::select('*')->get()->pluck('id')->toArray();
             $agentId = Agent::pluck('id')->toArray();
 
@@ -92,6 +92,7 @@ class HomeController extends AdminController
             $agentId= array_unique(array_merge($agentId,$agents));
         }
         if($type == 1){ // thang gần nhất
+
 //            $month = Carbon::now()->format('m-Y');
             $lastMonth = DB::table('sale_agents')
                 ->select(\DB::raw('SUM(sales_real) as sales_real,month'))

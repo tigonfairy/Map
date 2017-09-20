@@ -476,7 +476,7 @@
                 }
             },
             error: function (err) {
-                console.log(err);cais
+                console.log(err);
                 alert('Lỗi, hãy thử lại sau');
             }
         });

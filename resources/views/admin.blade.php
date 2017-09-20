@@ -126,11 +126,9 @@
 
             <!-- BEGIN LOGO -->
             <div class="page-logo">
-
                 <div class="menu-toggler sidebar-toggler">
                     <span></span>
                 </div>
-
             </div>
             <!-- END LOGO -->
             <!-- BEGIN RESPONSIVE MENU TOGGLER -->
