@@ -608,7 +608,9 @@
                     width: "100%",
                     height: '500px',
                     zoom: 8,
-                    fullscreenControl: true,
+                    streetViewControl: false,
+                    mapTypeControl:false,
+                    fullscreenControl: true,zoomControl:false,
                 });
 
                 if (type_search == 'nvkd') {
@@ -682,7 +684,10 @@
                         width: "100%",
                         height: '500px',
                         zoom: 7,
-                        fullscreenControl: true,
+                        fullscreenControl: true,zoomControl:false,
+                        streetViewControl: false,
+                        mapTypeControl:false,
+
                     });
 
                     if (type_search == 'agents') {
@@ -1232,7 +1237,9 @@
                 'zoom': 8,
                 'center': center,
                 'mapTypeId': google.maps.MapTypeId.ROADMAP,
-                fullscreenControl: true,
+                fullscreenControl: true,zoomControl:false,
+                streetViewControl: false,
+                mapTypeControl:false,
             };
             var map = new google.maps.Map(document.getElementById("map"), options);
 
@@ -1564,7 +1571,9 @@
                 width: "100%",
                 height: '500px',
                 zoom: 13,
-                fullscreenControl: true,
+                fullscreenControl: true,zoomControl:false,
+                streetViewControl: false,
+                mapTypeControl:false,
             });
 
             var user = data.user;
@@ -1690,7 +1699,9 @@
                 'zoom': 5,
                 'center': center,
                 'mapTypeId': google.maps.MapTypeId.ROADMAP,
-                fullscreenControl: true,
+                fullscreenControl: true,zoomControl:false,
+                streetViewControl: false,
+                mapTypeControl:false,
             };
             var map = new google.maps.Map(document.getElementById("map"), options);
             $.map(data.locations, function (location, index) {
