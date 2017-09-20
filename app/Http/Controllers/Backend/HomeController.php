@@ -31,7 +31,7 @@ class HomeController extends AdminController
         $year = Carbon::now()->year;
         $locations = [];
         $month = Carbon::now()->format('m-Y');
-        if ($user->email == 'admin@gmail.com') {
+        if( $user->position == User::ADMIN || $user->position == User::SALE_ADMIN){
 
             $users =  User::select('*')->get();
             $userIds = $users->pluck('id')->toArray();
@@ -77,7 +77,7 @@ class HomeController extends AdminController
         // thang gan nhat
         $user = auth()->user();
         $year = Carbon::now()->year;
-        if($user->email == 'admin@gmail.com' || $user->position == User::SALE_ADMIN){
+        if( $user->position == User::ADMIN || $user->position == User::SALE_ADMIN){
             $area = Area::select('*')->get()->pluck('id')->toArray();
             $agentId = Agent::pluck('id')->toArray();
 

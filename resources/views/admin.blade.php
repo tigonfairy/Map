@@ -102,7 +102,7 @@
         .caret {
             padding-top: 10px !important;
         }
-
+        #ui-datepicker-div { display: none; }
 
     </style>
     @stack('style_head')
@@ -248,10 +248,7 @@
     <div class="page-footer">
         <div class="page-footer-inner">
             <span style="display: inline-block; vertical-align: middle; color: white; padding: 3px 0 0 2px; font-weight: bold;"> {{ trans('home.company_name') }}</span>
-            <span style="display: block; vertical-align: middle; color: white; padding: 3px 0 0 2px;font-weight: bold;"> Địa chỉ: Lô C, KCN Đồng Văn, Duy Tiên, Hà Nam</span>
-
-
-
+            <span style="display: block; vertical-align: middle; color: white; padding: 5px 0 0 5px;font-weight: bold;"> Địa chỉ: Lô C, KCN Đồng Văn, Duy Tiên, Hà Nam</span>
         </div>
         <div class="scroll-to-top">
             <i class="icon-arrow-up"></i>
