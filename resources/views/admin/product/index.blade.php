@@ -1,6 +1,11 @@
 @extends('admin')
 
 @section('content')
+    <style>
+        .dataTables_filter {
+            display: none !important;
+        }
+    </style>
     <!-- Page header -->
     <div class="page-header">
         <div class="page-header-content">
@@ -127,10 +132,23 @@
                 {data: 'maxgreen', name: 'maxgreen'},
                 {data: 'maxgro', name: 'maxgro'},
                 {data: 'group', name: 'group'},
-
-                {data: 'created_at', name: 'created_at'},
+                {data: 'created_at', name: 'created_at',orderable: false, searchable: false},
                 {data: 'action', name: 'action', orderable: false, searchable: false}
-            ]
+            ],
+
+            initComplete: function () {
+                this.api().columns().every(function () {
+
+
+                    var column = this;
+                    var input = document.createElement("input");
+                    input.className = "form-control form-filter input-sm";
+                    $(input).appendTo($(column.header()))
+                        .on('keyup', function () {
+                            column.search($(this).val(), false, false, true).draw();
+                        });
+                });
+            }
         });
 
         $("#import").on("click", function () {

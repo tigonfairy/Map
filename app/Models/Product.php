@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Http\Requests\Request;
 use Auth;
 use Datatables;
 use Illuminate\Database\Eloquent\Model;
@@ -12,6 +13,7 @@ class Product extends Model
     ];
     public static function getDatatables()
     {
+
         $model = static::select([
             '*'
         ])->where('level',0);
@@ -48,7 +50,24 @@ class Product extends Model
                 }
                 return '';
             })
+            ->filterColumn('cbd', function($query, $keyword) {
 
+                $query->whereIn('id',Product::select('product_id')->where('level',1)->where('name_code','cbd')->where('code','like','%'.$keyword.'%')->get()->toArray());
+            })
+            ->filterColumn('maxgreen', function($query, $keyword) {
+
+                $query->whereIn('id',Product::select('product_id')->where('level',1)->where('name_code','maxgreen')->where('code','like','%'.$keyword.'%')->get()->toArray());
+            })
+            ->filterColumn('maxgro', function($query, $keyword) {
+
+                $query->whereIn('id',Product::select('product_id')->where('level',1)->where('name_code','maxgro')->where('code','like','%'.$keyword.'%')->get()->toArray());
+            })
+            ->filterColumn('group', function($query, $keyword) {
+
+//                $query->whereIn('id',Product::select('product_id')->where('level',1)->where('name_code','maxgro')->where('code','like','%'.$keyword.'%')->get()->toArray());
+                $group_id  = GroupProduct::select('id')->where('name_vn','like','%'.$keyword.'%')->get()->toArray();
+                $query->whereIn('parent_id',$group_id);
+            })
             ->addColumn('action', 'admin.product.datatables.action')
             ->make(true);
     }
