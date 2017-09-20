@@ -315,7 +315,11 @@
     $.ajaxSetup({
         headers: {'X-CSRF-Token': $('meta[name=csrf-token]').attr('content')}
     });
-
+$(document).ready(function(){
+   $('.sidebar-toggler').click(function(){
+       $('.image-logo').toggle();
+   });
+});
 </script>
 <script src="/assets/pages/scripts/ui-modals.min.js" type="text/javascript"></script>
 

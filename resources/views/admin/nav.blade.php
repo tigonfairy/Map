@@ -11,8 +11,8 @@
                 </div>
             </li>
 
-            <a href="{{ url('/') }}">
-                <img src="{{ url('images/hongha.png') }}" alt="logo" class="logo-default"/> </a>
+            <a href="{{ url('/') }}" class="image-logo" style="display: none">
+                <img src="{{ url('images/hongha.png') }}" style="margin-bottom: 10px;" alt="logo" class="logo-default"/> </a>
 
             <li class="nav-item">
                 <a href="{{ url('/admin') }}" class="nav-link nav-toggle">
