@@ -102,7 +102,10 @@
         .caret {
             padding-top: 10px !important;
         }
-        #ui-datepicker-div { display: none; }
+
+        #ui-datepicker-div {
+            display: none;
+        }
 
     </style>
     @stack('style_head')
@@ -110,6 +113,7 @@
         .item-notification {
             background: #eaedf2 !important;
         }
+
         .notification-sub {
             border-bottom: 1px solid red;
         }
@@ -138,14 +142,14 @@
             </a>
 
 
-                        {{--<a href="{{ url('/') }}" class="" style="display: inline-block; padding: 8px 8px ">--}}
-                            {{--<img alt="" class="img-circle " src="{{ url('images/hongha.png') }}"--}}
-                                 {{--style="height: 29px; width: 29px"/>--}}
-                            {{--<span style="display: inline-block; vertical-align: middle; color: white; padding: 3px 0 0 2px;"> {{ trans('home.company_name') }}</span>--}}
-                        {{--</a>--}}
+        {{--<a href="{{ url('/') }}" class="" style="display: inline-block; padding: 8px 8px ">--}}
+        {{--<img alt="" class="img-circle " src="{{ url('images/hongha.png') }}"--}}
+        {{--style="height: 29px; width: 29px"/>--}}
+        {{--<span style="display: inline-block; vertical-align: middle; color: white; padding: 3px 0 0 2px;"> {{ trans('home.company_name') }}</span>--}}
+        {{--</a>--}}
 
 
-            <!-- END RESPONSIVE MENU TOGGLER -->
+        <!-- END RESPONSIVE MENU TOGGLER -->
             <!-- BEGIN TOP NAVIGATION MENU -->
             <div class="top-menu">
                 <ul class="nav navbar-nav pull-right">
@@ -246,9 +250,65 @@
     <!-- END CONTAINER -->
     <!-- BEGIN FOOTER -->
     <div class="page-footer">
-        <div class="page-footer-inner">
-            <span style="display: inline-block; vertical-align: middle; color: white; padding: 3px 0 0 2px; font-weight: bold;"> {{ trans('home.company_name') }}</span>
-            <span style="display: block; vertical-align: middle; color: white; padding: 5px 0 0 5px;font-weight: bold;"> Địa chỉ: Lô C, KCN Đồng Văn, Duy Tiên, Hà Nam</span>
+
+        <style>
+            .footer-hongha {
+                color: #98a6ba;
+            }
+
+            .title-footer {
+                font-family: arial, helvetica, sans-serif;
+            }
+            .br {
+                box-sizing: border-box; color: rgb(255, 255, 255); font-family: Arial, sans-serif; font-size: 14px;"
+            }
+        </style>
+        <div class="footer-hongha row">
+            {{--<span style="display: inline-block; vertical-align: middle; color: white; padding: 3px 0 0 2px; font-weight: bold;"> {{ trans('home.company_name') }}</span>--}}
+            {{--<span style="display: block; vertical-align: middle; color: white; padding: 5px 0 0 5px;font-weight: bold;"> Địa chỉ: Lô C, KCN Đồng Văn, Duy Tiên, Hà Nam</span>--}}
+            <div class="footer-item col-md-3" style="text-align: center">
+                <h3>
+                    <span class="title-footer"><span
+                                style="font-size: 14px;"><strong>Về chúng tôi</strong></span></span>
+                </h3>
+                <p>
+                    <img alt="" src="{{ url('images/hongha.png') }}" style=""></p>
+            </div>
+            <div class="footer-item col-md-3">
+                <h3>
+                    <span class="title-footer"><span
+                                style="font-size: 12px;"><strong>CÔNG TY CỔ PHẦN DINH DƯỠNG HỒNG HÀ</strong></span></span>
+                </h3>
+                <p>
+                    <span class="title-footer"><span style="font-size: 14px;">Địa chỉ: Lô C, KCN Đồng Văn, Duy Tiên, Hà Nam</span><br
+                              class="br">
+                    <span style="font-size: 14px;">Điện thoại: (0226) 3 836 840</span></span></p>
+                <p>
+                    <span class="title-footer"><span style="font-size: 14px;">Fax: (0226) 3 582 628</span>
+                        <br class="br">
+                    <span style="font-size: 14px;">Email: cskh@honghafeed.com.vn</span></span></p>
+            </div>
+            <div class="footer-item col-md-3">
+                <h3>
+                    <span class="title-footer"><span
+                                style="font-size: 12px;"><strong>CÔNG TY CỔ PHẦN HỒNG HÀ BÌNH ĐỊNH</strong></span></span>
+                </h3>
+                <p>
+                    <span class="title-footer"><span style="font-size: 14px;">Địa chỉ: Phường Nhơn Hòa, Thị xã An Nhơn, Bình Định</span>
+                        <br class="br">
+                    <span style="font-size: 14px;">Điện thoại: (0256) 3 838 446</span></span></p>
+                <p>
+                    <span class="title-footer"><span style="font-size: 14px;">Fax: (0256) 3 838 447</span><br class="br">
+                    <span style="font-size: 14px;">Email: cskh@honghafeed.com.vn</span></span></p>
+            </div>
+            <div class="footer-item col-md-3">
+                <p>
+                    <iframe allowfullscreen="" frameborder="0" height="180" scrolling="no"
+                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3733.191565391568!2d105.92403882178901!3d20.66178398173332!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3135c8e300000001%3A0x6e98b690d8cff44b!2zQ8O0bmcgdHkgQ-G7lSBwaOG6p24gRGluaCBExrDhu6FuZyBI4buTbmcgSMOg!5e0!3m2!1svi!2s!4v1498442577315"
+                            style="border:0" width="280"></iframe>
+                </p>
+            </div>
+
         </div>
         <div class="scroll-to-top">
             <i class="icon-arrow-up"></i>
@@ -315,11 +375,11 @@
     $.ajaxSetup({
         headers: {'X-CSRF-Token': $('meta[name=csrf-token]').attr('content')}
     });
-$(document).ready(function(){
-   $('.sidebar-toggler').click(function(){
-       $('.image-logo').toggle();
-   });
-});
+    $(document).ready(function () {
+        $('.sidebar-toggler').click(function () {
+            $('.image-logo').toggle();
+        });
+    });
 </script>
 <script src="/assets/pages/scripts/ui-modals.min.js" type="text/javascript"></script>
 
@@ -332,9 +392,9 @@ $(document).ready(function(){
     <script type="text/template" id="notifications-item-template">
         <li class="notification-sub">
             <a href="#" class="js-notification-link">
-                <p class="time js-notification-time"> </p>
+                <p class="time js-notification-time"></p>
 
-                <p class="message js-notification-content"> </p>
+                <p class="message js-notification-content"></p>
             </a>
         </li>
     </script>
@@ -373,8 +433,8 @@ $(document).ready(function(){
                             data.forEach(function (notification) {
 
                                 var $template = $('#notifications-item-template'),
-                                    $item = $($template.html());
-                                if(notification.unread == 1) {
+                                        $item = $($template.html());
+                                if (notification.unread == 1) {
                                     $item.find('.js-notification-link').addClass('item-notification');
                                 }
                                 $item.find('.js-notification-link').attr('href', notification.link);
