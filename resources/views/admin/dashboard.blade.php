@@ -133,7 +133,7 @@
                     <input type="hidden" name="type_search" value="" id="type_search"/>
 
                     @if($user->position != \App\Models\User::NVKD)
-                        <div class="col-md-2">
+                        <div class="col-xs-2">
                             <select class="search_type form-control" name="type_data_search">
                                 <option value="">-- Chọn loại {{ trans('home.search') }} --</option>
                                 <option value="1">Theo đại lý</option>
@@ -151,151 +151,69 @@
                             <p id="type_date_search" style="color:red;"></p>
                         </div>
 
-                        <div class="col-md-2">
-                            <select name="data_search" id="select_data_search" class="data_search form-control" id="locations"
-                                    style="width:100%">
+                        <div class="col-xs-2">
+                            <select name="data_search" id="select_data_search" class="data_search form-control" id="locations">
                             </select>
                             <p id="date_search" style="color:red;"></p>
                         </div>
 
 
 
-                            <div class="col-md-2">
+                            <div class="col-xs-2">
                                 <input type="text" name="startMonth"  class="form-control startMonth" value="{{ old('startMonth') ?: $month }}" placeholder="Thời gian bắt đầu"/>
                                 <p id="startMonth" style="color:red;"></p>
                             </div>
 
 
-                            <div class="col-md-2">
+                            <div class="col-xs-2">
                                 <input type="text" name="endMonth"  class="form-control endMonth" value="{{ old('endMonth') ?: $month }}" placeholder="Thời gian kết  thúc"/>
                                 <p id="endMonth" style="color:red;"></p>
                             </div>
 
 
-                        <div class="col-md-1">
+                        <div class="col-xs-1">
                             <button type="submit" class="btn btn-info">{{ trans('home.search') }}</button>
+                        </div>
+
+                        <div class="col-xs-1">
+                            <a href="#" class="btn btn-info" id="exportDashboard" >Export excel</a>
                         </div>
                     @else
 
                         {{--<div class="col-md-3">--}}
 
-
-
-                            <div class="col-md-2">
+                            <div class="col-xs-2">
                                 <input type="text" name="startMonth"  class="form-control startMonth" value="{{ old('startMonth') ?: $month }}" placeholder="Thời gian bắt đầu"/>
                                 <p id="startMonth" style="color:red;"></p>
                             </div>
 
 
-                            <div class="col-md-2">
+                            <div class="col-xs-2">
                                 <input type="text" name="endMonth"  class="form-control endMonth" value="{{ old('endMonth') ?: $month }}" placeholder="Thời gian kết  thúc"/>
                                 <p id="endMonth" style="color:red;"></p>
                             </div>
 
 
 
-                        <div class="col-md-1">
+                        <div class="col-xs-1">
                             <button type="submit" class="btn btn-info">{{ trans('home.search') }}</button>
+                        </div>
+
+                        <div class="col-xs-1">
+                            <a href="#" class="btn btn-info" id="exportDashboard" >Export excel</a>
                         </div>
 
                     @endif
 
-                    <div class="col-md-2">
-                        <a href="#" class="btn btn-info" id="exportDashboard" >Export excel</a>
+                    <div class="col-xs-1" style="margin-left:40px; display: none">
+                        <a href="#" class="btn btn-info" id="swift" >Full Mode</a>
                     </div>
                 </form>
 
+
+
                 <div class="clearfix"></div>
             </div>
-
-
-
-            {{--<div class="modal fade bs-modal-lg" id="export-product" tabindex="-1" role="dialog" aria-hidden="true">--}}
-                {{--<div class="modal-dialog modal-lg">--}}
-                    {{--<div class="modal-content">--}}
-                        {{--<div class="modal-header">--}}
-                            {{--<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>--}}
-                            {{--<h4 class="modal-title">Export Excel</h4>--}}
-                        {{--</div>--}}
-                        {{--<form method="POST" action="{{ route('Admin::export') }}"--}}
-                              {{--enctype="multipart/form-data" id="import_form">--}}
-                            {{--{{ csrf_field() }}--}}
-                            {{--<div class="modal-body">--}}
-                                {{--<div class="row">--}}
-                                    {{--<div class="col-md-10" style="margin-bottom:10px">--}}
-                                        {{--<div class="form-group">--}}
-                                            {{--<label class="control-label col-md-3">Loại</label>--}}
-                                            {{--<div class="col-md-8">--}}
-
-                                                {{--<select name="type" class="typeExport form-control">--}}
-                                                    {{--<option value="">-- Chọn loại {{ trans('home.search') }} --</option>--}}
-                                                    {{--<option value="1">Theo đại lý</option>--}}
-                                                    {{--<option value="5">Theo nhân viên kinh doanh</option>--}}
-                                                    {{--@if($user->position != \App\Models\User::GSV)--}}
-                                                        {{--<option value="2">Theo giám sát vùng</option>--}}
-                                                    {{--@endif--}}
-                                                    {{--@if($user->position != \App\Models\User::TV && $user->position != \App\Models\User::GSV)--}}
-                                                        {{--<option value="3">Theo trưởng vùng</option>--}}
-                                                    {{--@endif--}}
-                                                    {{--@if(($user->position != \App\Models\User::GĐV && $user->position != \App\Models\User::GSV && $user->position != \App\Models\User::TV))--}}
-                                                        {{--<option value="4">Theo giám đốc vùng</option>--}}
-                                                    {{--@endif--}}
-                                                {{--</select>--}}
-                                                {{--<span id="typeExport" class="error-import" style="color:red;"></span>--}}
-                                            {{--</div>--}}
-                                            {{--<div class="clearfix"></div>--}}
-                                        {{--</div>--}}
-                                        {{--<div class="form-group">--}}
-                                            {{--<label class="control-label col-md-3">Chọn nhân sự</label>--}}
-                                            {{--<div class="col-md-8">--}}
-                                                {{--<select name="user" class="dataExport form-control"--}}
-                                                        {{--style="width:100%">--}}
-                                                {{--</select>--}}
-
-                                                {{--<span id="humanExport" class="error-import" style="color:red;"></span>--}}
-                                            {{--</div>--}}
-                                            {{--<div class="clearfix"></div>--}}
-                                        {{--</div>--}}
-
-
-
-
-
-                                        {{--<div class="form-group">--}}
-                                            {{--<label class="control-label col-md-3">Thời gian bắt đầu</label>--}}
-                                            {{--<div class="col-md-8">--}}
-                                                {{--<input type="text" name="startMonth"  class="form-control startMonth" value="" />--}}
-                                                {{--<span id="startMonth" class="error-import" style="color:red;"></span>--}}
-                                            {{--</div>--}}
-                                            {{--<div class="clearfix"></div>--}}
-                                        {{--</div>--}}
-                                        {{--<div class="form-group">--}}
-                                            {{--<label class="control-label col-md-3">Thời gian kết thúc</label>--}}
-                                            {{--<div class="col-md-8">--}}
-                                                {{--<input type="text" name="endMonth"  class="form-control endMonth" value="" />--}}
-                                                {{--<span id="endMonth" class="error-import" style="color:red;"></span>--}}
-                                            {{--</div>--}}
-                                            {{--<div class="clearfix"></div>--}}
-                                        {{--</div>--}}
-                                    {{--</div>--}}
-
-                                {{--</div>--}}
-
-
-                            {{--</div>--}}
-                            {{--<div class="modal-footer">--}}
-                                {{--<button type="button" class="btn dark btn-outline" data-dismiss="modal">Đóng</button>--}}
-                                {{--<button type="submit" class="btn green" id="export">Export</button>--}}
-                            {{--</div>--}}
-                        {{--</form>--}}
-                    {{--</div>--}}
-                    {{--<!-- /.modal-content -->--}}
-                {{--</div>--}}
-                {{--<!-- /.modal-dialog -->--}}
-            {{--</div>--}}
-
-
-
 
             <div class="portlet-body">
                 <div id="map" style=" width: 100% ;height: 500px"></div>
@@ -330,20 +248,20 @@
                     </div>
                     <div class="clearfix" style="margin-bottom: 20px">
                         <div class="btn-group col-xs-12" data-toggle="buttons">
-                            <label class="btn btn-default active col-xs-6 col-md-3">
+                            <label class="btn btn-default active col-xs-6 col-md-6">
                                 <input type="radio" name="radio" class="toggle radioButton" value="1"> Tháng
                                 gần nhất
                             </label>
-                            <label class="btn btn-default col-xs-6 col-md-3">
+                            <label class="btn btn-default col-xs-6 col-md-6">
                                 <input type="radio" name="radio" class="toggle radioButton" value="2">Tháng có doanh
                                 số
                                 cao nhất
                             </label>
-                            <label class="btn  btn-default col-xs-6 col-md-3">
+                            <label class="btn  btn-default col-xs-6 col-md-6">
                                 <input type="radio" name="radio" class="toggle radioButton" value="3"> Trung bình
                                 tháng
                             </label>
-                            <label class="btn  btn-default col-xs-6 col-md-3">
+                            <label class="btn  btn-default col-xs-6 col-md-6">
                                 <input type="radio" name="radio" class="toggle radioButton" value="4">Tổng sản lượng
                             </label>
                         </div>
@@ -397,9 +315,9 @@
             var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val();
             $(this).datepicker('setDate', new Date(year, month, 1));
 
-            $(".endMonth").datepicker("option", "minDate", new Date(year, month, 1));
-            $(".endMonth").datepicker("option", "maxDate",  new Date(year, 11, 1));
-            $('.endMonth').datepicker('setDate', new Date(year, month, 1));
+//            $(".endMonth").datepicker("option", "minDate", new Date(year, month, 1));
+//            $(".endMonth").datepicker("option", "maxDate",  new Date(year, 11, 1));
+//            $('.endMonth').datepicker('setDate', new Date(year, month, 1));
         }
     });
     $('.endMonth').datepicker( {
@@ -466,9 +384,9 @@
                 }
             },
             tooltip: {
-                headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+                headerFormat: '<span style="font-size:10px">{point.key:,.f}</span><table>',
                 pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-                '<td style="padding:0"><b>{point.y} </b></td></tr>',
+                '<td style="padding:0"><b>{point.y:.2f} </b></td></tr>',
                 footerFormat: '</table>',
                 shared: true,
                 useHTML: true
@@ -558,7 +476,7 @@
                 }
             },
             error: function (err) {
-                console.log(err);cais
+                console.log(err);
                 alert('Lỗi, hãy thử lại sau');
             }
         });
@@ -716,6 +634,7 @@
 
         $(".search_type").change(function () {
             var search_type = $(this).val();
+            $(".data_search").val('');
             if (search_type == 1) {
                 getListAgents(0);
             } else if (search_type == 2) {
@@ -764,11 +683,6 @@
                         height: '500px',
                         zoom: 7,
                         fullscreenControl: true,
-                    });
-                    var button = '<button id="swift" class="btn btn-primary">Full mode</button>';
-                    map.addControl({
-                        position: 'top_right',
-                        content: button,
                     });
 
                     if (type_search == 'agents') {
@@ -910,8 +824,14 @@
             $.map(data.listAgents, function (item) {
                 var agent = item.agent;
                 var user = agent.user;
+                var name = '';
+                if (agent.attribute == 1){
+                    name = agent.name + '<span style="color:red">(New)</span>';
+                } else {
+                    name = agent.name;
+                }
                 var contentString = '<div class="info" style="font-size:' + user.fontSize + 'px; color:' + user.textColor + '">' +
-                    '<h5 class="address" style="display:none; font-size:' + user.fontSize + 'px; color:' + user.textColor + '">' + agent.name + ' - ' + agent.address + '</h5>' +
+                    '<h5 class="address" style="display:none; font-size:' + user.fontSize + 'px; color:' + user.textColor + '">' + name + ' - ' + agent.address + '</h5>' +
                     '<div class="user_data" style="font-size:' + user.fontSize + 'px; color:' + user.textColor + '">' +
                     '<p class="data" style="font-size:' + user.fontSize + 'px; color:' + user.textColor + '">%TT ' + numberWithCommas(item.totalSales) + '/' + numberWithCommas(item.capacity) + '=' + item.percent + '%</p>' +
                     '<ul class="info_user" style="font-size:' + user.fontSize + 'px; color:' + user.textColor + '">' +
@@ -990,7 +910,7 @@
                 content: tableSales,
             });
 
-            var listCodes = '<div style="background-color: white"><h3>Sản phẩm đang bán</h3><span>';
+            var listCodes = '<div style="background-color: white"><span>';
             $.map(data.listCodes, function (code) {
                 listCodes +=  code + ' , ';
             });
@@ -1117,8 +1037,14 @@
             $.map(data.listAgents, function (item) {
                 var agent = item.agent;
                 var user = agent.user;
+                var name = '';
+                if (agent.attribute == 1){
+                    name = agent.name + '<span style="color:red">(New)</span>';
+                } else {
+                    name = agent.name;
+                }
                 var contentString = '<div class="info" style="font-size:' + user.fontSize + 'px; color:' + user.textColor + '">' +
-                    '<h5 class="address" style="display:none; font-size:' + user.fontSize + 'px; color:' + user.textColor + '">' + agent.name + ' - ' + agent.address + '</h5>' +
+                    '<h5 class="address" style="display:none; font-size:' + user.fontSize + 'px; color:' + user.textColor + '">' + name + ' - ' + agent.address + '</h5>' +
                     '<div class="user_data" style="font-size:' + user.fontSize + 'px; color:' + user.textColor + '">' +
                     '<p class="data" style="font-size:' + user.fontSize + 'px; color:' + user.textColor + '">%TT ' + numberWithCommas(item.totalSales) + '/' + numberWithCommas(item.capacity) + '=' + item.percent + '%</p>' +
                     '<ul class="info_user" style="font-size:' + user.fontSize + 'px; color:' + user.textColor + '">' +
@@ -1152,7 +1078,7 @@
                 } else {
                     name = agent.name;
                 }
-                listAgents += '<div><p class="" style="font-size:' + user.fontSize + 'px; color:' + user.textColor + '">'  + name + ' %TT ' + item.totalSales + '/' + numberWithCommas(item.capacity) + '=' + numberWithCommas(item.percent) + '%</p><br></div>';
+                listAgents += '<div><p class="" style="font-size:' + user.fontSize + 'px; color:' + user.textColor + '">'  + name + ' %TT ' + numberWithCommas(item.totalSales) + '/' + numberWithCommas(item.capacity) + '=' + numberWithCommas(item.percent) + '%</p><br></div>';
             });
 
             listAgents+= '</div>';
@@ -1196,7 +1122,7 @@
                 content: tableSales,
             });
 
-            var listCodes = '<div style="background-color: white"><h3>Sản phẩm đang bán</h3><span>';
+            var listCodes = '<div style="background-color: white"><span>';
             $.map(data.listCodes, function (code) {
                 listCodes +=  code + ' , ';
             });
@@ -1242,6 +1168,7 @@
             if(type == 0) {
                 $("#type_search").val('gdv');
                 var that = $(".data_search");
+
             } else {
                 var that = $('.dataExport');
             }
@@ -1259,14 +1186,34 @@
                         return queryParameters;
                     },
                     processResults: function (data, page) {
-                        return {
-                            results: $.map(data, function (item) {
-                                return {
-                                    text: item.name,
+                        var result = [
+                            {
+                                text:'Tất cả',
+                                id:'0'
+                            }
+                        ];
+
+                        $.map(data, function (item) {
+                            result.push(
+                                {
+                                    text :item.name,
                                     id: item.id,
                                 }
-                            })
+                            )
+                        });
+
+                        return {
+                            results:result
                         };
+
+//                        return {
+//                            results: $.map(data, function (item) {
+//                                return {
+//                                    text: item.name,
+//                                    id: item.id,
+//                                }
+//                            })
+//                        };
                     },
                     dropdownCssClass: "bigdrop", // apply css that makes the dropdown taller
                     escapeMarkup: function (m) {
@@ -1274,6 +1221,7 @@
                     }
                 }
             });
+
         }
 
         function showDataSaleGDV(data) {
@@ -1316,7 +1264,8 @@
                     polygonArray[item.id] = polygon;
                 }
             });
-            var legend = document.getElementById('legend2');
+
+            var listGsv = '<div id="legend2">';
 
             $.map(data.result, function (item) {
                 var agents = item.agents;
@@ -1329,8 +1278,15 @@
                         image = 'http://' + window.location.hostname + '/' + agent.icon;
                     }
 
+                    var name = '';
+                    if (agent.attribute == 1){
+                        name = agent.name + '<span style="color:red">(New)</span>';
+                    } else {
+                        name = agent.name;
+                    }
+
                     var contentString = '<div class="info" style="font-size:' + agent.user.fontSize + 'px; color:' + agent.user.textColor + '">' +
-                        '<h5 class="address" style="font-size:' + agent.user.fontSize + 'px; color:' + agent.user.textColor + '">' + agent.name + ' - ' + agent.address + '</h5>' +
+                        '<h5 class="address" style="font-size:' + agent.user.fontSize + 'px; color:' + agent.user.textColor + '">' + name + ' - ' + agent.address + '</h5>' +
                         '<div class="user_data" style="font-size:' + agent.user.fontSize + 'px; color:' + agent.user.textColor + '">' +
                         '<p class="data" id="data" style="font-size:' + agent.user.fontSize + 'px; color:' + agent.user.textColor + '">%TT ' + numberWithCommas(agent.totalSales) + '/' + numberWithCommas(agent.capacity) + '=' + agent.percent + '%</p>' +
                         '<ul class="info_user" style="font-size:' + agent.user.fontSize + 'px; color:' + agent.user.textColor + '">' +
@@ -1358,11 +1314,7 @@
                     imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'
                 });
 
-                var div = document.createElement('div');
-                div.style.color = item.gsv.textColor;
-                div.innerHTML = item.gsv.name + ' - %TT ' + numberWithCommas(item.totalSales) + '/' + numberWithCommas(item.capacity) + '=' + item.percent + "%";
-
-                legend.appendChild(div);
+                listGsv += '<div style="color:'+ item.gsv.textColor +'">'+ item.gsv.name + ' - %TT ' + numberWithCommas(item.totalSales) + '/' + numberWithCommas(item.capacity) + '=' + item.percent + '"%</div>'
 
                 var customTxt =
                     '<div class="customBox" style="display:none; font-size:' + item.gsv.fontSize + 'px; color:' + item.gsv.textColor + '">' +
@@ -1372,6 +1324,9 @@
                 txt = new TxtOverlay(new google.maps.LatLng(markers[0].getPosition().lat(), markers[0].getPosition().lng()), customTxt, "customBox", map);
             });
 
+            listGsv += '</div>';
+            var legend = document.createElement('div');
+            legend.innerHTML = listGsv;
             map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(legend);
 
             $.map(data.resultGdv, function (item) {
@@ -1455,7 +1410,7 @@
             map.controls[google.maps.ControlPosition.TOP_LEFT].push(table);
 
             // products code
-            var listCodes = '<div style="background-color: white"><h3>Sản phẩm đang bán</h3><span>';
+            var listCodes = '<div style="background-color: white"><span>';
             $.map(data.listCodes, function (code) {
                 listCodes +=  code + ' , ';
             });
@@ -1467,18 +1422,17 @@
 
 
             // info total
-            var info = '<h3 id="data" >' + data.user.name + ' - %TT ' + numberWithCommas(data.totalSales) + '/' + numberWithCommas(data.capacity) + '=' + data.percent + '%' + '</h3>'
+            if (data.user != ''){
+                var info = '<h3 id="data" >' + data.user.name + ' - %TT ' + numberWithCommas(data.totalSales) + '/' + numberWithCommas(data.capacity) + '=' + data.percent + '%' + '</h3>'
+            } else {
+                var info = '<h3 id="data" > %TT ' + numberWithCommas(data.totalSales) + '/' + numberWithCommas(data.capacity) + '=' + data.percent + '%' + '</h3>'
+            }
+
             var myTitle = document.createElement('div');
-            myTitle.style.color = data.user.textColor;
             myTitle.innerHTML = info;
             var myTextDiv = document.createElement('div');
             myTextDiv.appendChild(myTitle);
             map.controls[google.maps.ControlPosition.TOP_CENTER].push(myTextDiv);
-
-            //button compact mode
-            var button = document.createElement('div');
-            button.innerHTML = '<button id="swift" class="btn btn-primary">Full mode</button>';
-            map.controls[google.maps.ControlPosition.TOP_RIGHT].push(button);
 
             if (data.table) {
                 $('#tableData').html('');
@@ -1582,6 +1536,7 @@
                         return queryParameters;
                     },
                     processResults: function (data, page) {
+
                         return {
                             results: $.map(data.data, function (item) {
                                 return {
@@ -1597,6 +1552,7 @@
                     }
                 }
             });
+
         }
 
         function showDataAgents(data) {
@@ -1619,9 +1575,15 @@
             } else {
                 postion = 'GS';
             }
+            var name = '';
+            if (data.agents.attribute == 1){
+                name = data.agents.name + '<span style="color:red">(New)</span>';
+            } else {
+                name = data.agents.name;
+            }
             // info cho 1 marker
             var contentString = '<div class="info" style="font-size:' + user.fontSize + 'px; color:' + user.textColor + '">' +
-                '<h5 class="address" style="display:none; font-size:' + user.fontSize + 'px; color:' + user.textColor + '">' + data.agents.name + ' - ' + data.agents.address + '</h5>' +
+                '<h5 class="address" style="display:none; font-size:' + user.fontSize + 'px; color:' + user.textColor + '">' + name + ' - ' + data.agents.address + '</h5>' +
                 '<div class="user_data" style="font-size:' + user.fontSize + 'px; color:' + user.textColor + '">' +
                 '<p class="data" id="data" style="font-size:' + user.fontSize + 'px; color:' + user.textColor + '">%' + list_products[0].code + ' ' + numberWithCommas(list_products[0].totalSales) + '/' + numberWithCommas(list_products[0].capacity) + '=' + list_products[0].percent + '%</p>' +
                 '<ul class="info_user" style="font-size:' + user.fontSize + 'px; color:' + user.textColor + '">' +
@@ -1692,13 +1654,7 @@
                 content: tableSales,
             });
 
-            var button = '<button id="swift" class="btn btn-primary">Full mode</button>';
-            map.addControl({
-                position: 'top_right',
-                content: button,
-            });
-
-            var listCodes = '<div style="background-color: white"><h3>Sản phẩm đang bán</h3><span>';
+            var listCodes = '<div style="background-color: white"><span>';
             $.map(data.listCodes, function (code) {
                 listCodes +=  code + ' , ';
             });
@@ -1780,8 +1736,16 @@
                         image = 'http://' + window.location.hostname + '/' + agent.icon;
                     }
 
+                    var name = '';
+
+                    if (agent.attribute == 1){
+                        name = agent.name + '<span style="color:red">(New)</span>';
+                    } else {
+                        name = agent.name;
+                    }
+
                     var contentString = '<div class="info" style="font-size:' + agent.user.fontSize + 'px; color:' + agent.user.textColor + '">' +
-                        '<h5 class="address" style="font-size:' + agent.user.fontSize + 'px; color:' + agent.user.textColor + '">' + agent.name + ' - ' + agent.address + '</h5>' +
+                        '<h5 class="address" style="font-size:' + agent.user.fontSize + 'px; color:' + agent.user.textColor + '">' + name + ' - ' + agent.address + '</h5>' +
                         '<div class="user_data" style="font-size:' + agent.user.fontSize + 'px; color:' + agent.user.textColor + '">' +
                         '<p class="data" id="data" style="font-size:' + agent.user.fontSize + 'px; color:' + agent.user.textColor + '">%TT ' + numberWithCommas(agent.totalSales) + '/' + numberWithCommas(agent.capacity) + '=' + agent.percent + '%</p>' +
                         '<ul class="info_user" style="font-size:' + agent.user.fontSize + 'px; color:' + agent.user.textColor + '">' +
@@ -1841,7 +1805,7 @@
             $("#code").text(item.code);
             $("#totalSales").text(numberWithCommas(item.totalSales));
             $("#capacity").text(numberWithCommas(item.capacity));
-            $("#data").text('%' + item.code + ' ' + item.totalSales + '/' + item.capacity + '=' + item.percent + '%');
+            $("#data").text('%' + item.code + ' ' + numberWithCommas(item.totalSales) + '/' + numberWithCommas(item.capacity) + '=' + item.percent + '%');
         });
         $(document).on('click', '#swift', function () {
             var text = $(this).text();

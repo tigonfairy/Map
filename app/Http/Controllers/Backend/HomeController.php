@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Storage;
 use Response;
 use Illuminate\Http\Request;
 use Validator;
+use App\Models\SaleAgent;
 class HomeController extends AdminController
 {
 
@@ -30,7 +31,7 @@ class HomeController extends AdminController
         $year = Carbon::now()->year;
         $locations = [];
         $month = Carbon::now()->format('m-Y');
-        if ($user->email == 'admin@gmail.com') {
+        if( $user->position == User::ADMIN || $user->position == User::SALE_ADMIN){
 
             $users =  User::select('*')->get();
             $userIds = $users->pluck('id')->toArray();
@@ -62,13 +63,13 @@ class HomeController extends AdminController
         }
 
         foreach ($products as $key => $product) {
-            $i = intval(explode('-',$product->month)[0]);
+            $i = intval(explode('-',$product->month)[0] - 1);
             $sales_real[$i] = intval($product->sales_real);
         }
 
         //end chart cot
 
-        return view('admin.dashboard', compact('month', 'sales_plan', 'sales_plan', 'sales_real', 'user'));
+        return view('admin.dashboard', compact('month', 'sales_plan', 'sales_real', 'user'));
     }
 
     public function chartDashboard(Request $request){
@@ -76,7 +77,7 @@ class HomeController extends AdminController
         // thang gan nhat
         $user = auth()->user();
         $year = Carbon::now()->year;
-        if($user->email == 'admin@gmail.com'){
+        if( $user->position == User::ADMIN || $user->position == User::SALE_ADMIN){
             $area = Area::select('*')->get()->pluck('id')->toArray();
             $agentId = Agent::pluck('id')->toArray();
 
@@ -91,6 +92,7 @@ class HomeController extends AdminController
             $agentId= array_unique(array_merge($agentId,$agents));
         }
         if($type == 1){ // thang gần nhất
+
 //            $month = Carbon::now()->format('m-Y');
             $lastMonth = DB::table('sale_agents')
                 ->select(\DB::raw('SUM(sales_real) as sales_real,month'))
@@ -199,5 +201,20 @@ class HomeController extends AdminController
             return redirect()->back()->with('error','File ko tồn tại');
         }
 
+    }
+
+    public function guiSearch(Request $request) {
+        if(auth()->user()->position != \App\Models\User::ADMIN and auth()->user()->position != \App\Models\User::SALE_ADMIN) {
+            abort(403);
+        }
+        $lastMonth = DB::table('sale_agents')
+            ->select('*')->orderBy('month','desc')
+            ->first()->month;
+        $agents = Agent::selectRaw('sum(sale_agents.sales_real)  as sales_real,sale_agents.capacity,agents.*')
+            ->join('sale_agents','sale_agents.agent_id','=','agents.id')->where('sale_agents.month',$lastMonth)
+            ->groupBy('agents.id')->with('user')->get();
+
+
+        return view('admin.guiSearch',compact('agents'));
     }
 }

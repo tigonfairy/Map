@@ -102,7 +102,7 @@
         .caret {
             padding-top: 10px !important;
         }
-
+        #ui-datepicker-div { display: none; }
 
     </style>
     @stack('style_head')
@@ -126,11 +126,9 @@
 
             <!-- BEGIN LOGO -->
             <div class="page-logo">
-
                 <div class="menu-toggler sidebar-toggler">
                     <span></span>
                 </div>
-
             </div>
             <!-- END LOGO -->
             <!-- BEGIN RESPONSIVE MENU TOGGLER -->
@@ -140,11 +138,11 @@
             </a>
 
 
-                        <a href="{{ url('/') }}" class="" style="display: inline-block; padding: 8px 8px ">
-                            <img alt="" class="img-circle " src="{{ url('images/hongha.png') }}"
-                                 style="height: 29px; width: 29px"/>
-                            <span style="display: inline-block; vertical-align: middle; color: white; padding: 3px 0 0 2px;"> {{ trans('home.company_name') }}</span>
-                        </a>
+                        {{--<a href="{{ url('/') }}" class="" style="display: inline-block; padding: 8px 8px ">--}}
+                            {{--<img alt="" class="img-circle " src="{{ url('images/hongha.png') }}"--}}
+                                 {{--style="height: 29px; width: 29px"/>--}}
+                            {{--<span style="display: inline-block; vertical-align: middle; color: white; padding: 3px 0 0 2px;"> {{ trans('home.company_name') }}</span>--}}
+                        {{--</a>--}}
 
 
             <!-- END RESPONSIVE MENU TOGGLER -->
@@ -248,8 +246,9 @@
     <!-- END CONTAINER -->
     <!-- BEGIN FOOTER -->
     <div class="page-footer">
-        <div class="page-footer-inner"> <span style="display: inline-block; vertical-align: middle; color: white; padding: 3px 0 0 2px;"> {{ trans('home.company_name') }}</span>
-
+        <div class="page-footer-inner">
+            <span style="display: inline-block; vertical-align: middle; color: white; padding: 3px 0 0 2px; font-weight: bold;"> {{ trans('home.company_name') }}</span>
+            <span style="display: block; vertical-align: middle; color: white; padding: 5px 0 0 5px;font-weight: bold;"> Địa chỉ: Lô C, KCN Đồng Văn, Duy Tiên, Hà Nam</span>
         </div>
         <div class="scroll-to-top">
             <i class="icon-arrow-up"></i>
@@ -316,7 +315,11 @@
     $.ajaxSetup({
         headers: {'X-CSRF-Token': $('meta[name=csrf-token]').attr('content')}
     });
-
+$(document).ready(function(){
+   $('.sidebar-toggler').click(function(){
+       $('.image-logo').toggle();
+   });
+});
 </script>
 <script src="/assets/pages/scripts/ui-modals.min.js" type="text/javascript"></script>
 
