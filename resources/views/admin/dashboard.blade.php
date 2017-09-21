@@ -105,7 +105,7 @@
             font-family: Arial, sans-serif;
             background: #fff;
             padding: 10px;
-            margin: 10px;
+            margin: 5px;
         }
 
         #legend2 h3 {
@@ -220,6 +220,12 @@
                 <div id="legend"></div>
                 <div id="legend2"></div>
             </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="portlet light listCodes" style="display: none">
+            <div id="listCode"></div>
         </div>
     </div>
 
@@ -920,11 +926,9 @@
                 listCodes +=  code + ' , ';
             });
             listCodes += '</span></div>';
-            map.addControl({
-                position: 'bottom_right',
-                content: listCodes,
-            });
 
+            $("#listCode").html(listCodes);
+            $(".listCodes").show();
             listSelectProducts = [];
             $.each(list_products, function (index, value) {
                 listSelectProducts.push(value);
@@ -1132,11 +1136,9 @@
                 listCodes +=  code + ' , ';
             });
             listCodes += '</span></div>';
-            map.addControl({
-                position: 'bottom_right',
-                content: listCodes,
-            });
 
+            $("#listCode").html(listCodes);
+            $(".listCodes").show();
             listSelectProducts = [];
             $.each(list_products, function (index, value) {
                 listSelectProducts.push(value);
@@ -1421,25 +1423,24 @@
             $.map(data.listCodes, function (code) {
                 listCodes +=  code + ' , ';
             });
+
             listCodes += '</span></div>';
 
-            var codes = document.createElement('div');
-            codes.innerHTML = listCodes;
-            map.controls[google.maps.ControlPosition.BOTTOM_CENTER].push(codes);
-
+            $("#listCode").html(listCodes);
+            $(".listCodes").show();
 
             // info total
             if (data.user != ''){
-                var info = '<h3 id="data" >' + data.user.name + ' - %TT ' + numberWithCommas(data.totalSales) + '/' + numberWithCommas(data.capacity) + '=' + data.percent + '%' + '</h3>'
+                var info = '<div id="data" style="font-weight: 600;font-size:18px;background: #fff;margin:5px"><p>' + data.user.name + '</p><p>%TT ' + numberWithCommas(data.totalSales) + '/' + numberWithCommas(data.capacity) + '=' + data.percent + '%' + '</p></div>'
             } else {
-                var info = '<h3 id="data" > %TT ' + numberWithCommas(data.totalSales) + '/' + numberWithCommas(data.capacity) + '=' + data.percent + '%' + '</h3>'
+                var info = '<div id="data" style="font-weight: 600;font-size:18px;background: #fff;margin:5px"><p> %TT ' + numberWithCommas(data.totalSales) + '/' + numberWithCommas(data.capacity) + '=' + data.percent + '%' + '</p></div>'
             }
 
             var myTitle = document.createElement('div');
             myTitle.innerHTML = info;
             var myTextDiv = document.createElement('div');
             myTextDiv.appendChild(myTitle);
-            map.controls[google.maps.ControlPosition.TOP_CENTER].push(myTextDiv);
+            map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(myTextDiv);
 
             if (data.table) {
                 $('#tableData').html('');
@@ -1668,11 +1669,9 @@
                 listCodes +=  code + ' , ';
             });
             listCodes += '</span></div>';
-            map.addControl({
-                position: 'bottom_right',
-                content: listCodes,
-            });
 
+            $("#listCode").html(listCodes);
+            $(".listCodes").show();
 
             listSelectProducts = [];
             $.each(list_products, function (index, value) {
