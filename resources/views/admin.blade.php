@@ -277,10 +277,10 @@
             <div class="footer-item col-md-3">
                 <h3>
                     <span class="title-footer"><span
-                                style="font-size: 12px;"><strong>CÔNG TY CỔ PHẦN DINH DƯỠNG HỒNG HÀ</strong></span></span>
+                                style="font-size: 12px;"><strong>{{trans('footer.ddhh')}}</strong></span></span>
                 </h3>
                 <p>
-                    <span class="title-footer"><span style="font-size: 14px;">Địa chỉ: Lô C, KCN Đồng Văn, Duy Tiên, Hà Nam</span><br
+                    <span class="title-footer"><span style="font-size: 14px;">{{trans('footer.addhh')}}</span><br
                               class="br">
                     <span style="font-size: 14px;">Điện thoại: (0226) 3 836 840</span></span></p>
                 <p>
@@ -291,10 +291,10 @@
             <div class="footer-item col-md-3">
                 <h3>
                     <span class="title-footer"><span
-                                style="font-size: 12px;"><strong>CÔNG TY CỔ PHẦN HỒNG HÀ BÌNH ĐỊNH</strong></span></span>
+                                style="font-size: 12px;"><strong>{{trans('footer.hhbd')}}</strong></span></span>
                 </h3>
                 <p>
-                    <span class="title-footer"><span style="font-size: 14px;">Địa chỉ: Phường Nhơn Hòa, Thị xã An Nhơn, Bình Định</span>
+                    <span class="title-footer"><span style="font-size: 14px;">{{trans('footer.ahhbd')}}</span>
                         <br class="br">
                     <span style="font-size: 14px;">Điện thoại: (0256) 3 838 446</span></span></p>
                 <p>
