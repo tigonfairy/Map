@@ -94,8 +94,8 @@ class ImportUser
                     $data['textColor'] = $config->textColor;
                 }
                 $data['password'] =  bcrypt('123456');
-                if(isset($row[5]) and $row[5]) {
-                    $code_manager = trim($row[5]);
+                if(isset($row[6]) and $row[6]) {
+                    $code_manager = trim($row[6]);
                     $manager = User::where('code',$code_manager)->first();
                     if($manager) {
                         $data['manager_id'] = $manager->id;
