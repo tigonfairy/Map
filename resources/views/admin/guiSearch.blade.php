@@ -216,9 +216,15 @@
                        $image = $agent->icon;
 
                    }
-                   $capacity = $agent->capacity;
+                   $capacity = intval($agent->capacity);
                     $sales_real = $agent->sales_real;
-                    $percent = round(($sales_real / $capacity) * 100, 2);
+                    if($capacity == 0) {
+                       $percent = 0;
+                    } else {
+
+                       $percent = round(($sales_real / $capacity) * 100, 2);
+                    }
+
                             @endphp
                     var contentString = '<div class="info" style="font-size:' + '{{$agent->user->fontSize}}' + 'px; color:' + '{{$agent->user->textColor}}' + '">' +
                             '<h5 class="address" style="font-size:' + '{{$agent->user->fontSize}}' + 'px; color:' + '{{$agent->user->textColor}}' + '">' + '{{$agent->name}}' + ' - ' + '{{$agent->address}}' + '</h5>' +
