@@ -641,7 +641,7 @@ class MapController extends AdminController
             $listCodes = [];
 
             $capacity = \App\Models\SaleAgent::where('month','>=',$startMonth)->where('month','<=',$endMonth)
-                ->groupBy('agent_id','month')->where('agent_id',$agent->id)->join('agents','agents.id', '=' ,'sale_agents.agent_id')->where('agents.attribute', '!=', Agent::agentRival)
+                ->groupBy('agent_id','month')->where('agent_id',$agent->id)->join('agents','agents.id', '=' ,'sale_agents.agent_id')
                 ->get()->sum('capacity');
 
             $groupProduct = \App\Models\GroupProduct::orderBy('created_at','desc')->get();

@@ -41,7 +41,6 @@
                         <div class="table-responsive">
                             <div id="map"></div>
                         </div>
-
                     </div>
                 </div>
                 <div class="col-md-5">
