@@ -49,14 +49,14 @@ class HomeController extends AdminController
             $agentId = array_unique(array_merge($agentId, $agentIds));
         }
 
-        //chart cot
+//        //chart cot
         $products = DB::table('sale_agents')
             ->select(\DB::raw('SUM(sales_real) as sales_real,month'))
-            ->whereIn('agent_id', $agentId)->groupBy('month')->where('month', 'like', '%' . $year . '%')->orderBy('month')
+            ->whereIn('agent_id', $agentId)->groupBy('month')->where('month','<=','01-'.$year)->where('month','>=','12-'.$year)->orderBy('month')
             ->get()->toArray();
         $sales_plan = [];
         $sales_real = [];
-
+//
 
         for ($i = 0; $i < 12; $i++) {
             $sales_real[$i] = 0;
