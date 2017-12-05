@@ -44,8 +44,11 @@ class Hin extends Command
        SaleAgent::chunk(500,function($sales) {
           foreach ($sales as $sale) {
               $product = Product::find($sale->product_id);
-              $sale->code = $product->code;
-              $sale->save();
+              if($product) {
+                  $sale->code = $product->code;
+                  $sale->save();
+              }
+
           }
        });
 
