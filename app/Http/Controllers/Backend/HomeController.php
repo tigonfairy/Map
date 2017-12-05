@@ -49,14 +49,14 @@ class HomeController extends AdminController
             $agentId = array_unique(array_merge($agentId, $agentIds));
         }
 
-        //chart cot
+//        //chart cot
         $products = DB::table('sale_agents')
             ->select(\DB::raw('SUM(sales_real) as sales_real,month'))
-            ->whereIn('agent_id', $agentId)->groupBy('month')->where('month', 'like', '%' . $year . '%')->orderBy('month')
+            ->whereIn('agent_id', $agentId)->groupBy('month')->where('month','>=','01-'.$year)->where('month','<=','12-'.$year)->orderBy('month')
             ->get()->toArray();
         $sales_plan = [];
         $sales_real = [];
-
+//
 
         for ($i = 0; $i < 12; $i++) {
             $sales_real[$i] = 0;
@@ -92,18 +92,22 @@ class HomeController extends AdminController
             $agentId= array_unique(array_merge($agentId,$agents));
         }
         if($type == 1){ // thang gần nhất
-
-//            $month = Carbon::now()->format('m-Y');
             $lastMonth = DB::table('sale_agents')
-                ->select(\DB::raw('SUM(sales_real) as sales_real,month'))
-                ->whereIn('agent_id',$agentId)->where('month','like','%'.$year.'%')->groupBy('month')->orderBy('month','desc')
+                ->select(\DB::raw('month'))->orderBy('month','desc')
                 ->first()->month;
+            if( $user->position == User::ADMIN || $user->position == User::SALE_ADMIN){
+                $products = DB::table('sale_agents')
+                    ->select(\DB::raw('SUM(sales_real) as sales_real,sale_agents.product_id,products.code,month'))->where('month',$lastMonth)->orderBy('month')->groupBy('sale_agents.product_id')
+                    ->join('products','sale_agents.product_id','=','products.id')
+                    ->get()->toArray();
+            }else {
+                $products = DB::table('sale_agents')
+                    ->select(\DB::raw('SUM(sales_real) as sales_real,sale_agents.product_id,products.code,month'))
+                    ->whereIn('agent_id',$agentId)->where('month' ,$lastMonth)->orderBy('month')->groupBy('sale_agents.product_id')
+                    ->join('products','sale_agents.product_id','=','products.id')
+                    ->get()->toArray();
+            }
 
-            $products = DB::table('sale_agents')
-                ->select(\DB::raw('SUM(sales_real) as sales_real,sale_agents.product_id,products.code,month'))
-                ->whereIn('agent_id',$agentId)->where('month','like',$lastMonth)->orderBy('month')->groupBy('sale_agents.product_id')
-                ->join('products','sale_agents.product_id','=','products.id')
-                ->get()->toArray();
 
             $chartData = [];
             foreach ($products as $key => $p){
@@ -113,17 +117,30 @@ class HomeController extends AdminController
 
             return Response::json(['chart' =>$chartData,'table' => $chartData ,'title' =>'tháng '.$lastMonth ],200);
         } elseif($type == 2){ // tháng có doanh số cao nhất
+            if( $user->position == User::ADMIN || $user->position == User::SALE_ADMIN){
+                $monthHighest = DB::table('sale_agents')
+                    ->select(\DB::raw('SUM(sales_real) as sales_real,month'))
+                    ->where('month','>=','01-'.$year)->where('month','<=','12-'.$year)->groupBy('month')->orderBy('sales_real','desc')
+                    ->first()->month;
 
-            $monthHighest = DB::table('sale_agents')
-                ->select(\DB::raw('SUM(sales_real) as sales_real,month'))
-                ->whereIn('agent_id',$agentId)->where('month','like','%'.$year.'%')->groupBy('month')->orderBy('sales_real','desc')
-                ->first()->month;
+                $products = DB::table('sale_agents')
+                    ->select(\DB::raw('SUM(sales_real) as sales_real,sale_agents.product_id,products.code,month'))
+                    ->where('month',$monthHighest)->groupBy('sale_agents.product_id')->orderBy('sales_real','desc')
+//                    ->join('products','sale_agents.product_id','=','products.id')
+                    ->get()->toArray();
+            } else {
+                $monthHighest = DB::table('sale_agents')
+                    ->select(\DB::raw('SUM(sales_real) as sales_real'))
+                    ->whereIn('agent_id',$agentId)->where('month','>=','01-'.$year)->where('month','<=','12-'.$year)->groupBy('month')->orderBy('sales_real','desc')
+                    ->first()->month;
 
-            $products = DB::table('sale_agents')
-                ->select(\DB::raw('SUM(sales_real) as sales_real,sale_agents.product_id,products.code,month'))
-                ->whereIn('agent_id',$agentId)->where('month','like',$monthHighest)->groupBy('sale_agents.product_id')->orderBy('sales_real','desc')
-                ->join('products','sale_agents.product_id','=','products.id')
-                ->get()->toArray();
+                $products = DB::table('sale_agents')
+                    ->select(\DB::raw('SUM(sales_real) as sales_real,sale_agents.product_id,products.code,month'))
+                    ->whereIn('agent_id',$agentId)->where('month',$monthHighest)->groupBy('sale_agents.product_id')->orderBy('sales_real','desc')
+//                    ->join('products','sale_agents.product_id','=','products.id')
+                    ->get()->toArray();
+            }
+
             $chartData = [];
             foreach ($products as $key => $p){
 
@@ -139,7 +156,7 @@ class HomeController extends AdminController
                 ->whereIn('agent_id',$agentId)->groupBy('product_id')->where('month','like','%'.$year.'%')->where('month','<',$month)
                 ->join('products','sale_agents.product_id','=','products.id')
                 ->get()->toArray();
-            $countMonth = DB::table('sale_agents')->select('month')->whereIn('agent_id',$agentId)
+            $countMonth = DB::table('sale_agents')->whereIn('agent_id',$agentId)
                 ->groupBy('month')->where('month','like','%'.$year.'%')->where('month','<',$month)->get()->count();
             $chartData = [];
             foreach ($products as $key => $p){
