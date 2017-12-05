@@ -33,10 +33,10 @@ class HomeController extends AdminController
         $month = Carbon::now()->format('m-Y');
         if( $user->position == User::ADMIN || $user->position == User::SALE_ADMIN){
 
-            $users =  User::select('*')->get();
-            $userIds = $users->pluck('id')->toArray();
-            $agents = Agent::whereIn('manager_id', $userIds)->get();
-            $agentId = $agents->pluck('id')->toArray();
+            $userIds =  User::pluck('id')->toArray();
+          //  $userIds = $users->pluck('id')->toArray();
+            $agentId = Agent::whereIn('manager_id', $userIds)->pluck('id')->toArray();
+//            $agentId = $agents->pluck('id')->toArray();
 
         } else {
             $area = $user->area()->get()->pluck('id')->toArray();
@@ -52,8 +52,8 @@ class HomeController extends AdminController
         //chart cot
         $products = DB::table('sale_agents')
             ->select(\DB::raw('SUM(sales_real) as sales_real,month'))
-            ->whereIn('agent_id', $agentId)->groupBy('month')->where('month', 'like', '%' . $year . '%')->orderBy('month')
-            ->get()->toArray();
+            ->whereIn('agent_id', $agentId)->where('month', 'like', '%' . $year . '%')
+            ->orderBy('month')->groupBy('month')->get()->toArray();
         $sales_plan = [];
         $sales_real = [];
 
@@ -78,7 +78,7 @@ class HomeController extends AdminController
         $user = auth()->user();
         $year = Carbon::now()->year;
         if( $user->position == User::ADMIN || $user->position == User::SALE_ADMIN){
-            $area = Area::select('*')->get()->pluck('id')->toArray();
+            $area = Area::pluck('id')->toArray();
             $agentId = Agent::pluck('id')->toArray();
 
         }else{
@@ -91,18 +91,20 @@ class HomeController extends AdminController
             $agentId = $user->agent()->get()->pluck('id')->toArray();
             $agentId= array_unique(array_merge($agentId,$agents));
         }
+
         if($type == 1){ // thang gần nhất
 
 //            $month = Carbon::now()->format('m-Y');
             $lastMonth = DB::table('sale_agents')
-                ->select(\DB::raw('SUM(sales_real) as sales_real,month'))
-                ->whereIn('agent_id',$agentId)->where('month','like','%'.$year.'%')->groupBy('month')->orderBy('month','desc')
-                ->first()->month;
+                ->select(\DB::raw('month'))
+                ->whereIn('agent_id',$agentId)->where('month','like','%'.$year.'%')->groupBy('month')
+                ->orderBy('month','desc')->first()->month;
 
             $products = DB::table('sale_agents')
-                ->select(\DB::raw('SUM(sales_real) as sales_real,sale_agents.product_id,products.code,month'))
-                ->whereIn('agent_id',$agentId)->where('month','like',$lastMonth)->orderBy('month')->groupBy('sale_agents.product_id')
                 ->join('products','sale_agents.product_id','=','products.id')
+                ->whereIn('agent_id',$agentId)->where('month','like',$lastMonth)->orderBy('month')
+                ->select(\DB::raw('SUM(sales_real) as sales_real, sale_agents.product_id, products.code, month'))
+                ->groupBy('sale_agents.product_id')
                 ->get()->toArray();
 
             $chartData = [];

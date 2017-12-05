@@ -353,101 +353,101 @@
         });
 
         //chart cot
-        Highcharts.chart('container', {
-            chart: {
-                type: 'column',
-                style: {
-                    fontFamily: 'serif'
-                }
-            },
-            title: {
-                text: 'Tiến độ doanh số'
-            },
-            subtitle: {
-//                text: 'Source: WorldClimate.com'
-            },
-            xAxis: {
-                categories: [
-                    'Jan',
-                    'Feb',
-                    'Mar',
-                    'Apr',
-                    'May',
-                    'Jun',
-                    'Jul',
-                    'Aug',
-                    'Sep',
-                    'Oct',
-                    'Nov',
-                    'Dec'
-                ],
-                crosshair: true
-            },
-            yAxis: {
-                min: 0,
-                title: {
-                    text: 'Doanh số '
-                }
-            },
-            tooltip: {
-                headerFormat: '<span style="font-size:10px">{point.key:,.f}</span><table>',
-                pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-                '<td style="padding:0"><b>{point.y:.2f} </b></td></tr>',
-                footerFormat: '</table>',
-                shared: true,
-                useHTML: true
-            },
-            plotOptions: {
-                column: {
-                    pointPadding: 0.2,
-                    borderWidth: 0
-                },
-                series: {
-                    dataLabels: {
-                        enabled: true,
-                        crop: false,
-                        overflow: 'none',
-                        formatter: function () {
-                            return this.point.y;
-                        }
-                    }
-                }
-            },
-            series: [{
-                name: 'DTTT',
-                data: {{ json_encode($sales_real) }}
-            }]
-        });
+        {{--Highcharts.chart('container', {--}}
+            {{--chart: {--}}
+                {{--type: 'column',--}}
+                {{--style: {--}}
+                    {{--fontFamily: 'serif'--}}
+                {{--}--}}
+            {{--},--}}
+            {{--title: {--}}
+                {{--text: 'Tiến độ doanh số'--}}
+            {{--},--}}
+            {{--subtitle: {--}}
+{{--//                text: 'Source: WorldClimate.com'--}}
+            {{--},--}}
+            {{--xAxis: {--}}
+                {{--categories: [--}}
+                    {{--'Jan',--}}
+                    {{--'Feb',--}}
+                    {{--'Mar',--}}
+                    {{--'Apr',--}}
+                    {{--'May',--}}
+                    {{--'Jun',--}}
+                    {{--'Jul',--}}
+                    {{--'Aug',--}}
+                    {{--'Sep',--}}
+                    {{--'Oct',--}}
+                    {{--'Nov',--}}
+                    {{--'Dec'--}}
+                {{--],--}}
+                {{--crosshair: true--}}
+            {{--},--}}
+            {{--yAxis: {--}}
+                {{--min: 0,--}}
+                {{--title: {--}}
+                    {{--text: 'Doanh số '--}}
+                {{--}--}}
+            {{--},--}}
+            {{--tooltip: {--}}
+                {{--headerFormat: '<span style="font-size:10px">{point.key:,.f}</span><table>',--}}
+                {{--pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +--}}
+                {{--'<td style="padding:0"><b>{point.y:.2f} </b></td></tr>',--}}
+                {{--footerFormat: '</table>',--}}
+                {{--shared: true,--}}
+                {{--useHTML: true--}}
+            {{--},--}}
+            {{--plotOptions: {--}}
+                {{--column: {--}}
+                    {{--pointPadding: 0.2,--}}
+                    {{--borderWidth: 0--}}
+                {{--},--}}
+                {{--series: {--}}
+                    {{--dataLabels: {--}}
+                        {{--enabled: true,--}}
+                        {{--crop: false,--}}
+                        {{--overflow: 'none',--}}
+                        {{--formatter: function () {--}}
+                            {{--return this.point.y;--}}
+                        {{--}--}}
+                    {{--}--}}
+                {{--}--}}
+            {{--},--}}
+            {{--series: [{--}}
+                {{--name: 'DTTT',--}}
+                {{--data: {{ json_encode($sales_real) }}--}}
+            {{--}]--}}
+        {{--});--}}
 
 
-        var chartSp = Highcharts.chart('chartSp', {
-            chart: {
-                plotBackgroundColor: null,
-                plotBorderWidth: null,
-                plotShadow: false,
-                type: 'pie',
-                style: {
-                    fontFamily: 'serif'
-                }
-            },
-            title: {
-                text: 'Biểu đổ'
-            },
-            tooltip: {
-                pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
-            },
-            plotOptions: {
-                pie: {
-                    allowPointSelect: true,
-                    cursor: 'pointer',
-                    dataLabels: {
-                        enabled: true
-                    },
-                    showInLegend: true
-                }
-            },
-            series: []
-        });
+        {{--var chartSp = Highcharts.chart('chartSp', {--}}
+            {{--chart: {--}}
+                {{--plotBackgroundColor: null,--}}
+                {{--plotBorderWidth: null,--}}
+                {{--plotShadow: false,--}}
+                {{--type: 'pie',--}}
+                {{--style: {--}}
+                    {{--fontFamily: 'serif'--}}
+                {{--}--}}
+            {{--},--}}
+            {{--title: {--}}
+                {{--text: 'Biểu đổ'--}}
+            {{--},--}}
+            {{--tooltip: {--}}
+                {{--pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'--}}
+            {{--},--}}
+            {{--plotOptions: {--}}
+                {{--pie: {--}}
+                    {{--allowPointSelect: true,--}}
+                    {{--cursor: 'pointer',--}}
+                    {{--dataLabels: {--}}
+                        {{--enabled: true--}}
+                    {{--},--}}
+                    {{--showInLegend: true--}}
+                {{--}--}}
+            {{--},--}}
+            {{--series: []--}}
+        {{--});--}}
 
         $.ajax({
             method: "post",
@@ -1523,6 +1523,7 @@
                 this.setMap(this.map_);
             }
         }
+
         function getListAgents(type) {
             if(type == 0) {
                 $("#type_search").val('agents');
@@ -1805,7 +1806,6 @@
             }
         }
 
-
         $(document).on('change', '#choose_product', function () {
             var code = $(this).val();
             var data = $.grep(listSelectProducts, function (e) {
@@ -1817,6 +1817,7 @@
             $("#capacity").text(numberWithCommas(item.capacity));
             $("#data").text('%' + item.code + ' ' + numberWithCommas(item.totalSales) + '/' + numberWithCommas(item.capacity) + '=' + item.percent + '%');
         });
+
         $(document).on('click', '#swift', function () {
             var text = $(this).text();
             if (text == 'Full Mode') {
