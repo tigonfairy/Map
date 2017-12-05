@@ -3,7 +3,6 @@
     <?php
     if (file_exists(public_path() . '/config/config.json')) {
         $config = json_decode(file_get_contents(public_path() . '/config/config.json'), true);
-
     }
     ?>
 
@@ -13,7 +12,6 @@
             -moz-column-count: 2; /* Firefox */
             column-count: 2;
         }
-
         @media (max-width: 768px) {
             .ct {
                 -webkit-column-count: 1; /* Chrome, Safari, Opera */
@@ -21,7 +19,6 @@
                 column-count: 1;
             }
         }
-
         @media (min-width: 992px) {
             .ct {
                 -webkit-column-count: 2; /* Chrome, Safari, Opera */
@@ -29,12 +26,10 @@
                 column-count: 2;
             }
         }
-
         .info {
             z-index: 99999;
             color: {{ (auth()->user()->textColor) ? auth()->user()->textColor : $config['textColor']  }};
         }
-
         .data {
             z-index: 99999;
             border: 1px solid yellow;
@@ -43,7 +38,6 @@
             font-size: {{ (auth()->user()->fontSize) ? auth()->user()->fontSize :  $config['fontSize']  }}px;
             float: left;
         }
-
         .info_user {
             z-index: 99999;
             list-style: none;
@@ -52,12 +46,10 @@
             /*margin-left: 10px;*/
             float: left;
         }
-
         .info_gsv {
             z-index: 99999;
             color: {{ (auth()->user()->textColor) ? auth()->user()->textColor : $config['textColor']  }};
         }
-
         .data_gsv {
             z-index: 99999;
             border: 1px solid yellow;
@@ -66,7 +58,6 @@
             font-size: {{ (auth()->user()->fontSize) ? auth()->user()->fontSize :  $config['fontSize']  }}px;
             float: left;
         }
-
         .info_user_gsv {
             z-index: 99999;
             list-style: none;
@@ -74,7 +65,6 @@
             /*margin-left: 10px;*/
             float: left;
         }
-
         .customBox {
             position: absolute;
             background-color: #ffffff;
@@ -83,47 +73,37 @@
             vertical-align: middle;
             width: 35%;
             text-align: center;
-
         }
-
         #legend {
             font-family: Arial, sans-serif;
             background: #fff;
             padding: 10px;
             margin: 10px;
         }
-
         #legend h3 {
             margin-top: 0;
         }
-
         #legend img {
             vertical-align: middle;
         }
-
         #legend2 {
             font-family: Arial, sans-serif;
             background: #fff;
             padding: 10px;
             margin: 5px;
         }
-
         #legend2 h3 {
             margin-top: 0;
         }
-
         #legend2 img {
             vertical-align: middle;
         }
-
         .table-products tr {
             height: 50px;
         }
-
         .table-products tr th,td {
             text-align: center;
         }
-
     </style>
 
     <div class="row">
@@ -159,16 +139,16 @@
 
 
 
-                            <div class="col-xs-2">
-                                <input type="text" name="startMonth"  class="form-control startMonth" value="{{ old('startMonth') ?: $month }}" placeholder="Thời gian bắt đầu"/>
-                                <p id="startMonth" style="color:red;"></p>
-                            </div>
+                        <div class="col-xs-2">
+                            <input type="text" name="startMonth"  class="form-control startMonth" value="{{ old('startMonth') ?: $month }}" placeholder="Thời gian bắt đầu"/>
+                            <p id="startMonth" style="color:red;"></p>
+                        </div>
 
 
-                            <div class="col-xs-2">
-                                <input type="text" name="endMonth"  class="form-control endMonth" value="{{ old('endMonth') ?: $month }}" placeholder="Thời gian kết  thúc"/>
-                                <p id="endMonth" style="color:red;"></p>
-                            </div>
+                        <div class="col-xs-2">
+                            <input type="text" name="endMonth"  class="form-control endMonth" value="{{ old('endMonth') ?: $month }}" placeholder="Thời gian kết  thúc"/>
+                            <p id="endMonth" style="color:red;"></p>
+                        </div>
 
 
                         <div class="col-xs-1">
@@ -182,16 +162,16 @@
 
                         {{--<div class="col-md-3">--}}
 
-                            <div class="col-xs-2">
-                                <input type="text" name="startMonth"  class="form-control startMonth" value="{{ old('startMonth') ?: $month }}" placeholder="Thời gian bắt đầu"/>
-                                <p id="startMonth" style="color:red;"></p>
-                            </div>
+                        <div class="col-xs-2">
+                            <input type="text" name="startMonth"  class="form-control startMonth" value="{{ old('startMonth') ?: $month }}" placeholder="Thời gian bắt đầu"/>
+                            <p id="startMonth" style="color:red;"></p>
+                        </div>
 
 
-                            <div class="col-xs-2">
-                                <input type="text" name="endMonth"  class="form-control endMonth" value="{{ old('endMonth') ?: $month }}" placeholder="Thời gian kết  thúc"/>
-                                <p id="endMonth" style="color:red;"></p>
-                            </div>
+                        <div class="col-xs-2">
+                            <input type="text" name="endMonth"  class="form-control endMonth" value="{{ old('endMonth') ?: $month }}" placeholder="Thời gian kết  thúc"/>
+                            <p id="endMonth" style="color:red;"></p>
+                        </div>
 
 
 
@@ -320,7 +300,6 @@
             console.log(month);
             var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val();
             $(this).datepicker('setDate', new Date(year, month, 1));
-
 //            $(".endMonth").datepicker("option", "minDate", new Date(year, month, 1));
 //            $(".endMonth").datepicker("option", "maxDate",  new Date(year, 11, 1));
 //            $('.endMonth').datepicker('setDate', new Date(year, month, 1));
@@ -335,10 +314,8 @@
             var month = $("#ui-datepicker-div .ui-datepicker-month :selected").val();
             var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val();
             $(this).datepicker('setDate', new Date(year, month, 1));
-
         }
     });
-
     $(document).ready(function () {
         $('.monthPicker').datepicker({
             changeMonth: true,
@@ -351,104 +328,100 @@
                 $(this).datepicker('setDate', new Date(year, month, 1));
             }
         });
-
         //chart cot
-        {{--Highcharts.chart('container', {--}}
-            {{--chart: {--}}
-                {{--type: 'column',--}}
-                {{--style: {--}}
-                    {{--fontFamily: 'serif'--}}
-                {{--}--}}
-            {{--},--}}
-            {{--title: {--}}
-                {{--text: 'Tiến độ doanh số'--}}
-            {{--},--}}
-            {{--subtitle: {--}}
-{{--//                text: 'Source: WorldClimate.com'--}}
-            {{--},--}}
-            {{--xAxis: {--}}
-                {{--categories: [--}}
-                    {{--'Jan',--}}
-                    {{--'Feb',--}}
-                    {{--'Mar',--}}
-                    {{--'Apr',--}}
-                    {{--'May',--}}
-                    {{--'Jun',--}}
-                    {{--'Jul',--}}
-                    {{--'Aug',--}}
-                    {{--'Sep',--}}
-                    {{--'Oct',--}}
-                    {{--'Nov',--}}
-                    {{--'Dec'--}}
-                {{--],--}}
-                {{--crosshair: true--}}
-            {{--},--}}
-            {{--yAxis: {--}}
-                {{--min: 0,--}}
-                {{--title: {--}}
-                    {{--text: 'Doanh số '--}}
-                {{--}--}}
-            {{--},--}}
-            {{--tooltip: {--}}
-                {{--headerFormat: '<span style="font-size:10px">{point.key:,.f}</span><table>',--}}
-                {{--pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +--}}
-                {{--'<td style="padding:0"><b>{point.y:.2f} </b></td></tr>',--}}
-                {{--footerFormat: '</table>',--}}
-                {{--shared: true,--}}
-                {{--useHTML: true--}}
-            {{--},--}}
-            {{--plotOptions: {--}}
-                {{--column: {--}}
-                    {{--pointPadding: 0.2,--}}
-                    {{--borderWidth: 0--}}
-                {{--},--}}
-                {{--series: {--}}
-                    {{--dataLabels: {--}}
-                        {{--enabled: true,--}}
-                        {{--crop: false,--}}
-                        {{--overflow: 'none',--}}
-                        {{--formatter: function () {--}}
-                            {{--return this.point.y;--}}
-                        {{--}--}}
-                    {{--}--}}
-                {{--}--}}
-            {{--},--}}
-            {{--series: [{--}}
-                {{--name: 'DTTT',--}}
-                {{--data: {{ json_encode($sales_real) }}--}}
-            {{--}]--}}
-        {{--});--}}
-
-
-        {{--var chartSp = Highcharts.chart('chartSp', {--}}
-            {{--chart: {--}}
-                {{--plotBackgroundColor: null,--}}
-                {{--plotBorderWidth: null,--}}
-                {{--plotShadow: false,--}}
-                {{--type: 'pie',--}}
-                {{--style: {--}}
-                    {{--fontFamily: 'serif'--}}
-                {{--}--}}
-            {{--},--}}
-            {{--title: {--}}
-                {{--text: 'Biểu đổ'--}}
-            {{--},--}}
-            {{--tooltip: {--}}
-                {{--pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'--}}
-            {{--},--}}
-            {{--plotOptions: {--}}
-                {{--pie: {--}}
-                    {{--allowPointSelect: true,--}}
-                    {{--cursor: 'pointer',--}}
-                    {{--dataLabels: {--}}
-                        {{--enabled: true--}}
-                    {{--},--}}
-                    {{--showInLegend: true--}}
-                {{--}--}}
-            {{--},--}}
-            {{--series: []--}}
-        {{--});--}}
-
+        Highcharts.chart('container', {
+            chart: {
+                type: 'column',
+                style: {
+                    fontFamily: 'serif'
+                }
+            },
+            title: {
+                text: 'Tiến độ doanh số'
+            },
+            subtitle: {
+//                text: 'Source: WorldClimate.com'
+            },
+            xAxis: {
+                categories: [
+                    'Jan',
+                    'Feb',
+                    'Mar',
+                    'Apr',
+                    'May',
+                    'Jun',
+                    'Jul',
+                    'Aug',
+                    'Sep',
+                    'Oct',
+                    'Nov',
+                    'Dec'
+                ],
+                crosshair: true
+            },
+            yAxis: {
+                min: 0,
+                title: {
+                    text: 'Doanh số '
+                }
+            },
+            tooltip: {
+                headerFormat: '<span style="font-size:10px">{point.key:,.f}</span><table>',
+                pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                '<td style="padding:0"><b>{point.y:.2f} </b></td></tr>',
+                footerFormat: '</table>',
+                shared: true,
+                useHTML: true
+            },
+            plotOptions: {
+                column: {
+                    pointPadding: 0.2,
+                    borderWidth: 0
+                },
+                series: {
+                    dataLabels: {
+                        enabled: true,
+                        crop: false,
+                        overflow: 'none',
+                        formatter: function () {
+                            return this.point.y;
+                        }
+                    }
+                }
+            },
+            series: [{
+                name: 'DTTT',
+                data: {{ json_encode($sales_real) }}
+            }]
+        });
+        var chartSp = Highcharts.chart('chartSp', {
+            chart: {
+                plotBackgroundColor: null,
+                plotBorderWidth: null,
+                plotShadow: false,
+                type: 'pie',
+                style: {
+                    fontFamily: 'serif'
+                }
+            },
+            title: {
+                text: 'Biểu đổ'
+            },
+            tooltip: {
+                pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+            },
+            plotOptions: {
+                pie: {
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    dataLabels: {
+                        enabled: true
+                    },
+                    showInLegend: true
+                }
+            },
+            series: []
+        });
         $.ajax({
             method: "post",
             url: "{{route('Admin::chart')}}",
@@ -486,7 +459,6 @@
                 alert('Lỗi, hãy thử lại sau');
             }
         });
-
         $('.radioButton').change(function () {
             var type = $(this).val();
             $.ajax({
@@ -524,9 +496,7 @@
                 }
             });
         });
-
         // export
-
         $('#export').on('click',function(e){
             var startMonth =  $('.startMonth-export').val();
             var type = $('.typeExport option:selected').val();
@@ -558,7 +528,7 @@
                 $.ajax({
                     method: "post",
                     url: "{{route('Admin::export')}}",
-                data : $('#geocoding_form').serialize(),
+                    data : $('#geocoding_form').serialize(),
                     headers: {
                         'X-CSRF-Token': "{{ csrf_token() }}"
                     },
@@ -579,10 +549,8 @@
                 });
             }
         });
-
         //map
         var type_search = '';
-
         @if ($user->position == \App\Models\User::NVKD)
             type_search = 'nvkd';
         @elseif($user->position == \App\Models\User::GSV)
@@ -594,7 +562,6 @@
         @else
             type_search = 'admin';
         @endif
-
         $.ajax({
             type: "GET",
             url: "{{ route('Admin::map@dataSearch') }}",
@@ -606,7 +573,6 @@
             },
             cache: false,
             success: function (data) {
-
                 map = new GMaps({
                     div: '#map',
                     lat: 21.0277644,
@@ -618,7 +584,6 @@
                     mapTypeControl:false,
                     fullscreenControl: true,zoomControl:false,
                 });
-
                 if (type_search == 'nvkd') {
                     showDataSaleNVKD(data);
                 }
@@ -636,10 +601,7 @@
                 }
             }
         });
-
-
         // search
-
         $(".search_type").change(function () {
             var search_type = $(this).val();
             $(".data_search").val('');
@@ -655,7 +617,6 @@
                 getListNVKD(0);
             }
         });
-
         $(".typeExport").change(function () {
             var search_type = $(this).val();
             if (search_type == 1) {
@@ -670,13 +631,9 @@
                 getListNVKD(1);
             }
         });
-
-
-
         $('#geocoding_form').submit(function (e) {
             e.preventDefault();
             var type_search = $("#type_search").val();
-
             $.ajax({
                 type: "GET",
                 url: "{{ route('Admin::map@dataSearch') }}",
@@ -693,11 +650,8 @@
                         fullscreenControl: true,zoomControl:false,
                         streetViewControl: false,
                         mapTypeControl:false,
-
                     });
-
                     if (type_search == 'agents') {
-
                         showDataAgents(data);
                     }
                     if (type_search == 'gsv') {
@@ -715,9 +669,7 @@
                 }
             });
         });
-
         var listSelectProducts = [];
-
         function getListGSV(type) {
             if(type == 0) {
                 $("#type_search").val('gsv');
@@ -725,7 +677,6 @@
             } else {
                 var that = $('.dataExport');
             }
-
             that.select2({
                 'placeholder': "{{'-- '. trans('home.select'). ' '. trans('home.manager') .' --'}}",
                 ajax: {
@@ -755,7 +706,6 @@
                 }
             });
         }
-
         function getListTV(type) {
             if(type == 0) {
                 $("#type_search").val('tv');
@@ -763,7 +713,6 @@
             } else {
                 var that = $('.dataExport');
             }
-
             that.select2({
                 'placeholder': "{{'-- '. trans('home.select'). ' '. trans('home.manager') .' --'}}",
                 ajax: {
@@ -793,11 +742,8 @@
                 }
             });
         }
-
         function showDataSales(data) {
-
             var polygonArray = [];
-
             $.map(data.locations, function (location, index) {
                 var item = location.area;
                 var c = item.coordinates;
@@ -822,7 +768,6 @@
                     });
                     polygonArray[item.id] = polygon;
                 }
-
             });
             var postion = '';
             if (data.user.position == 3) {
@@ -830,7 +775,6 @@
             } else {
                 postion = 'GS';
             }
-
             var listAgents = '<div id="legend">';
             $.map(data.listAgents, function (item) {
                 var agent = item.agent;
@@ -859,7 +803,6 @@
                 if (agent.icon != "") {
                     image = 'http://' + window.location.hostname + '/' + agent.icon;
                 }
-
                 var marker = map.addMarker({
                     lat: agent.lat,
                     lng: agent.lng,
@@ -879,15 +822,12 @@
                 }
                 listAgents += '<div><p class="" style="font-size:' + user.fontSize + 'px; color:' + user.textColor + '">'  + name + ' %TT ' + numberWithCommas(item.totalSales) + '/' + numberWithCommas(item.capacity) + '=' + numberWithCommas(item.percent) + '%</p><br></div>';
             });
-
             listAgents+= '</div>';
             map.addControl({
                 position: 'top_right',
                 content: listAgents,
             });
-
             var list_products = data.listProducts;
-
             var tableSales = '<table class="table-bordered table-products" cellspacing="0" width="100%" id="data-table">' +
                 '<thead>' +
                 '<tr>' +
@@ -903,11 +843,9 @@
             $.map(list_products, function (product) {
                 tableSales += '<option style="font-weight: bold" value="' + product.code + '">' + product.name + '</option>';
                 var productChildren = product.listProducts;
-
                 $.map(productChildren, function (productChild) {
                     tableSales += '<option value="' + productChild.code + '">' + productChild.name + '</option>';
                 });
-
             });
             tableSales += '</select>' +
                 '</td>' +
@@ -920,13 +858,11 @@
                 position: 'top_left',
                 content: tableSales,
             });
-
             var listCodes = '<div style="background-color: white"><span>';
             $.map(data.listCodes, function (code) {
                 listCodes +=  code + ' , ';
             });
             listCodes += '</span></div>';
-
             $("#listCode").html(listCodes);
             $(".listCodes").show();
             listSelectProducts = [];
@@ -937,8 +873,6 @@
                     listSelectProducts.push(val);
                 });
             });
-
-
             var tableSales =
                 '<div class="info_gsv" style="font-size:' + data.user.fontSize + 'px; color:' + data.user.textColor + '" >' +
                 '<h3 style="font-size:' + data.user.fontSize + 'px; color:' + data.user.textColor + '">' + data.area_name + '</h3>' +
@@ -954,22 +888,18 @@
                 position: 'top_center',
                 content: tableSales,
             });
-
             if (data.table) {
                 $('#tableData').html('');
                 $('#tableData').html(data.table);
             }
         }
-
         function getListNVKD(type) {
-
             if(type == 0) {
                 $("#type_search").val('nvkd');
                 var that = $(".data_search");
             } else {
                 var that = $('.dataExport');
             }
-
             that.select2({
                 'placeholder': "{{'-- Chọn nhân viên kinh doanh --'}}",
                 ajax: {
@@ -999,11 +929,9 @@
                 }
             });
         }
-
         function showDataSaleNVKD(data) {
             var area_name = '';
             var polygonArray = [];
-
             $.map(data.locations, function (location, index) {
                 var item = location.area;
                 var c = item.coordinates;
@@ -1033,15 +961,12 @@
                     area_name += '-';
                 }
             });
-
             var postion = '';
-
             if (data.userParent.position == 3) {
                 postion = 'TV';
             } else {
                 postion = 'GS';
             }
-
             var listAgents = '<div id="legend">';
             $.map(data.listAgents, function (item) {
                 var agent = item.agent;
@@ -1069,7 +994,6 @@
                 if (agent.icon != "") {
                     image = 'http://' + window.location.hostname + '/' + agent.icon;
                 }
-
                 var marker = map.addMarker({
                     lat: agent.lat,
                     lng: agent.lng,
@@ -1089,15 +1013,12 @@
                 }
                 listAgents += '<div><p class="" style="font-size:' + user.fontSize + 'px; color:' + user.textColor + '">'  + name + ' %TT ' + numberWithCommas(item.totalSales) + '/' + numberWithCommas(item.capacity) + '=' + numberWithCommas(item.percent) + '%</p><br></div>';
             });
-
             listAgents+= '</div>';
             map.addControl({
                 position: 'top_right',
                 content: listAgents,
             });
-
             var list_products = data.listProducts;
-
             var tableSales = '<table class="table-bordered table-products" cellspacing="0" width="100%" id="data-table">' +
                 '<thead>' +
                 '<tr>' +
@@ -1113,11 +1034,9 @@
             $.map(list_products, function (product) {
                 tableSales += '<option style="font-weight: bold" value="' + product.code + '">' + product.name + '</option>';
                 var productChildren = product.listProducts;
-
                 $.map(productChildren, function (productChild) {
                     tableSales += '<option value="' + productChild.code + '">' + productChild.name + '</option>';
                 });
-
             });
             tableSales += '</select>' +
                 '</td>' +
@@ -1130,13 +1049,11 @@
                 position: 'top_left',
                 content: tableSales,
             });
-
             var listCodes = '<div style="background-color: white"><span>';
             $.map(data.listCodes, function (code) {
                 listCodes +=  code + ' , ';
             });
             listCodes += '</span></div>';
-
             $("#listCode").html(listCodes);
             $(".listCodes").show();
             listSelectProducts = [];
@@ -1147,8 +1064,6 @@
                     listSelectProducts.push(val);
                 });
             });
-
-
             var tableSales =
                 '<div class="info_gsv" style="font-size:' + data.user.fontSize + 'px; color:' + data.user.textColor + '" >' +
                 '<h3 style="font-size:' + data.user.fontSize + 'px; color:' + data.user.textColor + '">' + area_name + '</h3>' +
@@ -1164,22 +1079,18 @@
                 position: 'top_center',
                 content: tableSales,
             });
-
             if (data.table) {
                 $('#tableData').html('');
                 $('#tableData').html(data.table);
             }
         }
-
         function getListGDV(type) {
             if(type == 0) {
                 $("#type_search").val('gdv');
                 var that = $(".data_search");
-
             } else {
                 var that = $('.dataExport');
             }
-
             that.select2({
                 'placeholder': "{{'-- '. trans('home.select'). ' '. trans('home.manager') .' --'}}",
                 ajax: {
@@ -1199,7 +1110,6 @@
                                 id:'0'
                             }
                         ];
-
                         $.map(data, function (item) {
                             result.push(
                                 {
@@ -1208,11 +1118,9 @@
                                 }
                             )
                         });
-
                         return {
                             results:result
                         };
-
 //                        return {
 //                            results: $.map(data, function (item) {
 //                                return {
@@ -1228,9 +1136,7 @@
                     }
                 }
             });
-
         }
-
         function showDataSaleGDV(data) {
             var polygonArray = [];
             var position = '';
@@ -1244,7 +1150,6 @@
                 mapTypeControl:false,
             };
             var map = new google.maps.Map(document.getElementById("map"), options);
-
             $.map(data.locations, function (location, index) {
                 var item = location.area;
                 var c = item.coordinates;
@@ -1260,7 +1165,6 @@
                         path.push(new google.maps.LatLng(c[0], c[1]))
                     }
                     position = new google.maps.LatLng(bounds.getCenter().lat(), bounds.getCenter().lng());
-
                     polygon = new google.maps.Polygon({
                         paths: path,
                         strokeColor: border_color,
@@ -1273,9 +1177,7 @@
                     polygonArray[item.id] = polygon;
                 }
             });
-
             var listGsv = '<div id="legend2">';
-
             $.map(data.result, function (item) {
                 var agents = item.agents;
                 var markers = [];
@@ -1286,14 +1188,12 @@
                     if (agent.icon != "") {
                         image = 'http://' + window.location.hostname + '/' + agent.icon;
                     }
-
                     var name = '';
                     if (agent.attribute == 1){
                         name = agent.name + '<span style="color:red">(New)</span>';
                     } else {
                         name = agent.name;
                     }
-
                     var contentString = '<div class="info" style="font-size:' + agent.user.fontSize + 'px; color:' + agent.user.textColor + '">' +
                         '<h5 class="address" style="font-size:' + agent.user.fontSize + 'px; color:' + agent.user.textColor + '">' + name + ' - ' + agent.address + '</h5>' +
                         '<div class="user_data" style="font-size:' + agent.user.fontSize + 'px; color:' + agent.user.textColor + '">' +
@@ -1303,11 +1203,9 @@
                         '</ul>' +
                         '</div>' +
                         '</div>';
-
                     var infowindow = new google.maps.InfoWindow({
                         content: contentString
                     });
-
                     var marker = new google.maps.Marker({
                         'position': latLng,
                         icon: image,
@@ -1315,16 +1213,13 @@
                     marker.addListener('click', function () {
                         infowindow.open(map, marker);
                     });
-
                     markers.push(marker);
                 });
                 var markerCluster = new MarkerClusterer(map, markers, {
                     maxZoom: 15,
                     imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'
                 });
-
                 listGsv += '<div style="color:'+ item.gsv.textColor +'">'+ item.gsv.name + ' - %TT ' + numberWithCommas(item.totalSales) + '/' + numberWithCommas(item.capacity) + '=' + item.percent + '"%</div>'
-
                 var customTxt =
                     '<div class="customBox" style="display:none; font-size:' + item.gsv.fontSize + 'px; color:' + item.gsv.textColor + '">' +
                     '<span class="data_gsv" style="font-size:' + item.gsv.fontSize + 'px; color:' + item.gsv.textColor + '">%TT ' + numberWithCommas(item.totalSales) + '/' + numberWithCommas(item.capacity) + '=' + item.percent + '%</span>' +
@@ -1332,17 +1227,14 @@
                     '</div>';
                 txt = new TxtOverlay(new google.maps.LatLng(markers[0].getPosition().lat(), markers[0].getPosition().lng()), customTxt, "customBox", map);
             });
-
             listGsv += '</div>';
             var legend = document.createElement('div');
             legend.innerHTML = listGsv;
             map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(legend);
-
             $.map(data.resultGdv, function (item) {
                 var agent = item.agents;
                 var latLng = new google.maps.LatLng(agent.lat,
                     agent.lng);
-
                 var contentString = '<div class="info" style="font-size:' + item.gsv.fontSize + 'px; color:' + item.gsv.textColor + '">' +
                     '<h5 class="address" style="font-size:' + item.gsv.fontSize + 'px; color:' + item.gsv.textColor + '">' + agent.name + ' - ' + agent.address + '</h5>' +
                     '<div class="user_data" style="font-size:' + item.gsv.fontSize + 'px; color:' + item.gsv.textColor + '">' +
@@ -1352,11 +1244,9 @@
                     '</ul>' +
                     '</div>' +
                     '</div>';
-
                 var infowindow = new google.maps.InfoWindow({
                     content: contentString
                 });
-
                 var image = "";
                 if (agent.icon != "") {
                     image = 'http://' + window.location.hostname + '/' + agent.icon;
@@ -1370,9 +1260,7 @@
                     infowindow.open(map, marker);
                 });
             });
-
             var list_products = data.listProducts;
-
             var tableSales = '<table class="table-bordered table-products" cellspacing="0" width="100%" id="data-table">' +
                 '<thead>' +
                 '<tr>' +
@@ -1385,17 +1273,13 @@
                 '<tr>' +
                 '<td>' +
                 '<select id="choose_product">';
-
             $.map(list_products, function (product) {
                 tableSales += '<option style="font-weight: bold" value="' + product.code + '">' + product.name + '</option>';
                 var productChildren = product.listProducts;
-
                 $.map(productChildren, function (productChild) {
                     tableSales += '<option value="' + productChild.code + '">' + productChild.name + '</option>';
                 });
-
             });
-
             tableSales += '</select>' +
                 '</td>' +
                 '<td id="capacity">' + numberWithCommas(list_products[0].totalSales) + '</td>' +
@@ -1403,7 +1287,6 @@
                 '</tr>' +
                 '</tbody>' +
                 '</table>';
-
             listSelectProducts = [];
             $.each(list_products, function (index, value) {
                 listSelectProducts.push(value);
@@ -1412,42 +1295,34 @@
                     listSelectProducts.push(val);
                 });
             });
-
             // products table
             var table = document.createElement('div');
             table.innerHTML = tableSales;
             map.controls[google.maps.ControlPosition.TOP_LEFT].push(table);
-
             // products code
             var listCodes = '<div style="background-color: white"><span>';
             $.map(data.listCodes, function (code) {
                 listCodes +=  code + ' , ';
             });
-
             listCodes += '</span></div>';
-
             $("#listCode").html(listCodes);
             $(".listCodes").show();
-
             // info total
             if (data.user != ''){
                 var info = '<div id="data" style="font-weight: 600;font-size:18px;background: #fff;margin:5px"><p>' + data.user.name + '</p><p>%TT ' + numberWithCommas(data.totalSales) + '/' + numberWithCommas(data.capacity) + '=' + data.percent + '%' + '</p></div>'
             } else {
                 var info = '<div id="data" style="font-weight: 600;font-size:18px;background: #fff;margin:5px"><p> %TT ' + numberWithCommas(data.totalSales) + '/' + numberWithCommas(data.capacity) + '=' + data.percent + '%' + '</p></div>'
             }
-
             var myTitle = document.createElement('div');
             myTitle.innerHTML = info;
             var myTextDiv = document.createElement('div');
             myTextDiv.appendChild(myTitle);
             map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(myTextDiv);
-
             if (data.table) {
                 $('#tableData').html('');
                 $('#tableData').html(data.table);
             }
         }
-
         function TxtOverlay(pos, txt, cls, map) {
             // Now initialize all properties.
             this.pos = pos;
@@ -1462,7 +1337,6 @@
             // Explicitly call setMap() on this overlay
             this.setMap(map);
         }
-
         TxtOverlay.prototype = new google.maps.OverlayView();
         TxtOverlay.prototype.onAdd = function () {
             // Note: an overlay's receipt of onAdd() indicates that
@@ -1523,7 +1397,6 @@
                 this.setMap(this.map_);
             }
         }
-
         function getListAgents(type) {
             if(type == 0) {
                 $("#type_search").val('agents');
@@ -1531,7 +1404,6 @@
             } else {
                 var that = $('.dataExport');
             }
-
             that.select2({
                 'placeholder': "{{'-- '. trans('home.select'). ' '. trans('home.agency') .' --'}}",
                 ajax: {
@@ -1545,7 +1417,6 @@
                         return queryParameters;
                     },
                     processResults: function (data, page) {
-
                         return {
                             results: $.map(data.data, function (item) {
                                 return {
@@ -1561,9 +1432,7 @@
                     }
                 }
             });
-
         }
-
         function showDataAgents(data) {
             listSelectProdcuts = [];
             map = new GMaps({
@@ -1577,7 +1446,6 @@
                 streetViewControl: false,
                 mapTypeControl:false,
             });
-
             var user = data.user;
             var list_products = data.listProducts;
             var postion = '';
@@ -1646,11 +1514,9 @@
             $.map(list_products, function (product) {
                 tableSales += '<option style="font-weight: bold" value="' + product.code + '">' + product.name + '</option>';
                 var productChildren = product.listProducts;
-
                 $.map(productChildren, function (productChild) {
-                        tableSales += '<option value="' + productChild.code + '">' + productChild.name + '</option>';
+                    tableSales += '<option value="' + productChild.code + '">' + productChild.name + '</option>';
                 });
-
             });
             tableSales += '</select>' +
                 '</td>' +
@@ -1659,38 +1525,30 @@
                 '</tr>' +
                 '</tbody>' +
                 '</table>';
-
             map.addControl({
                 position: 'top_left',
                 content: tableSales,
             });
-
             var listCodes = '<div style="background-color: white"><span>';
             $.map(data.listCodes, function (code) {
                 listCodes +=  code + ' , ';
             });
             listCodes += '</span></div>';
-
             $("#listCode").html(listCodes);
             $(".listCodes").show();
-
             listSelectProducts = [];
             $.each(list_products, function (index, value) {
                 listSelectProducts.push(value);
                 var productChildren = value.listProducts;
                 $.each(productChildren, function (index, val) {
-                        listSelectProducts.push(val);
+                    listSelectProducts.push(val);
                 });
             });
-
             if (data.table) {
                 $('#tableData').html('');
                 $('#tableData').html(data.table);
             }
-
-
         }
-
         function showDataSaleAdmin(data) {
             var polygonArray = [];
             var position = '';
@@ -1733,9 +1591,7 @@
                     polygonArray[item.id] = polygon;
                 }
             });
-
             $.map(data.result, function (item) {
-
                 var agents = item.agents;
                 var markers = [];
                 var legend = document.getElementById('legend');
@@ -1746,15 +1602,12 @@
                     if (agent.icon != "") {
                         image = 'http://' + window.location.hostname + '/' + agent.icon;
                     }
-
                     var name = '';
-
                     if (agent.attribute == 1){
                         name = agent.name + '<span style="color:red">(New)</span>';
                     } else {
                         name = agent.name;
                     }
-
                     var contentString = '<div class="info" style="font-size:' + agent.user.fontSize + 'px; color:' + agent.user.textColor + '">' +
                         '<h5 class="address" style="font-size:' + agent.user.fontSize + 'px; color:' + agent.user.textColor + '">' + name + ' - ' + agent.address + '</h5>' +
                         '<div class="user_data" style="font-size:' + agent.user.fontSize + 'px; color:' + agent.user.textColor + '">' +
@@ -1764,48 +1617,38 @@
                         '</ul>' +
                         '</div>' +
                         '</div>';
-
                     var infowindow = new google.maps.InfoWindow({
                         content: contentString
                     });
-
                     var marker = new google.maps.Marker({
                         'position': latLng,
                         icon: image,
                     });
-
                     marker.addListener('click', function () {
                         infowindow.open(map, marker);
                     });
-
                     markers.push(marker);
                 });
                 var markerCluster = new MarkerClusterer(map, markers, {
                     maxZoom: 15,
                     imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'
                 });
-
                 var customTxt =
                     '<div class="customBox" style="font-size:' + item.gdv.fontSize + 'px; color:' + item.gdv.textColor + '">' +
                     '<span style="font-size:' + item.gdv.fontSize + 'px; color:' + item.gdv.textColor + '">' + item.gdv.name + '</span>' +
                     '</div>';
                 txt = new TxtOverlay(new google.maps.LatLng(markers[0].getPosition().lat(), markers[0].getPosition().lng()), customTxt, "customBox", map);
-
                 var div = document.createElement('div');
                 div.style.color = item.gdv.textColor;
                 div.innerHTML = item.gdv.name + ' - %TT ' + numberWithCommas(item.totalSales) + '/' + numberWithCommas(item.capacity) + '=' + item.percent + "%";
-
                 legend.appendChild(div);
             });
-
             map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(legend);
-
             if (data.table) {
                 $('#tableData').html('');
                 $('#tableData').html(data.table);
             }
         }
-
         $(document).on('change', '#choose_product', function () {
             var code = $(this).val();
             var data = $.grep(listSelectProducts, function (e) {
@@ -1817,7 +1660,6 @@
             $("#capacity").text(numberWithCommas(item.capacity));
             $("#data").text('%' + item.code + ' ' + numberWithCommas(item.totalSales) + '/' + numberWithCommas(item.capacity) + '=' + item.percent + '%');
         });
-
         $(document).on('click', '#swift', function () {
             var text = $(this).text();
             if (text == 'Full Mode') {
@@ -1835,7 +1677,6 @@
                 $('.customBox').hide();
             }
         });
-
         function numberWithCommas(x) {
             var parts = x.toString().split(",");
             parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");

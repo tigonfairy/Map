@@ -15,8 +15,9 @@
         "predis/predis": "^1.1",
         "laracasts/flash": "^2.0",
         "yajra/laravel-datatables-oracle":"6.*",
-        "doctrine/dbal": "v2.1.5",
-        "greggilbert/recaptcha": "dev-master"
+        "doctrine/dbal": "v2.4.2",
+        "greggilbert/recaptcha": "dev-master",
+        "barryvdh/laravel-debugbar": "~2.4"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
