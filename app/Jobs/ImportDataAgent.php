@@ -90,6 +90,7 @@ class ImportDataAgent
                                 $saleAgent->capacity = intval($capacity);
                                 $saleAgent->sales_real = intval($row[$k]);
                                 $saleAgent->month = $month;
+                                $saleAgent->code = $product->code;
                                 $saleAgent->save();
                             }
                         }
