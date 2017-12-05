@@ -45,8 +45,11 @@ class Hin extends Command
           foreach ($sales as $sale) {
               dd($sale);
               $product = Product::find($sale->product_id);
-              $sale->code = $product->code;
-              $sale->save();
+              if($product) {
+                  $sale->code = $product->code;
+                  $sale->save();
+              }
+
           }
        });
 
