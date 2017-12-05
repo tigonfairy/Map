@@ -50,10 +50,18 @@ class HomeController extends AdminController
         }
 
 //        //chart cot
-        $products = DB::table('sale_agents')
-            ->select(\DB::raw('SUM(sales_real) as sales_real,month'))
-            ->whereIn('agent_id', $agentId)->groupBy('month')->where('month','>=','01-'.$year)->where('month','<=','12-'.$year)->orderBy('month')
-            ->get()->toArray();
+        if( $user->position == User::ADMIN || $user->position == User::SALE_ADMIN){
+            $products = DB::table('sale_agents')
+                ->select(\DB::raw('SUM(sales_real) as sales_real,month'))
+                ->groupBy('month')->where('month','>=','01-'.$year)->where('month','<=','12-'.$year)->orderBy('month')
+                ->get()->toArray();
+        } else {
+            $products = DB::table('sale_agents')
+                ->select(\DB::raw('SUM(sales_real) as sales_real,month'))
+                ->whereIn('agent_id', $agentId)->groupBy('month')->where('month','>=','01-'.$year)->where('month','<=','12-'.$year)->orderBy('month')
+                ->get()->toArray();
+        }
+
         $sales_plan = [];
         $sales_real = [];
 //
@@ -124,7 +132,7 @@ class HomeController extends AdminController
                     ->first()->month;
 
                 $products = DB::table('sale_agents')
-                    ->select(\DB::raw('SUM(sales_real) as sales_real,sale_agents.product_id,products.code,month'))
+                    ->select(\DB::raw('SUM(sales_real) as sales_real,sale_agents.product_id,code,month'))
                     ->where('month',$monthHighest)->groupBy('sale_agents.product_id')->orderBy('sales_real','desc')
 //                    ->join('products','sale_agents.product_id','=','products.id')
                     ->get()->toArray();
@@ -135,7 +143,7 @@ class HomeController extends AdminController
                     ->first()->month;
 
                 $products = DB::table('sale_agents')
-                    ->select(\DB::raw('SUM(sales_real) as sales_real,sale_agents.product_id,products.code,month'))
+                    ->select(\DB::raw('SUM(sales_real) as sales_real,sale_agents.product_id,code,month'))
                     ->whereIn('agent_id',$agentId)->where('month',$monthHighest)->groupBy('sale_agents.product_id')->orderBy('sales_real','desc')
 //                    ->join('products','sale_agents.product_id','=','products.id')
                     ->get()->toArray();

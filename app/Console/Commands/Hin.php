@@ -41,15 +41,26 @@ class Hin extends Command
      */
     public function handle()
     {
-       SaleAgent::chunk(500,function($sales) {
-          foreach ($sales as $sale) {
-              $product = Product::find($sale->product_id);
-              if($product) {
-                  $sale->code = $product->code;
-                  $sale->save();
-              }
+       SaleAgent::where('code','')->chunk(1,function($sales) {
+               foreach ($sales as $sale) {
+                  try{
+                      $product = Product::find(intval($sale->product_id));
+                      if($product and $product->level ==1 ) {
+//                          dd($product->code);
+                          $sale->code = $product->code;
+                          $sale->save();
 
-          }
+                          $this->line('Success:'. $sale->id);
+                      }
+                  }catch (\Exception $ex) {
+                      $this->line($ex->getTraceAsString());
+                      die;
+                  }
+
+
+               }
+
+
        });
 
     }

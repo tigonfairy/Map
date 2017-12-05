@@ -72,38 +72,38 @@ class SaleAgent extends Model
 
     public static function boot()
     {
-        parent::boot();
-
-        static::created(function ($saleAgent) {
-
-            return Log::forceCreate([
-                'user_id'     => Auth::user()->id ? Auth::user()->id : 0,
-                'object_id'   => $saleAgent->id,
-                'object_type' => 'Sale Agent',
-                'action'      => 'created',
-                'data'      => json_encode($saleAgent),
-            ]);
-        });
-        static::updated(function ($saleAgent) {
-
-            return Log::forceCreate([
-                'user_id'     => Auth::user()->id ? Auth::user()->id : 0,
-                'object_id'   => $saleAgent->id,
-                'object_type' => 'Sale Agent',
-                'action'      => 'updated',
-                'data'      => json_encode($saleAgent),
-                'current_data'      => json_encode($saleAgent->getOriginal()),
-            ]);
-        });
-        static::deleted(function ($saleAgent) {
-            return Log::forceCreate([
-                'user_id'     => Auth::user()->id ? Auth::user()->id : 0,
-                'object_id'   => $saleAgent->id,
-                'object_type' => 'Sale Agent',
-                'action'      => 'deleted',
-                'current_data'      => json_encode($saleAgent->getOriginal()),
-            ]);
-        });
+//        parent::boot();
+//
+//        static::created(function ($saleAgent) {
+//
+//            return Log::forceCreate([
+//                'user_id'     => Auth::user()->id ? Auth::user()->id : 0,
+//                'object_id'   => $saleAgent->id,
+//                'object_type' => 'Sale Agent',
+//                'action'      => 'created',
+//                'data'      => json_encode($saleAgent),
+//            ]);
+//        });
+//        static::updated(function ($saleAgent) {
+//
+//            return Log::forceCreate([
+//                'user_id'     => Auth::user()->id ? Auth::user()->id : 0,
+//                'object_id'   => $saleAgent->id,
+//                'object_type' => 'Sale Agent',
+//                'action'      => 'updated',
+//                'data'      => json_encode($saleAgent),
+//                'current_data'      => json_encode($saleAgent->getOriginal()),
+//            ]);
+//        });
+//        static::deleted(function ($saleAgent) {
+//            return Log::forceCreate([
+//                'user_id'     => Auth::user()->id ? Auth::user()->id : 0,
+//                'object_id'   => $saleAgent->id,
+//                'object_type' => 'Sale Agent',
+//                'action'      => 'deleted',
+//                'current_data'      => json_encode($saleAgent->getOriginal()),
+//            ]);
+//        });
 
     }
 }
