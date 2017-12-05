@@ -3,6 +3,7 @@
 namespace App\Console;
 
 use App\Console\Commands\AddAdmin;
+use App\Console\Commands\Hin;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 use App\Console\Commands\GetGeoJson;
@@ -17,7 +18,8 @@ class Kernel extends ConsoleKernel
     protected $commands = [
         AddAdmin::class,
         GetGeoJson::class,
-        AddProvinceJson::class
+        AddProvinceJson::class,
+        Hin::class
     ];
 
     /**
