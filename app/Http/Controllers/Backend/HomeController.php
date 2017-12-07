@@ -193,7 +193,7 @@ class HomeController extends AdminController
                     ->whereIn('agent_id',$agentId)->where('month','>=','01-'.$year)->where('month','<=',$month)->groupBy('product_id')
                     ->get()->toArray();
             }
-            
+
             $chartData = [];
             foreach ($products as $key => $p){
 
