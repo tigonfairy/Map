@@ -106,7 +106,7 @@
             });
             var path = coordinate;
             var infoWindow = new google.maps.InfoWindow({
-                content: 'you clicked a polyline'
+                // content: 'you clicked a polyline'
             });
             polygon = map.drawPolygon({
                 paths: path,
