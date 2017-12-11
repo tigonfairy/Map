@@ -88,6 +88,7 @@
             var markers = [];
     $(document).ready(function () {
             var coordinates = '{{ $addressGeojson->coordinates }}';
+
             var coordinate = JSON.parse(coordinates);
             var bounds = new google.maps.LatLngBounds();
             for (i = 0; i < coordinate.length; i++) {

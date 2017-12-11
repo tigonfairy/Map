@@ -48,6 +48,9 @@ class MapController extends AdminController
         $newCoordinates = [];
         foreach ($coordinates as $coor){
             $c = explode(",", $coor);
+
+            $c[0] = doubleval(  $c[0]);
+            $c[1] = doubleval(  $c[1]);
             array_push($newCoordinates, $c);
         }
         $coordinates = json_encode($newCoordinates);
@@ -71,18 +74,25 @@ class MapController extends AdminController
             'coordinates.required' => 'Chưa vẽ vùng địa lý'
         ]);
         $address = AddressGeojson::find($id);
+
         $data=$request->all();
         $slug = str_slug($data['name']);
         $coordinates = json_decode($data['coordinates'],true);
+
         $newCoordinates = [];
+
         foreach ($coordinates as $coor){
+
             $c = explode(",", $coor);
+
+            $c[0] = doubleval(  $c[0]);
+            $c[1] = doubleval(  $c[1]);
             array_push($newCoordinates, $c);
         }
         $coordinates = json_encode($newCoordinates);
         $address->update(['name' => $data['name'],'slug' => $slug, 'coordinates' => $coordinates]);
 
-        return edirect()->route('Admin::map@listLocation')->with('success','Cập nhật vùng địa lý thành công');
+        return redirect()->route('Admin::map@listLocation')->with('success','Cập nhật vùng địa lý thành công');
     }
 
     public function deleteMap(Request $request,$id){
