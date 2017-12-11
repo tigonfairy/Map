@@ -84,7 +84,7 @@ class UpdateCacheView extends Command
                     if($user->position == User::TV) {
                         $agentId = Agent::where('manager_id',$id)->orWhere('tv',$id)->get()->pluck('id')->toArray();
                     }
-                    if($user->position == User::GDV) {
+                    if($user->position == User::GĐV) {
                         $agentId = Agent::where('manager_id',$id)->orWhere('gdv',$id)->get()->pluck('id')->toArray();
                     }
                     if($agentId) {
