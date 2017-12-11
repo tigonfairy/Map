@@ -22,7 +22,7 @@ class UpdateCacheView extends Command
      *
      * @var string
      */
-    protected $description = 'Add admin';
+    protected $description = '';
 
     /**
      * Create a new command instance.

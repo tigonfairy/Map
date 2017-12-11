@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddIndexSaleAggents extends Migration
+class AddTableEventChangeSale extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,10 @@ class AddIndexSaleAggents extends Migration
      */
     public function up()
     {
-        Schema::table('sale_agents', function (Blueprint $table) {
-            $table->index(['month']);
+        Schema::create('cache_view', function (Blueprint $table) {
+            $table->increments('id');
+            $table->timestamps();
+            $table->integer('agent_id');
         });
     }
 
@@ -25,8 +27,6 @@ class AddIndexSaleAggents extends Migration
      */
     public function down()
     {
-        Schema::table('sale_agents', function (Blueprint $table) {
-            //
-        });
+        Schema::dropIfExists('cache_view');
     }
 }
