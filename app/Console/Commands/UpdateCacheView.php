@@ -176,7 +176,7 @@ class UpdateCacheView extends Command
                 }
             });
 
-
+            $this->line('Succeesss');
             CacheView::where('created_at','<',$now)->delete();
         } catch(\Exception $ex) {
             $this->line($ex->getMessage().'!'.$ex->getLine());
