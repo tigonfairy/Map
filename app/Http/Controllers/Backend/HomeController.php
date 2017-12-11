@@ -115,14 +115,13 @@ class HomeController extends AdminController
         }
         if ($type == 1) { // thang gần nhất
 
-
+            $lastMonth = DB::table('sale_agents')
+                ->select(\DB::raw('month'))->orderBy('month', 'desc')
+                ->first()->month;
             if ($user->position == User::ADMIN || $user->position == User::SALE_ADMIN) {
                 if (Cache::has('lastest-month-' . $user->id)) {
                     $products = Cache::get('lastest-month-' . $user->id);
                 } else {
-                    $lastMonth = DB::table('sale_agents')
-                        ->select(\DB::raw('month'))->orderBy('month', 'desc')
-                        ->first()->month;
                     $products = DB::table('sale_agents')
                         ->select(\DB::raw('SUM(sales_real) as sales_real,sale_agents.product_id,code,month'))->where('month', $lastMonth)->orderBy('month')->groupBy('sale_agents.product_id')
                         ->get()->toArray();
@@ -133,9 +132,6 @@ class HomeController extends AdminController
                 if (Cache::has('lastest-month-' . $user->id)) {
                     $products = Cache::get('lastest-month-' . $user->id);
                 } else {
-                    $lastMonth = DB::table('sale_agents')
-                        ->select(\DB::raw('month'))->orderBy('month', 'desc')
-                        ->first()->month;
                     $products = DB::table('sale_agents')
                         ->select(\DB::raw('SUM(sales_real) as sales_real,sale_agents.product_id,code,month'))
                         ->whereIn('agent_id', $agentId)->where('month', $lastMonth)->orderBy('month')->groupBy('sale_agents.product_id')
