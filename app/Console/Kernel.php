@@ -19,7 +19,7 @@ class Kernel extends ConsoleKernel
         AddAdmin::class,
         GetGeoJson::class,
         AddProvinceJson::class,
-        Hin::class
+        Hin::class,
     ];
 
     /**

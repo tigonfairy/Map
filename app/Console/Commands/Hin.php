@@ -41,6 +41,7 @@ class Hin extends Command
      */
     public function handle()
     {
+        //update code saleagent
        SaleAgent::where('code','')->chunk(1,function($sales) {
                foreach ($sales as $sale) {
                   try{
