@@ -156,7 +156,7 @@ class UpdateCacheView extends Command
 
                     //doanh so cao nhat
                     $monthHighest = DB::table('sale_agents')
-                        ->select(\DB::raw('SUM(sales_real) as sales_real'))
+                        ->select(\DB::raw('SUM(sales_real) as sales_real,month'))
                         ->where('month', '>=', '01-' . $year)->where('month', '<=', '12-' . $year)->groupBy('month')->orderBy('sales_real', 'desc')
                         ->first()->month;
                     $products = DB::table('sale_agents')
