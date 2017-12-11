@@ -108,7 +108,7 @@ class UpdateCacheView extends Command
 
                         //doanh so cao nhat
                         $monthHighest = DB::table('sale_agents')
-                            ->select(\DB::raw('SUM(sales_real) as sales_real'))
+                            ->select(\DB::raw('SUM(sales_real) as sales_real,month'))
                             ->whereIn('agent_id', $agentId)->where('month', '>=', '01-' . $year)->where('month', '<=', '12-' . $year)->groupBy('month')->orderBy('sales_real', 'desc')
                             ->first()->month;
                         $products = DB::table('sale_agents')
@@ -179,7 +179,7 @@ class UpdateCacheView extends Command
 
             CacheView::where('created_at','<',$now)->delete();
         } catch(\Exception $ex) {
-
+            $this->line($ex->getMessage().'!'.$ex->getLine());
         }
 
 
