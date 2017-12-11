@@ -11,7 +11,7 @@ use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Hash;
 use Illuminate\Support\Facades\Cache;
-
+use DB;
 class UpdateCacheView extends Command
 {
     /**
