@@ -53,16 +53,16 @@ class HomeController extends AdminController
 
 //        //chart cot
         if ($user->position == User::ADMIN || $user->position == User::SALE_ADMIN) {
-//            if (Cache::has('total-sale-real-' . $user->id)) {
-//                $products = Cache::get('total-sale-real-' . $user->id);
-//            } else {
+            if (Cache::has('total-sale-real-' . $user->id)) {
+                $products = Cache::get('total-sale-real-' . $user->id);
+            } else {
                 $products = DB::table('sale_agents')
                     ->select(\DB::raw('SUM(sales_real) as sales_real,month'))
                     ->groupBy('month')->where('month', '>=', '01-' . $year)->where('month', '<=', '12-' . $year)->orderBy('month')
                     ->get()->toArray();
 
-//                Cache::forever('total-sale-real-' . $user->id, $products);
-//            }
+                Cache::forever('total-sale-real-' . $user->id, $products);
+            }
         } else {
             if (Cache::has('total-sale-real-' . $user->id)) {
                 $products = Cache::get('total-sale-real-' . $user->id);
@@ -115,13 +115,14 @@ class HomeController extends AdminController
         }
         if ($type == 1) { // thang gần nhất
 
-            $lastMonth = DB::table('sale_agents')
-                ->select(\DB::raw('month'))->orderBy('month', 'desc')
-                ->first()->month;
+
             if ($user->position == User::ADMIN || $user->position == User::SALE_ADMIN) {
                 if (Cache::has('lastest-month-' . $user->id)) {
                     $products = Cache::get('lastest-month-' . $user->id);
                 } else {
+                    $lastMonth = DB::table('sale_agents')
+                        ->select(\DB::raw('month'))->orderBy('month', 'desc')
+                        ->first()->month;
                     $products = DB::table('sale_agents')
                         ->select(\DB::raw('SUM(sales_real) as sales_real,sale_agents.product_id,code,month'))->where('month', $lastMonth)->orderBy('month')->groupBy('sale_agents.product_id')
                         ->get()->toArray();
@@ -132,6 +133,9 @@ class HomeController extends AdminController
                 if (Cache::has('lastest-month-' . $user->id)) {
                     $products = Cache::get('lastest-month-' . $user->id);
                 } else {
+                    $lastMonth = DB::table('sale_agents')
+                        ->select(\DB::raw('month'))->orderBy('month', 'desc')
+                        ->first()->month;
                     $products = DB::table('sale_agents')
                         ->select(\DB::raw('SUM(sales_real) as sales_real,sale_agents.product_id,code,month'))
                         ->whereIn('agent_id', $agentId)->where('month', $lastMonth)->orderBy('month')->groupBy('sale_agents.product_id')
@@ -198,25 +202,25 @@ class HomeController extends AdminController
                 } else {
                     $products = DB::table('sale_agents')
                         ->select(\DB::raw('SUM(sales_real) as sales_real,sale_agents.product_id,code'))
-                        ->groupBy('product_id')->where('month', '>=', '01-' . $year)->where('month', '<', $month)
+                        ->groupBy('product_id')->where('month', '>=', '01-' . $year)->where('month', '<=', $month)
                         ->get()->toArray();
                     Cache::forever('average-month-' . $user->id, $products);
                 }
 
                 $countMonth = DB::table('sale_agents')
-                    ->groupBy('month')->where('month', '>=', '01-' . $year)->where('month', '<', $month)->get()->count();
+                    ->groupBy('month')->where('month', '>=', '01-' . $year)->where('month', '<=', $month)->get()->count();
             } else {
                 if (Cache::has('average-month-' . $user->id)) {
                     $products = Cache::get('average-month-' . $user->id);
                 } else {
                     $products = DB::table('sale_agents')
                         ->select(\DB::raw('SUM(sales_real) as sales_real,sale_agents.product_id,code'))
-                        ->whereIn('agent_id', $agentId)->groupBy('product_id')->where('month', '>=', '01-' . $year)->where('month', '<', $month)
+                        ->whereIn('agent_id', $agentId)->groupBy('product_id')->where('month', '>=', '01-' . $year)->where('month', '<=', $month)
                         ->get()->toArray();
                     Cache::forever('average-month-' . $user->id, $products);
                 }
                 $countMonth = DB::table('sale_agents')->whereIn('agent_id', $agentId)
-                    ->groupBy('month')->where('month', '>=', '01-' . $year)->where('month', '<', $month)->get()->count();
+                    ->groupBy('month')->where('month', '>=', '01-' . $year)->where('month', '<=', $month)->get()->count();
             }
 
             $chartData = [];
@@ -233,7 +237,7 @@ class HomeController extends AdminController
                     $products = Cache::get('total-sales-month-' . $user->id);
                 } else {
                     $products = DB::table('sale_agents')
-                        ->select(\DB::raw('SUM(sales_plan) as sales_plan,SUM(sales_real) as sales_real,sale_agents.product_id,code'))
+                        ->select(\DB::raw('SUM(sales_real) as sales_real,sale_agents.product_id,code'))
                         ->where('month', '>=', '01-' . $year)->where('month', '<=', $month)->groupBy('product_id')
                         ->get()->toArray();
                     Cache::forever('total-sales-month-' . $user->id, $products);
@@ -244,7 +248,7 @@ class HomeController extends AdminController
                     $products = Cache::get('total-sales-month-' . $user->id);
                 } else {
                     $products = DB::table('sale_agents')
-                        ->select(\DB::raw('SUM(sales_plan) as sales_plan,SUM(sales_real) as sales_real,sale_agents.product_id,code'))
+                        ->select(\DB::raw('SUM(sales_real) as sales_real,sale_agents.product_id,code'))
                         ->whereIn('agent_id', $agentId)->where('month', '>=', '01-' . $year)->where('month', '<=', $month)->groupBy('product_id')
                         ->get()->toArray();
                     Cache::forever('total-sales-month-' . $user->id, $products);
