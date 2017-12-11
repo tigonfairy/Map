@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Models\CacheView;
 use App\Models\Product;
 use App\Models\SaleAgent;
 use App\Models\User;
@@ -41,6 +42,6 @@ class UpdateCacheView extends Command
      */
     public function handle()
     {
-
+        
     }
 }

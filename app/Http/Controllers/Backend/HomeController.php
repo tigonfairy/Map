@@ -59,9 +59,8 @@ class HomeController extends AdminController
                 $products = DB::table('sale_agents')
                     ->select(\DB::raw('SUM(sales_real) as sales_real,month'))
                     ->groupBy('month')->where('month', '>=', '01-' . $year)->where('month', '<=', '12-' . $year)->orderBy('month')
-                    ->toSql();
-                dd($products);
-            dd(\DB::getQueryLog());
+                    ->get()->toArray();
+
 //                Cache::forever('total-sale-real-' . $user->id, $products);
 //            }
         } else {

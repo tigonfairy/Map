@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Backend;
 
 use App\Jobs\ExportAgent;
 use App\Models\Agent;
+use App\Models\CacheView;
 use App\Models\User;
 use App\Models\Product;
 use App\Models\SaleAgent;
@@ -71,6 +72,7 @@ class SaleAgentController extends AdminController
                 'capacity' => intval($capacity)
             ]);
         }
+        CacheView::firstOrCreate(['agent_id' => request('agent_id')]);
 
         return redirect()->route('Admin::saleAgent@index')->with('success','Tạo dữ liệu cho đại lý thành công');
     }
@@ -114,7 +116,7 @@ class SaleAgentController extends AdminController
                         ]);
             }
         }
-
+        CacheView::firstOrCreate(['agent_id' =>$agentId]);
         return redirect()->route('Admin::saleAgent@index')
             ->with('success', 'Đã cập nhật dữ liệu đại lý thành công');
     }
