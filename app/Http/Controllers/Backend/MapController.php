@@ -44,16 +44,35 @@ class MapController extends AdminController
         if($count > 0){
             $slug = $slug.time();
         }
-        $coordinates = json_decode($data['coordinates'],true);
-        $newCoordinates = [];
-        foreach ($coordinates as $coor){
-            $c = explode(",", $coor);
-            array_push($newCoordinates, $c);
-        }
-        $coordinates = json_encode($newCoordinates);
-        $address = AddressGeojson::create(['name' => $data['name'],'slug' => $slug, 'coordinates' => $coordinates]);
+        $arrayCor = json_decode($data['coordinates'],true);
+        $FNcoordinates = [];
 
-        return redirect()->back()->with('success','Tạo vùng địa lý thành công');
+        if(count($arrayCor)) {
+            foreach ($arrayCor as $a ) {
+                $coordinates = json_decode($a,true);
+                $newCoordinates = [];
+                foreach ($coordinates as $coor){
+
+                    $c = explode(",", $coor);
+
+                    $c[0] = doubleval(  $c[0]);
+                    $c[1] = doubleval(  $c[1]);
+                    array_push($newCoordinates, $c);
+                }
+                $FNcoordinates[] = $newCoordinates;
+
+            }
+
+        }
+
+        $dataUpdate = ['name' => $data['name'],'slug' => $slug];
+        if(count($dataUpdate)) {
+            $dataUpdate['coordinates'] = json_encode($FNcoordinates);
+        }
+
+        $address = AddressGeojson::create($dataUpdate);
+
+        return redirect()->route('Admin::map@listLocation')->with('success','Tạo vùng địa lý thành công');
     }
 
     public function editMap(Request $request,$id){
@@ -71,18 +90,39 @@ class MapController extends AdminController
             'coordinates.required' => 'Chưa vẽ vùng địa lý'
         ]);
         $address = AddressGeojson::find($id);
+
         $data=$request->all();
         $slug = str_slug($data['name']);
-        $coordinates = json_decode($data['coordinates'],true);
-        $newCoordinates = [];
-        foreach ($coordinates as $coor){
-            $c = explode(",", $coor);
-            array_push($newCoordinates, $c);
-        }
-        $coordinates = json_encode($newCoordinates);
-        $address->update(['name' => $data['name'],'slug' => $slug, 'coordinates' => $coordinates]);
 
-        return edirect()->route('Admin::map@listLocation')->with('success','Cập nhật vùng địa lý thành công');
+        $arrayCor = json_decode($data['coordinates'],true);
+        $FNcoordinates = [];
+
+        if(count($arrayCor)) {
+            foreach ($arrayCor as $a ) {
+                $coordinates = json_decode($a,true);
+                $newCoordinates = [];
+                foreach ($coordinates as $coor){
+
+                    $c = explode(",", $coor);
+
+                    $c[0] = doubleval(  $c[0]);
+                    $c[1] = doubleval(  $c[1]);
+                    array_push($newCoordinates, $c);
+                }
+                $FNcoordinates[] = $newCoordinates;
+
+            }
+
+        }
+
+        $dataUpdate = ['name' => $data['name'],'slug' => $slug];
+        if(count($dataUpdate)) {
+            $dataUpdate['coordinates'] = json_encode($FNcoordinates);
+        }
+
+        $address->update($dataUpdate);
+
+        return redirect()->route('Admin::map@listLocation')->with('success','Cập nhật vùng địa lý thành công');
     }
 
     public function deleteMap(Request $request,$id){

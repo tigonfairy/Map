@@ -3,10 +3,12 @@
 namespace App\Console;
 
 use App\Console\Commands\AddAdmin;
+use App\Console\Commands\Hin;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 use App\Console\Commands\GetGeoJson;
 use App\Console\Commands\AddProvinceJson;
+use App\Console\Commands\UpdateCacheView;
 class Kernel extends ConsoleKernel
 {
     /**
@@ -17,7 +19,9 @@ class Kernel extends ConsoleKernel
     protected $commands = [
         AddAdmin::class,
         GetGeoJson::class,
-        AddProvinceJson::class
+        AddProvinceJson::class,
+        Hin::class,
+        UpdateCacheView::class
     ];
 
     /**
@@ -30,6 +34,8 @@ class Kernel extends ConsoleKernel
     {
 //         $schedule->command('craw:hin')
 //                  ->withoutOverlapping()->dailyAt('11:00');
+        $schedule->command('update-cache-view')
+            ->everyFiveMinutes()->withoutOverlapping()->appendOutputTo(storage_path('cron/updateCacheView.log'));
     }
 
     /**

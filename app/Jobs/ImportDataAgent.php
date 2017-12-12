@@ -3,6 +3,7 @@
 namespace App\Jobs;
 
 use App\Models\Agent;
+use App\Models\CacheView;
 use App\Models\Notification;
 use App\Models\SaleAgent;
 use Illuminate\Bus\Queueable;
@@ -77,6 +78,7 @@ class ImportDataAgent
                     }
                     $capacity = intval($row[5]);
                     $sales_plan = intval($row[6]);
+                    CacheView::firstOrCreate(['agent_id' => $agent->id]);
                     foreach ($title as $k => $code ) {
 
                         if($k > 7) {
@@ -90,6 +92,7 @@ class ImportDataAgent
                                 $saleAgent->capacity = intval($capacity);
                                 $saleAgent->sales_real = intval($row[$k]);
                                 $saleAgent->month = $month;
+                                $saleAgent->code = $product->code;
                                 $saleAgent->save();
                             }
                         }

@@ -105,6 +105,7 @@
                                                 @if($product)
                                                 <tr class="{{$product->id}}">
                                                     <input type="hidden" name="product_id[]" value="{{ $product->id }}" />
+                                                    <input type="hidden" name="code[]" value="{{ $product->code }}" />
                                                     <td>{{ $product->code }}</td>
                                                     <td>{{  $product->name}}</td>
                                                     <td><input type="number"  name="sales_real[]"  autocomplete="off" class="form-control" value="{{$sale->sales_real}}" /></td>
@@ -224,6 +225,7 @@
                     if($('.'+id).length <= 0) {
                         var template = '<tr class="'+id+'">';
                                 template += '<input type="hidden" name="product_id[]" value="'+id+'" />';
+                                template += '<input type="hidden" name="code[]" value="'+code+'" />';
                         template+='<td>'+code+'</td>';
                         template+='<td>'+name+'</td>';
                         template+='<td><input type="number"  autocomplete="off" name="sales_real[]" class="form-control" value="0" /></td>';

@@ -62,8 +62,12 @@
                         </td>
                     </tr>
                 @endforeach
+
                 </tbody>
             </table>
+            <div class="row" style="text-align: right">
+                {!! $areas->appends(Request::all())->links() !!}
+            </div>
         </div>
         <!-- /main content -->
     </div>

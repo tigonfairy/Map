@@ -86,40 +86,61 @@
             var shapes = [];
             var patch = [];
             var markers = [];
+            var results = [];
     $(document).ready(function () {
             var coordinates = '{{ $addressGeojson->coordinates }}';
-            var coordinate = JSON.parse(coordinates);
-            var bounds = new google.maps.LatLngBounds();
-            for (i = 0; i < coordinate.length; i++) {
-                var c = coordinate[i];
-                bounds.extend(new google.maps.LatLng(c[0], c[1]));
-            }
-            map = new GMaps({
-                    div: '#map',
-                    lat: bounds.getCenter().lat(),
-                    lng:bounds.getCenter().lng(),
-                    width: "100%",
-                    height: '500px',
-                    zoom: 8,
-                    fullscreenControl:true
-            });
-            var path = coordinate;
-            var infoWindow = new google.maps.InfoWindow({
-                content: 'you clicked a polyline'
-            });
-            polygon = map.drawPolygon({
-                paths: path,
-                strokeColor: '#333',
-                strokeOpacity: 0.5,
-                strokeWeight: 1,
-                fillColor: '#333',
-                fillOpacity: 0.6,
-                mouseover: function (clickEvent) {
-                    var position = clickEvent.latLng;
-                    infoWindow.setPosition(position);
-                    infoWindow.open(map.map);
+        map = new GMaps({
+            div: '#map',
+            lat: 21.028511,
+            lng:	105.804817,
+            width: "100%",
+            height: '500px',
+            zoom: 8,
+            fullscreenControl:true
+        });
+
+            if(coordinates) {
+                try {
+                    var path = [];
+                    var coordinate = JSON.parse(coordinates);
+                    var bounds = new google.maps.LatLngBounds();
+
+                    for (var j = 0; j < coordinate.length; j++) {
+                        path.push(coordinate[j]);
+
+                        for (var i = 0; i < coordinate[j].length; i++) {
+                            var c = coordinate[j][i];
+                            bounds.extend(new google.maps.LatLng(c[0], c[1]));
+                        }
+                    }
+                    map.setCenter(bounds.getCenter().lat(),bounds.getCenter().lng());
+                    var infoWindow = new google.maps.InfoWindow({
+                        // content: 'you clicked a polyline'
+                    });
+
+
+                    for (i = 0; i < path.length; i++) {
+                        polygon = map.drawPolygon({
+                            paths: path[i],
+                            strokeColor: '#333',
+                            strokeOpacity: 0.5,
+                            strokeWeight: 1,
+                            fillColor: '#333',
+                            fillOpacity: 0.6
+                            // mouseover: function (clickEvent) {
+                            //     var position = clickEvent.latLng;
+                            //     infoWindow.setPosition(position);
+                            //     infoWindow.open(map.map);
+                            // }
+                        });
+                    }
+
+                } catch (e) {
+                    console.log(e);
                 }
-            });
+
+
+            }
 
 
         $('#geocoding_form').submit(function(e){
@@ -160,43 +181,35 @@
 
             // Add a listener for creating new shape event.
             google.maps.event.addListener(drawingManager, "overlaycomplete", function (event) {
-                polygon.setMap(null);
-                var newShape = event.overlay;
-                newShape.type = event.type;
-                shapes.push(newShape);
-                if (drawingManager.getDrawingMode()) {
-                    drawingManager.setDrawingMode(null);
-                }
+                // polygon.setMap(null);
+                // var newShape = event.overlay;
+                // newShape.type = event.type;
+                // shapes.push(newShape);
+                // if (drawingManager.getDrawingMode()) {
+                //     drawingManager.setDrawingMode(null);
+                // }
 
             });
 
 // add a listener for the drawing mode change event, delete any existing polygons
             google.maps.event.addListener(drawingManager, "drawingmode_changed", function () {
-                if (drawingManager.getDrawingMode() != null) {
-                    for (var i = 0; i < shapes.length; i++) {
-                        shapes[i].setMap(null);
-                    }
-                    shapes = [];
-                }
+                // console.log(drawingManager.getDrawingMode());
+                // if (drawingManager.getDrawingMode() != null) {
+                //     for (var i = 0; i < shapes.length; i++) {
+                //         shapes[i].setMap(null);
+                //     }
+                //     shapes = [];
+                // }
             });
 
             // Add a listener for the "drag" event.
             google.maps.event.addListener(drawingManager, "overlaycomplete", function (event) {
-                overlayDragListener(event.overlay);
                 getPolygonCoords(event.overlay);
             });
 
 //        });
 
 
-        function overlayDragListener(overlay) {
-            google.maps.event.addListener(overlay.getPath(), 'set_at', function(event){
-                $('#vertices').val(overlay.getPath().getArray());
-            });
-            google.maps.event.addListener(overlay.getPath(), 'insert_at', function(event){
-                $('#vertices').val(overlay.getPath().getArray());
-            });
-        }
 
         function getPolygonCoords(bermudaTriangle) {
             var len = bermudaTriangle.getPath().getLength();
@@ -204,7 +217,8 @@
             for (var i = 0; i < len; i++) {
                 test.push(bermudaTriangle.getPath().getAt(i).toUrlValue(5));
             }
-            $('#coordinates').val(JSON.stringify(test));
+            results.push(JSON.stringify(test));
+            $('#coordinates').val(JSON.stringify(results));
         }
     });
 </script>

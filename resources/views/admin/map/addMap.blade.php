@@ -92,6 +92,7 @@
     var shapes = [];
     var patch = [];
     var markers = [];
+    var results = [];
     $(document).ready(function () {
         map = new GMaps({
             div: '#map',
@@ -139,23 +140,23 @@
             drawingManager.setMap(map.map);
 
             google.maps.event.addListener(drawingManager, "overlaycomplete", function (event) {
-                var newShape = event.overlay;
-                newShape.type = event.type;
-                shapes.push(newShape);
-                if (drawingManager.getDrawingMode()) {
-                    drawingManager.setDrawingMode(null);
-                }
+                // var newShape = event.overlay;
+                // newShape.type = event.type;
+                // shapes.push(newShape);
+                // if (drawingManager.getDrawingMode()) {
+                //     drawingManager.setDrawingMode(null);
+                // }
 
             });
 
 
             google.maps.event.addListener(drawingManager, "drawingmode_changed", function () {
-                if (drawingManager.getDrawingMode() != null) {
-                    for (var i = 0; i < shapes.length; i++) {
-                        shapes[i].setMap(null);
-                    }
-                    shapes = [];
-                }
+                // if (drawingManager.getDrawingMode() != null) {
+                //     for (var i = 0; i < shapes.length; i++) {
+                //         shapes[i].setMap(null);
+                //     }
+                //     shapes = [];
+                // }
             });
 
 
@@ -181,7 +182,8 @@
             for (var i = 0; i < len; i++) {
                 test.push(bermudaTriangle.getPath().getAt(i).toUrlValue(5));
             }
-            $('#coordinates').val(JSON.stringify(test));
+            results.push(JSON.stringify(test));
+            $('#coordinates').val(JSON.stringify(results));
         }
     });
 </script>

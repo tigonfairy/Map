@@ -420,34 +420,34 @@
         });
 
 
-        var chartSp = Highcharts.chart('chartSp', {
-            chart: {
-                plotBackgroundColor: null,
-                plotBorderWidth: null,
-                plotShadow: false,
-                type: 'pie',
-                style: {
-                    fontFamily: 'serif'
-                }
-            },
-            title: {
-                text: 'Biểu đổ'
-            },
-            tooltip: {
-                pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
-            },
-            plotOptions: {
-                pie: {
-                    allowPointSelect: true,
-                    cursor: 'pointer',
-                    dataLabels: {
-                        enabled: true
-                    },
-                    showInLegend: true
-                }
-            },
-            series: []
-        });
+         var chartSp = Highcharts.chart('chartSp', {
+             chart: {
+                 plotBackgroundColor: null,
+                 plotBorderWidth: null,
+                 plotShadow: false,
+                 type: 'pie',
+                 style: {
+                     fontFamily: 'serif'
+                 }
+             },
+             title: {
+                 text: 'Biểu đổ'
+             },
+             tooltip: {
+                 pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+             },
+             plotOptions: {
+                 pie: {
+                     allowPointSelect: true,
+                     cursor: 'pointer',
+                     dataLabels: {
+                         enabled: true
+                     },
+                     showInLegend: true
+                 }
+             },
+             series: []
+         });
 
         $.ajax({
             method: "post",
@@ -1738,29 +1738,29 @@
                 var agents = item.agents;
                 var markers = [];
                 var legend = document.getElementById('legend');
-                $.map(agents, function (agent) {
-                    var latLng = new google.maps.LatLng(agent.lat,
-                        agent.lng);
-                    var image = "";
-                    if (agent.icon != "") {
-                        image = 'http://' + window.location.hostname + '/' + agent.icon;
-                    }
+                    $.map(agents, function (agent) {
+                        var latLng = new google.maps.LatLng(agent.lat,
+                            agent.lng);
+                        var image = "";
+                        if (agent.icon != "") {
+                            image = 'http://' + window.location.hostname + '/' + agent.icon;
+                        }
 
-                    var name = '';
+                        var name = '';
 
-                    if (agent.attribute == 1){
-                        name = agent.name + '<span style="color:red">(New)</span>';
-                    } else {
-                        name = agent.name;
-                    }
+                        if (agent.attribute == 1){
+                            name = agent.name + '<span style="color:red">(New)</span>';
+                        } else {
+                            name = agent.name;
+                        }
 
-                    var contentString = '<div class="info" style="font-size:' + agent.user.fontSize + 'px; color:' + agent.user.textColor + '">' +
-                        '<h5 class="address" style="font-size:' + agent.user.fontSize + 'px; color:' + agent.user.textColor + '">' + name + ' - ' + agent.address + '</h5>' +
-                        '<div class="user_data" style="font-size:' + agent.user.fontSize + 'px; color:' + agent.user.textColor + '">' +
-                        '<p class="data" id="data" style="font-size:' + agent.user.fontSize + 'px; color:' + agent.user.textColor + '">%TT ' + numberWithCommas(agent.totalSales) + '/' + numberWithCommas(agent.capacity) + '=' + agent.percent + '%</p>' +
-                        '<ul class="info_user" style="font-size:' + agent.user.fontSize + 'px; color:' + agent.user.textColor + '">' +
-                        '<li>' + agent.user.name + '</li>' +
-                        '</ul>' +
+                        var contentString = '<div class="info" style="font-size:' + agent.user.fontSize + 'px; color:' + agent.user.textColor + '">' +
+                            '<h5 class="address" style="font-size:' + agent.user.fontSize + 'px; color:' + agent.user.textColor + '">' + name + ' - ' + agent.address + '</h5>' +
+                            '<div class="user_data" style="font-size:' + agent.user.fontSize + 'px; color:' + agent.user.textColor + '">' +
+                            '<p class="data" id="data" style="font-size:' + agent.user.fontSize + 'px; color:' + agent.user.textColor + '">%TT ' + numberWithCommas(agent.totalSales) + '/' + numberWithCommas(agent.capacity) + '=' + agent.percent + '%</p>' +
+                            '<ul class="info_user" style="font-size:' + agent.user.fontSize + 'px; color:' + agent.user.textColor + '">' +
+                            '<li>' + agent.user.name + '</li>' +
+                            '</ul>' +
                         '</div>' +
                         '</div>';
 
