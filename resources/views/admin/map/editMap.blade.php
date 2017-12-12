@@ -89,49 +89,54 @@
             var results = [];
     $(document).ready(function () {
             var coordinates = '{{ $addressGeojson->coordinates }}';
-
+        map = new GMaps({
+            div: '#map',
+            lat: 21.028511,
+            lng:	105.804817,
+            width: "100%",
+            height: '500px',
+            zoom: 8,
+            fullscreenControl:true
+        });
 
             if(coordinates) {
-                var path = [];
-                var coordinate = JSON.parse(coordinates);
-                var bounds = new google.maps.LatLngBounds();
+                try {
+                    var path = [];
+                    var coordinate = JSON.parse(coordinates);
+                    var bounds = new google.maps.LatLngBounds();
 
-                for (j = 0; j < coordinate.length; j++) {
-                    path.push(coordinate[j]);
+                    for (var j = 0; j < coordinate.length; j++) {
+                        path.push(coordinate[j]);
 
-                    for (i = 0; i < coordinate[j].length; i++) {
-                        var c = coordinate[j][i];
-                        bounds.extend(new google.maps.LatLng(c[0], c[1]));
+                        for (var i = 0; i < coordinate[j].length; i++) {
+                            var c = coordinate[j][i];
+                            bounds.extend(new google.maps.LatLng(c[0], c[1]));
+                        }
                     }
-                }
-
-                var infoWindow = new google.maps.InfoWindow({
-                    // content: 'you clicked a polyline'
-                });
-
-                map = new GMaps({
-                    div: '#map',
-                    lat: bounds.getCenter().lat(),
-                    lng:bounds.getCenter().lng(),
-                    width: "100%",
-                    height: '500px',
-                    zoom: 8,
-                    fullscreenControl:true
-                });
-                for (i = 0; i < path.length; i++) {
-                    polygon = map.drawPolygon({
-                        paths: path,
-                        strokeColor: '#333',
-                        strokeOpacity: 0.5,
-                        strokeWeight: 1,
-                        fillColor: '#333',
-                        fillOpacity: 0.6
-                        // mouseover: function (clickEvent) {
-                        //     var position = clickEvent.latLng;
-                        //     infoWindow.setPosition(position);
-                        //     infoWindow.open(map.map);
-                        // }
+                    map.setCenter(bounds.getCenter().lat(),bounds.getCenter().lng());
+                    var infoWindow = new google.maps.InfoWindow({
+                        // content: 'you clicked a polyline'
                     });
+
+
+                    for (i = 0; i < path.length; i++) {
+                        polygon = map.drawPolygon({
+                            paths: path[i],
+                            strokeColor: '#333',
+                            strokeOpacity: 0.5,
+                            strokeWeight: 1,
+                            fillColor: '#333',
+                            fillOpacity: 0.6
+                            // mouseover: function (clickEvent) {
+                            //     var position = clickEvent.latLng;
+                            //     infoWindow.setPosition(position);
+                            //     infoWindow.open(map.map);
+                            // }
+                        });
+                    }
+
+                } catch (e) {
+                    console.log(e);
                 }
 
 

@@ -324,36 +324,50 @@
             var coordinates = e.params.data.coordinates;
             var coordinate = JSON.parse(coordinates);
             if (coordinate) {
+
+                var path = [];
                 var bounds = new google.maps.LatLngBounds();
-                for (i = 0; i < coordinate.length; i++) {
-                    var c = coordinate[i];
-                    bounds.extend(new google.maps.LatLng(c[0], c[1]));
+
+
+                for (var j = 0; j < coordinate.length; j++) {
+                    path.push(coordinate[j]);
+
+                    for (var i = 0; i < coordinate[j].length; i++) {
+                        var c = coordinate[j][i];
+                        bounds.extend(new google.maps.LatLng(c[0], c[1]));
+                    }
                 }
-                var path = coordinate;
+
                 map.setCenter(bounds.getCenter().lat(), bounds.getCenter().lng());
                 var infoWindow = new google.maps.InfoWindow({
                     content: 'you clicked a polyline'
                 });
-                polygon = map.drawPolygon({
-                    paths: path,
-                    strokeColor: '#333',
-                    strokeOpacity: 0.5,
-                    strokeWeight: 1,
-                    fillColor: '#333',
-                    fillOpacity: 0.6,
-                    mouseover: function (clickEvent) {
-                        var position = clickEvent.latLng;
-                        infoWindow.setPosition(position);
-                        infoWindow.open(map.map);
-                    },
-                    mouseout: function (clickEvent) {
-                        if (infoWindow) {
-                            infoWindow.close();
+                var data = [];
+                for (i = 0; i < path.length; i++) {
+                    polygon = map.drawPolygon({
+                        paths: path[i],
+                        strokeColor: '#333',
+                        strokeOpacity: 0.5,
+                        strokeWeight: 1,
+                        fillColor: '#333',
+                        fillOpacity: 0.6,
+                        mouseover: function (clickEvent) {
+                            var position = clickEvent.latLng;
+                            infoWindow.setPosition(position);
+                            infoWindow.open(map.map);
+                        },
+                        mouseout: function (clickEvent) {
+                            if (infoWindow) {
+                                infoWindow.close();
+                            }
                         }
-                    }
-                });
+                    });
+                    data[i] = polygon;
+                }
+                polygonArray[id] = data;
 
-                polygonArray[id] = polygon;
+
+
             }
         });
 
@@ -366,7 +380,12 @@
             }
             var coordinate = JSON.parse(coordinates);
             if (coordinate) {
-                map.removePolygon(polygonArray[id]);
+                if(polygonArray[id]) {
+                    for (var i = 0; i < polygonArray[id].length; i++) {
+                        map.removePolygon(polygonArray[id][i]);
+                    }
+                }
+
             }
         });
     });
