@@ -77,6 +77,7 @@ class MapController extends AdminController
 
         $data=$request->all();
         $slug = str_slug($data['name']);
+        dd($data['coordinates']);
         $coordinates = json_decode($data['coordinates'],true);
 
         $newCoordinates = [];

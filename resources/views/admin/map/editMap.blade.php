@@ -49,7 +49,7 @@
                         <div class="col-md-8">
                             <input type="text" class="form-control name" value="{{ old('name') ?: @$addressGeojson->name }}" name="name" placeholder="{{ trans('home.name_location') }}">
                         </div>
-                        <input type="hidden" class="form-control " id="coordinates" name="coordinates" >
+                        <input type="hidden" class="form-control " id="coordinates" name="coordinates[]" >
                         <div class="clearfix"></div>
                     </div>
                         <div class="form-group">
@@ -114,12 +114,12 @@
                 strokeOpacity: 0.5,
                 strokeWeight: 1,
                 fillColor: '#333',
-                fillOpacity: 0.6,
-                mouseover: function (clickEvent) {
-                    var position = clickEvent.latLng;
-                    infoWindow.setPosition(position);
-                    infoWindow.open(map.map);
-                }
+                fillOpacity: 0.6
+                // mouseover: function (clickEvent) {
+                //     var position = clickEvent.latLng;
+                //     infoWindow.setPosition(position);
+                //     infoWindow.open(map.map);
+                // }
             });
 
 
@@ -161,43 +161,35 @@
 
             // Add a listener for creating new shape event.
             google.maps.event.addListener(drawingManager, "overlaycomplete", function (event) {
-                polygon.setMap(null);
-                var newShape = event.overlay;
-                newShape.type = event.type;
-                shapes.push(newShape);
-                if (drawingManager.getDrawingMode()) {
-                    drawingManager.setDrawingMode(null);
-                }
+                // polygon.setMap(null);
+                // var newShape = event.overlay;
+                // newShape.type = event.type;
+                // shapes.push(newShape);
+                // if (drawingManager.getDrawingMode()) {
+                //     drawingManager.setDrawingMode(null);
+                // }
 
             });
 
 // add a listener for the drawing mode change event, delete any existing polygons
             google.maps.event.addListener(drawingManager, "drawingmode_changed", function () {
-                if (drawingManager.getDrawingMode() != null) {
-                    for (var i = 0; i < shapes.length; i++) {
-                        shapes[i].setMap(null);
-                    }
-                    shapes = [];
-                }
+                // console.log(drawingManager.getDrawingMode());
+                // if (drawingManager.getDrawingMode() != null) {
+                //     for (var i = 0; i < shapes.length; i++) {
+                //         shapes[i].setMap(null);
+                //     }
+                //     shapes = [];
+                // }
             });
 
             // Add a listener for the "drag" event.
             google.maps.event.addListener(drawingManager, "overlaycomplete", function (event) {
-                overlayDragListener(event.overlay);
                 getPolygonCoords(event.overlay);
             });
 
 //        });
 
 
-        function overlayDragListener(overlay) {
-            google.maps.event.addListener(overlay.getPath(), 'set_at', function(event){
-                $('#vertices').val(overlay.getPath().getArray());
-            });
-            google.maps.event.addListener(overlay.getPath(), 'insert_at', function(event){
-                $('#vertices').val(overlay.getPath().getArray());
-            });
-        }
 
         function getPolygonCoords(bermudaTriangle) {
             var len = bermudaTriangle.getPath().getLength();
