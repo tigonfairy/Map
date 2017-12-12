@@ -55,6 +55,7 @@ class ImportUser
                 if(!isset($row[2]) || empty($row[2]) ) {
                     continue;
                 }
+                $data = null;
                 $code = trim($row[0]);
                 $user = User::firstOrCreate(['code' => $code]);
                 $data['email'] = trim($row[2]);
