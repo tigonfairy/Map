@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Backend;
 
 use App\Jobs\ExportAgent;
 use App\Models\Agent;
+use App\Models\CacheView;
 use App\Models\User;
 use App\Models\Product;
 use App\Models\SaleAgent;
@@ -56,6 +57,7 @@ class SaleAgentController extends AdminController
         $capacity = request('capacity',0);
         $sales_plan = request('sales_plan',0);
         $sales_real = request('sales_real');
+        $code = request('code');
         SaleAgent::where('agent_id', request('agent_id'))->where('month',request('month'))->delete();
         foreach ($product_ids as $key => $product_id) {
             $agent = SaleAgent::firstOrCreate([
@@ -66,9 +68,11 @@ class SaleAgentController extends AdminController
             $agent->update([
                 'sales_plan' => intval($sales_plan),
                 'sales_real' => $sales_real[$key] ? intval($sales_real[$key]) : 0,
+                'code' => $code[$key] ? intval($code[$key]) : 0,
                 'capacity' => intval($capacity)
             ]);
         }
+        CacheView::firstOrCreate(['agent_id' => request('agent_id')]);
 
         return redirect()->route('Admin::saleAgent@index')->with('success','Tạo dữ liệu cho đại lý thành công');
     }
@@ -93,6 +97,7 @@ class SaleAgentController extends AdminController
         $capacity = request('capacity');
         $sales_plan = request('sales_plan');
         $sales_real = request('sales_real');
+        $code = request('code');
 
         SaleAgent::where('agent_id',$agentId)->where('month',request('month'))->delete();
 
@@ -106,11 +111,12 @@ class SaleAgentController extends AdminController
                         $sale->update([
                            'capacity' => intval($capacity),
                             'sales_plan' => intval($sales_plan),
-                            'sales_real' => (isset($sales_real[$key])) ? intval($sales_real[$key]) : 0
+                            'sales_real' => (isset($sales_real[$key])) ? intval($sales_real[$key]) : 0,
+                            'code' => $code[$key] ? intval($code[$key]) : 0,
                         ]);
             }
         }
-
+        CacheView::firstOrCreate(['agent_id' =>$agentId]);
         return redirect()->route('Admin::saleAgent@index')
             ->with('success', 'Đã cập nhật dữ liệu đại lý thành công');
     }

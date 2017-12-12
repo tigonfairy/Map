@@ -29,9 +29,8 @@ class ApiController extends AdminController
         if($request->input('q')){
             $places = $places->where('name','like','%'.$request->input('q').'%');
         }
-
-        if($role->id == 1){
-            $places = $places->orderBy('id','desc')->limit(50)->get();
+        if ($user->position == User::ADMIN || $user->position == User::SALE_ADMIN) {
+            $places = $places->orderBy('id','desc')->limit(10)->get();
         } else {
 
             $userOwns = $user->manager()->get();
@@ -39,7 +38,7 @@ class ApiController extends AdminController
             $managerIds = $userOwns->pluck('id')->toArray();
 
             $places = $places->whereIn('manager_id', $managerIds);
-            $places = $places->orderBy('id','desc')->limit(50)->get();
+            $places = $places->orderBy('id','desc')->limit(10)->get();
         }
 
         return $places;
