@@ -49,7 +49,7 @@
                         <div class="col-md-8">
                             <input type="text" class="form-control name" value="{{ old('name') ?: @$addressGeojson->name }}" name="name" placeholder="{{ trans('home.name_location') }}">
                         </div>
-                        <input type="hidden" class="form-control " id="coordinates" name="coordinates[]" >
+                        <input type="hidden" class="form-control " id="coordinates" name="coordinates" >
                         <div class="clearfix"></div>
                     </div>
                         <div class="form-group">
@@ -86,16 +86,30 @@
             var shapes = [];
             var patch = [];
             var markers = [];
+            var results = [];
     $(document).ready(function () {
             var coordinates = '{{ $addressGeojson->coordinates }}';
 
-            var coordinate = JSON.parse(coordinates);
-            var bounds = new google.maps.LatLngBounds();
-            for (i = 0; i < coordinate.length; i++) {
-                var c = coordinate[i];
-                bounds.extend(new google.maps.LatLng(c[0], c[1]));
-            }
-            map = new GMaps({
+
+            if(coordinates) {
+                var path = [];
+                var coordinate = JSON.parse(coordinates);
+                var bounds = new google.maps.LatLngBounds();
+
+                for (j = 0; j < coordinate.length; j++) {
+                    path.push(coordinate[j]);
+
+                    for (i = 0; i < coordinate[j].length; i++) {
+                        var c = coordinate[j][i];
+                        bounds.extend(new google.maps.LatLng(c[0], c[1]));
+                    }
+                }
+
+                var infoWindow = new google.maps.InfoWindow({
+                    // content: 'you clicked a polyline'
+                });
+
+                map = new GMaps({
                     div: '#map',
                     lat: bounds.getCenter().lat(),
                     lng:bounds.getCenter().lng(),
@@ -103,24 +117,25 @@
                     height: '500px',
                     zoom: 8,
                     fullscreenControl:true
-            });
-            var path = coordinate;
-            var infoWindow = new google.maps.InfoWindow({
-                // content: 'you clicked a polyline'
-            });
-            polygon = map.drawPolygon({
-                paths: path,
-                strokeColor: '#333',
-                strokeOpacity: 0.5,
-                strokeWeight: 1,
-                fillColor: '#333',
-                fillOpacity: 0.6
-                // mouseover: function (clickEvent) {
-                //     var position = clickEvent.latLng;
-                //     infoWindow.setPosition(position);
-                //     infoWindow.open(map.map);
-                // }
-            });
+                });
+                for (i = 0; i < path.length; i++) {
+                    polygon = map.drawPolygon({
+                        paths: path,
+                        strokeColor: '#333',
+                        strokeOpacity: 0.5,
+                        strokeWeight: 1,
+                        fillColor: '#333',
+                        fillOpacity: 0.6
+                        // mouseover: function (clickEvent) {
+                        //     var position = clickEvent.latLng;
+                        //     infoWindow.setPosition(position);
+                        //     infoWindow.open(map.map);
+                        // }
+                    });
+                }
+
+
+            }
 
 
         $('#geocoding_form').submit(function(e){
@@ -197,7 +212,8 @@
             for (var i = 0; i < len; i++) {
                 test.push(bermudaTriangle.getPath().getAt(i).toUrlValue(5));
             }
-            $('#coordinates').val(JSON.stringify(test));
+            results.push(JSON.stringify(test));
+            $('#coordinates').val(JSON.stringify(results));
         }
     });
 </script>

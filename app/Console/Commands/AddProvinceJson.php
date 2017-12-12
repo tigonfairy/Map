@@ -72,7 +72,7 @@ class AddProvinceJson extends Command
 
             $this->line(Carbon::now()->toDateTimeString());
         }catch (\Exception $ex){
-
+            $this->line($ex->getTraceAsString().'|'.$ex->getLine());
         }
     }
 

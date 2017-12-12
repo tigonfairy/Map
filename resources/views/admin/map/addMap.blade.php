@@ -92,6 +92,7 @@
     var shapes = [];
     var patch = [];
     var markers = [];
+    var results = [];
     $(document).ready(function () {
         map = new GMaps({
             div: '#map',
@@ -181,7 +182,8 @@
             for (var i = 0; i < len; i++) {
                 test.push(bermudaTriangle.getPath().getAt(i).toUrlValue(5));
             }
-            $('#coordinates').val(JSON.stringify(test));
+            results.push(JSON.stringify(test));
+            $('#coordinates').val(JSON.stringify(results));
         }
     });
 </script>

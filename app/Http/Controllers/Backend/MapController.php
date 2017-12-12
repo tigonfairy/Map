@@ -44,17 +44,33 @@ class MapController extends AdminController
         if($count > 0){
             $slug = $slug.time();
         }
-        $coordinates = json_decode($data['coordinates'],true);
-        $newCoordinates = [];
-        foreach ($coordinates as $coor){
-            $c = explode(",", $coor);
+        $arrayCor = json_decode($data['coordinates'],true);
+        $FNcoordinates = [];
 
-            $c[0] = doubleval(  $c[0]);
-            $c[1] = doubleval(  $c[1]);
-            array_push($newCoordinates, $c);
+        if(count($arrayCor)) {
+            foreach ($arrayCor as $a ) {
+                $coordinates = json_decode($a,true);
+                $newCoordinates = [];
+                foreach ($coordinates as $coor){
+
+                    $c = explode(",", $coor);
+
+                    $c[0] = doubleval(  $c[0]);
+                    $c[1] = doubleval(  $c[1]);
+                    array_push($newCoordinates, $c);
+                }
+                $FNcoordinates[] = $newCoordinates;
+
+            }
+
         }
-        $coordinates = json_encode($newCoordinates);
-        $address = AddressGeojson::create(['name' => $data['name'],'slug' => $slug, 'coordinates' => $coordinates]);
+
+        $dataUpdate = ['name' => $data['name'],'slug' => $slug];
+        if(count($dataUpdate)) {
+            $dataUpdate['coordinates'] = json_encode($FNcoordinates);
+        }
+
+        $address = AddressGeojson::create($dataUpdate);
 
         return redirect()->back()->with('success','Tạo vùng địa lý thành công');
     }
@@ -77,21 +93,34 @@ class MapController extends AdminController
 
         $data=$request->all();
         $slug = str_slug($data['name']);
-        dd($data['coordinates']);
-        $coordinates = json_decode($data['coordinates'],true);
 
-        $newCoordinates = [];
+        $arrayCor = json_decode($data['coordinates'],true);
+        $FNcoordinates = [];
 
-        foreach ($coordinates as $coor){
+        if(count($arrayCor)) {
+            foreach ($arrayCor as $a ) {
+                $coordinates = json_decode($a,true);
+                $newCoordinates = [];
+                foreach ($coordinates as $coor){
 
-            $c = explode(",", $coor);
+                    $c = explode(",", $coor);
 
-            $c[0] = doubleval(  $c[0]);
-            $c[1] = doubleval(  $c[1]);
-            array_push($newCoordinates, $c);
+                    $c[0] = doubleval(  $c[0]);
+                    $c[1] = doubleval(  $c[1]);
+                    array_push($newCoordinates, $c);
+                }
+                $FNcoordinates[] = $newCoordinates;
+
+            }
+
         }
-        $coordinates = json_encode($newCoordinates);
-        $address->update(['name' => $data['name'],'slug' => $slug, 'coordinates' => $coordinates]);
+
+        $dataUpdate = ['name' => $data['name'],'slug' => $slug];
+        if(count($dataUpdate)) {
+            $dataUpdate['coordinates'] = json_encode($FNcoordinates);
+        }
+
+        $address->update($dataUpdate);
 
         return redirect()->route('Admin::map@listLocation')->with('success','Cập nhật vùng địa lý thành công');
     }
