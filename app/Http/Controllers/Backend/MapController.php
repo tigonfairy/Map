@@ -72,7 +72,7 @@ class MapController extends AdminController
 
         $address = AddressGeojson::create($dataUpdate);
 
-        return redirect()->back()->with('success','Tạo vùng địa lý thành công');
+        return redirect()->route('Admin::map@listLocation')->with('success','Tạo vùng địa lý thành công');
     }
 
     public function editMap(Request $request,$id){
