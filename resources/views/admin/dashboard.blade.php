@@ -422,6 +422,7 @@
             },
             series: []
         });
+
         $.ajax({
             method: "post",
             url: "{{route('Admin::chart')}}",
@@ -459,6 +460,7 @@
                 alert('Lỗi, hãy thử lại sau');
             }
         });
+
         $('.radioButton').change(function () {
             var type = $(this).val();
             $.ajax({
@@ -510,6 +512,7 @@
                 $('#humanExport').text('Vui lòng chọn quản lý để export');
             }
         });
+
         $('#exportDashboard').click(function(e){
             $('#type_date_search').text('');
             $('#date_search').text('');
@@ -549,6 +552,7 @@
                 });
             }
         });
+
         //map
         var type_search = '';
         @if ($user->position == \App\Models\User::NVKD)
@@ -601,6 +605,7 @@
                 }
             }
         });
+
         // search
         $(".search_type").change(function () {
             var search_type = $(this).val();
@@ -617,6 +622,7 @@
                 getListNVKD(0);
             }
         });
+
         $(".typeExport").change(function () {
             var search_type = $(this).val();
             if (search_type == 1) {
@@ -631,6 +637,7 @@
                 getListNVKD(1);
             }
         });
+
         $('#geocoding_form').submit(function (e) {
             e.preventDefault();
             var type_search = $("#type_search").val();
@@ -669,7 +676,9 @@
                 }
             });
         });
+
         var listSelectProducts = [];
+
         function getListGSV(type) {
             if(type == 0) {
                 $("#type_search").val('gsv');
@@ -706,6 +715,7 @@
                 }
             });
         }
+
         function getListTV(type) {
             if(type == 0) {
                 $("#type_search").val('tv');
@@ -742,6 +752,7 @@
                 }
             });
         }
+
         function showDataSales(data) {
             var polygonArray = [];
             $.map(data.locations, function (location, index) {
@@ -893,6 +904,7 @@
                 $('#tableData').html(data.table);
             }
         }
+
         function getListNVKD(type) {
             if(type == 0) {
                 $("#type_search").val('nvkd');
@@ -929,6 +941,7 @@
                 }
             });
         }
+
         function showDataSaleNVKD(data) {
             var area_name = '';
             var polygonArray = [];
@@ -1084,6 +1097,7 @@
                 $('#tableData').html(data.table);
             }
         }
+
         function getListGDV(type) {
             if(type == 0) {
                 $("#type_search").val('gdv');
@@ -1137,6 +1151,7 @@
                 }
             });
         }
+
         function showDataSaleGDV(data) {
             var polygonArray = [];
             var position = '';
@@ -1323,6 +1338,7 @@
                 $('#tableData').html(data.table);
             }
         }
+
         function TxtOverlay(pos, txt, cls, map) {
             // Now initialize all properties.
             this.pos = pos;
@@ -1397,6 +1413,7 @@
                 this.setMap(this.map_);
             }
         }
+
         function getListAgents(type) {
             if(type == 0) {
                 $("#type_search").val('agents');
@@ -1433,6 +1450,7 @@
                 }
             });
         }
+
         function showDataAgents(data) {
             listSelectProdcuts = [];
             map = new GMaps({
@@ -1549,6 +1567,7 @@
                 $('#tableData').html(data.table);
             }
         }
+
         function showDataSaleAdmin(data) {
             var polygonArray = [];
             var position = '';
@@ -1649,6 +1668,7 @@
                 $('#tableData').html(data.table);
             }
         }
+
         $(document).on('change', '#choose_product', function () {
             var code = $(this).val();
             var data = $.grep(listSelectProducts, function (e) {

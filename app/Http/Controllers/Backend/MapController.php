@@ -1237,6 +1237,7 @@ class MapController extends AdminController
         }
 
         if ($typeSearch == 'admin') {
+
             $userGDVs = User::where('position', User::GĐV)->get();
             $data = [];
             $locations = [];
@@ -1283,7 +1284,8 @@ class MapController extends AdminController
                 $saleAgents = 0;
                 foreach ($agents as $agent) {
                     $listAgentIds[] = $agent->id;
-                    $sales = SaleAgent::where('agent_id', $agent->id)->where('month', '>=', $startMonth)->where('month', '<=', $endMonth)->select('sales_real', 'capacity')->get();
+                    $sales = SaleAgent::where('agent_id', $agent->id)->where('month', '>=', $startMonth)
+                        ->where('month', '<=', $endMonth)->select('sales_real', 'capacity')->get();
                     foreach ($sales as $sale) {
                         $saleAgents += $sale->sales_real;
                         $capacity = isset($sale->capacity) ?  $sale->capacity : 1;
