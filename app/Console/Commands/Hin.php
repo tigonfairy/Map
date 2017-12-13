@@ -44,6 +44,7 @@ class Hin extends Command
     {
         AddressGeojson::chunk(100,function($address) {
             foreach ($address as $add) {
+                $data = null;
                 $cor = json_decode($add->coordinates,true);
                 $data[] = $cor;
                 ;
