@@ -133,26 +133,31 @@
         });
         var Totalbounds = new google.maps.LatLngBounds();
                 @foreach($locations as $location)
-        var c = "{{$location->coordinates}}";
-        var coordinate = JSON.parse(c);
-        @php
-            $border_color = '#333';
-            $background_color = '#333';
-             if($area->border_color){
-                    $border_color = $area->border_color;
-              }
-             if($area->background_color){
-                    $background_color = $area->background_color;
-                }
-        @endphp
+                    var c = "{{$location->coordinates}}";
+                    var coordinate = JSON.parse(c);
+                    @php
+                        $border_color = '#333';
+                        $background_color = '#333';
+                         if($area->border_color){
+                                $border_color = $area->border_color;
+                          }
+                         if($area->background_color){
+                                $background_color = $area->background_color;
+                            }
+                    @endphp
         if (coordinate) {
             var bounds = new google.maps.LatLngBounds();
-            for (i = 0; i < coordinate.length; i++) {
-                var c = coordinate[i];
-                bounds.extend(new google.maps.LatLng(c[0], c[1]));
-                Totalbounds.extend(new google.maps.LatLng(c[0], c[1]));
+            var path = [];
+            for (j = 0; j < coordinate.length; j++) {
+
+
+                path.push(coordinate[j]);
+                for (var i = 0; i < coordinate[j].length; i++) {
+                    var c = coordinate[j][i];
+                    bounds.extend(new google.maps.LatLng(c[0], c[1]));
+                    Totalbounds.extend(new google.maps.LatLng(c[0], c[1]));
+                }
             }
-            var path = coordinate;
 //            map.setCenter(bounds.getCenter().lat(), bounds.getCenter().lng());
             map.drawOverlay({
                 lat: bounds.getCenter().lat(),
@@ -162,27 +167,39 @@
             var infoWindow{{$location->id}} = new google.maps.InfoWindow({
                 content: "<p>{{$location->name}}</p>"
             });
-            polygon = map.drawPolygon({
-                paths: path,
-                strokeColor: "{{$border_color}}",
-                strokeOpacity: 1,
-                strokeWeight: 1,
-                fillColor: "{{$background_color}}",
-                fillOpacity: 0.4,
-                mouseover: function (clickEvent) {
-                    var position = clickEvent.latLng;
-                    infoWindow{{$location->id}}.setPosition(position);
-                    infoWindow{{$location->id}}.open(map.map);
-                },
-                mouseout: function (clickEvent) {
-                    if (infoWindow{{$location->id}}) {
-                        infoWindow{{$location->id}}.close();
-                    }
-                }
-            });
-            polygonArray["{{$location->id}}"] = polygon;
+                        for (i = 0; i < path.length; i++) {
+                            polygon = map.drawPolygon({
+                                paths: path[i],
+                                strokeColor: "{{$border_color}}",
+                                strokeOpacity: 1,
+                                strokeWeight: 1,
+                                fillColor: "{{$background_color}}",
+                                fillOpacity: 0.4,
+                                mouseover: function (clickEvent) {
+                                    var position = clickEvent.latLng;
+                                    infoWindow{{$location->id}}.setPosition(position);
+                                    infoWindow{{$location->id}}.open(map.map);
+                                },
+                                mouseout: function (clickEvent) {
+                                    if (infoWindow{{$location->id}}) {
+                                        infoWindow{{$location->id}}.close();
+                                    }
+                                }
+                            });
+                        }
+
+            {{--polygonArray["{{$location->id}}"] = polygon;--}}
         }
                 @endforeach
+
+
+
+
+
+
+
+
+
                 @foreach($agents as $agent)
         var contentString = '<div id="content">' +
                 '<p id="name">' + "{{$agent->name}}" + '</p>' +
