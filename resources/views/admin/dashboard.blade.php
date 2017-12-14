@@ -958,7 +958,7 @@
                         bounds.extend(new google.maps.LatLng(c[0], c[1]));
                     }
                     var path = coordinate;
-//                    map.setCenter(bounds.getCenter().lat(), bounds.getCenter().lng());
+            //        map.setCenter(bounds.getCenter().lat(), bounds.getCenter().lng());
                     polygon = map.drawPolygon({
                         paths: path,
                         strokeColor: border_color,
@@ -1198,6 +1198,7 @@
                         fillOpacity: 0.4,
                     });
                     polygon.setMap(map);
+                    map.setCenter(position);
                     polygonArray[item.id] = polygon;
                 }
             });
