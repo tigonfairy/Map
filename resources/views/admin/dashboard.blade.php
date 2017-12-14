@@ -797,13 +797,13 @@
                     name = agent.name;
                 }
                 var contentString = '<div class="info" style="font-size:' + user.fontSize + 'px; color:' + user.textColor + '">' +
-                    '<h5 class="address" style="display:none; font-size:' + user.fontSize + 'px; color:' + user.textColor + '">' + name + ' - ' + agent.address + '</h5>' +
+                    '<h5 class="address" style=" font-size:' + user.fontSize + 'px; color:' + user.textColor + '">' + name + ' - ' + agent.address + '</h5>' +
                     '<div class="user_data" style="font-size:' + user.fontSize + 'px; color:' + user.textColor + '">' +
                     '<p class="data" style="font-size:' + user.fontSize + 'px; color:' + user.textColor + '">%TT ' + numberWithCommas(item.totalSales) + '/' + numberWithCommas(item.capacity) + '=' + item.percent + '%</p>' +
                     '<ul class="info_user" style="font-size:' + user.fontSize + 'px; color:' + user.textColor + '">' +
                     '<li> NVKD:' + user.name + '</li>' +
-                    '<li class="gsv" style="display: none; font-size:' + user.fontSize + 'px; color:' + user.textColor + '">' + postion + ':' + data.user.name + '</li>' +
-                    '<li class="gdv" style="display: none; font-size:' + user.fontSize + 'px; color:' + user.textColor + '"> GĐ :' + data.director + '</li>' +
+                    '<li class="gsv" style="font-size:' + user.fontSize + 'px; color:' + user.textColor + '">' + postion + ':' + data.user.name + '</li>' +
+                    '<li class="gdv" style="font-size:' + user.fontSize + 'px; color:' + user.textColor + '"> GĐ :' + data.director + '</li>' +
                     '</ul>' +
                     '</div>' +
                     '</div>';
@@ -891,7 +891,7 @@
                 '<p class="data_gsv" id="data" style="font-size:' + data.user.fontSize + 'px; color:' + data.user.textColor + '">%TT ' + numberWithCommas(data.totalSales) + '/' + numberWithCommas(data.capacity) + '=' + data.percent + '%</p>' +
                 '<ul class="info_user_gsv" style="font-size:' + data.user.fontSize + 'px; color:' + data.user.textColor + '">' +
                 '<li>' + postion + ':' + data.user.name + '</li>' +
-                '<li class="gdv" style="display: none; font-size:' + data.user.fontSize + 'px; color:' + data.user.textColor + '"> GĐ :' + data.director + '</li>' +
+                '<li class="gdv" style=" font-size:' + data.user.fontSize + 'px; color:' + data.user.textColor + '"> GĐ :' + data.director + '</li>' +
                 '</ul>' +
                 '</div>' +
                 '</div>';
@@ -991,12 +991,13 @@
                     name = agent.name;
                 }
                 var contentString = '<div class="info" style="font-size:' + user.fontSize + 'px; color:' + user.textColor + '">' +
-                    '<h5 class="address" style="display:none; font-size:' + user.fontSize + 'px; color:' + user.textColor + '">' + name + ' - ' + agent.address + '</h5>' +
+                    '<h5 class="address" style="font-size:' + user.fontSize + 'px; color:' + user.textColor + '">' + name + ' - ' + agent.address + '</h5>' +
                     '<div class="user_data" style="font-size:' + user.fontSize + 'px; color:' + user.textColor + '">' +
                     '<p class="data" style="font-size:' + user.fontSize + 'px; color:' + user.textColor + '">%TT ' + numberWithCommas(item.totalSales) + '/' + numberWithCommas(item.capacity) + '=' + item.percent + '%</p>' +
                     '<ul class="info_user" style="font-size:' + user.fontSize + 'px; color:' + user.textColor + '">' +
                     '<li> NVKD:' + user.name + '</li>' +
-                    '<li class="gsv" style="display: none; font-size:' + user.fontSize + 'px; color:' + user.textColor + '">' + postion + ':' + data.userParent.name + '</li>' +
+                    '<li class="gsv" style="font-size:' + user.fontSize + 'px; color:' + user.textColor + '">' + postion + ':' + data.userParent.name + '</li>' +
+                    '<li class="gdv" style="font-size:' + user.fontSize + 'px; color:' + user.textColor + '"> GD:' + data.gdv.name + '</li>' +
                     '</ul>' +
                     '</div>' +
                     '</div>';
@@ -1084,7 +1085,7 @@
                 '<p class="data_gsv" id="data" style="font-size:' + data.user.fontSize + 'px; color:' + data.user.textColor + '">%TT ' + numberWithCommas(data.totalSales) + '/' + numberWithCommas(data.capacity) + '=' + data.percent + '%</p>' +
                 '<ul class="info_user_gsv" style="font-size:' + data.user.fontSize + 'px; color:' + data.user.textColor + '">' +
                 '<li>' + postion + ':' + data.user.name + '</li>' +
-                '<li class="gdv" style="display: none; font-size:' + data.user.fontSize + 'px; color:' + data.user.textColor + '"> GĐ :' + data.director + '</li>' +
+                '<li class="gdv" style=" font-size:' + data.user.fontSize + 'px; color:' + data.user.textColor + '"> GĐ :' + data.director + '</li>' +
                 '</ul>' +
                 '</div>' +
                 '</div>';
@@ -1206,6 +1207,9 @@
             $.map(data.result, function (item) {
                 var agents = item.agents;
                 var markers = [];
+                var gsv = item.gsv;
+                var gdv = item.gdv;
+
                 $.map(agents, function (agent) {
                     var latLng = new google.maps.LatLng(agent.lat,
                         agent.lng);
@@ -1219,12 +1223,16 @@
                     } else {
                         name = agent.name;
                     }
+
+
                     var contentString = '<div class="info" style="font-size:' + agent.user.fontSize + 'px; color:' + agent.user.textColor + '">' +
                         '<h5 class="address" style="font-size:' + agent.user.fontSize + 'px; color:' + agent.user.textColor + '">' + name + ' - ' + agent.address + '</h5>' +
                         '<div class="user_data" style="font-size:' + agent.user.fontSize + 'px; color:' + agent.user.textColor + '">' +
                         '<p class="data" id="data" style="font-size:' + agent.user.fontSize + 'px; color:' + agent.user.textColor + '">%TT ' + numberWithCommas(agent.totalSales) + '/' + numberWithCommas(agent.capacity) + '=' + agent.percent + '%</p>' +
                         '<ul class="info_user" style="font-size:' + agent.user.fontSize + 'px; color:' + agent.user.textColor + '">' +
                         '<li> NVKD:' + agent.user.name + '</li>' +
+                        '<li class="gsv" style="font-size:' + agent.user.fontSize + 'px; color:' + agent.user.textColor + '"> GS:' + gsv.name + '</li>' +
+                        '<li class="gdv" style="font-size:' + agent.user.fontSize + 'px; color:' + agent.user.textColor + '"> GD:' + gdv.name + '</li>' +
                         '</ul>' +
                         '</div>' +
                         '</div>';
@@ -1246,7 +1254,7 @@
                 });
                 listGsv += '<div style="color:'+ item.gsv.textColor +'">'+ item.gsv.name + ' - %TT ' + numberWithCommas(item.totalSales) + '/' + numberWithCommas(item.capacity) + '=' + item.percent + '"%</div>'
                 var customTxt =
-                    '<div class="customBox" style="display:none; font-size:' + item.gsv.fontSize + 'px; color:' + item.gsv.textColor + '">' +
+                    '<div class="customBox" style=" font-size:' + item.gsv.fontSize + 'px; color:' + item.gsv.textColor + '">' +
                     '<span class="data_gsv" style="font-size:' + item.gsv.fontSize + 'px; color:' + item.gsv.textColor + '">%TT ' + numberWithCommas(item.totalSales) + '/' + numberWithCommas(item.capacity) + '=' + item.percent + '%</span>' +
                     '<span class="info_user_gsv" style="font-size:' + item.gsv.fontSize + 'px; color:' + item.gsv.textColor + '">' + item.gsv.name + '</span>' +
                     '</div>';
@@ -1490,13 +1498,13 @@
             }
             // info cho 1 marker
             var contentString = '<div class="info" style="font-size:' + user.fontSize + 'px; color:' + user.textColor + '">' +
-                '<h5 class="address" style="display:none; font-size:' + user.fontSize + 'px; color:' + user.textColor + '">' + name + ' - ' + data.agents.address + '</h5>' +
+                '<h5 class="address" style=" font-size:' + user.fontSize + 'px; color:' + user.textColor + '">' + name + ' - ' + data.agents.address + '</h5>' +
                 '<div class="user_data" style="font-size:' + user.fontSize + 'px; color:' + user.textColor + '">' +
                 '<p class="data" id="data" style="font-size:' + user.fontSize + 'px; color:' + user.textColor + '">%' + list_products[0].code + ' ' + numberWithCommas(list_products[0].totalSales) + '/' + numberWithCommas(list_products[0].capacity) + '=' + list_products[0].percent + '%</p>' +
                 '<ul class="info_user" style="font-size:' + user.fontSize + 'px; color:' + user.textColor + '">' +
                 '<li> NVKD:' + user.name + '</li>' +
-                '<li class="gsv" style="display:none; font-size:' + user.fontSize + 'px; color:' + user.textColor + '">' + postion + ':' + data.gsv.name + '</li>' +
-                '<li class="gdv" style="display:none; font-size:' + user.fontSize + 'px; color:' + user.textColor + '"> GĐ :' + data.gdv.name + '</li>' +
+                '<li class="gsv" style=" font-size:' + user.fontSize + 'px; color:' + user.textColor + '">' + postion + ':' + data.gsv.name + '</li>' +
+                '<li class="gdv" style=" font-size:' + user.fontSize + 'px; color:' + user.textColor + '"> GĐ :' + data.gdv.name + '</li>' +
                 '</ul>' +
                 '</div>' +
                 '</div>';
@@ -1583,7 +1591,7 @@
             var position = '';
             var center = new google.maps.LatLng(21.0277644, 105.83415979999995);
             var options = {
-                'zoom': 5,
+                'zoom': 8,
                 'center': center,
                 'mapTypeId': google.maps.MapTypeId.ROADMAP,
                 fullscreenControl: true,zoomControl:false,
@@ -1600,14 +1608,21 @@
                 if (coordinate) {
                     var bounds = new google.maps.LatLngBounds();
                     var path = [];
-                    for (i = 0; i < coordinate.length; i++) {
-                        var c = coordinate[i];
-                        bounds.extend(new google.maps.LatLng(c[0], c[1]));
-                        path.push(new google.maps.LatLng(c[0], c[1]))
+
+                    for (j = 0; j < coordinate[0].length; j++) {
+                        var c = coordinate[j];
+                        if(typeof c !== "undefined") {
+                            for (i = 0; i < c.length; i++) {
+                                var temp = c[i];
+                                bounds.extend(new google.maps.LatLng(temp[0], temp[1]));
+                                path.push(new google.maps.LatLng(temp[0], temp[1]));
+                            }
+                        }
+
                     }
                     position = new google.maps.LatLng(bounds.getCenter().lat(), bounds.getCenter().lng());
 //                    var path = coordinate;
-//                    map.setCenter(bounds.getCenter().lat(), bounds.getCenter().lng());
+
                     polygon = new google.maps.Polygon({
                         paths: path,
                         strokeColor: border_color,
@@ -1617,6 +1632,7 @@
                         fillOpacity: 0.4,
                     });
                     polygon.setMap(map);
+                    map.setCenter(position);
                     polygonArray[item.id] = polygon;
                 }
             });
@@ -1690,6 +1706,7 @@
             $("#capacity").text(numberWithCommas(item.capacity));
             $("#data").text('%' + item.code + ' ' + numberWithCommas(item.totalSales) + '/' + numberWithCommas(item.capacity) + '=' + item.percent + '%');
         });
+
         $(document).on('click', '#swift', function () {
             var text = $(this).text();
             if (text == 'Full Mode') {
