@@ -794,6 +794,7 @@ class MapController extends AdminController
                 $totalSales += $saleAgents;
                 $saleAgents = 0;
             }
+            $capacity = $capacity == 0 ? 1 : $capacity;
             // xử lý product
             $listProducts[] = [
                 'id' => 0,
@@ -1080,6 +1081,7 @@ class MapController extends AdminController
         }
 
         if ($typeSearch == 'gdv') {
+
             $totalSaleGSV = 0;
             $totalSaleGDV = 0;
             $saleAgents = 0;
@@ -1130,9 +1132,11 @@ class MapController extends AdminController
                         }
                     }
                 }
-                $listIds[] = $user->id;
-                $agents = Agent::whereIn('manager_id', $listIds)->with('user')->get();
 
+                $listIds[] = $user->id;
+
+                //agents
+                $agents = Agent::whereIn('manager_id', $listIds)->with('user')->get();
                 foreach ($agents as $agent) {
                     $agentIds[] = $agent->id;
                     $saleAgents = SaleAgent::where('agent_id', $agent->id)->where('month', '>=', $startMonth)->where('month', '<=', $endMonth)->get()->sum('sales_real');
@@ -1158,6 +1162,7 @@ class MapController extends AdminController
                     'percent' => round(($totalSaleGSV / $capacity) * 100, 2)
                 ];
                 $totalSaleGSV = 0;
+
                 // area
                 $areas = $user->area()->get();
                 foreach ($areas as $key => $area) {

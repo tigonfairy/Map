@@ -1166,6 +1166,7 @@
             };
             var map = new google.maps.Map(document.getElementById("map"), options);
             $.map(data.locations, function (location, index) {
+
                 var item = location.area;
                 var c = item.coordinates;
                 var coordinate = JSON.parse(c);
@@ -1174,11 +1175,19 @@
                 if (coordinate) {
                     var bounds = new google.maps.LatLngBounds();
                     var path = [];
-                    for (i = 0; i < coordinate.length; i++) {
-                        var c = coordinate[i];
-                        bounds.extend(new google.maps.LatLng(c[0], c[1]));
-                        path.push(new google.maps.LatLng(c[0], c[1]))
+
+                    for (j = 0; j < coordinate[0].length; j++) {
+                        var c = coordinate[j];
+                        if(typeof c !== "undefined") {
+                        for (i = 0; i < c.length; i++) {
+                            var temp = c[i];
+                            bounds.extend(new google.maps.LatLng(temp[0], temp[1]));
+                            path.push(new google.maps.LatLng(temp[0], temp[1]));
+                            }
+                        }
+
                     }
+
                     position = new google.maps.LatLng(bounds.getCenter().lat(), bounds.getCenter().lng());
                     polygon = new google.maps.Polygon({
                         paths: path,
