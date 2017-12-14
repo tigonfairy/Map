@@ -104,6 +104,22 @@
         .table-products tr th,td {
             text-align: center;
         }
+
+        .map-on-loading{
+            position: relative;
+        }
+        .map-on-loading:after{
+            content: "";
+            display: block;
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            z-index: 100;
+            background-color: rgba(255,255,255,.9);
+            background-image: url('{{ url('images/map-on-loading.svg') }}');
+            background-position: center center;
+            background-repeat: no-repeat;
+            background-size: 128px 128px;
+        }
     </style>
 
     <div class="row">
@@ -196,7 +212,7 @@
             </div>
 
             <div class="portlet-body">
-                <div id="map" style=" width: 100% ;height: 500px"></div>
+                <div id="map" class="map" style=" width: 100% ;height: 500px"></div>
                 <div id="legend"></div>
                 <div id="legend2"></div>
             </div>
@@ -275,6 +291,7 @@
             </div>
         </div>
     </div>
+
 
 @endsection
 @push('scripts_foot')
@@ -566,6 +583,7 @@
         @else
             type_search = 'admin';
         @endif
+        $(".map").addClass("map-on-loading");
         $.ajax({
             type: "GET",
             url: "{{ route('Admin::map@dataSearch') }}",
@@ -577,6 +595,7 @@
             },
             cache: false,
             success: function (data) {
+                $(".map").removeClass("map-on-loading");
                 map = new GMaps({
                     div: '#map',
                     lat: 21.0277644,
@@ -641,12 +660,14 @@
         $('#geocoding_form').submit(function (e) {
             e.preventDefault();
             var type_search = $("#type_search").val();
+            $(".map").addClass("map-on-loading");
             $.ajax({
                 type: "GET",
                 url: "{{ route('Admin::map@dataSearch') }}",
                 data: $('#geocoding_form').serialize(),
                 cache: false,
                 success: function (data) {
+                    $(".map").removeClass("map-on-loading");
                     map = new GMaps({
                         div: '#map',
                         lat: 21.0277644,
@@ -658,6 +679,7 @@
                         streetViewControl: false,
                         mapTypeControl:false,
                     });
+
                     if (type_search == 'agents') {
                         showDataAgents(data);
                     }
