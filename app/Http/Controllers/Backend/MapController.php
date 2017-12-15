@@ -682,7 +682,8 @@ class MapController extends AdminController
             $listCodes = [];
 
             $capacity = \App\Models\SaleAgent::where('month','>=',$startMonth)->where('month','<=',$endMonth)
-                ->groupBy('agent_id','month')->where('agent_id',$agent->id)->join('agents','agents.id', '=' ,'sale_agents.agent_id')
+                ->groupBy('agent_id','month')->where('agent_id',$agent->id)
+                ->join('agents','agents.id', '=' ,'sale_agents.agent_id')
                 ->get()->sum('capacity');
 
             $groupProduct = \App\Models\GroupProduct::orderBy('created_at','desc')->get();
@@ -693,7 +694,9 @@ class MapController extends AdminController
                     $products = $group->product()->where('level',1)->orderBy('created_at','desc')->get();
                     if (count($products) > 0) {
                         foreach ($products as $product) {
-                            $sales = SaleAgent::where('agent_id', $agent->id)->where('product_id', $product->id)->where('month', '>=', $startMonth)->where('month', '<=', $endMonth)->select(DB::raw("SUM(sales_real) as sales_real"), "capacity")->first();
+                            $sales = SaleAgent::where('agent_id', $agent->id)->where('product_id', $product->id)
+                                ->where('month', '>=', $startMonth)->where('month', '<=', $endMonth)
+                                ->select(DB::raw("SUM(sales_real) as sales_real"), "capacity")->first();
                             if (!is_null($sales->sales_real)) {
                                 $slGroup += $sales->sales_real;
 
@@ -736,7 +739,7 @@ class MapController extends AdminController
             $table = view('tableDashboard', compact('type', 'user', 'startMonth', 'endMonth'))->render();
             $nvkd = $agent->user;
             $gsv = $nvkd->manager;
-            $gdv = $nvkd->manager;
+            $gdv = $gsv->manager;
             array_unique($listCodes);
             return response()->json([
                 'capacity' => $capacity,
@@ -761,6 +764,7 @@ class MapController extends AdminController
                 $user = auth()->user();
             }
             $userParent = $user->manager;
+            $gdv = $userParent->manager;
             $areas = $userParent->area()->get();
             $locations = [];
             foreach ($areas as $key => $area) {
@@ -848,6 +852,7 @@ class MapController extends AdminController
             return response()->json([
                 'user' => $user,
                 'userParent' => $userParent,
+                'gdv' => $gdv,
                 'locations' => $locations,
                 'listAgents' => $listAgents,
                 'totalSales' => $totalSales,
@@ -1156,6 +1161,7 @@ class MapController extends AdminController
                 $totalSaleGDV += $totalSaleGSV;
                 $data[] = [
                     'gsv' => $user,
+                    'gdv' => $user->manager,
                     'agents' => $agents,
                     'totalSales' => $totalSaleGSV,
                     'capacity' => $capacity,
