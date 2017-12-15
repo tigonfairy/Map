@@ -30,7 +30,7 @@ class User extends Authenticatable
         self::GSV => 'Giám sát vùng',
         self::TV =>  ' Trưởng vùng',
         self::GĐV =>  'Giám đốc vùng',
-        self::SALE_ADMIN =>  ' Phó GĐ kinh doanh',
+        self::SALE_ADMIN =>  'Phó GĐ kinh doanh',
         self::ADMIN =>  'Admin',
 
 
