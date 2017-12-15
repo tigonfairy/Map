@@ -60,7 +60,7 @@
                                     ->get()->sum('sales_plan');
 
                }
-                if($type == 2) {
+            if($type == 2) {
 
                 $dlv = \App\Models\SaleAgent::where('month','>=',$startMonth)->where('month','<=',$endMonth)
                                                    ->groupBy('agent_id','month')->join('agents','agents.id', '=' ,'sale_agents.agent_id')->where('agents.gsv',$manager->id)
@@ -70,7 +70,7 @@
                                     ->get()->sum('sales_plan');
 
                 }
-              if($type == 3) {
+            if($type == 3) {
 
                 $dlv = \App\Models\SaleAgent::where('month','>=',$startMonth)->where('month','<=',$endMonth)
                                                    ->groupBy('agent_id','month')->join('agents','agents.id', '=' ,'sale_agents.agent_id')->where('agents.tv',$manager->id)
@@ -81,12 +81,14 @@
 
 
                 }
-              if($type == 4) {
-
+            if($type == 4) {
                 $dlv = \App\Models\SaleAgent::where('month','>=',$startMonth)->where('month','<=',$endMonth)
-                                                   ->join('agents','agents.id', '=' ,'sale_agents.agent_id')->get()->sum('capacity');
+                                                   ->groupBy('agent_id','month')->join('agents','agents.id', '=' ,'sale_agents.agent_id')
+                                                   ->get()->sum('capacity');
+
                  $slkh = \App\Models\SaleAgent::where('month','>=',$startMonth)->where('month','<=',$endMonth)
-                                    ->join('agents','agents.id', '=' ,'sale_agents.agent_id')->get()->sum('sales_plan');
+                                    ->groupBy('agent_id','month')->join('agents','agents.id', '=' ,'sale_agents.agent_id')
+                                    ->get()->sum('sales_plan');
                 }
         if($type == 5) {
  $string = 'NVKD';
