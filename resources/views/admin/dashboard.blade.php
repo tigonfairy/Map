@@ -1233,6 +1233,7 @@
                 var gdv = item.gdv;
 
                 $.map(agents, function (agent) {
+
                     var latLng = new google.maps.LatLng(agent.lat,
                         agent.lng);
                     var image = "";
@@ -1245,7 +1246,6 @@
                     } else {
                         name = agent.name;
                     }
-
 
                     var contentString = '<div class="info" style="font-size:' + agent.user.fontSize + 'px; color:' + agent.user.textColor + '">' +
                         '<h5 class="address" style="font-size:' + agent.user.fontSize + 'px; color:' + agent.user.textColor + '">' + name + ' - ' + agent.address + '</h5>' +
@@ -1269,18 +1269,22 @@
                         infowindow.open(map, marker);
                     });
                     markers.push(marker);
+                    console.log(markers);
                 });
                 var markerCluster = new MarkerClusterer(map, markers, {
                     maxZoom: 15,
                     imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'
                 });
                 listGsv += '<div style="color:'+ item.gsv.textColor +'">'+ item.gsv.name + ' - %TT ' + numberWithCommas(item.totalSales) + '/' + numberWithCommas(item.capacity) + '=' + item.percent + '"%</div>'
-                var customTxt =
-                    '<div class="customBox" style=" font-size:' + item.gsv.fontSize + 'px; color:' + item.gsv.textColor + '">' +
-                    '<span class="data_gsv" style="font-size:' + item.gsv.fontSize + 'px; color:' + item.gsv.textColor + '">%TT ' + numberWithCommas(item.totalSales) + '/' + numberWithCommas(item.capacity) + '=' + item.percent + '%</span>' +
-                    '<span class="info_user_gsv" style="font-size:' + item.gsv.fontSize + 'px; color:' + item.gsv.textColor + '">' + item.gsv.name + '</span>' +
-                    '</div>';
-                txt = new TxtOverlay(new google.maps.LatLng(markers[0].getPosition().lat(), markers[0].getPosition().lng()), customTxt, "customBox", map);
+
+
+
+//                var customTxt =
+//                    '<div class="customBox" style=" font-size:' + item.gsv.fontSize + 'px; color:' + item.gsv.textColor + '">' +
+//                    '<span class="data_gsv" style="font-size:' + item.gsv.fontSize + 'px; color:' + item.gsv.textColor + '">%TT ' + numberWithCommas(item.totalSales) + '/' + numberWithCommas(item.capacity) + '=' + item.percent + '%</span>' +
+//                    '<span class="info_user_gsv" style="font-size:' + item.gsv.fontSize + 'px; color:' + item.gsv.textColor + '">' + item.gsv.name + '</span>' +
+//                    '</div>';
+//                txt = new TxtOverlay(new google.maps.LatLng(markers[0].getPosition().lat(), markers[0].getPosition().lng()), customTxt, "customBox", map);
             });
             listGsv += '</div>';
             var legend = document.createElement('div');
@@ -1337,7 +1341,7 @@
             });
             tableSales += '</select>' +
                 '</td>' +
-                '<td id="capacity">' + numberWithCommas(list_products[0].totalSales) + '</td>' +
+                '<td id="totalSales">' + numberWithCommas(list_products[0].totalSales) + '</td>' +
                 '<td id="capacity">' + numberWithCommas(list_products[0].capacity) + '</td>' +
                 '</tr>' +
                 '</tbody>' +
@@ -1662,6 +1666,8 @@
                 var agents = item.agents;
                 var markers = [];
                 var legend = document.getElementById('legend');
+                var gsv = item.gsv;
+                var gdv = item.gdv;
                 $.map(agents, function (agent) {
                     var latLng = new google.maps.LatLng(agent.lat,
                         agent.lng);
@@ -1675,12 +1681,21 @@
                     } else {
                         name = agent.name;
                     }
+
+                    if (gsv.position == 3) {
+                        postion = 'TV';
+                    } else {
+                        postion = 'GS';
+                    }
+
                     var contentString = '<div class="info" style="font-size:' + agent.user.fontSize + 'px; color:' + agent.user.textColor + '">' +
                         '<h5 class="address" style="font-size:' + agent.user.fontSize + 'px; color:' + agent.user.textColor + '">' + name + ' - ' + agent.address + '</h5>' +
                         '<div class="user_data" style="font-size:' + agent.user.fontSize + 'px; color:' + agent.user.textColor + '">' +
                         '<p class="data" id="data" style="font-size:' + agent.user.fontSize + 'px; color:' + agent.user.textColor + '">%TT ' + numberWithCommas(agent.totalSales) + '/' + numberWithCommas(agent.capacity) + '=' + agent.percent + '%</p>' +
                         '<ul class="info_user" style="font-size:' + agent.user.fontSize + 'px; color:' + agent.user.textColor + '">' +
-                        '<li>' + agent.user.name + '</li>' +
+                        '<li> NVKD:' + agent.user.name + '</li>' +
+                        '<li class="gsv" style="font-size:' + agent.user.fontSize + 'px; color:' + agent.user.textColor + '">' + postion + ':' + gsv.name + '</li>' +
+                        '<li class="gdv" style="font-size:' + agent.user.fontSize + 'px; color:' + agent.user.textColor + '"> GĐ :' + gdv.name + '</li>' +
                         '</ul>' +
                         '</div>' +
                         '</div>';
