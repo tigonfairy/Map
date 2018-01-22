@@ -1171,6 +1171,7 @@ class MapController extends AdminController
                     $agent->percent = round(($saleAgents / $capacity) * 100, 2);
                 }
                 $totalSaleGDV += $totalSaleGSV;
+                $capacity = $capacity == 0 ? 1 : $capacity;
                 $data[] = [
                     'gsv' => $user,
                     'gdv' => $user->manager,
