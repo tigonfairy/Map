@@ -20,6 +20,9 @@ class HomeController extends AdminController
     {
         return view('admin.index');
     }
+    public function changePassword(Request $request) {
+        return view('admin.change_password');
+    }
     public function dashboard(Request $request)
     {
         $user = auth()->user();

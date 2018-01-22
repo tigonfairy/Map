@@ -201,7 +201,12 @@
                             <i class="fa fa-angle-down"></i>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-default">
+                            <li>
+                                <a href="{{ url('/change-password') }}">
+                                    Đổi mật khẩu
+                                </a>
 
+                            </li>
                             <li>
                                 <a href="{{ url('/logout') }}"
                                    onclick="event.preventDefault();
