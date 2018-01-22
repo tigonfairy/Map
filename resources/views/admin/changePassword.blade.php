@@ -7,8 +7,7 @@
             <div class="page-title">
                 <h2>
                     <i class="icon-arrow-left8"></i>
-
-                    Cập nhật mật khẩu
+                    {{trans('home.change_password')}}
                 </h2>
             </div>
         </div>
@@ -29,29 +28,52 @@
                             {{ session('success') }}
                         </div>
                     @endif
+                        @if (session('error'))
+                            <div class="alert bg-success alert-styled-left">
+                                <button type="button" class="close" data-dismiss="alert"><span>×</span><span class="sr-only">Close</span></button>
+                                {{ session('error') }}
+                            </div>
+                        @endif
                     <div class="panel panel-flat">
                         <div class="panel-body">
-                            <form method="POST" enctype="multipart/form-data" action="{{ isset($role) ? route('Admin::role@update', [$role->id] ): route('Admin::role@store') }}">
+                            <form method="POST" enctype="multipart/form-data" action="{{route('Admin::changePassword')}}">
                                 {{ csrf_field() }}
-                                @if (isset($role))
-                                    <input type="hidden" name="_method" value="PUT">
-                            @endif
                             <!---------- Name------------>
-                                <div class="form-group {{ $errors->has('name') ? 'has-error has-feedback' : '' }}">
-                                    <label for="name" class="control-label text-semibold">Name</label>
-                                    <i class="icon-question4 text-muted text-size-mini cursor-pointer js-help-icon" data-content="Tên của Doanh nghiệp"></i>
-                                    <input type="text" id="name" name="name" class="form-control" value="{{ old('name') ?: @$role->name }}" />
-                                    @if ($errors->has('name'))
+                                <div class="form-group {{ $errors->has('old_password') ? 'has-error has-feedback' : '' }}">
+                                    <label for="name" class="control-label text-semibold">{{trans('home.old_password')}}</label>
+                                    <i class="icon-question4 text-muted text-size-mini cursor-pointer js-help-icon" data-content=""></i>
+                                    <input type="password" name="old_password" class="form-control" value="{{ old('old_password')}}" />
+                                    @if ($errors->has('old_password'))
                                         <div class="form-control-feedback">
                                             <i class="icon-notification2"></i>
                                         </div>
-                                        <div class="help-block">{{ $errors->first('name') }}</div>
+                                        <div class="help-block">{{ $errors->first('old_password') }}</div>
                                     @endif
                                 </div>
-
-
+                                    <div class="form-group {{ $errors->has('password') ? 'has-error has-feedback' : '' }}">
+                                        <label for="name" class="control-label text-semibold">{{trans('home.new_password')}}</label>
+                                        <i class="icon-question4 text-muted text-size-mini cursor-pointer js-help-icon" data-content=""></i>
+                                        <input type="password" name="password" class="form-control" value="{{ old('password')}}" />
+                                        @if ($errors->has('password'))
+                                            <div class="form-control-feedback">
+                                                <i class="icon-notification2"></i>
+                                            </div>
+                                            <div class="help-block">{{ $errors->first('password') }}</div>
+                                        @endif
+                                    </div>
+                                    <div class="form-group {{ $errors->has('password_confirmation') ? 'has-error has-feedback' : '' }}">
+                                        <label for="name" class="control-label text-semibold">{{trans('home.re_password')}}</label>
+                                        <i class="icon-question4 text-muted text-size-mini cursor-pointer js-help-icon" data-content=""></i>
+                                        <input type="password"  name="password_confirmation" class="form-control" value="{{ old('password_confirmation')}}" />
+                                        @if ($errors->has('password_confirmation'))
+                                            <div class="form-control-feedback">
+                                                <i class="icon-notification2"></i>
+                                            </div>
+                                            <div class="help-block">{{ $errors->first('password_confirmation') }}</div>
+                                        @endif
+                                    </div>
                                 <div class="text-right">
-                                    <button type="submit" class="btn btn-primary">{{ isset($role) ? 'Cập nhật' : 'Thêm mới' }}</button>
+                                    <button type="submit" class="btn btn-primary">{{trans('home.edit')}}</button>
                                 </div>
                             </form>
                         </div>

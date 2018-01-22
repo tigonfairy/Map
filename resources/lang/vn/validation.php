@@ -29,7 +29,7 @@ return [
         'array'   => 'The :attribute must have between :min and :max items.',
     ],
     'boolean'              => 'The :attribute field must be true or false.',
-    'confirmed'            => 'The :attribute confirmation does not match.',
+    'confirmed'            => ':attribute không trùng khớp',
     'date'                 => 'The :attribute is not a valid date.',
     'date_format'          => 'The :attribute does not match the format :format.',
     'different'            => 'The :attribute and :other must be different.',
@@ -120,7 +120,8 @@ return [
         'phone' => 'Số điện thoại',
         'capacity' => 'Dung lượng vùng',
         'month' => 'Tháng',
-        'type' => 'Loại'
+        'type' => 'Loại',
+
     ],
 
 ];

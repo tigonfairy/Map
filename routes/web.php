@@ -48,6 +48,7 @@ Route::group(['middleware' => ['auth','language'],
 
         Route::get('/', ['as' => 'dashboard', 'uses' => 'HomeController@dashboard']);
         Route::get('/change-password', ['as' => 'changePassword', 'uses' => 'HomeController@changePassword']);
+        Route::post('/change-password', ['as' => 'changePassword', 'uses' => 'HomeController@postChangePassword']);
         Route::post('/export', ['as' => 'export', 'uses' => 'HomeController@export']);
         Route::get('/link-file/{id}', ['as' => 'download', 'uses' => 'HomeController@download']);
         Route::get('/home', ['as' => 'dashboard', 'uses' => 'HomeController@dashboard']);

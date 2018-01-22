@@ -81,4 +81,9 @@ return array(
     'close' => 'Đóng',
     'globalEnable' => 'GLOBAL ENABLE',
     'company_name' => 'Công ty cổ phần dinh dưỡng Hồng Hà',
+    'change_password' => 'Thay đổi mật khẩu',
+    'logout' => 'Đăng xuất',
+    'old_password' => 'Mật khẩu cũ',
+    'new_password' => 'Mật khẩu mới',
+    're_password' => 'Nhập lại mật khẩu'
 );
