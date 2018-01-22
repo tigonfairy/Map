@@ -109,6 +109,7 @@
 
     </style>
     @stack('style_head')
+    @yield('style')
     <style>
         .item-notification {
             background: #eaedf2 !important;

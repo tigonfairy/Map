@@ -15,17 +15,17 @@
         </div>
     </div>
 
-    <div class="row">
-        <form action="">
-            <div class="col-xs-6 col-xs-offset-3">
+    {{--<div class="row">--}}
+        {{--<form action="">--}}
+            {{--<div class="col-xs-6 col-xs-offset-3">--}}
 
-                <input type="text" name="q" class="form-control" value="{{Request::input('q')}}"
-                       placeholder="{{trans('home.placeholderSearchName')}}"/>
+                {{--<input type="text" name="q" class="form-control" value="{{Request::input('q')}}"--}}
+                       {{--placeholder="{{trans('home.placeholderSearchName')}}"/>--}}
 
-            </div>
-            <button type="submit" class="btn btn-primary">{{ trans('home.search') }}</button>
-        </form>
-    </div>
+            {{--</div>--}}
+            {{--<button type="submit" class="btn btn-primary">{{ trans('home.search') }}</button>--}}
+        {{--</form>--}}
+    {{--</div>--}}
 
 
     <!-- /page header -->
@@ -45,29 +45,11 @@
                 </tr>
                 </thead>
                 <tbody>
-                @foreach($areas as $area)
-                    <tr role="row" id="">
-                        <td>{{$area->name}}</td>
-                        <td>{{$area->border_color}} <span style="display:inline-block;width: 20px;height:20px;background:{{$area->border_color}}"></span></td>
-                        <td>{{$area->background_color}} <span style="display:inline-block;width: 20px;height:20px;background:{{$area->background_color}}"></span></td>
-                        <td>
-                            <a href="{{route('Admin::map@mapUserDetail',[$area->id])}}">
-                                <button type="button" class="btn btn-info btn-xs">{{ trans('home.show') }}</button></a>
 
-                    <a href="{{route('Admin::map@editMapUser',[$area->id])}}">
-                                <button type="button" class="btn btn-warning btn-xs">{{ trans('home.edit') }}</button></a>
-
-                            <a onclick="return xoaCat();" href="{{route('Admin::map@mapUserDelete',[$area->id])}}" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-remove"></span> {{ trans('home.delete') }}</a>
-
-                        </td>
-                    </tr>
-                @endforeach
 
                 </tbody>
             </table>
-            <div class="row" style="text-align: right">
-                {!! $areas->appends(Request::all())->links() !!}
-            </div>
+
         </div>
         <!-- /main content -->
     </div>
@@ -81,6 +63,42 @@
 
 @push('scripts')
 <script>
+    $(document).on('ready',function() {
+        var datatable = $("#users-table").DataTable({
+            autoWidth: false,
+            processing: true,
+            serverSide: true,
+//            searching: false,
+            "pageLength": 10,
+            ajax: {
+                url: '{!! route('Admin::map@listMapUser.data') !!}',
+                data: function (d) {
+                    //
+                }
+            },
+            columns: [
+                {data: 'name', name: 'name'},
+                {data: 'border', name: 'border', orderable: false, searchable: false},
+                {data: 'background', name: 'background', orderable: false, searchable: false},
+
+                {data: 'action', name: 'action', orderable: false, searchable: false}
+            ],
+
+            initComplete: function () {
+                this.api().columns().every(function () {
+
+
+                    var column = this;
+                    var input = document.createElement("input");
+                    input.className = "form-control form-filter input-sm";
+                    $(input).appendTo($(column.header()))
+                        .on('keyup', function () {
+                            column.search($(this).val(), false, false, true).draw();
+                        });
+                });
+            }
+        });
+    });
     function xoaCat() {
         var conf = confirm("Bạn chắc chắn muốn xoá?");
         return conf;
