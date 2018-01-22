@@ -671,8 +671,14 @@ class MapController extends AdminController
 
         $typeSearch =$request->input('type_search');
         $dataSearch = $request->has('data_search') ? $request->input('data_search') : 0;
+
         $startMonth = $request->input('startMonth');
+        $startMonth = '01-'.$startMonth;
+        $startMonth = Carbon::parse($startMonth)->format('Y-m-d');
+
         $endMonth = $request->input('endMonth');
+        $endMonth = '01-'.$endMonth;
+        $endMonth = Carbon::parse($endMonth)->format('Y-m-d');
 
         if ($typeSearch == 'agents') {
             $agent = Agent::findOrFail($dataSearch);
@@ -1096,7 +1102,6 @@ class MapController extends AdminController
             $dataGdv = [];
             $locations = [];
             $agentIds = [];
-
 
 
             if ($dataSearch != 0) {

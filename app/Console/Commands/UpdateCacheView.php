@@ -91,7 +91,7 @@ class UpdateCacheView extends Command
                         //dashboard
                         $products = DB::table('sale_agents')
                             ->select(\DB::raw('SUM(sales_real) as sales_real,month'))
-                            ->whereIn('agent_id', $agentId)->groupBy('month')->where('month', '>=', '01-' . $year)->where('month', '<=', '12-' . $year)->orderBy('month')
+                            ->whereIn('agent_id', $agentId)->groupBy('month')->where('month', '>=',$year.'-01-01')->where('month', '<=',$year.'-12-01' )->orderBy('month')
                             ->get()->toArray();
                         Cache::forever('total-sale-real-' . $id, $products);
 
@@ -109,7 +109,7 @@ class UpdateCacheView extends Command
                         //doanh so cao nhat
                         $monthHighest = DB::table('sale_agents')
                             ->select(\DB::raw('SUM(sales_real) as sales_real,month'))
-                            ->whereIn('agent_id', $agentId)->where('month', '>=', '01-' . $year)->where('month', '<=', '12-' . $year)->groupBy('month')->orderBy('sales_real', 'desc')
+                            ->whereIn('agent_id', $agentId)->where('month', '>=', $year.'-01-01')->where('month', '<=', $year.'-12-01')->groupBy('month')->orderBy('sales_real', 'desc')
                             ->first()->month;
                         $products = DB::table('sale_agents')
                             ->select(\DB::raw('SUM(sales_real) as sales_real,sale_agents.product_id,code,month'))
@@ -121,7 +121,7 @@ class UpdateCacheView extends Command
                         $month = Carbon::now()->format('m-Y');
                         $products = DB::table('sale_agents')
                             ->select(\DB::raw('SUM(sales_real) as sales_real,sale_agents.product_id,code'))
-                            ->whereIn('agent_id', $agentId)->groupBy('product_id')->where('month', '>=', '01-' . $year)->where('month', '<=', $month)
+                            ->whereIn('agent_id', $agentId)->groupBy('product_id')->where('month', '>=', $year.'-01-01')->where('month', '<=', $month)
                             ->get()->toArray();
                         Cache::forever('average-month-' . $user->id, $products);
                         Cache::forever('total-sales-month-' . $user->id, $products);
@@ -139,7 +139,7 @@ class UpdateCacheView extends Command
                     $id = $user->id;
                     $products = DB::table('sale_agents')
                         ->select(\DB::raw('SUM(sales_real) as sales_real,month'))
-                        ->groupBy('month')->where('month', '>=', '01-' . $year)->where('month', '<=', '12-' . $year)->orderBy('month')
+                        ->groupBy('month')->where('month', '>=', $year.'-01-01')->where('month', '<=', $year.'-12-01')->orderBy('month')
                         ->get()->toArray();
                     Cache::forever('total-sale-real-' . $id, $products);
 
@@ -157,7 +157,7 @@ class UpdateCacheView extends Command
                     //doanh so cao nhat
                     $monthHighest = DB::table('sale_agents')
                         ->select(\DB::raw('SUM(sales_real) as sales_real,month'))
-                        ->where('month', '>=', '01-' . $year)->where('month', '<=', '12-' . $year)->groupBy('month')->orderBy('sales_real', 'desc')
+                        ->where('month', '>=', $year.'-01-01')->where('month', '<=', $year.'-12-01')->groupBy('month')->orderBy('sales_real', 'desc')
                         ->first()->month;
                     $products = DB::table('sale_agents')
                         ->select(\DB::raw('SUM(sales_real) as sales_real,sale_agents.product_id,code,month'))
@@ -169,7 +169,7 @@ class UpdateCacheView extends Command
                     $month = Carbon::now()->format('m-Y');
                     $products = DB::table('sale_agents')
                         ->select(\DB::raw('SUM(sales_real) as sales_real,sale_agents.product_id,code'))
-                        ->groupBy('product_id')->where('month', '>=', '01-' . $year)->where('month', '<=', $month)
+                        ->groupBy('product_id')->where('month', '>=', $year.'-01-01')->where('month', '<=', $month)
                         ->get()->toArray();
                     Cache::forever('average-month-' . $user->id, $products);
                     Cache::forever('total-sales-month-' . $user->id, $products);

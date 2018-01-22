@@ -3,6 +3,7 @@
 namespace App\Console;
 
 use App\Console\Commands\AddAdmin;
+use App\Console\Commands\ConvertDate;
 use App\Console\Commands\Hin;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
@@ -21,7 +22,8 @@ class Kernel extends ConsoleKernel
         GetGeoJson::class,
         AddProvinceJson::class,
         Hin::class,
-        UpdateCacheView::class
+        UpdateCacheView::class,
+        ConvertDate::class
     ];
 
     /**

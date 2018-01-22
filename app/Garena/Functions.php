@@ -7,6 +7,7 @@
 namespace App\Garena;
 
 use App\Account;
+use Carbon\Carbon;
 
 class Functions
 {
@@ -33,6 +34,14 @@ class Functions
    }
     public static function calculateSaleReal($type,$id_manager ,$id,$startMonth = null,$endMonth = null) {
         $sltt = 0;
+        if ($startMonth != null) {
+            $startMonth = '01-' . $startMonth;
+            $startMonth = Carbon::parse($startMonth)->format('Y-m-d');
+        }
+        if ($endMonth != null) {
+            $endMonth = '01-'.$endMonth;
+            $endMonth = Carbon::parse($endMonth)->format('Y-m-d');
+        }
         if($type == 1) {
             $sltt =  \App\Models\SaleAgent::where('month','>=',$startMonth)->where('month','<=',$endMonth)->where('product_id',$id)
                 ->where('agent_id',$id_manager)
