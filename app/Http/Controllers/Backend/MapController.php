@@ -685,7 +685,7 @@ class MapController extends AdminController
                 ->groupBy('agent_id','month')->where('agent_id',$agent->id)
                 ->join('agents','agents.id', '=' ,'sale_agents.agent_id')
                 ->get()->sum('capacity');
-
+            var_dump($capacity);
             $groupProduct = \App\Models\GroupProduct::orderBy('created_at','desc')->get();
             if (count($groupProduct) > 0) {
                 foreach ($groupProduct as $group) {
