@@ -1254,15 +1254,16 @@ class MapController extends AdminController
                 $listIds[] = $gdv->id;
                 $agents = Agent::whereIn('manager_id', $listIds)->with('user')->get();
                 $saleAgents = 0;
+                $capacity = 0;
                 foreach ($agents as $agent) {
                     $listAgentIds[] = $agent->id;
                     $sales = SaleAgent::where('agent_id', $agent->id)->where('month', '>=', $startMonth)
                         ->where('month', '<=', $endMonth)->select('sales_real', 'capacity')->get();
                     foreach ($sales as $sale) {
                         $saleAgents += $sale->sales_real;
-                        $capacity = isset($sale->capacity) ? $sale->capacity : 1;
+                        $capacity += isset($sale->capacity) ? $sale->capacity : 0;
                     }
-                    $capacity = isset($capacity) ? $capacity : 1;
+                    $capacity = $capacity == 0 ? 1 : $capacity;
                     $listAgents[] = [
                         'agent' => $agent,
                         'gsv' => $agent->user->manager,
@@ -1276,9 +1277,11 @@ class MapController extends AdminController
                     $agent->capacity = $capacity;
                     $agent->percent = round($saleAgents / $capacity, 2);
                     $saleAgents = 0;
+                    $capacity = 0;
                 }
                 $listIds = [];
                 $totalSaleGDV += $totalSaleGSV;
+                $capacity = $capacity == 0 ? 1 : $capacity;
                 $data[] = [
                     'gdv' => $gdv,
                     'agents' => $agents,
@@ -1289,7 +1292,16 @@ class MapController extends AdminController
                 ];
             }
             // table data
-            $table = view('tableDashboardAdmin', compact('listAgentIds', 'startMonth', 'endMonth'))->render();
+            $dlv = \App\Models\SaleAgent::where('month','>=',$startMonth)->where('month','<=',$endMonth)
+                ->groupBy('agent_id','month')->join('agents','agents.id', '=' ,'sale_agents.agent_id')->whereIn('agents.id',$listAgentIds)
+                ->get()->sum('capacity');
+            $slkh = \App\Models\SaleAgent::where('month','>=',$startMonth)->where('month','<=',$endMonth)
+                ->groupBy('agent_id','month')->join('agents','agents.id', '=' ,'sale_agents.agent_id')->whereIn('agents.id',$listAgentIds)
+                ->get()->sum('sales_plan');
+
+            $groupProduct = \App\Models\GroupProduct::orderBy('created_at','desc')->get();
+
+            $table = view('tableDashboardAdmin', compact('listAgentIds', 'startMonth', 'endMonth', 'dlv', 'slkh', 'groupProduct'))->render();
             return response()->json([
                 'result' => $data,
                 'locations' => $locations,
@@ -1297,10 +1309,12 @@ class MapController extends AdminController
             ]);
         }
     }
+
     public function getDatatables()
     {
         return AddressGeojson::getDatatables();
     }
+
     public function importExcelAgent(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -1320,6 +1334,7 @@ class MapController extends AdminController
         }
         return response()->json($response);
     }
+
     public function exportAgency()
     {
         ini_set('max_execution_time', 300);

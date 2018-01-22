@@ -49,19 +49,6 @@
 </head>
 <body>
 <table class="table table-striped table-bordered" cellspacing="0" width="100%">
-        @php
-
-                $dlv = \App\Models\SaleAgent::where('month','>=',$startMonth)->where('month','<=',$endMonth)
-                                                   ->groupBy('agent_id','month')->join('agents','agents.id', '=' ,'sale_agents.agent_id')->whereIn('agents.id',$listAgentIds)
-                                                   ->get()->sum('capacity');
-                 $slkh = \App\Models\SaleAgent::where('month','>=',$startMonth)->where('month','<=',$endMonth)
-                                    ->groupBy('agent_id','month')->join('agents','agents.id', '=' ,'sale_agents.agent_id')->whereIn('agents.id',$listAgentIds)
-                                    ->get()->sum('sales_plan');
-
-
-        @endphp
-
-
         <tr class="title">
             <td>Tổng dung lượng vùng</td>
             <td>{{number_format($dlv)}}</td>
@@ -88,8 +75,7 @@
         <td colspan="2">Sản phẩm</td>
         <td>Sản lượng thực tế</td>
     </tr>
-    @php  $groupProduct = \App\Models\GroupProduct::orderBy('created_at','desc')->get();
-    @endphp
+
     @if($groupProduct->count())
         @foreach($groupProduct as $group)
             @php
