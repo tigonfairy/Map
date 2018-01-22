@@ -140,6 +140,13 @@ $index = 0;
                     {{--dung luong vung--}}
 
                     @php
+                        $startMonth = '01-'.$startMonth;
+                            $startMonth = \Carbon\Carbon::parse($startMonth)->format('Y-m-d');
+                    $endMonth = '01-'.$endMonth;
+                            $endMonth = \Carbon\Carbon::parse($endMonth)->format('Y-m-d');
+                    @endphp
+
+                    @php
                          $dlv = \App\Models\SaleAgent::where('month','>=',$startTD)->where('month','<=',$endTD)
                                                             ->groupBy('agent_id','month')->join('agents','agents.id', '=' ,'sale_agents.agent_id')->where('agents.gdv',$gdv->id)
                                                             ->get()->sum('capacity');
