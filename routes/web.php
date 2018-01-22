@@ -47,6 +47,8 @@ Route::group(['middleware' => ['auth','language'],
         });
 
         Route::get('/', ['as' => 'dashboard', 'uses' => 'HomeController@dashboard']);
+        Route::get('/change-password', ['as' => 'changePassword', 'uses' => 'HomeController@changePassword']);
+        Route::post('/change-password', ['as' => 'changePassword', 'uses' => 'HomeController@postChangePassword']);
         Route::post('/export', ['as' => 'export', 'uses' => 'HomeController@export']);
         Route::get('/link-file/{id}', ['as' => 'download', 'uses' => 'HomeController@download']);
         Route::get('/home', ['as' => 'dashboard', 'uses' => 'HomeController@dashboard']);
@@ -122,7 +124,9 @@ Route::group(['middleware' => ['auth','language'],
             Route::get('/delete-map/{id}', ['as' => 'deleteMap', 'uses' => 'MapController@deleteMap']);
 
             Route::get('/list-map-user',[ 'as' => 'listMapUser','uses' => 'MapController@listMapUser']);
+            Route::get('/list-map-user-data',[ 'as' => 'listMapUser.data','uses' => 'MapController@listMapUserData']);
             Route::get('/list-agency',[ 'as' => 'listAgency','uses' => 'MapController@listAgency']);
+            Route::get('/list-agency-data',[ 'as' => 'listAgency.data','uses' => 'MapController@listAgencyData']);
             Route::get('/map-user-detail/{id}',[ 'as' => 'mapUserDetail','uses' => 'MapController@mapUserDetail']);
             Route::get('/map-user-delete/{id}',[ 'as' => 'mapUserDelete','uses' => 'MapController@mapUserDelete']);
             Route::get('/add-map-user', ['as' => 'addMapUser', 'uses' => 'MapController@addMapUser']);

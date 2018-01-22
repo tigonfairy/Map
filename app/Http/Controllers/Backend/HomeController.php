@@ -14,11 +14,30 @@ use Response;
 use Illuminate\Http\Request;
 use Validator;
 use App\Models\SaleAgent;
+use Hash;
 class HomeController extends AdminController
 {
     public function index()
     {
         return view('admin.index');
+    }
+    public function changePassword(Request $request) {
+        return view('admin.changePassword');
+    }
+    public function postChangePassword(Request $request) {
+        $this->validate($request,[
+           'old_password' => 'required',
+           'password' => 'required|confirmed'
+        ]);
+        $user = User::find(auth()->user()->id);
+        $oldPassword = $request->input('old_password');
+        $password = $request->input('password');
+        if(!Hash::check($oldPassword,$user->password)) {
+            return redirect()->back()->with('error','Mật khẩu cũ không đúng');
+        }
+        $user->password = Hash::make($password);
+        $user->save();
+        return redirect()->back()->with('success','Thay đổi mật khẩu thành công');
     }
     public function dashboard(Request $request)
     {

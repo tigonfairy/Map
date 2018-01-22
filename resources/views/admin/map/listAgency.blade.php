@@ -1,5 +1,11 @@
 @extends('admin')
-
+@section('style')
+    <style>
+        .dataTables_filter {
+            display: none;
+        }
+    </style>
+    @endsection
 @section('content')
     <!-- Page header -->
     <div class="page-header">
@@ -58,16 +64,16 @@
         <!-- /.modal-dialog -->
     </div>
 
-    <div class="row">
-        <form action="">
-            <div class="col-xs-6 col-xs-offset-3">
-                <input type="text" name="q" class="form-control" value="{{Request::input('q')}}"
-                       placeholder="Nhập tên để tìm kiếm"/>
+    {{--<div class="row">--}}
+        {{--<form action="">--}}
+            {{--<div class="col-xs-6 col-xs-offset-3">--}}
+                {{--<input type="text" name="q" class="form-control" value="{{Request::input('q')}}"--}}
+                       {{--placeholder="Nhập tên để tìm kiếm"/>--}}
 
-            </div>
-            <button type="submit" class="btn btn-primary">{{ trans('home.search') }}</button>
-        </form>
-    </div>
+            {{--</div>--}}
+            {{--<button type="submit" class="btn btn-primary">{{ trans('home.search') }}</button>--}}
+        {{--</form>--}}
+    {{--</div>--}}
 
 
     <!-- /page header -->
@@ -85,34 +91,14 @@
                     <th>{{ trans('home.name') }}</th>
                     <th>{{ trans('home.address') }}</th>
                     <th>{{ trans('home.manager') }}</th>
-                    {{--<th>{{ trans('home.place') }}</th>--}}
                     <th>{{ trans('home.action') }}</th>
                 </tr>
                 </thead>
                 <tbody>
-                    @foreach($agents as $agent)
-                        <tr role="row" id="">
-                            <td>{{$agent->code}}</td>
-                            <td>{{$agent->name}}</td>
-                            <td>{{$agent->address}}</td>
-                            <td>{!! $agent->user ? $agent->user->name : '' !!}</td>
-                            {{--<td>{!! $agent->area ? $agent->area->name : '' !!}</td>--}}
-                            <td>
-                                {{--<a href="{{route('Admin::map@agentDetail',[$agent->id])}}">--}}
-                                    {{--<button type="button" class="btn btn-info btn-xs">{{ trans('home.show') }}</button></a>--}}
 
-                                <a href="{{route('Admin::map@editAgent',[$agent->id])}}">
-                                    <button type="button" class="btn btn-warning btn-xs">{{ trans('home.edit') }}</button></a>
-                                <a onclick="return xoaCat();" href="{{route('Admin::map@agentDelete',[$agent->id])}}" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-remove"></span> Del</a>
-                            </td>
-                        </tr>
-                    @endforeach
                 </tbody>
             </table>
 
-            <div class="row" style="text-align: right">
-                {!! $agents->appends(Request::all())->links() !!}
-            </div>
         </div>
         <!-- /main content -->
     </div>
@@ -126,6 +112,42 @@
 
 @push('scripts')
 <script>
+    $(document).on('ready',function() {
+        var datatable = $("#users-table").DataTable({
+            autoWidth: false,
+            processing: true,
+            serverSide: true,
+//            searching: false,
+            "pageLength": 10,
+            ajax: {
+                url: '{!! route('Admin::map@listAgency.data') !!}',
+                data: function (d) {
+                    //
+                }
+            },
+            columns: [
+                {data: 'code', name: 'code'},
+                {data: 'name', name: 'name'},
+                {data: 'address', name: 'address'},
+                {data: 'manager', name: 'manager', orderable: false, searchable: false},
+                {data: 'action', name: 'action', orderable: false, searchable: false}
+            ],
+
+            initComplete: function () {
+                this.api().columns().every(function () {
+
+
+                    var column = this;
+                    var input = document.createElement("input");
+                    input.className = "form-control form-filter input-sm";
+                    $(input).appendTo($(column.header()))
+                        .on('keyup', function () {
+                            column.search($(this).val(), false, false, true).draw();
+                        });
+                });
+            }
+        });
+    });
     function xoaCat() {
         var conf = confirm("Bạn chắc chắn muốn xoá?");
         return conf;

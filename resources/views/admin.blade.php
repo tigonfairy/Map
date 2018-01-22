@@ -109,6 +109,7 @@
 
     </style>
     @stack('style_head')
+    @yield('style')
     <style>
         .item-notification {
             background: #eaedf2 !important;
@@ -200,12 +201,17 @@
                             <i class="fa fa-angle-down"></i>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-default">
+                            <li>
+                                <a href="{{ url('/change-password') }}">
+                                    {{trans('home.change_password')}}
+                                </a>
 
+                            </li>
                             <li>
                                 <a href="{{ url('/logout') }}"
                                    onclick="event.preventDefault();
                                  document.getElementById('logout-form').submit();">
-                                    Đăng xuất
+                                    {{trans('home.logout')}}
                                 </a>
                                 <form id="logout-form"
                                       action="{{ url('/logout') }}"

@@ -81,4 +81,9 @@ return [
     'close' => 'Close',
     'globalEnable' => 'GLOBAL ENABLE',
     'company_name' => 'Hong Ha Nutrition Joint Stock Company',
+    'change_password' => 'Change Password',
+    'logout' => 'Log out',
+    'old_password' => 'Old Password',
+    'new_password' => 'New Password',
+    're_password' => 'Re-enter new password'
 ];
