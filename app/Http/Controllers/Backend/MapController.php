@@ -1,7 +1,5 @@
 <?php
-
 namespace App\Http\Controllers\Backend;
-
 use DB;
 use Carbon\Carbon;
 use App\Models\User;
@@ -18,23 +16,18 @@ use Validator;
 use Excel;
 use App\Jobs\ImportAgent;
 use Datatables;
-
 class MapController extends AdminController
 {
     public function listLocation()
     {
         return view('admin.map.index');
     }
-
     public function addMap()
     {
-
         return view('admin.map.addMap');
     }
-
     public function addMapPost(Request $request)
     {
-
         $this->validate($request, [
             'name' => 'required',
             'coordinates' => 'required'
@@ -50,42 +43,31 @@ class MapController extends AdminController
         }
         $arrayCor = json_decode($data['coordinates'], true);
         $FNcoordinates = [];
-
         if (count($arrayCor)) {
             foreach ($arrayCor as $a) {
                 $coordinates = json_decode($a, true);
                 $newCoordinates = [];
                 foreach ($coordinates as $coor) {
-
                     $c = explode(",", $coor);
-
                     $c[0] = doubleval($c[0]);
                     $c[1] = doubleval($c[1]);
                     array_push($newCoordinates, $c);
                 }
                 $FNcoordinates[] = $newCoordinates;
-
             }
-
         }
-
         $dataUpdate = ['name' => $data['name'], 'slug' => $slug];
         if (count($dataUpdate)) {
             $dataUpdate['coordinates'] = json_encode($FNcoordinates);
         }
-
         $address = AddressGeojson::create($dataUpdate);
-
         return redirect()->route('Admin::map@listLocation')->with('success', 'Tạo vùng địa lý thành công');
     }
-
     public function editMap(Request $request, $id)
     {
         $addressGeojson = AddressGeojson::findOrFail($id);
-
         return view('admin.map.editMap', compact('addressGeojson'));
     }
-
     public function editMapPost(Request $request, $id)
     {
         $this->validate($request, [
@@ -96,44 +78,32 @@ class MapController extends AdminController
             'coordinates.required' => 'Chưa vẽ vùng địa lý'
         ]);
         $address = AddressGeojson::find($id);
-
         $data = $request->all();
         $slug = str_slug($data['name']);
-
         $arrayCor = json_decode($data['coordinates'], true);
         $FNcoordinates = [];
-
         if (count($arrayCor)) {
             foreach ($arrayCor as $a) {
                 $coordinates = json_decode($a, true);
                 $newCoordinates = [];
                 foreach ($coordinates as $coor) {
-
                     $c = explode(",", $coor);
-
                     $c[0] = doubleval($c[0]);
                     $c[1] = doubleval($c[1]);
                     array_push($newCoordinates, $c);
                 }
                 $FNcoordinates[] = $newCoordinates;
-
             }
-
         }
-
         $dataUpdate = ['name' => $data['name'], 'slug' => $slug];
         if (count($dataUpdate)) {
             $dataUpdate['coordinates'] = json_encode($FNcoordinates);
         }
-
         $address->update($dataUpdate);
-
         return redirect()->route('Admin::map@listLocation')->with('success', 'Cập nhật vùng địa lý thành công');
     }
-
     public function deleteMap(Request $request, $id)
     {
-
         $address = AddressGeojson::find($id);
         if ($address) {
             $address->delete();
@@ -142,23 +112,16 @@ class MapController extends AdminController
         } else {
             return redirect()->back()->with('error', 'Không tồn tại !!');
         }
-
     }
-
     public function editMapUser(Request $request, $id)
     {
-
-
         $area = Area::findOrFail($id);
         $users = User::all();
         $areaAddress = $area->address;
-
         return view('admin.map.addMapUser', compact('users', 'area', 'areaAddress'));
     }
-
     public function editMapUserPost(Request $request, $id)
     {
-
         $area = Area::findOrFail($id);
         $this->validate($request, [
             'manager_id' => 'required',
@@ -173,20 +136,14 @@ class MapController extends AdminController
             $area->address()->sync($data['place']);
         }
         return redirect()->route('Admin::map@listMapUser')->with('success', 'Sửa vùng kinh doanh thành công');
-
     }
-
     public function listMapUser(Request $request)
     {
-
-
         return view('admin.map.listMapUser');
     }
-
     public function listMapUserData(Request $request)
     {
         $areas = Area::select('*');
-
         return Datatables::eloquent($areas)
             ->addColumn('border', function ($area) {
                 return $area->border_color . ' ' . '<span style="display:inline-block;width: 20px;height:20px;background:' . $area->border_color . '"></span>';
@@ -197,7 +154,6 @@ class MapController extends AdminController
             ->addColumn('action', function ($area) {
                 $string = '   <a href="' . route('Admin::map@mapUserDetail', [$area->id]) . '">
                                 <button type="button" class="btn btn-info btn-xs">' . trans('home.show') . '</button></a>';
-
                 $string .= '<a href="' . route('Admin::map@editMapUser', [$area->id]) . '">
                                 <button type="button" class="btn btn-warning btn-xs">' . trans('home.edit') . '</button></a>
                             <a onclick="return xoaCat();" href="' . route('Admin::map@mapUserDelete', [$area->id]) . '" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-remove"></span> ' . trans('home.delete') . '</a>';
@@ -205,16 +161,13 @@ class MapController extends AdminController
             })
             ->make(true);
     }
-
     public function mapUserDetail(Request $request, $id)
     {
-
         $area = Area::findOrFail($id);
         $month = Carbon::now()->format('m-Y');
         if ($request->input('month')) {
             $month = $request->input('month');
         }
-
         $listIds = $area->subArea()->get()->pluck('id')->toArray();
         $listIds[] = $id;
         $locations = $area->address;
@@ -223,7 +176,6 @@ class MapController extends AdminController
             $idAgent = clone $agents;
             $idAgent = $idAgent->pluck('id')->toArray();
         }
-
         $products = DB::table('sale_agents')
             ->select(\DB::raw('SUM(sales_plan) as sales_plan,SUM(sales_real) as sales_real,sale_agents.product_id'))
             ->groupBy('product_id')
@@ -232,17 +184,13 @@ class MapController extends AdminController
             ->get();
         return view('admin.map.mapUserDetail', compact('area', 'locations', 'agents', 'month', 'products'));
     }
-
     public function addMapUser()
     {
-
         $users = User::all();
         return view('admin.map.addMapUser', compact('users'));
     }
-
     public function addMapUserPost(Request $request)
     {
-
         $this->validate($request, [
             'manager_id' => 'required',
             'place' => 'required'
@@ -260,10 +208,8 @@ class MapController extends AdminController
         }
         return redirect()->route('Admin::map@listMapUser')->with('success', 'Tạo vùng kinh doanh thành công');
     }
-
     public function listAgency(Request $request)
     {
-
 //        $user = auth()->user();
 //
 //
@@ -274,15 +220,11 @@ class MapController extends AdminController
 //        }
 //
 //            $agents = $agents->paginate(10);
-
-
         return view('admin.map.listAgency');
     }
-
     public function listAgencyData(Request $request)
     {
         $agents = Agent::select('*');
-
         return Datatables::eloquent($agents)
             ->addColumn('manager', function ($agent) {
                 return $agent->user ? $agent->user->name : '';
@@ -290,7 +232,6 @@ class MapController extends AdminController
             ->addColumn('action', function ($agent) {
                 $string = ' <a href="' . route('Admin::map@agentDetail', [$agent->id]) . '">
                                     <button type="button" class="btn btn-info btn-xs">' . trans('home.show') . '</button></a>';
-
                 $string .= '         <a href="' . route('Admin::map@editAgent', [$agent->id]) . '">
                                     <button type="button" class="btn btn-warning btn-xs">' . trans('home.edit') . '</button></a>
                                 <a onclick="return xoaCat();" href="' . route('Admin::map@agentDelete', [$agent->id]) . '" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-remove"></span> Del</a>';
@@ -298,19 +239,14 @@ class MapController extends AdminController
             })
             ->make(true);
     }
-
     public function addAgency(Request $request)
     {
-
         $user = auth()->user();
         $users = User::all();
         $areas = null;
 //            $areas = Area::all();
-
-
         return view('admin.map.addAgency', compact('users', 'areas'));
     }
-
     public function addMapAgencyPost(Request $request)
     {
         $this->validate($request, [
@@ -326,7 +262,6 @@ class MapController extends AdminController
             'lat.required' => 'Vui lòng chọn đại lý',
             'lng.required' => 'Vui lòng chọn đại lý',
         ]);
-
         $data = $request->all();
         $config = [];
         if (file_exists(public_path() . '/config/config.json')) {
@@ -350,24 +285,20 @@ class MapController extends AdminController
         }
         if (isset($data['attribute']) and $data['attribute'] == Agent::agentRival) {
             $data['icon'] = (isset($config['agent_rival'])) ? $config['agent_rival'] : null;
-
         }
         if ($data['manager_id']) {
             $data['gdv'] = 0;
             $data['pgdkd'] = 0;
             $data['tv'] = 0;
             $data['gsv'] = 0;
-
             $manager_id = $data['manager_id'];
             $user = User::find($manager_id);
             if ($user->position == User::SALE_ADMIN) {
                 $data['pgdkd'] = $manager_id;
             }
-
             if ($user->position == User::GĐV) {
                 $data['gdv'] = $manager_id;
             }
-
             if ($user->position == User::TV) {
                 $data['tv'] = $manager_id;
                 $user2 = $user->manager;
@@ -395,7 +326,6 @@ class MapController extends AdminController
                 }
                 if ($user2 and $user2->position == User::TV) {
                     $data['tv'] = $user2->id;
-
                     $user2 = $user2->manager;
                     if ($user2 and $user2->position == User::GĐV) {
                         $data['gdv'] = $user2->id;
@@ -408,10 +338,8 @@ class MapController extends AdminController
                     }
                 }
             }
-
             if ($user->position == User::NVKD) {
                 $user2 = $user->manager;
-
                 if ($user2 and $user2->position == User::GSV) {
                     $data['gsv'] = $user2->id;
                     $user2 = $user2->manager;
@@ -426,7 +354,6 @@ class MapController extends AdminController
                     }
                     if ($user2 and $user2->position == User::TV) {
                         $data['tv'] = $user2->id;
-
                         $user2 = $user2->manager;
                         if ($user2 and $user2->position == User::GĐV) {
                             $data['gdv'] = $user2->id;
@@ -439,7 +366,6 @@ class MapController extends AdminController
                         }
                     }
                 }
-
                 if ($user2 and $user2->position == User::TV) {
                     $data['tv'] = $user2->id;
                     $user2 = $user2->manager;
@@ -457,22 +383,16 @@ class MapController extends AdminController
                     $data['gdv'] = $user2->id;
                 }
             }
-
-
         }
-
-
         Agent::create($data);
         return redirect()->route('Admin::map@listAgency')->with('success', 'Tạo đại lý thành công');
     }
-
     public function addDataAgency(Request $request)
     {
         $agents = Agent::all();
         $products = Product::all();
         return view('admin.map.addDataAgency', compact('agents', 'products'));
     }
-
     public function addDataAgencyPost()
     {
         $this->validate(request(), [
@@ -482,11 +402,9 @@ class MapController extends AdminController
             'agent_id.required' => 'Vui lòng chọn đại lý',
             'month.required' => 'Vui lòng chọn thời gian',
         ]);
-
         $product_ids = request('product_id');
         $sales_plan = request('sales_plan');
         $sales_real = request('sales_real');
-
         foreach ($product_ids as $key => $product_id) {
             $sale = SaleAgent::firstOrCreate([
                 'agent_id' => request('agent_id'),
@@ -497,10 +415,8 @@ class MapController extends AdminController
             $sale->sales_real = $sales_real[$key] ? $sales_real[$key] : 0;
             $sale->save();
         }
-
         return redirect()->route('Admin::map@listAgency')->with('success', 'Tạo dữ liệu cho đại lý thành công');
     }
-
     public function agentDetail(Request $request, $id)
     {
         $agent = Agent::find($id);
@@ -511,20 +427,15 @@ class MapController extends AdminController
         $products = $agent->product()->where('month', $month)->get();
         return view('admin.map.agentDetail', compact('agent', 'products', 'month'));
     }
-
     public function editAgent(Request $request, $id)
     {
-
         $agent = Agent::findOrFail($id);
         $user = auth()->user();
         $areas = null;
         $users = User::all();
 //        $areas = Area::all();
-
-
         return view('admin.map.addAgency', compact('users', 'agent', 'areas'));
     }
-
     public function editAgentPost(Request $request, $id)
     {
         $data = $request->all();
@@ -562,29 +473,23 @@ class MapController extends AdminController
         if (isset($data['attribute']) and $data['attribute'] == Agent::agentRival) {
             $data['icon'] = (isset($config['agent_rival'])) ? $config['agent_rival'] : null;
         }
-
         if (isset($data['attribute']) and $data['attribute'] == Agent::agentNew) {
             $data['icon'] = (isset($config['agent_unclassified'])) ? $config['agent_unclassified'] : null;
         }
-
-
         $agent = Agent::findOrFail($id);
         if ($data['manager_id'] != $agent->manager_id) {
             $data['gdv'] = 0;
             $data['pgdkd'] = 0;
             $data['tv'] = 0;
             $data['gsv'] = 0;
-
             $manager_id = $data['manager_id'];
             $user = User::find($manager_id);
             if ($user->position == User::SALE_ADMIN) {
                 $data['pgdkd'] = $manager_id;
             }
-
             if ($user->position == User::GĐV) {
                 $data['gdv'] = $manager_id;
             }
-
             if ($user->position == User::TV) {
                 $data['tv'] = $manager_id;
                 $user2 = $user->manager;
@@ -612,7 +517,6 @@ class MapController extends AdminController
                 }
                 if ($user2 and $user2->position == User::TV) {
                     $data['tv'] = $user2->id;
-
                     $user2 = $user2->manager;
                     if ($user2 and $user2->position == User::GĐV) {
                         $data['gdv'] = $user2->id;
@@ -625,10 +529,8 @@ class MapController extends AdminController
                     }
                 }
             }
-
             if ($user->position == User::NVKD) {
                 $user2 = $user->manager;
-
                 if ($user2 and $user2->position == User::GSV) {
                     $data['gsv'] = $user2->id;
                     $user2 = $user2->manager;
@@ -643,7 +545,6 @@ class MapController extends AdminController
                     }
                     if ($user2 and $user2->position == User::TV) {
                         $data['tv'] = $user2->id;
-
                         $user2 = $user2->manager;
                         if ($user2 and $user2->position == User::GĐV) {
                             $data['gdv'] = $user2->id;
@@ -656,7 +557,6 @@ class MapController extends AdminController
                         }
                     }
                 }
-
                 if ($user2 and $user2->position == User::TV) {
                     $data['tv'] = $user2->id;
                     $user2 = $user2->manager;
@@ -674,14 +574,10 @@ class MapController extends AdminController
                     $data['gdv'] = $user2->id;
                 }
             }
-
-
         }
-
         $agent->update($data);
         return redirect()->back()->with('success', 'Sửa đại lý thành công');
     }
-
     public function mapUserDelete(Request $request, $id)
     {
         if (auth()->user()->roles->first()['id'] == 3) {
@@ -695,9 +591,7 @@ class MapController extends AdminController
         } else {
             return redirect()->back()->with('error', 'Không tồn tại !!');
         }
-
     }
-
     public function agentDelete(Request $request, $id)
     {
         if (auth()->user()->roles->first()['id'] == 3) {
@@ -712,43 +606,32 @@ class MapController extends AdminController
             return redirect()->back()->with('error', 'Không tồn tại !!');
         }
     }
-
     public function search()
     {
-
         $areas = Area::all();
         $agents = Agent::all();
         $users = User::all();
-
         return view('admin.map.search', compact('areas', 'agents', 'users'));
     }
-
     public function dataSearch(Request $request)
     {
-
         $typeSearch = $request->input('type_search');
         $dataSearch = $request->has('data_search') ? $request->input('data_search') : 0;
-
         $startMonth = $request->input('startMonth');
         $startMonth = '01-' . $startMonth;
         $startMonth = Carbon::parse($startMonth)->format('Y-m-d');
-
         $endMonth = $request->input('endMonth');
         $endMonth = '01-' . $endMonth;
         $endMonth = Carbon::parse($endMonth)->format('Y-m-d');
-
         if ($typeSearch == 'agents') {
             $agent = Agent::findOrFail($dataSearch);
             $totalSales = 0;
             $listProducts = [];
-
             $listCodes = [];
-
             $capacity = \App\Models\SaleAgent::where('month', '>=', $startMonth)->where('month', '<=', $endMonth)
                 ->groupBy('agent_id', 'month')->where('agent_id', $agent->id)
                 ->join('agents', 'agents.id', '=', 'sale_agents.agent_id')
                 ->get()->sum('capacity');
-
             $groupProduct = \App\Models\GroupProduct::orderBy('created_at', 'desc')->get();
             if (count($groupProduct) > 0) {
                 foreach ($groupProduct as $group) {
@@ -762,7 +645,6 @@ class MapController extends AdminController
                                 ->select(DB::raw("SUM(sales_real) as sales_real"), "capacity")->first();
                             if (!is_null($sales->sales_real)) {
                                 $slGroup += $sales->sales_real;
-
                                 $array[] = [
                                     'id' => $product->id,
                                     'name' => $product->code,
@@ -815,7 +697,6 @@ class MapController extends AdminController
                 'listCodes' => $listCodes
             ]);
         }
-
         if ($typeSearch == 'nvkd' || $typeSearch == '') {
             $totalSales = 0;
             $saleAgents = 0;
@@ -839,17 +720,14 @@ class MapController extends AdminController
                     ];
                 }
             }
-
             $capacity = \App\Models\SaleAgent::where('month', '>=', $startMonth)->where('month', '<=', $endMonth)
                 ->groupBy('agent_id', 'month')->join('agents', 'agents.id', '=', 'sale_agents.agent_id')->where('agents.attribute', '!=', Agent::agentRival)->where('agents.manager_id', $user->id)
                 ->get()->sum('capacity');
-
             $agents = Agent::where('manager_id', $user->id)->with('user')->get();
             foreach ($agents as $agent) {
                 $sales = SaleAgent::where('agent_id', $agent->id)->where('month', '>=', $startMonth)->where('month', '<=', $endMonth)->select('sales_real', 'capacity')->get();
                 foreach ($sales as $sale) {
                     $saleAgents += $sale->sales_real;
-
                 }
                 $capacity = $capacity == 0 ? 1 : $capacity;
                 $listAgents[] = [
@@ -926,7 +804,6 @@ class MapController extends AdminController
                 'table' => $table
             ]);
         }
-
         if ($typeSearch == 'gsv') {
             $totalSales = 0;
             $saleAgents = 0;
@@ -949,13 +826,11 @@ class MapController extends AdminController
             $capacity = \App\Models\SaleAgent::where('month', '>=', $startMonth)->where('month', '<=', $endMonth)
                 ->groupBy('agent_id', 'month')->join('agents', 'agents.id', '=', 'sale_agents.agent_id')->where('agents.gsv', $user->id)
                 ->get()->sum('capacity');
-
             $agents = Agent::whereIn('manager_id', $listIds)->with('user')->get();
             foreach ($agents as $agent) {
                 $sales = SaleAgent::where('agent_id', $agent->id)->where('month', '>=', $startMonth)->where('month', '<=', $endMonth)->select('sales_real', 'capacity')->get();
                 foreach ($sales as $sale) {
                     $saleAgents += $sale->sales_real;
-
                 }
                 $capacity = $capacity == 0 ? 1 : $capacity;
                 $listAgents[] = [
@@ -1032,7 +907,6 @@ class MapController extends AdminController
                 'area_name' => $areas->name
             ]);
         }
-
         if ($typeSearch == 'tv') {
             $totalSales = 0;
             $saleAgents = 0;
@@ -1061,11 +935,9 @@ class MapController extends AdminController
                     'area' => $address
                 ];
             }
-
             $capacity = \App\Models\SaleAgent::where('month', '>=', $startMonth)->where('month', '<=', $endMonth)
                 ->groupBy('agent_id', 'month')->join('agents', 'agents.id', '=', 'sale_agents.agent_id')->where('agents.tv', $userTv->id)
                 ->get()->sum('capacity');
-
             $agents = Agent::whereIn('manager_id', $listIds)->with('user')->get();
             foreach ($agents as $agent) {
                 $sales = SaleAgent::where('agent_id', $agent->id)->where('month', '>=', $startMonth)->where('month', '<=', $endMonth)->select('sales_real', 'capacity')->get();
@@ -1147,9 +1019,7 @@ class MapController extends AdminController
                 'area_name' => $areas->name
             ]);
         }
-
         if ($typeSearch == 'gdv') {
-
             $totalSaleGSV = 0;
             $totalSaleGDV = 0;
             $saleAgents = 0;
@@ -1159,8 +1029,6 @@ class MapController extends AdminController
             $dataGdv = [];
             $locations = [];
             $agentIds = [];
-
-
             if ($dataSearch != 0) {
                 $userGdv = User::findOrFail($dataSearch);
                 $userGSV = $userGdv->owners()->get();
@@ -1176,24 +1044,18 @@ class MapController extends AdminController
                         }
                     }
                 }
-
                 $capacity = \App\Models\SaleAgent::where('month', '>=', $startMonth)->where('month', '<=', $endMonth)
                     ->groupBy('agent_id', 'month')->join('agents', 'agents.id', '=', 'sale_agents.agent_id')->get()->sum('capacity');
             }
-
-
             foreach ($userGSV as $user) {
-
                 $listIds = [];
                 if ($user->position == User::GSV) { // gsv
                     if (count($user->owners) > 0) {
                         foreach ($user->owners as $u1) {
                             $listIds[] = $u1->id;
                         }
-
                     }
                 } else if ($user->position == User::TV) {
-
                     if (count($user->owners) > 0) {
                         foreach ($user->owners as $u2) {
                             if (count($u2->owners) > 0) {
@@ -1205,16 +1067,13 @@ class MapController extends AdminController
                         }
                     }
                 }
-
                 $listIds[] = $user->id;
-
                 //agents
                 $agents = Agent::whereIn('manager_id', $listIds)->with('user')->get();
                 foreach ($agents as $agent) {
                     $agentIds[] = $agent->id;
                     $saleAgents = SaleAgent::where('agent_id', $agent->id)->where('month', '>=', $startMonth)
                         ->where('month', '<=', $endMonth)->get()->sum('sales_real');
-
                     $capacity = $capacity == 0 ? 1 : $capacity;
                     $listAgents[] = [
                         'agent' => $agent,
@@ -1238,7 +1097,6 @@ class MapController extends AdminController
                     'percent' => round(($totalSaleGSV / $capacity) * 100, 2)
                 ];
                 $totalSaleGSV = 0;
-
                 // area
                 $areas = $user->area()->get();
                 foreach ($areas as $key => $area) {
@@ -1251,10 +1109,8 @@ class MapController extends AdminController
                     }
                 }
             }
-
             if ($dataSearch != 0) {
                 $agents = Agent::where('manager_id', $userGdv->id)->with('user')->get();
-
                 if (count($agents) > 0) {
                     foreach ($agents as $agent) {
                         $agentIds[] = $agent->id;
@@ -1285,7 +1141,6 @@ class MapController extends AdminController
 //                $agents = Agent::whereIn('manager_id', $userGDVIds)->with('user')->get();
 //
 //            }
-
             // xử lý product
             $listProducts[] = [
                 'id' => 0,
@@ -1295,10 +1150,8 @@ class MapController extends AdminController
                 'percent' => round(($totalSaleGDV / $capacity) * 100, 2),
                 'capacity' => $capacity
             ];
-
             $groupProduct = \App\Models\GroupProduct::orderBy('created_at', 'desc')->get();
             $listCodes = [];
-
             if (count($groupProduct) > 0) {
                 foreach ($groupProduct as $group) {
                     $array = [];
@@ -1334,20 +1187,14 @@ class MapController extends AdminController
                     ];
                 }
             }
-
-
             // table data
             $type = 4;
-
             if ($dataSearch != 0) {
                 $id = $userGdv->id;
                 $table = view('tableDashboard', compact('type', 'id', 'startMonth', 'endMonth'))->render();
             } else {
-
                 $table = view('tableDashboard2', compact('type', 'startMonth', 'endMonth'))->render();
             }
-
-
             array_unique($listCodes);
             return response()->json([
                 'user' => $dataSearch != 0 ? $userGdv : '',
@@ -1363,9 +1210,7 @@ class MapController extends AdminController
                 'listCodes' => $listCodes
             ]);
         }
-
         if ($typeSearch == 'admin') {
-
             $userGDVs = User::where('position', User::GĐV)->get();
             $data = [];
             $locations = [];
@@ -1375,7 +1220,6 @@ class MapController extends AdminController
                 $totalSaleGSV = 0;
                 $listAgents = [];
                 foreach ($gdv->owners as $user) {
-
                     if ($user->position == User::GSV) { // gsv
                         if (count($user->owners) > 0) {
                             foreach ($user->owners as $u1) {
@@ -1410,15 +1254,16 @@ class MapController extends AdminController
                 $listIds[] = $gdv->id;
                 $agents = Agent::whereIn('manager_id', $listIds)->with('user')->get();
                 $saleAgents = 0;
+                $capacity = 0;
                 foreach ($agents as $agent) {
                     $listAgentIds[] = $agent->id;
                     $sales = SaleAgent::where('agent_id', $agent->id)->where('month', '>=', $startMonth)
                         ->where('month', '<=', $endMonth)->select('sales_real', 'capacity')->get();
                     foreach ($sales as $sale) {
                         $saleAgents += $sale->sales_real;
-                        $capacity = isset($sale->capacity) ? $sale->capacity : 1;
+                        $capacity += isset($sale->capacity) ? $sale->capacity : 0;
                     }
-                    $capacity = isset($capacity) ? $capacity : 1;
+                    $capacity = $capacity == 0 ? 1 : $capacity;
                     $listAgents[] = [
                         'agent' => $agent,
                         'gsv' => $agent->user->manager,
@@ -1432,9 +1277,11 @@ class MapController extends AdminController
                     $agent->capacity = $capacity;
                     $agent->percent = round($saleAgents / $capacity, 2);
                     $saleAgents = 0;
+                    $capacity = 0;
                 }
                 $listIds = [];
                 $totalSaleGDV += $totalSaleGSV;
+                $capacity = $capacity == 0 ? 1 : $capacity;
                 $data[] = [
                     'gdv' => $gdv,
                     'agents' => $agents,
@@ -1445,7 +1292,16 @@ class MapController extends AdminController
                 ];
             }
             // table data
-            $table = view('tableDashboardAdmin', compact('listAgentIds', 'startMonth', 'endMonth'))->render();
+            $dlv = \App\Models\SaleAgent::where('month','>=',$startMonth)->where('month','<=',$endMonth)
+                ->groupBy('agent_id','month')->join('agents','agents.id', '=' ,'sale_agents.agent_id')->whereIn('agents.id',$listAgentIds)
+                ->get()->sum('capacity');
+            $slkh = \App\Models\SaleAgent::where('month','>=',$startMonth)->where('month','<=',$endMonth)
+                ->groupBy('agent_id','month')->join('agents','agents.id', '=' ,'sale_agents.agent_id')->whereIn('agents.id',$listAgentIds)
+                ->get()->sum('sales_plan');
+
+            $groupProduct = \App\Models\GroupProduct::orderBy('created_at','desc')->get();
+
+            $table = view('tableDashboardAdmin', compact('listAgentIds', 'startMonth', 'endMonth', 'dlv', 'slkh', 'groupProduct'))->render();
             return response()->json([
                 'result' => $data,
                 'locations' => $locations,
@@ -1456,17 +1312,14 @@ class MapController extends AdminController
 
     public function getDatatables()
     {
-
         return AddressGeojson::getDatatables();
     }
-
 
     public function importExcelAgent(Request $request)
     {
         $validator = Validator::make($request->all(), [
             'file' => 'required|max:50000|mimes:xlsx,csv'
         ]);
-
         if ($validator->fails()) {
             $response['status'] = 'fails';
             $response['errors'] = $validator->errors();
@@ -1476,11 +1329,9 @@ class MapController extends AdminController
             $filename = time() . '_' . mt_rand(1111, 9999) . '_' . $request->file('file')->getClientOriginalName();
             $request->file('file')->move(storage_path('app/import/agents'), $filename);
             $this->dispatch(new ImportAgent(storage_path('app/import/agents/' . $filename), $name, auth()->user()->id));
-
             flash()->success('Success!', 'Import successfully.');
             $response['status'] = 'success';
         }
-
         return response()->json($response);
     }
 
@@ -1494,10 +1345,7 @@ class MapController extends AdminController
             $exportUser['Mã số'] = $agent->code;
             $exportUser['Tên đại lý'] = $agent->name;
             $exportUser['Địa chỉ đại lý'] = $agent->address;
-
             $manager = $agent->user;
-
-
             $exportUser['NVKD'] = null;
             $exportUser['Mã NV'] = null;
             $exportUser['Giám sát'] = null;
@@ -1506,7 +1354,6 @@ class MapController extends AdminController
             $exportUser['Mã TV'] = null;
             $exportUser['Giám đốc vùng'] = null;
             $exportUser['Mã GĐV'] = null;
-
             if ($manager->position == User::NVKD) {
                 $exportUser['NVKD'] = $manager->name;
                 $exportUser['Mã NV'] = $manager->code;
@@ -1515,7 +1362,6 @@ class MapController extends AdminController
                 $exportUser['Giám sát'] = $manager->name;
                 $exportUser['Mã GS'] = $manager->code;
             }
-
             if ($manager->position == User::TV) {
                 $exportUser['Trưởng vùng'] = $manager->name;
                 $exportUser['Mã TV'] = $manager->code;
@@ -1578,19 +1424,15 @@ class MapController extends AdminController
         ob_end_clean();
         ob_start();
         Excel::create('agent_' . time(), function ($excel) use ($exportUserArray) {
-
             $excel->sheet('agents', function ($sheet) use ($exportUserArray) {
                 $sheet->cell('A1:M1', function ($cells) {
                     // call cell manipulation methods
                     $cells->setBackground('#242729');
                     $cells->setFontColor('#ff8000');
                     $cells->setFontWeight('bold');
-
                 });
                 $sheet->fromArray($exportUserArray);
-
             });
-
         })->download('xlsx');
     }
 }
