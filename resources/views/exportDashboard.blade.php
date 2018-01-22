@@ -49,6 +49,7 @@
 </head>
 <body>
 <table>
+
     @if($type == 1)
         @php $agent = \App\Models\Agent::find($user);@endphp
         <tr class="title">
@@ -155,6 +156,13 @@
             </tr>
 
         @endif
+
+        @php
+            $startMonth = '01-'.$startMonth;
+                $startMonth = \Carbon\Carbon::parse($startMonth)->format('Y-m-d');
+        $endMonth = '01-'.$endMonth;
+                $endMonth = \Carbon\Carbon::parse($endMonth)->format('Y-m-d');
+        @endphp
 
         @php
         $string = '';

@@ -138,6 +138,12 @@ $index = 0;
                     <td>{{$gdv->name}}</td>
                     <td>{{$gdv->code}}</td>
                     {{--dung luong vung--}}
+                    @php
+                        $startMonth = '01-'.$startMonth;
+                            $startMonth = \Carbon\Carbon::parse($startMonth)->format('Y-m-d');
+                    $endMonth = '01-'.$endMonth;
+                            $endMonth = \Carbon\Carbon::parse($endMonth)->format('Y-m-d');
+                    @endphp
 
                     @php
                          $dlv = \App\Models\SaleAgent::where('month','>=',$startMonth)->where('month','<=',$endMonth)

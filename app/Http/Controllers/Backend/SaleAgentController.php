@@ -9,6 +9,7 @@ use App\Models\CacheView;
 use App\Models\User;
 use App\Models\Product;
 use App\Models\SaleAgent;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Validator;
@@ -58,12 +59,17 @@ class SaleAgentController extends AdminController
         $sales_plan = request('sales_plan',0);
         $sales_real = request('sales_real');
         $code = request('code');
-        SaleAgent::where('agent_id', request('agent_id'))->where('month',request('month'))->delete();
+
+        $month = request('month');
+        $month = '01-'.$month;
+        $month = Carbon::parse($month)->format('Y-m-d');
+
+        SaleAgent::where('agent_id', request('agent_id'))->where('month', $month)->delete();
         foreach ($product_ids as $key => $product_id) {
             $agent = SaleAgent::firstOrCreate([
                 'agent_id' => request('agent_id'),
                 'product_id' => $product_id,
-                'month' => request('month'),
+                'month' => $month,
             ]);
             $agent->update([
                 'sales_plan' => intval($sales_plan),
