@@ -26,12 +26,12 @@
           rel="stylesheet" type="text/css"/>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/0.8.2/css/flag-icon.min.css" rel="stylesheet"
           type="text/css"/>
-    <link href="/assets/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css" rel="stylesheet" type="text/css"/>
+    {{--<link href="/assets/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css" rel="stylesheet" type="text/css"/>--}}
     <!-- END GLOBAL MANDATORY STYLES -->
     <!-- BEGIN PAGE LEVEL PLUGINS -->
     <link href="/assets/global/plugins/bootstrap-daterangepicker/daterangepicker.min.css" rel="stylesheet"
           type="text/css"/>
-    <link href="/assets/global/plugins/morris/morris.css" rel="stylesheet" type="text/css"/>
+    {{--<link href="/assets/global/plugins/morris/morris.css" rel="stylesheet" type="text/css"/>--}}
     <link href="/assets/global/plugins/fullcalendar/fullcalendar.min.css" rel="stylesheet" type="text/css"/>
 
     <link href="/assets/global/plugins/datatables/datatables.min.css" rel="stylesheet" type="text/css"/>
@@ -270,8 +270,6 @@
             }
         </style>
         <div class="footer-hongha row">
-            {{--<span style="display: inline-block; vertical-align: middle; color: white; padding: 3px 0 0 2px; font-weight: bold;"> {{ trans('home.company_name') }}</span>--}}
-            {{--<span style="display: block; vertical-align: middle; color: white; padding: 5px 0 0 5px;font-weight: bold;"> Địa chỉ: Lô C, KCN Đồng Văn, Duy Tiên, Hà Nam</span>--}}
             <div class="footer-item col-md-3" style="text-align: center">
                 <h3>
                     <span class="title-footer"><span
@@ -363,13 +361,12 @@
 <!-- END PAGE LEVEL SCRIPTS -->
 <!-- BEGIN THEME LAYOUT SCRIPTS -->
 <script src="/assets/layouts/layout/scripts/layout.min.js" type="text/javascript"></script>
-<script src="/assets/layouts/layout/scripts/demo.min.js" type="text/javascript"></script>
-<script src="/assets/layouts/global/scripts/quick-sidebar.min.js" type="text/javascript"></script>
-<script src="/assets/layouts/global/scripts/quick-nav.min.js" type="text/javascript"></script>
+{{--<script src="/assets/layouts/layout/scripts/demo.min.js" type="text/javascript"></script>--}}
+{{--<script src="/assets/layouts/global/scripts/quick-sidebar.min.js" type="text/javascript"></script>--}}
+{{--<script src="/assets/layouts/global/scripts/quick-nav.min.js" type="text/javascript"></script>--}}
 <script src="/assets/pages/scripts/components-date-time-pickers.min.js" type="text/javascript"></script>
 <script src="/js/admin/ckeditor/ckeditor.js"></script>
-<script src="/assets/global/plugins/jquery-nestable/jquery.nestable.js" type="text/javascript"></script>
-
+{{--<script src="/assets/global/plugins/jquery-nestable/jquery.nestable.js" type="text/javascript"></script>--}}
 
 <script src="/assets/global/plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.js" type="text/javascript"></script>
 <script src="/assets/global/plugins/jquery-minicolors/jquery.minicolors.min.js" type="text/javascript"></script>
@@ -387,7 +384,7 @@
         });
     });
 </script>
-<script src="/assets/pages/scripts/ui-modals.min.js" type="text/javascript"></script>
+{{--<script src="/assets/pages/scripts/ui-modals.min.js" type="text/javascript"></script>--}}
 
 <!-- App scripts -->
 
