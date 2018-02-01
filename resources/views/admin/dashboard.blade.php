@@ -659,44 +659,55 @@
 
         $('#geocoding_form').submit(function (e) {
             e.preventDefault();
-            var type_search = $("#type_search").val();
-            $(".map").addClass("map-on-loading");
-            $.ajax({
-                type: "GET",
-                url: "{{ route('Admin::map@dataSearch') }}",
-                data: $('#geocoding_form').serialize(),
-                cache: false,
-                success: function (data) {
-                    $(".map").removeClass("map-on-loading");
-                    map = new GMaps({
-                        div: '#map',
-                        lat: 21.0277644,
-                        lng: 105.83415979999995,
-                        width: "100%",
-                        height: '500px',
-                        zoom: 7,
-                        fullscreenControl: true,zoomControl:false,
-                        streetViewControl: false,
-                        mapTypeControl:false,
-                    });
+            if($('.search_type').val() == '') {
+                $('#type_date_search').text('Vui lòng chọn loại search');
+            } else if($('#select_data_search').val() == null) {
+                $('#date_search').text('Vui lòng chọn đối tượng');
+                $('#type_date_search').text('');
+            }else if($('.startMonth').val() == '') {
+                $('.startMonth').text('Vui lòng chọn thời gian bắt đầu');
+            } else if($('.endMonth').val() == '') {
+                $('.endMonth').text('Vui lòng chọn thời gian kết thúc');
+            } else {
+                var type_search = $("#type_search").val();
+                $(".map").addClass("map-on-loading");
+                $.ajax({
+                    type: "GET",
+                    url: "{{ route('Admin::map@dataSearch') }}",
+                    data: $('#geocoding_form').serialize(),
+                    cache: false,
+                    success: function (data) {
+                        $(".map").removeClass("map-on-loading");
+                        map = new GMaps({
+                            div: '#map',
+                            lat: 21.0277644,
+                            lng: 105.83415979999995,
+                            width: "100%",
+                            height: '500px',
+                            zoom: 7,
+                            fullscreenControl: true,zoomControl:false,
+                            streetViewControl: false,
+                            mapTypeControl:false,
+                        });
 
-                    if (type_search == 'agents') {
-                        showDataAgents(data);
+                        if (type_search == 'agents') {
+                            showDataAgents(data);
+                        }
+                        if (type_search == 'gsv') {
+                            showDataSales(data);
+                        }
+                        if (type_search == 'tv') {
+                            showDataSales(data);
+                        }
+                        if (type_search == 'gdv') {
+                            showDataSaleGDV(data);
+                        }
+                        if (type_search == 'nvkd' || type_search === undefined || type_search == null || type_search.length <= 0) {
+                            showDataSaleNVKD(data);
+                        }
                     }
-                    if (type_search == 'gsv') {
-                        showDataSales(data);
-                    }
-                    if (type_search == 'tv') {
-                        showDataSales(data);
-                    }
-                    if (type_search == 'gdv') {
-                        showDataSaleGDV(data);
-                    }
-                    if (type_search == 'nvkd' || type_search === undefined || type_search == null || type_search.length <= 0) {
-                        showDataSaleNVKD(data);
-                    }
-                }
-            });
+                });
+            }
         });
 
         var listSelectProducts = [];
