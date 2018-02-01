@@ -57,7 +57,7 @@
           </div>
           <div class="row">
             <div class="col-xs-6">
-              <input class="form-control form-control-solid placeholder-no-fix form-group" type="text" autocomplete="off" placeholder="Email" name="email" required/>
+              <input class="form-control form-control-solid placeholder-no-fix form-group" type="text" id="email" autocomplete="off" placeholder="Email" name="email" required/>
               @if ($errors->has('email'))
                 <span class="help-block">
                   <strong>{{ $errors->first('email') }}</strong>
@@ -133,6 +133,12 @@
 
 <script type="text/javascript">
     $('input[type=password]').keypress(function(e) {
+        if(e.which == 10 || e.which == 13) {
+            $('#register-form').submit();
+        }
+    });
+
+    $('#email').keypress(function(e) {
         if(e.which == 10 || e.which == 13) {
             $('#register-form').submit();
         }
