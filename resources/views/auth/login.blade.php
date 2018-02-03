@@ -14,9 +14,9 @@
   <meta content="Map" name="description" />
   <meta content="" name="author" />
   <!-- BEGIN GLOBAL MANDATORY STYLES -->
-  <link href="../assets/global/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+  <link href="{{url('assets/global/plugins/bootstrap/css/bootstrap.min.css')}}" rel="stylesheet" type="text/css" />
   {{--<link href="../assets/global/css/components-md.min.css" rel="stylesheet" id="style_components" type="text/css" />--}}
-  <link href="../assets/pages/css/login-5.min.css" rel="stylesheet" type="text/css" />
+  <link href="{{url('assets/pages/css/login-5.min.css')}}" rel="stylesheet" type="text/css" />
   <link rel="shortcut icon" href="favicon.ico" /> </head>
 <!-- END HEAD -->
 
@@ -86,12 +86,12 @@
 
 <!-- END : LOGIN PAGE 5-2 -->
 <!--[if lt IE 9]>
-<script src="../assets/global/plugins/respond.min.js"></script>
-<script src="../assets/global/plugins/excanvas.min.js"></script>
-<script src="../assets/global/plugins/ie8.fix.min.js"></script>
+<script src="{{url('assets/global/plugins/respond.min.js')}}"></script>
+<script src="{{url('assets/global/plugins/excanvas.min.js')}}"></script>
+<script src="{{url('assets/global/plugins/ie8.fix.min.js')}}"></script>
 <![endif]-->
 <!-- BEGIN CORE PLUGINS -->
-<script src="../assets/global/plugins/jquery.min.js" type="text/javascript"></script>
+<script src="{{url('assets/global/plugins/jquery.min.js')}}" type="text/javascript"></script>
 @if (isset($config['recaptcha']) && $config['recaptcha'] == 1)
 <script src='https://www.google.com/recaptcha/api.js'></script>
 @endif
