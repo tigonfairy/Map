@@ -47,8 +47,8 @@ class UpdateCacheView extends Command
      */
     public function handle()
     {
-       Log::info('hay qua');
-       $this->line('vai te');
+//       Log::info('hay qua');
+//       $this->line('vai te');
         try{
             $idChange= [];
             $now = Carbon::now();
