@@ -12,6 +12,8 @@ use Illuminate\Console\Command;
 use Hash;
 use Illuminate\Support\Facades\Cache;
 use DB;
+use Illuminate\Support\Facades\Log;
+
 class UpdateCacheView extends Command
 {
     /**
@@ -45,7 +47,8 @@ class UpdateCacheView extends Command
      */
     public function handle()
     {
-
+       Log::info('hay qua');
+       $this->line('vai te');
         try{
             $idChange= [];
             $now = Carbon::now();

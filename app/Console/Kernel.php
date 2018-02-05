@@ -37,7 +37,7 @@ class Kernel extends ConsoleKernel
 //         $schedule->command('craw:hin')
 //                  ->withoutOverlapping()->dailyAt('11:00');
         $schedule->command('update-cache-view')
-            ->everyFiveMinutes()->withoutOverlapping()->appendOutputTo(storage_path('cron/updateCacheView.log'));
+            ->everyMinute()->withoutOverlapping()->appendOutputTo(storage_path('cron/updateCacheView.log'));
     }
 
     /**
