@@ -6,3 +6,4 @@ vendor
 /storage/app/import/*
 /storage/exports/*
 .env
+.env

@@ -13,12 +13,12 @@ class AddColumn1agents extends Migration
      */
     public function up()
     {
-        Schema::table('agents', function (Blueprint $table) {
-            $table->integer('gdv');
-            $table->integer('pgdkd');
-            $table->integer('tv');
-            $table->integer('gsv');
-        });
+//        Schema::table('agents', function (Blueprint $table) {
+//            $table->integer('gdv');
+//            $table->integer('pgdkd');
+//            $table->integer('tv');
+//            $table->integer('gsv');
+//        });
     }
 
     /**
@@ -28,11 +28,11 @@ class AddColumn1agents extends Migration
      */
     public function down()
     {
-        Schema::table('agents', function (Blueprint $table) {
-            $table->dropColumn('gdv');
-            $table->dropColumn('pgdkd');
-            $table->dropColumn('tv');
-            $table->dropColumn('gsv');
-        });
+//        Schema::table('agents', function (Blueprint $table) {
+//            $table->dropColumn('gdv');
+//            $table->dropColumn('pgdkd');
+//            $table->dropColumn('tv');
+//            $table->dropColumn('gsv');
+//        });
     }
 }
