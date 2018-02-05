@@ -79,6 +79,8 @@
             background: #fff;
             padding: 10px;
             margin: 10px;
+            max-height: 400px;
+            overflow-y: scroll;
         }
         #legend h3 {
             margin-top: 0;
@@ -540,11 +542,14 @@
                 $('#type_date_search').text('Vui lòng chọn loại search');
             } else if($('#select_data_search').val() == null) {
                 $('#date_search').text('Vui lòng chọn đối tượng');
+                $('#type_date_search').text('');
             }else if($('.startMonth').val() == '') {
                 $('.startMonth').text('Vui lòng chọn thời gian bắt đầu');
             } else if($('.endMonth').val() == '') {
                 $('.endMonth').text('Vui lòng chọn thời gian kết thúc');
             } else {
+                $('#type_date_search').text('');
+                $('#date_search').text('');
                 $.ajax({
                     method: "post",
                     url: "{{route('Admin::export')}}",
@@ -629,6 +634,7 @@
         $(".search_type").change(function () {
             var search_type = $(this).val();
             $(".data_search").val('');
+            $('#type_date_search').text('');
             if (search_type == 1) {
                 getListAgents(0);
             } else if (search_type == 2) {
@@ -641,6 +647,12 @@
                 getListNVKD(0);
             }
         });
+
+        $(".data_search").change(function () {
+            $('#date_search').text('');
+        });
+
+
 
         $(".typeExport").change(function () {
             var search_type = $(this).val();
@@ -669,6 +681,8 @@
             } else if($('.endMonth').val() == '') {
                 $('.endMonth').text('Vui lòng chọn thời gian kết thúc');
             } else {
+                $('#type_date_search').text('');
+                $('#date_search').text('');
                 var type_search = $("#type_search").val();
                 $(".map").addClass("map-on-loading");
                 $.ajax({
